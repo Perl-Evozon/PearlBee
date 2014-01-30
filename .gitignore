@@ -12,3 +12,4 @@ MYMETA.yml
 /.tidyall.d
 /perltidy.LOG
 perlblog-*
+logs

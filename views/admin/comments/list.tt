@@ -1,0 +1,93 @@
+<div class="mainy">
+   <!-- Page title -->
+    <div class="page-title">
+       <h2><i class="icon-desktop color"></i> Comments <small>Subtext for header</small></h2>
+       <hr />
+    </div>
+    <div class="col-md-12">         
+            
+	    <div class="awidget">
+	        <div class="awidget-head">
+	           <h3>Table #2</h3>
+	        </div>
+	        <div class="awidget-body">          
+
+	        	[% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
+	        	<a href="/[% role %]/comments"> 	All </a>([% all %]) | 
+	        	<a href="/[% role %]/comments/pending"> Pending </a>([% pending %]) | 
+	        	<a href="/[% role %]/comments/approved"> Approved </a>([% approved %]) |
+	        	<a href="/[% role %]/comments/trash"> Trash </a>([% trash %]) | 
+	        	<a href="/[% role %]/comments/spam"> Spam </a>([% spam %])
+
+				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+					<thead>
+						<tr>
+							<th> Author </th>
+							<th> Comment </th>
+							<th> Post </th>
+						</tr>
+					</thead>
+					<tbody>
+
+						[% FOREACH comment IN comments %]
+
+							<tr>
+								<td width="15%"> 
+									<b> [% comment.fullname %] </b> 
+									<br />
+									<i> [% comment.email %] </i>
+									<br />
+									<br />
+									<h5> [% comment.comment_date %] </h5>
+								</td>
+
+								<td> 
+									[% comment.content %]
+
+									<br /> 
+									<br />
+
+									[% IF (comment.status == 'pending') %]
+										<span class="label label-warning"> Pending </span>
+									[% ELSE %]
+										<a href="/[% role %]/comments/pending/[% comment.id %]" > Pending </a>
+									[% END %]
+
+									|
+
+									[% IF (comment.status == 'approved') %]
+										<span class="label label-success"> Approved </span>
+									[% ELSE %]
+										<a href="/[% role %]/comments/approve/[% comment.id %]"> Approve </a>
+									[% END %]
+
+									|
+
+									[% IF (comment.status == 'trash') %]
+										<span class="label label-danger"> Trash </span>
+									[% ELSE %]
+										<a href="/[% role %]/comments/trash/[% comment.id %]"> Trash </a>
+									[% END %]
+
+									|
+
+									[% IF (comment.status == 'spam') %]
+										<span class="label label-danger"> Spam </span>
+									[% ELSE %]
+										<a href="/[% role %]/comments/spam/[% comment.id %]" > Spam </a>
+									[% END %]
+						
+								</td>
+
+								<td width="15%"> <a href="/post/[% comment.post.id %]"> [% comment.post.title %] </a> </td>
+							</tr>
+						
+						[% END %]	
+						
+					</tbody>
+				</table>                      
+	       </div>
+    	</div>    
+ 	</div>
+</div>
+

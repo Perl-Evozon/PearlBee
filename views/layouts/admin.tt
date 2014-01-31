@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Title here -->
+		<title>Login - PerlBee  Admin </title>
+		<!-- Description, Keywords and Author -->
+		<meta name="description" content="Your description">
+		<meta name="keywords" content="Your,Keywords">
+		<meta name="author" content="ResponsiveWebInc">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
+		
+		<!-- Styles -->
+		<!-- Bootstrap CSS -->
+		<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Animate css -->
+      <link href="/admin/css/animate.min.css" rel="stylesheet">
+      <!-- Gritter -->
+      <!-- <link href="/admin/css/jquery.gritter.css" rel="stylesheet"> -->
+      <!-- Calendar -->
+      <link href="/admin/css/fullcalendar.css" rel="stylesheet">
+      <!-- Bootstrap toggable -->
+      <link href="/admin/css/bootstrap-switch.css" rel="stylesheet">
+      <!-- Date and Time picker -->
+      <link href="/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+      <!-- Star rating -->
+      <link href="/admin/css/rateit.css" rel="stylesheet">
+      <!-- Star rating -->
+      <link href="/admin/css/jquery.cleditor.css" rel="stylesheet">
+      <!-- jQuery UI -->
+      <link href="/admin/css/jquery-ui.css" rel="stylesheet">
+      <!-- prettyPhoto -->
+      <link href="/admin/css/prettyPhoto.css" rel="stylesheet">
+		<!-- Font awesome CSS -->
+		<link href="/admin/css/font-awesome.min.css" rel="stylesheet">		
+		<!-- Custom CSS -->
+		<link href="/admin/css/style.css" rel="stylesheet">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="#">
+	</head>
+	
+	<body>
+
+      
+    [% IF session.user %]  
+
+      <!-- Logo & Navigation starts -->      
+      
+      [% INCLUDE layouts/admin_header.tt %]
+
+      
+      <!-- Logo & Navigation ends -->
+    [% ELSE %]
+
+      <div class="header">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-12">
+                  <!-- Logo -->
+                  <div class="logo text-center">
+                     <h1><a href="/admin ">PerlBlog Admin</a></h1>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+    [% END %]
+     
+      
+      
+      <!-- Page content -->
+      
+      <div class="page-content blocky">
+         <div class="container">
+
+            [% IF session.user %]
+                [% INCLUDE layouts/admin_menu.tt %]
+            [% END %]
+            
+            [% content %]
+            
+         </div>
+      </div>
+     
+      
+      
+      <!-- Footer starts -->
+      <footer>
+         <div class="container">
+         
+            <div class="copy text-center">
+               Copyright 2013 &copy; - <a href="http://responsivewebinc.com/bootstrap-themes">Bootstrap Themes</a>
+            </div>
+            
+         </div>
+      </footer>
+      <!-- Footer ends -->
+      
+      <!-- Scroll to top -->
+      <span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span> 
+      
+		<!-- Javascript files -->
+		<!-- jQuery -->
+      <script src="/js/jquery.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="/admin/js/bootstrap.min.js"></script>  
+      <!-- jQuery UI -->
+      <script src="/admin/js/jquery-ui-1.10.2.custom.min.js"></script>     
+      <!-- jQuery Peity -->
+      <script src="/admin/js/peity.js"></script>  
+      <!-- Calendar -->
+      <script src="/admin/js/fullcalendar.min.js"></script>  
+      <!-- jQuery Star rating -->
+      <script src="/admin/js/jquery.rateit.min.js"></script>
+      <!-- prettyPhoto -->
+      <script src="/admin/js/jquery.prettyPhoto.js"></script>  
+      
+      <!-- jQuery flot -->
+      <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
+      <script src="/admin/js/jquery.flot.js"></script>     
+      <script src="/admin/js/jquery.flot.pie.js"></script>
+      <script src="/admin/js/jquery.flot.stack.js"></script>
+      <script src="/admin/js/jquery.flot.resize.js"></script>
+
+      <!-- Gritter plugin -->
+      <!-- <script src="/admin/js/jquery.gritter.min.js"></script> -->
+      <!-- CLEditor -->
+      <script src="/admin/js/jquery.cleditor.min.js"></script> 
+      <!-- Date and Time picker -->
+      <script src="/admin/js/bootstrap-datetimepicker.min.js"></script>  
+      <!-- jQuery Toggable -->
+      <script src="/admin/js/bootstrap-switch.min.js"></script>
+		<!-- Respond JS for IE8 -->
+		<script src="/admin/js/respond.min.js"></script>
+		<!-- HTML5 Support for IE -->
+		<script src="/admin/js/html5shiv.js"></script>
+		<!-- Custom JS -->
+		<script src="/admin/js/custom.js"></script>
+      <!-- App JS -->
+      <script src="/admin/js/app.js"></script>
+	</body>	
+</html>

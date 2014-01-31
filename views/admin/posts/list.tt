@@ -1,0 +1,117 @@
+<div class="mainy">
+ <!-- Page title -->
+ <div class="page-title">
+    <h2><i class="icon-file color"></i> Posts <small>Subtext for header</small></h2>
+    <hr />
+ </div>
+ <!-- Page title -->
+ 
+    <div class="row">
+       <div class="col-md-12">
+
+        <div class="awidget">
+           <div class="awidget-head">
+              <h3>Table #2</h3>
+           </div>
+           <div class="awidget-body">
+              
+              [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
+              <a href="/[% role %]/posts"> All </a>([% all %]) | 
+              <a href="/[% role %]/posts/published"> Publish </a>([% publish %]) | 
+              <a href="/[% role %]/posts/draft"> Draft </a>([% draft %]) | 
+              <a href="/[% role %]/posts/trash"> Trash </a>([% trash %])
+
+              <table class="table table-hover table-bordered ">
+               <thead>
+                 <tr>
+                   <th> Author     </th>
+                   <th> Ttile      </th>
+                   <th> Categories </th>
+                   <th> Tags       </th>
+                   <th> Comments   </th>
+                   <th> Actions    </th>
+                 </tr>
+               </thead>
+               <tbody>
+
+                [% FOREACH post in posts %]
+
+                  <tr>
+                    <td width="20%"> 
+                      <b> [% post.user.first_name %] [% post.user.last_name %] </b>
+                      <br />
+                      <i> [% post.created_date %] </i>
+                    </td>
+
+                    <td width="25%"> 
+                      <b> <a href="/post/[% post.id %]"> [% post.title %] </a> </b>
+                      <br />
+                      <br />
+
+                      [% IF (post.status == 'published') %]
+                        <span class="label label-success"> Published </span>
+                      [% ELSE %]
+                        <a href="/[% role %]/posts/publish/[% post.id %]"> Publish </a>
+                      [% END %]
+
+                      |
+
+                      [% IF (post.status == 'draft') %]
+                        <span class="label label-warning"> Draft </span>
+                      [% ELSE %]
+                        <a href="/[% role %]/posts/draft/[% post.id %]"> Draft </a>
+                      [% END %]
+
+                      |
+
+                      [% IF (post.status == 'trash') %]
+                        <span class="label label-danger"> Trash </span>
+                      [% ELSE %]
+                        <a href="/[% role %]/posts/trash/[% post.id %]"> Trash </a>
+                      [% END %]
+                    </td>
+
+                    <td>
+                        [% FOREACH post_category IN post.post_categories %]
+                          <a href="#"> [% post_category.category.name %] </a>
+                        [% END %]
+                    </td>
+
+                    <td width="5%"> 
+                      [% FOREACH post_tag IN post.post_tags %]
+                        <a href="#"> [% post_tag.tag.name %] </a>
+                      [% END %]
+                    </td>
+
+                    <td width="5"> [% post.nr_of_comments %] </td>
+                    
+                    <td width="10%">
+                       <a href="/post/[% post.id %]"> <button class="btn btn-xs btn-success"><i class="icon-eye-open"></i> </button> </a>
+                       <a href="/[% role %]/posts/edit/[% post.id %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
+                   </td>
+                  </tr>
+
+                [% END %]                                                             
+
+               </tbody>
+             </table>
+             
+              <ul class="pagination pull-right">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+              </ul>
+               
+               <div class="clearfix"></div>
+              
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+
+            
+<div class="mainy">
+   <!-- Page title -->
+   <div class="page-title">
+      <h2><i class="icon-desktop color"></i> Dashboard <small>Subtext for header</small></h2> 
+      <hr />
+   </div>
+   <!-- Page title -->
+            
+   <div class="row">
+   
+      <div class="col-md-12">
+         <div class="awidget">
+            <div class="awidget-head">
+               <h3>Welcome <b> [% user.first_name %]!</b></h3>
+            </div>
+            <div class="awidget-body">
+               [% IF user.status == 'deactivated' %]
+                 <form class="form-horizontal" role="form" method="post" action>
+
+                        [% INCLUDE components/alerts.tt %]
+
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">New password</label>
+                          <div class="col-lg-10">
+                            <input type="password" class="form-control" name="password1" placeholder="New password" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">Re-type new password</label>
+                          <div class="col-lg-10">
+                            <input type="password" class="form-control" name="password2" placeholder="New password" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                          <hr />
+                          <button type="submit" class="btn btn-default">Change</button>
+                          <button type="button" class="btn btn-danger">Cancel</button>
+                        </div>
+                      </div>
+                  </form>
+                [% ELSE %]
+                  <h3> Welcome to our blog </h3> now you can post an article!
+                [% END %]
+            </div>
+         </div>
+      </div>
+      
+   </div>       
+               
+</div>

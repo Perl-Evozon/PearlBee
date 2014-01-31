@@ -1,0 +1,82 @@
+<div class="mainy">
+   <!-- Page title -->
+    <div class="page-title">
+       <h2><i class="icon-user color"></i> Users <small>a list of all registerd users</small></h2>
+       <hr />
+    </div>
+    <div class="col-md-12">         
+            
+	    <div class="awidget">
+	        <div class="awidget-head">
+	           <h3>Table #2</h3>
+	        </div>
+	        <div class="awidget-body">          
+
+	        	<a href="/admin/users"> 	All </a>([% all %]) | 
+	        	<a href="/admin/users/deactivated"> Deactivated </a>([% deactivated %]) | 
+	        	<a href="/admin/users/activated"> Activated </a>([% activated %]) |
+	        	<a href="/admin/users/suspended"> Suspended </a>([% suspended %])
+
+				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+					<thead>
+						<tr>
+							<th> Username 		</th>
+							<th> Full name 		</th>
+							<th> Email 			</th>
+							<th> Registerd Date </th>
+							<th> Role 			</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						[% FOREACH user IN users %]
+
+							<tr>
+								<td> 
+									[% user.username %] 
+
+									<br />
+									<br />
+
+									[% IF (user.status == 'deactivated') %]
+										<span class="label label-warning"> Deactivated </span>
+									[% ELSE %]
+										<a href="/admin/users/deactivate/[% user.id %]" > Deactivate </a>
+									[% END %]
+
+									|
+
+									[% IF (user.status == 'activated') %]
+										<span class="label label-success"> Activated </span>
+									[% ELSE %]
+										<a href="/admin/users/activate/[% user.id %]"> Activate </a>
+									[% END %]
+
+									|
+
+									[% IF (user.status == 'suspended') %]
+										<span class="label label-danger"> Supended </span>
+									[% ELSE %]
+										<a href="/admin/users/suspend/[% user.id %]"> Supend </a>
+									[% END %]
+
+								</td>
+
+								<td> [% user.first_name %] [% user.last_name %] </td>
+
+								<td> [% user.email %] </td>
+
+								<td> [% user.register_date %] </td>
+
+								<td> [% user.role %] </td>
+							</tr>
+						
+						[% END %]	
+						
+					</tbody>
+				</table>                      
+	       </div>
+    	</div>    
+ 	</div>
+</div>
+

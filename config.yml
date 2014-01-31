@@ -1,0 +1,47 @@
+# This is the main configuration file of your Dancer2 app
+# env-related settings should go to environments/$env.yml
+# all the settings in this file will be loaded at Dancer's startup.
+
+# Your application's name
+appname: "perlblog"
+
+# The default layout to use for your application (located in
+# views/layouts/main.tt)
+layout: "main"
+
+# when the charset is set to UTF-8 Dancer2 will handle for you
+# all the magic of encoding and decoding. You should not care
+# about unicode within your app when this setting is set (recommended).
+charset: "UTF-8"
+
+
+# template engine
+# simple: default and very basic template engine
+# template_toolkit: TT
+
+session: "Simple"
+
+#Logging
+#logger: "file"
+#log: "error"
+template: "template_toolkit"
+engines:
+  template:
+    template_toolkit:
+      start_tag: '[%'
+      end_tag:   '%]'
+
+plugins:
+      DBIC:
+        default:
+          dsn: dbi:mysql:perlblog
+          schema_class: Model::Schema
+          user: root
+          pass: dev
+          options:
+            RaiseError: 1
+            PrintError: 1
+
+# Constants
+captcha_folder : 'public/captcha/'
+covers_folder: 'public/uploads/covers/'

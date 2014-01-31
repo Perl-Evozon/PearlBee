@@ -1,0 +1,90 @@
+
+      <div class="page-title">
+         <!-- <div class="container">
+            <h2><i class="icon-desktop color"></i> Blog <small>Subtext for header</small></h2>
+            <hr />
+         </div> -->  
+      </div>
+      <!-- Page title -->
+      
+      <!-- Page content -->
+      
+      <div class="blog">
+        <div class="container">
+          <div class="row">
+            <div >
+             <div class="posts">
+                <!-- Each posts should be enclosed inside "entry" class" -->
+                <!-- Post one -->
+                <div class="entry">
+                   <h2><a href="#">[% post.title %]</a></h2>
+                   <!-- Meta details -->
+                   <div class="meta">
+                      <i class="icon-calendar"></i> [% post.created_date %]
+                      <i class="icon-user"></i> [% post.user.username %] 
+                      <i class="icon-folder-open"></i> 
+
+                      [% FOREACH category in post.post_categories %]
+                        <a href="/posts/category/[% category.category.slug %]"><i class="icon-list"></i>[% category.category.name %]</a>
+                      [% END %]
+
+                      [% SET nr_of_comments = post.nr_of_comments %]
+                      <span class="pull-right"><i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
+                   </div>
+                   <!-- Thumbnail -->
+                   <div class="bthumb">
+                      <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
+                   </div>
+                   <!-- Para -->
+                   <p>
+                      [% post.content %]
+                   </p>
+                </div>
+              <!-- Comment section -->
+                <div class="comments">
+                  <div class="title"><h5>[% nr_of_comments %] Comments</h5></div>
+                  <ul class="comment-list">
+                    [% FOREACH comment in comments %]
+                      <li class="comment">
+                          <div class="comment-author"><a href="#">[% comment.fullname %]</a></div>
+                          <div class="cmeta">Commented on [% comment.comment_date %]</div>
+                          <p> [% comment.content %] </p>
+                          <div class="clearfix"></div>
+                      </li>    
+                    [% END %]                                  
+                  </ul>
+                </div>
+                <!-- Comment posting -->
+                <div class="respond">
+                   <div class="title"><h5>Post Reply</h5></div>
+                      <form role="form" action="/comment/add" method="post">
+                        [% INCLUDE components/alerts.tt %]
+                        <div class="form-group">
+                          <label for="name">Your Name</label>
+                          <input type="text" class="form-control" name="fullname" id="name" placeholder="Enter Name" value="[% fullname %]" required>
+                        </div>                                    
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email" value="[% email %]" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Comment</label>
+                          <textarea class="form-control" rows="3" name="comment" required>[% text %]</textarea>
+                          <br />
+                          <br /> 
+                          <div class="cf">
+                            <img src="/captcha/image/image.png" /> 
+                            <input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/> 
+                          </div> 
+                          <br />
+                          <input type="hidden" value="[% post.id %]" name="id" />
+                        </div>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                      </form>
+                  </div>
+               </div>
+            </div>                        
+          </div>
+       </div>
+    </div>

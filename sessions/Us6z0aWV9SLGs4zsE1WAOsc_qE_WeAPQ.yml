@@ -1,0 +1,533 @@
+---
+test: test
+user: !!perl/hash:Model::Schema::Result::User
+  _column_data:
+    activation_key: ~
+    company: bip
+    email: andrei.cacio@yahoo.com
+    fullname: andrei
+    id: '1'
+    password: 3ae52f9bffc2909cf5ea8342c244c12416e397ca
+    register_date: 2014-01-09 07:23:52
+    telephone: '34234234'
+    type: regular
+    username: admin
+  _in_storage: 1
+  _result_source: &1 !!perl/hash:DBIx::Class::ResultSource::Table
+    _columns:
+      activation_key:
+        data_type: varchar
+        is_nullable: 1
+        size: 100
+      company:
+        data_type: varchar
+        is_nullable: 0
+        size: 300
+      email:
+        data_type: varchar
+        is_nullable: 0
+        size: 300
+      fullname:
+        data_type: varchar
+        is_nullable: 0
+        size: 300
+      id:
+        data_type: integer
+        is_auto_increment: 1
+        is_nullable: 0
+      password:
+        data_type: varchar
+        is_nullable: 0
+        size: 100
+      register_date:
+        data_type: timestamp
+        datetime_undef_if_invalid: 1
+        default_value: !!perl/ref
+          =: current_timestamp
+        is_nullable: 0
+      telephone:
+        data_type: varchar
+        is_nullable: 0
+        size: 12
+      type:
+        data_type: enum
+        default_value: regular
+        extra:
+          list:
+          - regular
+          - admin
+        is_nullable: 0
+      username:
+        data_type: varchar
+        is_nullable: 0
+        size: 200
+    _columns_info_loaded: 0
+    _ordered_columns:
+    - id
+    - fullname
+    - username
+    - password
+    - register_date
+    - email
+    - company
+    - telephone
+    - type
+    - activation_key
+    _primaries: &2
+    - id
+    _relationships: {}
+    _unique_constraints:
+      primary: *2
+    name: user
+    result_class: Model::Schema::Result::User
+    resultset_attributes: {}
+    resultset_class: DBIx::Class::ResultSet
+    schema: &3 !!perl/hash:Model::Schema
+      class_mappings:
+        Model::Schema::Result::Category: Category
+        Model::Schema::Result::Comment: Comment
+        Model::Schema::Result::Post: Post
+        Model::Schema::Result::PostCategory: PostCategory
+        Model::Schema::Result::PostComment: PostComment
+        Model::Schema::Result::PostTag: PostTag
+        Model::Schema::Result::Tag: Tag
+        Model::Schema::Result::User: User
+      source_registrations:
+        Category: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            id:
+              data_type: integer
+              is_auto_increment: 1
+              is_nullable: 0
+            name:
+              data_type: varchar
+              is_nullable: 0
+              size: 100
+            user_id:
+              data_type: integer
+              is_nullable: 0
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - id
+          - name
+          - user_id
+          _primaries: &4
+          - id
+          _relationships:
+            post_categories:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostCategory
+              cond:
+                foreign.category_id: self.id
+              source: Model::Schema::Result::PostCategory
+          _unique_constraints:
+            primary: *4
+          name: category
+          result_class: Model::Schema::Result::Category
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: Category
+        Comment: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            comment:
+              data_type: text
+              is_nullable: 1
+            comment_date:
+              data_type: timestamp
+              datetime_undef_if_invalid: 1
+              default_value: !!perl/ref
+                =: current_timestamp
+              is_nullable: 0
+            email:
+              data_type: varchar
+              is_nullable: 1
+              size: 200
+            fullname:
+              data_type: varchar
+              is_nullable: 1
+              size: 100
+            id:
+              data_type: integer
+              is_auto_increment: 1
+              is_nullable: 0
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - id
+          - comment
+          - fullname
+          - email
+          - comment_date
+          _primaries: &5
+          - id
+          _relationships:
+            post_comments:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostComment
+              cond:
+                foreign.comment_id: self.id
+              source: Model::Schema::Result::PostComment
+          _unique_constraints:
+            primary: *5
+          name: comment
+          result_class: Model::Schema::Result::Comment
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: Comment
+        Post: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            cover:
+              data_type: varchar
+              is_nullable: 0
+              size: 300
+            created_date:
+              data_type: timestamp
+              datetime_undef_if_invalid: 1
+              default_value: !!perl/ref
+                =: current_timestamp
+              is_nullable: 0
+            description:
+              data_type: varchar
+              is_nullable: 0
+              size: 200
+            id:
+              data_type: integer
+              is_auto_increment: 1
+              is_nullable: 0
+            title:
+              data_type: varchar
+              is_nullable: 0
+              size: 200
+            visible:
+              data_type: enum
+              default_value: 'true'
+              extra:
+                list:
+                - 'true'
+                - fasle
+              is_nullable: 1
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - id
+          - title
+          - description
+          - cover
+          - created_date
+          - visible
+          _primaries: &6
+          - id
+          _relationships:
+            post_categories:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostCategory
+              cond:
+                foreign.post_id: self.id
+              source: Model::Schema::Result::PostCategory
+            post_comments:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostComment
+              cond:
+                foreign.post_id: self.id
+              source: Model::Schema::Result::PostComment
+            post_tags:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostTag
+              cond:
+                foreign.post_id: self.id
+              source: Model::Schema::Result::PostTag
+          _unique_constraints:
+            primary: *6
+          name: post
+          result_class: Model::Schema::Result::Post
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: Post
+        PostCategory: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            category_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+            post_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - category_id
+          - post_id
+          _primaries: &7
+          - category_id
+          - post_id
+          _relationships:
+            category:
+              attrs:
+                accessor: single
+                fk_columns:
+                  category_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Category
+              cond:
+                foreign.id: self.category_id
+              source: Model::Schema::Result::Category
+            post:
+              attrs:
+                accessor: single
+                fk_columns:
+                  post_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Post
+              cond:
+                foreign.id: self.post_id
+              source: Model::Schema::Result::Post
+          _unique_constraints:
+            primary: *7
+          name: post_category
+          result_class: Model::Schema::Result::PostCategory
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: PostCategory
+        PostComment: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            comment_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+            post_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - comment_id
+          - post_id
+          _primaries: &8
+          - comment_id
+          - post_id
+          _relationships:
+            comment:
+              attrs:
+                accessor: single
+                fk_columns:
+                  comment_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Comment
+              cond:
+                foreign.id: self.comment_id
+              source: Model::Schema::Result::Comment
+            post:
+              attrs:
+                accessor: single
+                fk_columns:
+                  post_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Post
+              cond:
+                foreign.id: self.post_id
+              source: Model::Schema::Result::Post
+          _unique_constraints:
+            primary: *8
+          name: post_comment
+          result_class: Model::Schema::Result::PostComment
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: PostComment
+        PostTag: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            post_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+            tag_id:
+              data_type: integer
+              is_foreign_key: 1
+              is_nullable: 0
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - tag_id
+          - post_id
+          _primaries: &9
+          - tag_id
+          - post_id
+          _relationships:
+            post:
+              attrs:
+                accessor: single
+                fk_columns:
+                  post_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Post
+              cond:
+                foreign.id: self.post_id
+              source: Model::Schema::Result::Post
+            tag:
+              attrs:
+                accessor: single
+                fk_columns:
+                  tag_id: 1
+                is_deferrable: 1
+                is_foreign_key_constraint: 1
+                on_delete: CASCADE
+                on_update: CASCADE
+                undef_on_null_fk: 1
+              class: Model::Schema::Result::Tag
+              cond:
+                foreign.id: self.tag_id
+              source: Model::Schema::Result::Tag
+          _unique_constraints:
+            primary: *9
+          name: post_tag
+          result_class: Model::Schema::Result::PostTag
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: PostTag
+        Tag: !!perl/hash:DBIx::Class::ResultSource::Table
+          _columns:
+            id:
+              data_type: integer
+              is_auto_increment: 1
+              is_nullable: 0
+            name:
+              data_type: varchar
+              is_nullable: 1
+              size: 100
+          _columns_info_loaded: 0
+          _ordered_columns:
+          - id
+          - name
+          _primaries: &10
+          - id
+          _relationships:
+            post_tags:
+              attrs:
+                accessor: multi
+                cascade_copy: 0
+                cascade_delete: 0
+                join_type: LEFT
+              class: Model::Schema::Result::PostTag
+              cond:
+                foreign.tag_id: self.id
+              source: Model::Schema::Result::PostTag
+          _unique_constraints:
+            primary: *10
+          name: tag
+          result_class: Model::Schema::Result::Tag
+          resultset_attributes: {}
+          resultset_class: DBIx::Class::ResultSet
+          schema: *3
+          source_name: Tag
+        User: *1
+      storage: !!perl/hash:DBIx::Class::Storage::DBI::mysql
+        _conn_pid: 11150
+        _connect_info:
+        - dbi:mysql:perlblog
+        - root
+        - dev
+        - PrintError: 1
+          RaiseError: 1
+        _dbh: !!perl/hash:DBI::db {}
+        _dbh_autocommit: 1
+        _dbh_details:
+          _datatype_map_cache:
+            varchar: ~
+        _dbi_connect_info:
+        - dbi:mysql:perlblog
+        - root
+        - dev
+        - &11
+          AutoCommit: 1
+          PrintError: 1
+          RaiseError: 1
+          ShowErrorStatement: 1
+        _dbic_connect_attributes: *11
+        _driver_determined: 1
+        _in_do_block: 0
+        _sql_maker: !!perl/hash:DBIx::Class::SQLMaker::MySQL
+          array_datatypes: 1
+          bindtype: columns
+          cmp: =
+          equality_op: !!perl/regexp (?^ix:^( \= | \= )$)
+          inequality_op: !!perl/regexp (?^ix:^( != | <> )$)
+          injection_guard: !!perl/regexp "(?^mix:\n    \\;\n      |\n    ^ \\s* go
+            \\s\n  )"
+          like_op: !!perl/regexp (?^ix:^ (is\s+)? r?like $)
+          limit_dialect: LimitXY
+          logic: OR
+          name_sep: .
+          not_like_op: !!perl/regexp (?^ix:^ (is\s+)? not \s+ r?like $)
+          special_ops:
+          - handler: _where_field_BETWEEN
+            regex: !!perl/regexp '(?^ix:^ (?: not \s )? between $)'
+          - handler: _where_field_IN
+            regex: !!perl/regexp '(?^ix:^ (?: not \s )? in      $)'
+          - handler: _where_op_IDENT
+            regex: !!perl/regexp (?^ix:^ ident                 $)
+          - handler: _where_op_VALUE
+            regex: !!perl/regexp (?^ix:^ value                 $)
+          - handler: _where_field_IS
+            regex: !!perl/regexp '(?^ix:^ is (?: \s+ not )?     $)'
+          sqlfalse: 0=1
+          sqltrue: 1=1
+          unary_ops:
+          - handler: _where_op_ANDOR
+            regex: !!perl/regexp '(?^ix:^ and  (?: [_\s]? \d+ )? $)'
+          - handler: _where_op_ANDOR
+            regex: !!perl/regexp '(?^ix:^ or   (?: [_\s]? \d+ )? $)'
+          - handler: _where_op_NEST
+            regex: !!perl/regexp '(?^ix:^ nest (?: [_\s]? \d+ )? $)'
+          - handler: _where_op_BOOL
+            regex: !!perl/regexp '(?^ix:^ (?: not \s )? bool     $)'
+          - handler: _where_op_IDENT
+            regex: !!perl/regexp (?^ix:^ ident                  $)
+          - handler: _where_op_VALUE
+            regex: !!perl/regexp (?^ix:^ value                  $)
+        _sql_maker_opts: {}
+        savepoints: []
+        schema: *3
+        transaction_depth: 0
+    source_name: User

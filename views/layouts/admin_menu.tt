@@ -1,0 +1,49 @@
+ <div class="sidebar-dropdown"><a href="#">MENU</a></div>
+  <div class="sidey">
+     <div class="side-cont">
+        <ul class="nav">
+            <!-- Main menu -->
+
+            [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
+            <li class="has_submenu">
+                 <a href="#">
+                    <i class="icon-file"></i> Posts
+                    <span class="caret pull-right"></span>
+                 </a>
+                 <!-- Sub menu -->
+                 <ul>
+                    <li><a href="/[% role %]/posts">All</a></li>
+                    <li><a href="/[% role %]/posts/add">Add new</a></li>
+                </ul>
+            </li>
+
+            <li><a href="/[% role %]/comments"><i class="icon-comment"></i> Comments</a></li>
+
+            [% IF (session.user.is_admin) %]
+
+                <li><a href="/admin/categories"><i class="icon-list"></i> Categories</a></li>
+            
+                <li><a href="/admin/tags"><i class="icon-tag"></i> Tags</a></li>
+                
+            [% END %]
+
+            [% IF (session.user.is_admin) %]
+                <li class="has_submenu">
+                     <a href="#">
+                        <i class="icon-user"></i> Users
+                        <span class="caret pull-right"></span>
+                     </a>
+                     <!-- Sub menu -->
+                     <ul>
+                        <li><a href="/admin/users">All</a></li>
+                        <li><a href="/admin/users/add">Add new</a></li>
+                    </ul>
+                </li>
+            [% END %]
+
+            <li><a href="/admin/settings"><i class="icon-wrench"></i> Settings</a></li>          
+        </ul>
+     </div>
+  </div>
+
+  

@@ -1,0 +1,1 @@
+dbicdump -o dump_directory=../lib Model::Schema dbi:mysql:perlblog root dev

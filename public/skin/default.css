@@ -1,0 +1,95 @@
+/* ==============================================================
+
+Template name : 18augst flat and responsive portfolio gallery
+Categorie : Site template
+Author : Nce18cex
+Version : v1.0.0
+Created : 05 August 2013
+Last update : 05 August 2013
+
+-----------------------------------------------------------------
+CSS structure
+-----------------------------------------------------------------
+
+Hex : #f97e76;
+
+01. Color
+02. Background color
+03. Border color
+
+
+============================================================== */
+
+/*
+Color
+================================================== */
+a, a:hover, .color, 
+.nav li.active a,
+ul.list a:hover,ol.list a:hover,
+#browse-menu ul li a:hover, ul.social-top li a:hover, 
+#filter-bar ul#filters li a:hover, .box-desc h4 a:hover, .box-desc h5 a:hover, .box-desc h6 a:hover, 
+ul.fotter-nav li a:hover, article .post-headline h4 a:hover, ul.detail-list li h5 a:hover, ul.cat li a:hover,
+ul.recent li h6 a:hover{
+	color:#f97e76;
+}
+
+/*
+Background color
+================================================== */
+.nav-collapse .nav > li.active > a, .navbar .btn-navbar:hover, 
+.navbar-inverse .nav-collapse .nav > li > a:hover,
+.navbar-inverse .nav-collapse .nav > li > a:focus,
+.navbar-inverse .nav-collapse .dropdown-menu a:hover,
+.navbar-inverse .nav-collapse .dropdown-menu a:focus, 
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle,
+.navbar-inverse .nav li.dropdown.active > .dropdown-toggle,
+.navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle, 
+.btn-primary, 
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a, 
+.pager li > a:hover,
+.pager li > a:focus,
+.zoom:hover, .link:hover,
+#toTopHover, .heading span, 
+.flexslider:hover .flex-next:hover, 
+.flexslider:hover .flex-prev:hover, 
+ul.tags li a:hover, .media-avatar:hover span.title-comment, 
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus,
+.tabs-right > .nav-tabs > li > a:hover,
+.tabs-right > .nav-tabs > li > a:focus,
+.navaside ul.nav li a:hover,
+.navaside ul.nav li.active a , 
+.pricing-head, ul.sitemap-list li span, .image-title, .tabber li:hover,
+.accordion-heading .accordion-toggle:hover, 
+#accent_color{
+	background-color:#f97e76;
+}
+
+/*
+Border color
+================================================== */
+header, 
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus,
+a.thumbnail:hover,
+a.thumbnail:focus,
+ul.sitemap-list{
+	border-color:#f97e76;
+}

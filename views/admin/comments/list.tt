@@ -1,7 +1,7 @@
 <div class="mainy">
    <!-- Page title -->
     <div class="page-title">
-       <h2><i class="icon-desktop color"></i> Comments <small>Subtext for header</small></h2>
+       <h2><i class="icon-comment color"></i> Comments <small>Subtext for header</small></h2>
        <hr />
     </div>
     <div class="col-md-12">         

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<!-- Title here -->
-		<title>Login - PerlBee  Admin </title>
-		<!-- Description, Keywords and Author -->
-		<meta name="description" content="Your description">
-		<meta name="keywords" content="Your,Keywords">
-		<meta name="author" content="ResponsiveWebInc">
-		
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <head>
+      <!-- Title here -->
+      <title>Login - PerlBee Admin  </title> 
+      <!-- Description, Keywords and Author -->
+      <meta name="description" content="Your description">
+      <meta name="keywords" content="Your,Keywords">
+      <meta name="author" content="ResponsiveWebInc">
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
       <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
       <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
-		
-		<!-- Styles -->
-		<!-- Bootstrap CSS -->
-		<link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+      
+      <!-- Styles -->
+      <!-- Bootstrap CSS -->
+      <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
       <!-- Animate css -->
       <link href="/admin/css/animate.min.css" rel="stylesheet">
       <!-- Gritter -->
@@ -34,16 +34,16 @@
       <link href="/admin/css/jquery-ui.css" rel="stylesheet">
       <!-- prettyPhoto -->
       <link href="/admin/css/prettyPhoto.css" rel="stylesheet">
-		<!-- Font awesome CSS -->
-		<link href="/admin/css/font-awesome.min.css" rel="stylesheet">		
-		<!-- Custom CSS -->
-		<link href="/admin/css/style.css" rel="stylesheet">
-		
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="#">
-	</head>
-	
-	<body>
+      <!-- Font awesome CSS -->
+      <link href="/admin/css/font-awesome.min.css" rel="stylesheet">    
+      <!-- Custom CSS -->
+      <link href="/admin/css/style.css" rel="stylesheet">
+      
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="#">
+   </head>
+   
+   <body>
 
       
     [% IF session.user %]  
@@ -62,7 +62,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="/admin ">PerlBlog Admin</a></h1>
+                     <h1><a href="/admin ">PerlBee Admin</a></h1>
                   </div>
                </div>
             </div>
@@ -104,11 +104,11 @@
       <!-- Scroll to top -->
       <span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span> 
       
-		<!-- Javascript files -->
-		<!-- jQuery -->
+      <!-- Javascript files -->
+      <!-- jQuery -->
       <script src="/js/jquery.js"></script>
-		<!-- Bootstrap JS -->
-		<script src="/admin/js/bootstrap.min.js"></script>  
+      <!-- Bootstrap JS -->
+      <script src="/admin/js/bootstrap.min.js"></script>  
       <!-- jQuery UI -->
       <script src="/admin/js/jquery-ui-1.10.2.custom.min.js"></script>     
       <!-- jQuery Peity -->
@@ -135,13 +135,13 @@
       <script src="/admin/js/bootstrap-datetimepicker.min.js"></script>  
       <!-- jQuery Toggable -->
       <script src="/admin/js/bootstrap-switch.min.js"></script>
-		<!-- Respond JS for IE8 -->
-		<script src="/admin/js/respond.min.js"></script>
-		<!-- HTML5 Support for IE -->
-		<script src="/admin/js/html5shiv.js"></script>
-		<!-- Custom JS -->
-		<script src="/admin/js/custom.js"></script>
+      <!-- Respond JS for IE8 -->
+      <script src="/admin/js/respond.min.js"></script>
+      <!-- HTML5 Support for IE -->
+      <script src="/admin/js/html5shiv.js"></script>
+      <!-- Custom JS -->
+      <script src="/admin/js/custom.js"></script>
       <!-- App JS -->
       <script src="/admin/js/app.js"></script>
-	</body>	
+   </body>  
 </html>

@@ -3,7 +3,7 @@
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
-use perlblog;
+use PearlBee;
 use Data::Dumper;
 
-perlblog->dance;
+PearlBee->dance;

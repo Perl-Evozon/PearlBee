@@ -37,7 +37,7 @@ plugins:
           dsn: dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
           user: root
-          pass: 
+          pass: dev
           options:
             RaiseError: 1
             PrintError: 1

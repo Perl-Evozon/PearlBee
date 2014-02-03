@@ -1,4 +1,4 @@
-package Model::Schema::Result::Category;
+package PearlBee::Model::Schema::Result::Category;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-Model::Schema::Result::Category
+PearlBee::Model::Schema::Result::Category
 
 =cut
 

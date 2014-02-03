@@ -1,4 +1,4 @@
-package Model::Schema::Result::PostComment;
+package PearlBee::Model::Schema::Result::PostTag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,15 +11,15 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-Model::Schema::Result::PostComment
+PearlBee::Model::Schema::Result::PostTag
 
 =cut
 
-__PACKAGE__->table("post_comment");
+__PACKAGE__->table("post_tag");
 
 =head1 ACCESSORS
 
-=head2 comment_id
+=head2 tag_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -34,27 +34,27 @@ __PACKAGE__->table("post_comment");
 =cut
 
 __PACKAGE__->add_columns(
-  "comment_id",
+  "tag_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "post_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("comment_id", "post_id");
+__PACKAGE__->set_primary_key("tag_id", "post_id");
 
 =head1 RELATIONS
 
-=head2 comment
+=head2 tag
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::Comment>
+Related object: L<Model::Schema::Result::Tag>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "comment",
-  "Model::Schema::Result::Comment",
-  { id => "comment_id" },
+  "tag",
+  "Model::Schema::Result::Tag",
+  { id => "tag_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -75,7 +75,7 @@ __PACKAGE__->belongs_to(
 
 
 # Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-08 21:41:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nMQFLTY+q0btnTjR3glISw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3siEwQaACU5RzmCiv4RO3A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -11,25 +11,25 @@ List all comments
 
 get '/author/comments' => sub {
 
-	my $user 		= session('user');
-	my @comments 	= resultset('View::UserComments')->search({}, { bind => [ $user->id ] });
+  my $user     = session('user');
+  my @comments   = resultset('View::UserComments')->search({}, { bind => [ $user->id ] });
 
-	my $all 		= scalar ( @comments );
-	my $approved 	= resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
-	my $trash 		= resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
-	my $spam 		= resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
-	my $pending 	= resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
+  my $all     = scalar ( @comments );
+  my $approved   = resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
+  my $trash     = resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
+  my $spam     = resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
+  my $pending   = resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
 
-	template '/admin/comments/list', 
-			{ 
-				comments => \@comments,
-				all 	 => $all,
-				approved => $approved,
-				spam 	 => $spam,
-				pending  => $pending,
-				trash 	 => $trash
-			}, 
-			{ layout => 'admin' };
+  template '/admin/comments/list', 
+      { 
+        comments => \@comments,
+        all    => $all,
+        approved => $approved,
+        spam    => $spam,
+        pending  => $pending,
+        trash    => $trash
+      }, 
+      { layout => 'admin' };
 
 };
 
@@ -41,25 +41,25 @@ List all spam comments
 
 get '/author/comments/spam' => sub {
 
-	my $user 		= session('user');
-	my @comments 	= resultset('View::UserComments')->search({ status => 'spam' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
+  my $user     = session('user');
+  my @comments   = resultset('View::UserComments')->search({ status => 'spam' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
 
-	my $all 		= resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
-	my $approved 	= resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
-	my $trash 		= resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
-	my $spam 		= scalar( @comments );
-	my $pending 	= resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
+  my $all     = resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
+  my $approved   = resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
+  my $trash     = resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
+  my $spam     = scalar( @comments );
+  my $pending   = resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
 
-	template '/admin/comments/list', 
-			{ 
-				comments => \@comments,
-				all 	 => $all,
-				approved => $approved,
-				spam 	 => $spam,
-				pending  => $pending,
-				trash 	 => $trash
-			}, 
-			{ layout => 'admin' };
+  template '/admin/comments/list', 
+      { 
+        comments => \@comments,
+        all    => $all,
+        approved => $approved,
+        spam    => $spam,
+        pending  => $pending,
+        trash    => $trash
+      }, 
+      { layout => 'admin' };
 
 };
 
@@ -71,25 +71,25 @@ List all trash comments
 
 get '/author/comments/trash' => sub {
 
-	my $user 		= session('user');
-	my @comments 	= resultset('View::UserComments')->search({ status => 'trash' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
+  my $user     = session('user');
+  my @comments   = resultset('View::UserComments')->search({ status => 'trash' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
 
-	my $all 		= resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
-	my $approved 	= resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
-	my $trash 		= scalar( @comments );
-	my $spam 		= resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
-	my $pending 	= resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
+  my $all     = resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
+  my $approved   = resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
+  my $trash     = scalar( @comments );
+  my $spam     = resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
+  my $pending   = resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
 
-	template '/admin/comments/list', 
-			{ 
-				comments => \@comments,
-				all 	 => $all,
-				approved => $approved,
-				spam 	 => $spam,
-				pending  => $pending,
-				trash 	 => $trash
-			}, 
-			{ layout => 'admin' };
+  template '/admin/comments/list', 
+      { 
+        comments => \@comments,
+        all    => $all,
+        approved => $approved,
+        spam    => $spam,
+        pending  => $pending,
+        trash    => $trash
+      }, 
+      { layout => 'admin' };
 
 };
 
@@ -101,25 +101,25 @@ List all pending comments
 
 get '/author/comments/pending' => sub {
 
-	my $user 		= session('user');
-	my @comments 	= resultset('Comment')->search({ status => 'pending' }, { order_by => "comment_date DESC" });
+  my $user     = session('user');
+  my @comments   = resultset('Comment')->search({ status => 'pending' }, { order_by => "comment_date DESC" });
 
-	my $all 		= resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
-	my $approved 	= resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
-	my $trash 		= resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
-	my $spam 		= resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
-	my $pending 	= scalar( @comments );
+  my $all     = resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
+  my $approved   = resultset('View::UserComments')->search({ status => 'approved' }, { bind => [ $user->id ] })->count;
+  my $trash     = resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
+  my $spam     = resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
+  my $pending   = scalar( @comments );
 
-	template '/admin/comments/list', 
-			{ 
-				comments => \@comments,
-				all 	 => $all,
-				approved => $approved,
-				spam 	 => $spam,
-				pending  => $pending,
-				trash 	 => $trash
-			}, 
-			{ layout => 'admin' };
+  template '/admin/comments/list', 
+      { 
+        comments => \@comments,
+        all    => $all,
+        approved => $approved,
+        spam    => $spam,
+        pending  => $pending,
+        trash    => $trash
+      }, 
+      { layout => 'admin' };
 
 };
 
@@ -131,25 +131,25 @@ List all approved comments
 
 get '/author/comments/approved' => sub {
 
-	my $user 		= session('user');
-	my @comments 	= resultset('View::UserComments')->search({ status => 'approved' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
+  my $user     = session('user');
+  my @comments   = resultset('View::UserComments')->search({ status => 'approved' }, { order_by => "comment_date DESC", bind => [ $user->id ] });
 
-	my $all 		= resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
-	my $approved 	= scalar ( @comments );
-	my $trash 		= resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
-	my $spam 		= resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
-	my $pending 	= resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
+  my $all     = resultset('View::UserComments')->search({}, { bind => [ $user->id ] })->count;
+  my $approved   = scalar ( @comments );
+  my $trash     = resultset('View::UserComments')->search({ status => 'trash' }, { bind => [ $user->id ] })->count;
+  my $spam     = resultset('View::UserComments')->search({ status => 'spam' }, { bind => [ $user->id ] })->count;
+  my $pending   = resultset('View::UserComments')->search({ status => 'pending' }, { bind => [ $user->id ] })->count;
 
-	template '/admin/comments/list', 
-			{ 
-				comments => \@comments,
-				all 	 => $all,
-				approved => $approved,
-				spam 	 => $spam,
-				pending  => $pending,
-				trash 	 => $trash
-			}, 
-			{ layout => 'admin' };
+  template '/admin/comments/list', 
+      { 
+        comments => \@comments,
+        all    => $all,
+        approved => $approved,
+        spam    => $spam,
+        pending  => $pending,
+        trash    => $trash
+      }, 
+      { layout => 'admin' };
 
 };
 
@@ -161,16 +161,16 @@ Accept comment
 
 get '/author/comments/approve/:id' => sub {
 
-	my $comment_id = params->{id};
-	my $comment = resultset('Comment')->find( $comment_id );
+  my $comment_id = params->{id};
+  my $comment = resultset('Comment')->find( $comment_id );
 
-	eval {
-		$comment->update({
-				status => 'approved'
-			});
-	}; 
+  eval {
+    $comment->update({
+        status => 'approved'
+      });
+  }; 
 
-	redirect '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -181,16 +181,16 @@ Trash a comment
 
 get '/author/comments/trash/:id' => sub {
 
-	my $comment_id = params->{id};
-	my $comment = resultset('Comment')->find( $comment_id );
+  my $comment_id = params->{id};
+  my $comment = resultset('Comment')->find( $comment_id );
 
-	eval {
-		$comment->update({
-				status => 'trash'
-			});
-	}; 
+  eval {
+    $comment->update({
+        status => 'trash'
+      });
+  }; 
 
-	redirect '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -201,16 +201,16 @@ Spam a comment
 
 get '/author/comments/spam/:id' => sub {
 
-	my $comment_id = params->{id};
-	my $comment = resultset('Comment')->find( $comment_id );
+  my $comment_id = params->{id};
+  my $comment = resultset('Comment')->find( $comment_id );
 
-	eval {
-		$comment->update({
-				status => 'spam'
-			});
-	}; 
+  eval {
+    $comment->update({
+        status => 'spam'
+      });
+  }; 
 
-	redirect '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -221,16 +221,16 @@ Pending a comment
 
 get '/author/comments/pending/:id' => sub {
 
-	my $comment_id = params->{id};
-	my $comment = resultset('Comment')->find( $comment_id );
+  my $comment_id = params->{id};
+  my $comment = resultset('Comment')->find( $comment_id );
 
-	eval {
-		$comment->update({
-				status => 'pending'
-			});
-	}; 
+  eval {
+    $comment->update({
+        status => 'pending'
+      });
+  }; 
 
-	redirect '/author/comments';
+  redirect '/author/comments';
 };
 
 

@@ -1,4 +1,4 @@
-package Model::Schema::Result::PostTag;
+package PearlBee::Model::Schema::Result::PostCategory;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,15 +11,15 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-Model::Schema::Result::PostTag
+PearlBee::Model::Schema::Result::PostCategory
 
 =cut
 
-__PACKAGE__->table("post_tag");
+__PACKAGE__->table("post_category");
 
 =head1 ACCESSORS
 
-=head2 tag_id
+=head2 category_id
 
   data_type: 'integer'
   is_foreign_key: 1
@@ -34,27 +34,27 @@ __PACKAGE__->table("post_tag");
 =cut
 
 __PACKAGE__->add_columns(
-  "tag_id",
+  "category_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "post_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("tag_id", "post_id");
+__PACKAGE__->set_primary_key("category_id", "post_id");
 
 =head1 RELATIONS
 
-=head2 tag
+=head2 category
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::Tag>
+Related object: L<Model::Schema::Result::Category>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "tag",
-  "Model::Schema::Result::Tag",
-  { id => "tag_id" },
+  "category",
+  "Model::Schema::Result::Category",
+  { id => "category_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
@@ -74,8 +74,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-08 21:41:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3siEwQaACU5RzmCiv4RO3A
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-08 21:22:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:52j7Ok2uICx1t7KGn71cvA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

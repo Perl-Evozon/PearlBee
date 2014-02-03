@@ -1,4 +1,4 @@
-package Model::Schema::Result::View::PopularPosts;
+package PearlBee::Model::Schema::Result::View::PopularPosts;
 
 # This view is used for grabbing popular posts based on the number of comments
 
@@ -11,22 +11,22 @@ __PACKAGE__->table('tag');
 __PACKAGE__->result_source_instance->is_virtual(1);
 
 __PACKAGE__->result_source_instance->view_definition(
-	q[
-		SELECT 
-			P.id AS id, COUNT(P.title) AS comments, P.title AS title, P.description AS description
-		FROM 
-			post as P 
-			INNER JOIN 
-				comment AS C
-				ON
-				C.post_id = P.id
-		WHERE
-			P.status = 'published'
-		GROUP BY 
-			P.title 
-		ORDER BY 
-			comments DESC
-	]
+  q[
+    SELECT 
+      P.id AS id, COUNT(P.title) AS comments, P.title AS title, P.description AS description
+    FROM 
+      post as P 
+      INNER JOIN 
+        comment AS C
+        ON
+        C.post_id = P.id
+    WHERE
+      P.status = 'published'
+    GROUP BY 
+      P.title 
+    ORDER BY 
+      comments DESC
+  ]
 );
 
 __PACKAGE__->add_columns(

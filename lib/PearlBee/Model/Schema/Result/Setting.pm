@@ -1,4 +1,4 @@
-package Model::Schema::Result::Setting;
+package PearlBee::Model::Schema::Result::Setting;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
@@ -11,7 +11,7 @@ use base 'DBIx::Class::Core';
 
 =head1 NAME
 
-Model::Schema::Result::Setting
+PearlBee::Model::Schema::Result::Setting
 
 =cut
 

@@ -1,0 +1,14 @@
+.build
+tags
+Makefile
+blib
+cover_db
+pm_to_blib
+Makefile.old
+*~
+MYMETA.json
+MYMETA.yml
+*.sw?
+/.tidyall.d
+/perltidy.LOG
+perlblog-*

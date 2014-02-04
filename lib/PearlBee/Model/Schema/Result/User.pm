@@ -147,13 +147,13 @@ __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::Category>
+Related object: L<PearlBee::Model::Schema::Result::Category>
 
 =cut
 
 __PACKAGE__->has_many(
   "categories",
-  "Model::Schema::Result::Category",
+  "PearlBee::Model::Schema::Result::Category",
   { "foreign.user_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -162,13 +162,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::Post>
+Related object: L<PearlBee::Model::Schema::Result::Post>
 
 =cut
 
 __PACKAGE__->has_many(
   "posts",
-  "Model::Schema::Result::Post",
+  "PearlBee::Model::Schema::Result::Post",
   { "foreign.user_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -177,24 +177,23 @@ __PACKAGE__->has_many(
 
 Type: might_have
 
-Related object: L<Model::Schema::Result::Setting>
+Related object: L<PearlBee::Model::Schema::Result::Setting>
 
 =cut
 
 __PACKAGE__->might_have(
   "setting",
-  "Model::Schema::Result::Setting",
+  "PearlBee::Model::Schema::Result::Setting",
   { "foreign.user_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-24 05:28:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iH1HYelDdU5opSRNgVmfyw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qCIkJ+Ha5R5utDlemNehBA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
 =head
 
 Check if the user has administration authority

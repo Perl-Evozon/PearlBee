@@ -106,13 +106,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::Comment>
+Related object: L<PearlBee::Model::Schema::Result::Comment>
 
 =cut
 
 __PACKAGE__->has_many(
   "comments",
-  "Model::Schema::Result::Comment",
+  "PearlBee::Model::Schema::Result::Comment",
   { "foreign.post_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -121,13 +121,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::User",
   { id => "user_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
@@ -136,13 +136,13 @@ __PACKAGE__->belongs_to(
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::PostCategory>
+Related object: L<PearlBee::Model::Schema::Result::PostCategory>
 
 =cut
 
 __PACKAGE__->has_many(
   "post_categories",
-  "Model::Schema::Result::PostCategory",
+  "PearlBee::Model::Schema::Result::PostCategory",
   { "foreign.post_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -151,55 +151,21 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::PostTag>
+Related object: L<PearlBee::Model::Schema::Result::PostTag>
 
 =cut
 
 __PACKAGE__->has_many(
   "post_tags",
-  "Model::Schema::Result::PostTag",
+  "PearlBee::Model::Schema::Result::PostTag",
   { "foreign.post_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-27 14:32:36
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Yyy4JWqVvkqd9yEFN0A3tw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-29 20:14:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+v13twhaUv8SlucdDUVcoQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-=head
-
-Get the number of comments for this post
-
-=cut
-
-sub nr_of_comments {
-  my ($self) = @_;
-
-  my @post_comments = $self->comments;    
-  my @comments = grep { $_->status eq 'approved' } @post_comments;
-
-  return scalar @comments; 
-}
-
-=head 
-
-Get all tags as a string sepparated by a comma
-
-=cut
-
-sub get_string_tags {
-  my ($self) = @_;
-
-  my @tag_names;
-  my @post_tags = $self->post_tags;
-  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
-
-  my $joined_tags = join(', ', @tag_names);
-
-  return $joined_tags;
-}
-
 1;

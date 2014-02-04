@@ -47,13 +47,13 @@ __PACKAGE__->set_primary_key("tag_id", "post_id");
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::Tag>
+Related object: L<PearlBee::Model::Schema::Result::Tag>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "tag",
-  "Model::Schema::Result::Tag",
+  "PearlBee::Model::Schema::Result::Tag",
   { id => "tag_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
@@ -62,20 +62,20 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::Post>
+Related object: L<PearlBee::Model::Schema::Result::Post>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "post",
-  "Model::Schema::Result::Post",
+  "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-08 21:41:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3siEwQaACU5RzmCiv4RO3A
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VO4Dij5rZkvvbRSsF995tg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

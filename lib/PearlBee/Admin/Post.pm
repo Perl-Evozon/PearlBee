@@ -267,7 +267,7 @@ get '/admin/posts/edit/:id' => sub {
   # Prepare tags for the UI
   my @tag_names;
   push( @tag_names, $_->tag->name ) foreach ( @post_tags );
-  my $joined_tags = join(',', @tag_names);
+  my $joined_tags = join(', ', @tag_names);
 
   # Prepare the categories
   my @categories;

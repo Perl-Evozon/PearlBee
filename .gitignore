@@ -13,3 +13,5 @@ MYMETA.yml
 /perltidy.LOG
 perlblog-*
 logs
+public/covers/*
+public/captcha/*

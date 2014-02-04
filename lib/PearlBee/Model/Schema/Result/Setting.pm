@@ -47,20 +47,20 @@ __PACKAGE__->set_primary_key("user_id");
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::User",
   { id => "user_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-20 11:27:28
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Z/hCtn7dtRQ5klO++DNKiA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CfR/CFqtv1g4FPc9YjBmpQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

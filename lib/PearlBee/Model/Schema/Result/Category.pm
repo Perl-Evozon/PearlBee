@@ -64,13 +64,13 @@ __PACKAGE__->add_unique_constraint("name", ["name"]);
 
 Type: belongs_to
 
-Related object: L<Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::User",
   { id => "user_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
@@ -79,20 +79,20 @@ __PACKAGE__->belongs_to(
 
 Type: has_many
 
-Related object: L<Model::Schema::Result::PostCategory>
+Related object: L<PearlBee::Model::Schema::Result::PostCategory>
 
 =cut
 
 __PACKAGE__->has_many(
   "post_categories",
-  "Model::Schema::Result::PostCategory",
+  "PearlBee::Model::Schema::Result::PostCategory",
   { "foreign.category_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-24 11:19:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qcwSOX2p/LGf39XUVGxdLQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:R8Ow7zLipRWKbinE6XDuTg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

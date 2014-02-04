@@ -1,5 +1,5 @@
 <h2>PearlBee</h2>
-An open source blogging platform written in Perl. <a href="http://pearlbee.org/">peralbee.org</a>
+An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
 <h3>Version</h3>
 0.9
 <h3>Setup</h3>

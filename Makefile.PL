@@ -11,7 +11,7 @@ WriteMakefile(
     NAME                => 'PearlBee',
     AUTHOR              => q{Andrei Cacio <andrei.cacio@evozon.com},
     VERSION_FROM        => 'lib/PearlBee.pm',
-    ABSTRACT            => 'PealBee is an open soruce blogging platform',
+    ABSTRACT            => 'PealBee is an open source blogging platform',
     ($eumm_version >= 6.3001
       ? ('LICENSE'=> 'perl')
       : ()),

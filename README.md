@@ -22,11 +22,18 @@ You can try it for yourself! All you need is a linux system and a few dependenci
 <li>
 You will need a MySQL server for the blog's database.</li></ul>
 <h4>Creating database</h4>
-After you've downloaded PearlBee source code, be sure to create the database by running the command: mysql -u your_user -p your_password < pearlbee/db_patches/create_tables.sql
+After you've downloaded PearlBee source code, be sure to create the database by running the command: 
+
+<pre><blockquote>mysql -u your_user -p your_password &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+
 After the database creation, you will need to configure the following file: pearlbee/config.yaml
 Under the user and pass tag, please write down your own database credentials.
 <p>
-That's it, now you just go into the 'pearlbee' folder and run the following command:  plackup -R lib/ bin/app.pl and your blog is now running.</p>
+That's it, now you just go into the 'pearlbee' folder and run the following command:  
+
+<pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>
+
+And your blog is now running. 
 
 Thank you for using PearlBee!
 

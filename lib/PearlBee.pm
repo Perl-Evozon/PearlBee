@@ -222,7 +222,7 @@ get '/posts/category/:slug' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
   my $slug     = params->{slug};
-  my @posts     = resultset('Post')->search({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, rows => $nr_of_rows });
+  my @posts     = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' } })->count;
   my @tags      = resultset('View::PublishedTags')->all();
   my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
@@ -260,7 +260,7 @@ get '/posts/category/:slug/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page     = params->{page};
   my $slug     = params->{slug};
-  my @posts     = resultset('Post')->search({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, rows => $nr_of_rows, page => $page });
+  my @posts     = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' } })->count;
   my @tags      = resultset('View::PublishedTags')->all();
   my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
@@ -298,7 +298,7 @@ get '/posts/tag/:slug' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
   my $slug     = params->{slug};
-  my @posts     = resultset('Post')->search({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' }, rows => $nr_of_rows });
+  my @posts     = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' } })->count;
   my @tags         = resultset('View::PublishedTags')->all();
   my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
@@ -336,7 +336,7 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $page     = params->{page};
   my $slug     = params->{slug};
   my $tag     = resultset('Tag')->find({ slug => $slug });
-  my @posts     = resultset('Post')->search({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' }, rows => $nr_of_rows });
+  my @posts     = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' } })->count;
   my @tags         = resultset('View::PublishedTags')->all();
   my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });

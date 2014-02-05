@@ -3,7 +3,7 @@ An open source blogging platform written in Perl. <a href="http://pearlbee.org/"
 <h3>Version</h3>
 0.9
 <h3>Setup</h3>
-You can try it for yourself! All you need is a linux system and a few dependencies installed.
+You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
 <ul>
 <li>make</li>

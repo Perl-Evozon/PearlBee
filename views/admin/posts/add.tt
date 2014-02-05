@@ -19,7 +19,7 @@
                            <div class="awidget-body">
                             [% INCLUDE components/alerts.tt %]
                                
-                            <input class="form-control" required pattern=".{3,20}" id="title" name="title" type="text" placeholder="Title">
+                            <input class="form-control" required pattern=".{3,200}" id="title" name="title" type="text" placeholder="Title">
                             <br />
                             <input class="form-control" id="cover" name="cover" type="file" placeholder="Cover image">
                             <br />

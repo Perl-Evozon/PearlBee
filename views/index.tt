@@ -36,10 +36,10 @@
                  
                  <!-- Thumbnail -->
                  [% IF post.cover -%]
-                 <div class="bthumb">
-                    <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
-                 </div>
-                 [% END -%]
+                   <div class="bthumb">
+                      <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
+                   </div>
+                 [% END %]
                  
                  <!-- Para -->
                  <p>

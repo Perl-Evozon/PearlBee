@@ -31,12 +31,14 @@
                       [% SET nr_of_comments = post.nr_of_comments %]
                       <span class="pull-right"><i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
                    </div>
+
                    <!-- Thumbnail -->
                    [% IF post.cover -%]
-                   <div class="bthumb">
-                      <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
-                   </div>
+                     <div class="bthumb">
+                        <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
+                     </div>
                    [% END %]
+
                    <!-- Para -->
                    <p>
                       [% post.content %]

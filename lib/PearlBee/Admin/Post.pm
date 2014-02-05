@@ -217,7 +217,7 @@ any '/admin/posts/add' => sub {
                 content => params->{post},
                 user_id => $user->id,
                 status  => $status,
-                cover   => $cover ? $date . $ext : '',
+                cover   => ( $cover ) ? $date . $ext : '',
             }
         );
 

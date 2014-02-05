@@ -192,62 +192,64 @@ any '/admin/posts/add' => sub {
     my @categories = resultset('Category')->all();
 
     eval {
-        # Generate a random string based on the current time and date
-        my $t = time;
-        my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-        $date .= sprintf ".%03d", ( $t - int($t) ) * 1000;    # without rounding
-        $date = sha1_hex($date);
+        if ( params->{post} ) {
+          # Generate a random string based on the current time and date
+          my $t = time;
+          my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
+          $date .= sprintf ".%03d", ( $t - int($t) ) * 1000;    # without rounding
+          $date = sha1_hex($date);
 
-        # Upload the cover image
-        my $cover;
-        my $ext;
-        if ( upload('cover') ) {
-            $cover = upload('cover');
-            ($ext) = $cover->filename =~ /(\.[^.]+)$/;        #extract the extension
-            $ext = lc($ext);
-        }
-        $cover->copy_to( config->{covers_folder} . $date . $ext ) if $cover;
+          # Upload the cover image
+          my $cover;
+          my $ext;
+          if ( upload('cover') ) {
+              $cover = upload('cover');
+              ($ext) = $cover->filename =~ /(\.[^.]+)$/;        #extract the extension
+              $ext = lc($ext);
+          }
+          $cover->copy_to( config->{covers_folder} . $date . $ext ) if $cover;
 
-        # Save the post into the database
-        my $user   = session('user');
-        my $status = params->{status};
-        my $post   = resultset('Post')->create(
-            {
-                title   => params->{title},
-                content => params->{post},
-                user_id => $user->id,
-                status  => $status,
-                cover   => ( $cover ) ? $date . $ext : '',
-            }
-        );
+          # Save the post into the database
+          my $user   = session('user');
+          my $status = params->{status};
+          my $post   = resultset('Post')->create(
+              {
+                  title   => params->{title},
+                  content => params->{post},
+                  user_id => $user->id,
+                  status  => $status,
+                  cover   => ( $cover ) ? $date . $ext : '',
+              }
+          );
 
-        # Connect the categories selected with the new post
-        params->{category} = 1 if ( !params->{category} );    # If no category is selected the Uncategorized category will be stored default
-        my @categories_selected = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
+          # Connect the categories selected with the new post
+          params->{category} = 1 if ( !params->{category} );    # If no category is selected the Uncategorized category will be stored default
+          my @categories_selected = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
 
-        resultset('PostCategory')->create(
-            {
-                category_id => $_,
-                post_id     => $post->id
-            }
-        ) foreach (@categories_selected);
+          resultset('PostCategory')->create(
+              {
+                  category_id => $_,
+                  post_id     => $post->id
+              }
+          ) foreach (@categories_selected);
 
-        # Connect and update the tags table
-        my @tags = split( ', ', params->{tags} );
-        foreach my $tag (@tags) {
+          # Connect and update the tags table
+          my @tags = split( ', ', params->{tags} );
+          foreach my $tag (@tags) {
 
-            # Replace all white spaces with hyphen
-            my $slug = $tag;
-            $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
+              # Replace all white spaces with hyphen
+              my $slug = $tag;
+              $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
 
-            my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
+              my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
-            resultset('PostTag')->create(
-                {
-                    tag_id  => $db_tag->id,
-                    post_id => $post->id
-                }
-            );
+              resultset('PostTag')->create(
+                  {
+                      tag_id  => $db_tag->id,
+                      post_id => $post->id
+                  }
+              );
+          }
         }
     };
 

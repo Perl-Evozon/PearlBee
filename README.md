@@ -21,6 +21,10 @@ You can try it for yourself! All you need is a linux system and a few dependenci
 <li>Template::Plugin::HTML::Strip</li>
 <li>
 You will need a MySQL server for the blog's database.</li></ul>
+
+<h4>Installing / Updating perl modules</h4>
+<pre><blockquote>./build.sh</blockquote></pre>
+
 <h4>Creating database</h4>
 After you've downloaded PearlBee source code, be sure to create the database by running the command: 
 
@@ -32,6 +36,7 @@ Under the user and pass tag, please write down your own database credentials.
 That's it, now you just go into the 'pearlbee' folder and run the following command:  
 
 <pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>
+<pre><blockquote>./scripts/launch-devel</p></blockquote></pre>
 
 And your blog is now running. 
 

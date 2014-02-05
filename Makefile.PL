@@ -30,7 +30,8 @@ WriteMakefile(
         'Email::MIME'                   => 0,
         'Email::Sender::Simple'         => 0,
         'Template::Plugin::HTML::Strip' => 0,
-        'Email::Template'               => 0
+        'Email::Template'               => 0,
+        'Gravatar::URL'                 => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'PearlBee-*' },

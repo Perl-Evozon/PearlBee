@@ -218,7 +218,7 @@ sub is_author {
   my ($self) = shift;
 
   return 1 if ( $self->role eq 'author' );
-  
+
   return 0;
 }
 

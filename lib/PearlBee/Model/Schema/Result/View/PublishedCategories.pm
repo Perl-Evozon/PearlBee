@@ -14,13 +14,13 @@ __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT DISTINCT
         C.name, C.id, C.user_id, C.slug
-        FROM 
-          category AS C 
-        INNER JOIN 
-          post_category AS PC ON PC.category_id = C.id 
-        INNER JOIN 
-          post as P ON P.id = PC.post_id 
-        WHERE 
+        FROM
+          category AS C
+        INNER JOIN
+          post_category AS PC ON PC.category_id = C.id
+        INNER JOIN
+          post as P ON P.id = PC.post_id
+        WHERE
             P.status = 'published'
     ]
 );

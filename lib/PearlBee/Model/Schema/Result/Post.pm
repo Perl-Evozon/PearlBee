@@ -168,4 +168,38 @@ __PACKAGE__->has_many(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+=head
+
+Get the number of comments for this post
+
+=cut
+
+sub nr_of_comments {
+  my ($self) = @_;
+
+  my @post_comments = $self->comments;
+  my @comments = grep { $_->status eq 'approved' } @post_comments;
+
+  return scalar @comments;
+}
+
+=head
+
+Get all tags as a string sepparated by a comma
+
+=cut
+
+sub get_string_tags {
+  my ($self) = @_;
+
+  my @tag_names;
+  my @post_tags = $self->post_tags;
+  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
+
+  my $joined_tags = join(', ', @tag_names);
+
+  return $joined_tags;
+}
+
 1;

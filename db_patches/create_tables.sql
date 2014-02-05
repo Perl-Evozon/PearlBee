@@ -1,17 +1,14 @@
-DROP DATABASE IF EXISTS PearlBee;
-CREATE DATABASE IF NOT EXISTS PearlBee;
-
-USE PearlBee;
 
 CREATE TABLE IF NOT EXISTS user (
 	id 				INT NOT NULL AUTO_INCREMENT,
-	first_name 		VARCHAR(300) NOT NULL,
-	last_name 		VARCHAR(300) NOT NULL,
+	first_name 		VARCHAR(255) NOT NULL,
+	last_name 		VARCHAR(255) NOT NULL,
 	username		VARCHAR(200) NOT NULL,
 	password		VARCHAR(100) NOT NULL,
 	register_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	email			VARCHAR(300) NOT NULL,
-	company 		VARCHAR(300),
+-- MySQL 5.6 cannot add a key if email is longer than 255
+	email			VARCHAR(255) NOT NULL,
+	company 		VARCHAR(255),
 	telephone 		VARCHAR(12),
 	role 			ENUM('author', 'admin') NOT NULL DEFAULT 'author',
 	activation_key  VARCHAR(100),
@@ -35,7 +32,7 @@ CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
 	title 			VARCHAR(200) NOT NULL,
 	description 	VARCHAR(200),
-	cover 			VARCHAR(300) NOT NULL,
+	cover 			VARCHAR(255) NOT NULL,
 	content 		TEXT NOT NULL,
 	created_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	status 			ENUM('published', 'trash', 'draft') DEFAULT 'draft',
@@ -86,7 +83,11 @@ CREATE TABLE IF NOT EXISTS settings (
 	FOREIGN KEY ( user_id ) REFERENCES user(id)
 );
 
-insert into user (first_name, last_name, username, password, email, status, role) values ("Andrei", "Cacio", "admin", "3ae52f9bffc2909cf5ea8342c244c12416e397ca", "andrei.cacio@yahoo.com", "activated", "admin");
+-- default login: 	   	admin
+-- default password: 	password
+insert into user (first_name, last_name, username, password, email, status, role) 
+	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
+			"you@domain.cow", "activated", "admin");
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
 

@@ -53,7 +53,7 @@ logout method
 
 get '/logout' => sub {
   context->destroy_session;
-  
+
   template 'login', {}, { layout => 'admin' };
 };
 

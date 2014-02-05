@@ -21,7 +21,11 @@
                                
                             <input class="form-control" required pattern=".{3,20}" id="title" name="title" type="text" placeholder="Title" value="[% post.title %]">
                             <br />
-                            <img width="550" height="300" src="/uploads/covers/[% post.cover %]" />
+                            
+                            [% IF post.cover -%]
+                              <img width="550" height="300" src="/uploads/covers/[% post.cover %]" />
+                            [% END %]
+
                             <input class="form-control" id="cover" name="cover" type="file" placeholder="Cover image">
                             <br />
                             

@@ -12,8 +12,7 @@ use Dancer2::Plugin::DBIC;
 
 use Digest::SHA1 qw(sha1_hex);
 use Crypt::RandPasswd qw(chars);
-use Email::MIME;
-use Email::Sender::Simple qw(sendmail);
+use Email::Template;
 
 =head
 
@@ -192,60 +191,38 @@ Add a new user
 any '/admin/users/add' => sub {
 
   if ( params->{username} ) {
+
     eval {
       my $username   = params->{username};
       my $password   = Crypt::RandPasswd::chars(10, 15);
       my $email      = params->{email};
-      my $first_name   = params->{first_name};
-      my $last_name   = params->{last_name};
-      my $role      = params->{role};
+      my $first_name = params->{first_name};
+      my $last_name  = params->{last_name};
+      my $role       = params->{role};
 
       resultset('User')->create({
         username   => $username,
         password   => sha1_hex( $password ),
         email      => $email,
-        first_name   => $first_name,
-        last_name   => $last_name,
-        role     => $role
+        first_name => $first_name,
+        last_name  => $last_name,
+        role       => $role
       });
 
-      my $body = '  
-            The admin of <path> blog added you as an ' . $role . ' to this blog.
-            
-             
-             
-            Here is you login information:
-            
-             
-             
-            Username: ' . $username . '
-            
-            Password: ' . $password . '
-            
-            
-            
-            Sincerely,
-            
-            The PearlBee team
-            
-            http://www.PearlBee.org ';
-
-      my $message = Email::MIME->create(
-          header_str => [
+      Email::Template->send( config->{email_templates} . 'welcome.tt',
+        {
             From    => 'no-reply@PearlBee.com',
             To      => $email,
-            Subject => 'Welcome to PerlBlog!',
-          ],
+            Subject => 'Welcome to PearlBee!',
 
-          attributes => {
-            encoding => 'quoted-printable',
-            charset  => 'ISO-8859-1',
-         },
-
-        body_str => $body,
-      );
-
-      sendmail($message);
+            tt_vars => { 
+                role        => $role,
+                username    => $username,
+                password    => $password,
+                first_name  => $first_name,
+                url         => config->{app_url}
+            },
+        }) or error "Could not send the email";
     };
 
     error $@ if ( $@ );
@@ -264,6 +241,7 @@ any '/admin/users/add' => sub {
         }, 
         { layout => 'admin' };
     }
+    
   }
   else {
     template 'admin/users/add', {},  { layout => 'admin' };

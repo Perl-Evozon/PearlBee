@@ -206,8 +206,9 @@ any '/admin/posts/add' => sub {
       $cover = upload('cover');
       ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
       $ext = lc($ext);
-    }
-    $cover->copy_to( config->{covers_folder} . $date . $ext );
+    }    
+    $cover->copy_to( config->{covers_folder} . $date . $ext ) if $cover;
+
 
     # Save the post into the database
     my $user   = session('user');

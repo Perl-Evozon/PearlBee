@@ -18,7 +18,7 @@
             <!-- Post one -->
             [% FOREACH post in posts %]
               <div class="entry">
-                 <h2><a href="/post/[% post.id %]">[% post.title %]</a></h2>
+                 <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
                  
                  <!-- Meta details -->
                  <div class="meta">
@@ -48,7 +48,7 @@
                     [% END %]
                  </p>
                  <!-- Read more -->
-                 <a href="/post/[% post.id %]" class="btn btn-info">Read More...</a>
+                 <a href="/post/[% post.slug %]" class="btn btn-info">Read More...</a>
               </div>
             [% END %]
             <!-- Pagination -->
@@ -83,14 +83,14 @@
                 <div class="tab-pane fade in active" id="recent">
                   <ul class="simple-list">
                     [% FOREACH post in recent %]
-                      <li><a href="/post/[% post.id %]">[% post.title %]</a></li>
+                      <li><a href="/post/[% post.slug %]">[% post.title %]</a></li>
                     [% END %] 
                   </ul>
               </div>
               <div class="tab-pane fade" id="popular">
                 <ul class="simple-list">
                     [% FOREACH post in popular %]
-                      <li><a href="/post/[% post.id %]">[% post.title %]</a></li>
+                      <li><a href="/post/[% post.slug %]">[% post.title %]</a></li>
                     [% END %] 
                  </ul>
               </div>

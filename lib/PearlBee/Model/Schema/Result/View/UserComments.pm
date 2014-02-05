@@ -12,16 +12,16 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 
 __PACKAGE__->result_source_instance->view_definition(
     q[
-      SELECT 
-        C.content AS content, C.id AS id, C.comment_date AS comment_date, C.email AS email, C.status as status, C.fullname AS fullname, P.title AS post_title, P.id AS post_id 
-    FROM 
-      comment as C 
-      INNER JOIN 
-        post AS P 
-        ON 
-          P.id = C.post_id 
-      INNER JOIN user AS U 
-        ON 
+      SELECT
+        C.content AS content, C.id AS id, C.comment_date AS comment_date, C.email AS email, C.status as status, C.fullname AS fullname, P.title AS post_title, P.id AS post_id
+    FROM
+      comment as C
+      INNER JOIN
+        post AS P
+        ON
+          P.id = C.post_id
+      INNER JOIN user AS U
+        ON
           P.user_id = U.id
     WHERE
       U.id = ?

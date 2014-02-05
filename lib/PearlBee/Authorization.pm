@@ -13,7 +13,7 @@ hook 'before' => sub {
 
   # Check if the user is logged in
   my $request = request->path_info;
-  if ( $request =~ /admin/ && !$user ) { 
+  if ( $request =~ /admin/ && !$user ) {
     redirect('/admin');
   }
 

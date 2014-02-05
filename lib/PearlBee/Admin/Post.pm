@@ -33,14 +33,14 @@ get '/admin/posts' => sub {
   my $draft   = resultset('Post')->search({ status => 'draft' })->count;
   my $all   = scalar( @posts );
 
-  template '/admin/posts/list', 
-    { 
+  template '/admin/posts/list',
+    {
       posts   => \@posts,
       trash   => $trash,
       draft   => $draft,
       publish => $publish,
-      all   => $all 
-    }, 
+      all   => $all
+    },
     { layout => 'admin' };
 };
 
@@ -59,14 +59,14 @@ get '/admin/posts/published' => sub {
   my $draft   = resultset('Post')->search({ status => 'draft' })->count;
   my $publish = scalar( @posts );
 
-  template '/admin/posts/list', 
-    { 
+  template '/admin/posts/list',
+    {
       posts   => \@posts,
       trash   => $trash,
       draft   => $draft,
       publish => $publish,
-      all   => $all 
-    }, 
+      all   => $all
+    },
     { layout => 'admin' };
 };
 
@@ -85,14 +85,14 @@ get '/admin/posts/draft' => sub {
   my $publish  = resultset('Post')->search({ status => 'published' })->count;
   my $draft   = scalar( @posts );
 
-  template '/admin/posts/list', 
-    { 
+  template '/admin/posts/list',
+    {
       posts   => \@posts,
       trash   => $trash,
       draft   => $draft,
       publish => $publish,
-      all   => $all 
-    }, 
+      all   => $all
+    },
     { layout => 'admin' };
 };
 
@@ -111,14 +111,14 @@ get '/admin/posts/trash' => sub {
   my $draft   = resultset('Post')->search({ status => 'draft' })->count;
   my $trash   = scalar( @posts );
 
-  template '/admin/posts/list', 
-    { 
+  template '/admin/posts/list',
+    {
       posts   => \@posts,
       trash   => $trash,
       draft   => $draft,
       publish => $publish,
-      all   => $all 
-    }, 
+      all   => $all
+    },
     { layout => 'admin' };
 };
 
@@ -139,7 +139,7 @@ get '/admin/posts/publish/:id' => sub {
       });
   };
 
-  redirect '/admin/posts';  
+  redirect '/admin/posts';
 };
 
 =head
@@ -159,7 +159,7 @@ get '/admin/posts/draft/:id' => sub {
       });
   };
 
-  redirect '/admin/posts';  
+  redirect '/admin/posts';
 };
 
 =head
@@ -178,7 +178,7 @@ get '/admin/posts/trash/:id' => sub {
         status => 'trash'
       });
   };
-  
+
   redirect '/admin/posts';
 };
 
@@ -191,14 +191,14 @@ add method
 any '/admin/posts/add' => sub {
 
   my @categories = resultset('Category')->all();
-  
+
   eval {
     # Generate a random string based on the current time and date
     my $t = time;
     my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
     $date .= sprintf ".%03d", ($t-int($t))*1000; # without rounding
     $date = sha1_hex($date);
-          
+
     # Upload the cover image
     my $cover;
     my $ext;
@@ -206,7 +206,7 @@ any '/admin/posts/add' => sub {
       $cover = upload('cover');
       ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
       $ext = lc($ext);
-    }    
+    }
     $cover->copy_to( config->{covers_folder} . $date . $ext );
 
     # Save the post into the database
@@ -277,14 +277,14 @@ get '/admin/posts/edit/:id' => sub {
   my @categories_ids;
   push ( @categories_ids, $_->id ) foreach ( @categories );
 
-  template '/admin/posts/edit', 
-    { 
+  template '/admin/posts/edit',
+    {
       post       => $post,
-      tags       => $joined_tags, 
-      categories     => \@categories, 
+      tags       => $joined_tags,
+      categories     => \@categories,
       all_categories   => \@all_categories,
-      ids       => \@categories_ids 
-    }, 
+      ids       => \@categories_ids
+    },
     { layout => 'admin' };
 
 };
@@ -321,21 +321,21 @@ post '/admin/posts/update/:id' => sub {
       ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
       $ext = lc($ext);
       $cover->copy_to( config->{covers_folder} . $date . $ext );
-    }    
-      
+    }
+
     my $status   = params->{status};
     $post->update({
       title     => params->{title},
       cover     => ( $date ) ? $date . $ext : $post->cover,
       status     => $status,
       content   => params->{post},
-    });  
+    });
 
     # Reconnect the categories with the new one and delete the old ones
     my @post_categories = resultset('PostCategory')->search({ post_id => $post_id });
     $_->delete foreach ( @post_categories );
 
-    my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category}; # Force an array if only one category was selected    
+    my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category}; # Force an array if only one category was selected
 
     resultset('PostCategory')->create({
         category_id => $_,

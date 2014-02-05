@@ -46,7 +46,7 @@ any '/dashboard' => sub {
     }
     else {
       template 'admin/index', { user => $user }, { layout => 'admin' };
-    }    
+    }
   }
   else {
     redirect('/admin/posts/add') if ( $user->is_admin );
@@ -85,7 +85,7 @@ any '/profile' => sub {
 
   }
   elsif ( $old_password && $new_password && $new_password2 ) {
-    
+
     if ( sha1_hex($old_password) ne $user->password ) {
 
       template 'admin/profile', { user => $user, warning => 'Incorrect old password!' }, { layout => 'admin' };
@@ -107,8 +107,8 @@ any '/profile' => sub {
 
     template 'admin/profile', { user => $user }, { layout => 'admin' };
 
-  }  
-  
+  }
+
 };
 
 1;

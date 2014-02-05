@@ -32,16 +32,16 @@ create method
 =cut
 
 post '/admin/categories/add' => sub {
-  
+
   my @categories;
   my $name = params->{name};
   my $slug = params->{slug};
 
-  $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug  
+  $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
 
   my $found_slug_or_name = resultset('Category')->search({ -or => [ slug => $slug, name => $name ] })->first;
 
-  if ( $found_slug_or_name ) {    
+  if ( $found_slug_or_name ) {
     @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
     template '/admin/categories/list', { warning => "The category name or slug already exists", categories => \@categories } , { layout => 'admin' };
@@ -50,17 +50,17 @@ post '/admin/categories/add' => sub {
     eval {
       my $user = session('user');
       my $category = resultset('Category')->create({
-          name   => $name, 
+          name   => $name,
           slug   => $slug,
           user_id => $user->id
         });
-    };    
+    };
 
     @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
     template '/admin/categories/list', { success => "The cateogry was successfully added.", categories => \@categories }, { layout => 'admin' };
   }
-  
+
 };
 
 =head
@@ -74,7 +74,7 @@ get '/admin/categories/delete/:id' => sub {
   eval {
     my $id = params->{id};
     my $category = resultset('Category')->find( $id );
-    
+
     foreach ( $category->post_categories ) {
       my $post = $_->post;
       my @post_categories = $post->post_categories;
@@ -96,12 +96,12 @@ get '/admin/categories/delete/:id' => sub {
     error $@;
     my @categories   = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
-    template '/admin/categories/list', { categories => \@categories, warning => "Something went wrong." }, { layout => 'admin' };  
+    template '/admin/categories/list', { categories => \@categories, warning => "Something went wrong." }, { layout => 'admin' };
   }
   else {
     redirect "/admin/categories";
   }
-   
+
 };
 
 =head
@@ -124,29 +124,29 @@ any '/admin/categories/edit/:id' => sub {
     $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
 
     my $found_slug = resultset('Category')->search({ id => { '!=' => $category->id }, slug => $slug })->first;
-    my $found_name = resultset('Category')->search({ id => { '!=' => $category->id }, name => $name })->first;    
+    my $found_name = resultset('Category')->search({ id => { '!=' => $category->id }, name => $name })->first;
 
     # Check if the user entered an existing slug
     if ( $found_slug ) {
 
-      template '/admin/categories/list', 
-      { 
+      template '/admin/categories/list',
+      {
         category   => $category,
         categories => \@categories,
         warning    => 'The category slug already exists'
-      }, 
+      },
       { layout => 'admin' };
 
     }
     # Check if the user entered an existing name
     elsif ( $found_name ) {
 
-      template '/admin/categories/list', 
-      { 
+      template '/admin/categories/list',
+      {
         category   => $category,
         categories => \@categories,
         warning    => 'The category name already exists'
-      }, 
+      },
       { layout => 'admin' };
 
     }
@@ -160,22 +160,22 @@ any '/admin/categories/edit/:id' => sub {
 
       @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
-      template '/admin/categories/list', 
-      { 
+      template '/admin/categories/list',
+      {
         category   => $category,
         categories => \@categories,
         success    => 'The category was updated successfully'
-      }, 
+      },
       { layout => 'admin' };
     }
   }
   else {
     # If the form wasn't submited just list the categories
-    template '/admin/categories/list', 
-      { 
+    template '/admin/categories/list',
+      {
         category   => $category,
         categories => \@categories
-      }, 
+      },
       { layout => 'admin' };
   }
 

@@ -26,15 +26,15 @@ get '/admin/comments' => sub {
   my $spam     = resultset('Comment')->search({ status => 'spam' })->count;
   my $pending   = resultset('Comment')->search({ status => 'pending' })->count;
 
-  template '/admin/comments/list', 
-      { 
+  template '/admin/comments/list',
+      {
         comments => \@comments,
         all    => $all,
         approved => $approved,
         spam    => $spam,
         pending  => $pending,
         trash    => $trash
-      }, 
+      },
       { layout => 'admin' };
 
 };
@@ -55,15 +55,15 @@ get '/admin/comments/spam' => sub {
   my $spam     = resultset('Comment')->search({ status => 'spam' })->count;
   my $pending   = resultset('Comment')->search({ status => 'pending' })->count;
 
-  template '/admin/comments/list', 
-      { 
+  template '/admin/comments/list',
+      {
         comments => \@comments,
         all    => $all,
         approved => $approved,
         spam    => $spam,
         pending  => $pending,
         trash    => $trash
-      }, 
+      },
       { layout => 'admin' };
 
 };
@@ -83,15 +83,15 @@ get '/admin/comments/trash' => sub {
   my $spam     = resultset('Comment')->search({ status => 'spam' })->count;
   my $pending   = resultset('Comment')->search({ status => 'pending' })->count;
 
-  template '/admin/comments/list', 
-      { 
+  template '/admin/comments/list',
+      {
         comments => \@comments,
         all    => $all,
         approved => $approved,
         spam    => $spam,
         pending  => $pending,
         trash    => $trash
-      }, 
+      },
       { layout => 'admin' };
 
 };
@@ -112,15 +112,15 @@ get '/admin/comments/pending' => sub {
   my $spam     = resultset('Comment')->search({ status => 'spam' })->count;
   my $pending   = resultset('Comment')->search({ status => 'pending' })->count;
 
-  template '/admin/comments/list', 
-      { 
+  template '/admin/comments/list',
+      {
         comments => \@comments,
         all    => $all,
         approved => $approved,
         spam    => $spam,
         pending  => $pending,
         trash    => $trash
-      }, 
+      },
       { layout => 'admin' };
 
 };
@@ -141,15 +141,15 @@ get '/admin/comments/approved' => sub {
   my $spam     = resultset('Comment')->search({ status => 'spam' })->count;
   my $pending   = resultset('Comment')->search({ status => 'pending' })->count;
 
-  template '/admin/comments/list', 
-      { 
+  template '/admin/comments/list',
+      {
         comments => \@comments,
         all    => $all,
         approved => $approved,
         spam    => $spam,
         pending  => $pending,
         trash    => $trash
-      }, 
+      },
       { layout => 'admin' };
 
 };
@@ -169,7 +169,7 @@ get '/admin/comments/approve/:id' => sub {
     $comment->update({
         status => 'approved'
       });
-  }; 
+  };
 
   redirect '/admin/comments';
 };
@@ -189,7 +189,7 @@ get '/admin/comments/trash/:id' => sub {
     $comment->update({
         status => 'trash'
       });
-  }; 
+  };
 
   redirect '/admin/comments';
 };
@@ -209,7 +209,7 @@ get '/admin/comments/spam/:id' => sub {
     $comment->update({
         status => 'spam'
       });
-  }; 
+  };
 
   redirect '/admin/comments';
 };
@@ -229,7 +229,7 @@ get '/admin/comments/pending/:id' => sub {
     $comment->update({
         status => 'pending'
       });
-  }; 
+  };
 
   redirect '/admin/comments';
 };

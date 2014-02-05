@@ -33,8 +33,9 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	title 			VARCHAR(200) NOT NULL,
-	description 	VARCHAR(200),
+	title 			VARCHAR(255) NOT NULL,
+	slug 			VARCHAR(255) NOT NULL,
+	description 	VARCHAR(255),
 	cover 			VARCHAR(300) NOT NULL,
 	content 		TEXT NOT NULL,
 	created_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -88,7 +89,11 @@ CREATE TABLE IF NOT EXISTS settings (
 	FOREIGN KEY ( user_id ) REFERENCES user(id)
 );
 
-insert into user (first_name, last_name, username, password, email, status, role) values ("Andrei", "Cacio", "admin", "3ae52f9bffc2909cf5ea8342c244c12416e397ca", "andrei.cacio@yahoo.com", "activated", "admin");
+-- default login: 	   	admin
+-- default password: 	password
+insert into user (first_name, last_name, username, password, email, status, role) 
+	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
+			"you@domain.cow", "activated", "admin");
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
 

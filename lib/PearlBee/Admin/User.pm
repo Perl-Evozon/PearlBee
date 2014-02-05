@@ -191,21 +191,22 @@ Add a new user
 any '/admin/users/add' => sub {
 
   if ( params->{username} ) {
+
     eval {
       my $username   = params->{username};
       my $password   = Crypt::RandPasswd::chars(10, 15);
       my $email      = params->{email};
-      my $first_name   = params->{first_name};
-      my $last_name   = params->{last_name};
-      my $role      = params->{role};
+      my $first_name = params->{first_name};
+      my $last_name  = params->{last_name};
+      my $role       = params->{role};
 
       resultset('User')->create({
         username   => $username,
         password   => sha1_hex( $password ),
         email      => $email,
-        first_name   => $first_name,
-        last_name   => $last_name,
-        role     => $role
+        first_name => $first_name,
+        last_name  => $last_name,
+        role       => $role
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',
@@ -240,6 +241,7 @@ any '/admin/users/add' => sub {
         }, 
         { layout => 'admin' };
     }
+    
   }
   else {
     template 'admin/users/add', {},  { layout => 'admin' };

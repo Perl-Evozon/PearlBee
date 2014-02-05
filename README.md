@@ -28,7 +28,9 @@ You will need a MySQL server for the blog's database.</li></ul>
 <h4>Creating database</h4>
 After you've downloaded PearlBee source code, be sure to create the database by running the command: 
 
-<pre><blockquote>mysql -u your_user -p your_password &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+<pre><blockquote>mysql> GRANT ALL PRIVILEGES ON PearlBee.* To 'your_user'@'localhost' IDENTIFIED BY 'yourPassWord';<blockquote></pre>
+and then initialize the database by running the script
+<pre><blockquote>mysql -u your_user -p your_password PearlBee &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
 After the database creation, you will need to configure the following file: pearlbee/config.yaml
 Under the user and pass tag, please write down your own database credentials.
@@ -39,6 +41,21 @@ That's it, now you just go into the 'pearlbee' folder and run the following comm
 <pre><blockquote>./scripts/launch-devel</p></blockquote></pre>
 
 And your blog is now running. 
+
+<h3>Usage</h3>
+
+<h4>Admin</h4>
+Once you have started your web server.
+Open your browser and go to the url http:://<YOUR_IP>:5000/admin
+Use the default login / password to enter, you should change them before starting using the blog !
+via "My Account -> Profile".
+
+<pre><blockquote>http://127.0.0.1:5000/admin/
+
+user:        admin
+password: password
+</blockquote></pre>
+
 
 Thank you for using PearlBee!
 

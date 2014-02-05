@@ -1,0 +1,3 @@
+#!/bin/bash
+
+plackup -R lib,views,bin bin/app.pl

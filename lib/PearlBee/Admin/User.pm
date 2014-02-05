@@ -12,8 +12,7 @@ use Dancer2::Plugin::DBIC;
 
 use Digest::SHA1 qw(sha1_hex);
 use Crypt::RandPasswd qw(chars);
-use Email::MIME;
-use Email::Sender::Simple qw(sendmail);
+use Email::Template;
 
 =head
 
@@ -24,7 +23,7 @@ List all users
 get '/admin/users' => sub {
 
   my @users = resultset('User')->search({}, { order_by => "register_date DESC" });
-
+  
   my $all     = scalar ( @users );
   my $activated   = resultset('User')->search({ status => 'activated'})->count;
   my $deactivated = resultset('User')->search({ status => 'deactivated'})->count;
@@ -33,7 +32,7 @@ get '/admin/users' => sub {
   template '/admin/users/list',
     {
       users     => \@users,
-      all       => $all,
+      all       => $all, 
       activated   => $activated,
       deactivated => $deactivated,
       suspended   => $suspended
@@ -51,7 +50,7 @@ List all deactivated users
 get '/admin/users/deactivated' => sub {
 
   my @users = resultset('User')->search({ status => 'deactivated' }, { order_by => "register_date DESC" });
-
+  
   my $all     = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'})->count;
   my $deactivated = scalar ( @users );
@@ -60,7 +59,7 @@ get '/admin/users/deactivated' => sub {
   template '/admin/users/list',
     {
       users     => \@users,
-      all       => $all,
+      all       => $all, 
       activated   => $activated,
       deactivated => $deactivated,
       suspended   => $suspended
@@ -78,7 +77,7 @@ List all activated users
 get '/admin/users/activated' => sub {
 
   my @users = resultset('User')->search({ status => 'activated' }, { order_by => "register_date DESC" });
-
+  
   my $all     = resultset('User')->search({})->count;
   my $activated   = scalar ( @users );
   my $deactivated = resultset('User')->search({ status => 'deactivated'});
@@ -87,7 +86,7 @@ get '/admin/users/activated' => sub {
   template '/admin/users/list',
     {
       users     => \@users,
-      all       => $all,
+      all       => $all, 
       activated   => $activated,
       deactivated => $deactivated,
       suspended   => $suspended
@@ -105,7 +104,7 @@ List all suspended users
 get '/admin/users/suspended' => sub {
 
   my @users = resultset('User')->search({ status => 'suspended' }, { order_by => "register_date DESC" });
-
+  
   my $all     = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'});
   my $deactivated = resultset('User')->search({ status => 'deactivated'});
@@ -114,7 +113,7 @@ get '/admin/users/suspended' => sub {
   template '/admin/users/list',
     {
       users     => \@users,
-      all       => $all,
+      all       => $all, 
       activated   => $activated,
       deactivated => $deactivated,
       suspended   => $suspended
@@ -209,65 +208,42 @@ any '/admin/users/add' => sub {
         role     => $role
       });
 
-      my $body = '
-            The admin of <path> blog added you as an ' . $role . ' to this blog.
-
-
-
-            Here is you login information:
-
-
-
-            Username: ' . $username . '
-
-            Password: ' . $password . '
-
-
-
-            Sincerely,
-
-            The PearlBee team
-
-            http://www.PearlBee.org ';
-
-      my $message = Email::MIME->create(
-          header_str => [
+      Email::Template->send( config->{email_templates} . 'welcome.tt',
+        {
             From    => 'no-reply@PearlBee.com',
             To      => $email,
-            Subject => 'Welcome to PerlBlog!',
-          ],
+            Subject => 'Welcome to PearlBee!',
 
-          attributes => {
-            encoding => 'quoted-printable',
-            charset  => 'ISO-8859-1',
-         },
-
-        body_str => $body,
-      );
-
-      sendmail($message);
+            tt_vars => { 
+                role        => $role,
+                username    => $username,
+                password    => $password,
+                first_name  => $first_name,
+                url         => config->{app_url}
+            },
+        }) or error "Could not send the email";
     };
 
     error $@ if ( $@ );
 
     if ( $@ ) {
-      template 'admin/users/add',
+      template 'admin/users/add', 
         {
           warning => 'Something went wrong. Please contact the administrator.'
-        },
+        }, 
         { layout => 'admin' };
     }
     else {
-      template 'admin/users/add',
+      template 'admin/users/add', 
         {
           success => 'The user was added succesfully and will be activated after he logs in'
-        },
+        }, 
         { layout => 'admin' };
     }
   }
   else {
     template 'admin/users/add', {},  { layout => 'admin' };
-  }
+  }  
 };
 
 1;

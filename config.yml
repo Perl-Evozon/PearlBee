@@ -43,5 +43,7 @@ plugins:
             PrintError: 1
 
 # Constants
-captcha_folder : 'public/captcha/'
-covers_folder: 'public/uploads/covers/'
+captcha_folder :  'public/captcha/'
+covers_folder:    'public/uploads/covers/'
+app_url:          'http://localhost:5000'
+email_templates:  'views/emails/'

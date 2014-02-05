@@ -10,14 +10,10 @@ package PearlBee::Admin::Post;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name/;
 
 use String::Dirify;
 use String::Util 'trim';
-use Digest::SHA1 qw(sha1_hex);
-use Time::HiRes qw(time);
-use DateTime::Format::Strptime;
-use POSIX qw(strftime);
-use Cwd;
 
 =head
 
@@ -190,40 +186,58 @@ add method
 any '/admin/posts/add' => sub {
 
     my @categories = resultset('Category')->all();
+    my $post_id;
 
     eval {
         if ( params->{post} ) {
-          # Generate a random string based on the current time and date
-          my $t = time;
-          my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-          $date .= sprintf ".%03d", ( $t - int($t) ) * 1000;    # without rounding
-          $date = sha1_hex($date);
 
-          # Upload the cover image
+          my $user    = session('user');
+          my $status  = params->{status};
+          my $title   = params->{title};
+          my $content = params->{post};
+          my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+
+          # Check if the slug used is already taken
+          my $found_slug = resultset('Post')->find({ slug => $slug });
+
+          if ( $found_slug ) {
+            # Extract the posts with slugs starting the same with the submited slug
+            my @posts_with_same_slug = resultset('Post')->search({ slug => { like => "$slug%"}});
+            my @slugs;
+            push @slugs, $_->slug foreach @posts_with_same_slug;
+
+            $slug = generate_new_slug_name($slug, \@slugs);
+
+            # Store a warning message so it can be shown on the view
+            session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.';
+          }
+
+          # Upload the cover image first so we'll have the generated filename ( if exists )
           my $cover;
           my $ext;
+          my $crypted_filename = generate_crypted_filename();
           if ( upload('cover') ) {
               $cover = upload('cover');
-              ($ext) = $cover->filename =~ /(\.[^.]+)$/;        #extract the extension
+              ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
               $ext = lc($ext);
           }
-          $cover->copy_to( config->{covers_folder} . $date . $ext ) if $cover;
+          $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext ) if $cover;
 
-          # Save the post into the database
-          my $user   = session('user');
-          my $status = params->{status};
-          my $post   = resultset('Post')->create(
+          # Next we can store the post into the database safely
+          my $post = resultset('Post')->create(
               {
-                  title   => params->{title},
-                  content => params->{post},
+                  title   => $title,
+                  slug    => $slug,
+                  content => $content,
                   user_id => $user->id,
                   status  => $status,
-                  cover   => ( $cover ) ? $date . $ext : '',
-              }
-          );
+                  cover   => ( $cover ) ? $crypted_filename . $ext : '',
+              });
+          # Store the post id so that we can redirect the user to the post created
+          $post_id = $post->id;
 
           # Connect the categories selected with the new post
-          params->{category} = 1 if ( !params->{category} );    # If no category is selected the Uncategorized category will be stored default
+          params->{category} = 1 if ( !params->{category} );                                                                # If no category is selected the Uncategorized category will be stored default
           my @categories_selected = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
 
           resultset('PostCategory')->create(
@@ -237,25 +251,33 @@ any '/admin/posts/add' => sub {
           my @tags = split( ', ', params->{tags} );
           foreach my $tag (@tags) {
 
-              # Replace all white spaces with hyphen
-              my $slug = $tag;
-              $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
+            # Replace all white spaces with hyphen
+            my $slug = $tag;
+            $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
 
-              my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
+            my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
-              resultset('PostTag')->create(
-                  {
-                      tag_id  => $db_tag->id,
-                      post_id => $post->id
-                  }
-              );
+            resultset('PostTag')->create(
+                {
+                    tag_id  => $db_tag->id,
+                    post_id => $post->id
+                }
+            );
           }
         }
     };
 
     error $@ if ($@);
+    # If the post was added successfully, store a success message to show on the view
+    session success => 'The post was added successfully' if ( !$@ && $post_id );
 
-    template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+    # If the user created a new post redirect him to the post created
+    if ( $post_id ) {
+      redirect '/admin/posts/edit/' . $post_id;
+    }
+    else {
+      template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+    }
 
 };
 
@@ -286,15 +308,26 @@ get '/admin/posts/edit/:id' => sub {
     my @categories_ids;
     push( @categories_ids, $_->id ) foreach (@categories);
 
-    template '/admin/posts/edit',
-      {
+    my $params = {
         post           => $post,
         tags           => $joined_tags,
         categories     => \@categories,
         all_categories => \@all_categories,
         ids            => \@categories_ids
-      },
-      { layout => 'admin' };
+      };
+
+    # Check if there are any messages to show
+    # Delete them after stored on the stash
+    if ( session('warning') ) {
+      $params->{warning} = session('warning');
+      session warning => undef
+    }
+    elsif ( session('success') ) {
+      $params->{success} = session('success');
+      session success => undef;
+    }
+
+    template '/admin/posts/edit', $params, { layout => 'admin' };
 
 };
 
@@ -307,39 +340,49 @@ update method
 post '/admin/posts/update/:id' => sub {
 
     my $post_id = params->{id};
+    my $post    = resultset('Post')->find($post_id);
     my $title   = params->{title};
-    my $content = params->{content};
+    my $content = params->{post};
     my $tags    = params->{tags};
+    my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
 
-    my $post = resultset('Post')->find($post_id);
+    # Check if the slug used is already taken
+    my $found_slug = resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first;
+
+    if ( $found_slug ) {
+      # Extract the posts with slugs starting the same with the submited slug
+      my @posts_with_same_slug = resultset('Post')->search({ slug => { like => "$slug%"}});
+      my @slugs;
+      push @slugs, $_->slug foreach @posts_with_same_slug;
+
+      $slug = generate_new_slug_name($slug, \@slugs);
+      session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.';
+    }
 
     eval {
         # Upload the cover image
         my $cover;
         my $ext;
-        my $date;
+        my $crypted_filename;
 
         if ( upload('cover') ) {
 
-            # Generate a random string based on the current time and date
-            my $t = time;
-            $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-            $date .= sprintf ".%03d", ( $t - int($t) ) * 1000;    # without rounding
-            $date = sha1_hex($date);
-
+            # If the user uploaded a cover image, generate a crypted name for uploading
+            $crypted_filename = generate_crypted_filename();            
             $cover = upload('cover');
             ($ext) = $cover->filename =~ /(\.[^.]+)$/;            #extract the extension
             $ext = lc($ext);
-            $cover->copy_to( config->{covers_folder} . $date . $ext );
+            $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext );
         }
 
         my $status = params->{status};
         $post->update(
             {
-                title   => params->{title},
-                cover   => ($date) ? $date . $ext : $post->cover,
+                title   => $title,
+                slug    => $slug,
+                cover   => ($crypted_filename) ? $crypted_filename . $ext : $post->cover,
                 status  => $status,
-                content => params->{post},
+                content => $content,
             }
         );
 
@@ -378,6 +421,8 @@ post '/admin/posts/update/:id' => sub {
     };
 
     error $@ if ($@);
+
+    session success => 'The post was updated successfully!';
 
     redirect '/admin/posts/edit/' . $post_id;
 

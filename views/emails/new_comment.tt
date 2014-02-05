@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>    
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
+
+	<!-- Styles -->
+	<!-- Bootstrap CSS -->
+	<link href="[% url %]/blog/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Animate css -->
+	<link href="/[% url %]/blog/css/animate.min.css" rel="stylesheet">
+	<!-- Dropdown menu -->
+	<link href="[% url %]/blog/css/ddlevelsmenu-base.css" rel="stylesheet">
+	<link href="[% url %]/blog/css/ddlevelsmenu-topbar.css" rel="stylesheet">
+	<!-- Countdown -->
+	<link href="[% url %]/blog/css/jquery.countdown.css" rel="stylesheet">
+	<!-- prettyPhoto -->
+	<link href="[% url %]/blog/css/prettyPhoto.css" rel="stylesheet">      
+	<!-- Font awesome CSS -->
+	<link href="[% url %]/blog/css/font-awesome.min.css" rel="stylesheet">     
+	<!-- Custom CSS -->
+	<link href="[% url %]/blog/css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+   
+    <div class="header">
+	    <div class="container">
+	        <div class="row">
+	          <div class="col-md-3 col-sm-3">
+	            <!-- Logo -->
+	            <div class="logo">
+	               <h1><a href="[% url %]">Pearlbee </a></h1>
+	            </div>
+	          </div>
+	          <div class="col-md-9 col-sm-9">
+	          <div class="navis"></div>                  
+	         </div>
+	        </div>
+	    </div>
+   </div>
+
+	 <div class="page-title">
+	     <div class="container">
+	        <h2><i class="icon-comment color"></i> A new comment was submited </h2>
+	        <hr />
+	     </div>  
+	  </div>
+      
+      <div class="blog">
+        <div class="container">
+          	<div class="row">
+  				
+          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% url %] / [% post_url %]"> [% title %] </a> </b>
+          		<br />
+          		<br />
+          		<i> You can login with your user account to manage your comments </i>
+          		<br />
+				<br />
+          		<i> Sincerely, </i>
+				<br />
+				<i> The PearlBee team </i>
+				<br />
+				<a href="[% url %]"> http://www.PearlBee.org </a>
+
+			</div>
+		</div>
+	</div>
+
+  </body>
+
+</html>

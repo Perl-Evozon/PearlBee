@@ -8,6 +8,7 @@ use Dancer2::Plugin::DBIC;
 # Other used modules
 use Authen::Captcha;
 use Digest::MD5 qw(md5_hex);
+use Gravatar::URL;
 
 # Included controllers
 
@@ -150,10 +151,19 @@ post '/comment/add' => sub {
 
   my $fullname = params->{fullname};
   my $email    = params->{email};
+  my $website  = params->{website} || '';
   my $text     = params->{comment};
   my $post_id  = params->{id};
   my $secret   = params->{secret};
+
   my $post     = resultset('Post')->find( $post_id );
+  my @categories   = resultset('Category')->all();
+
+  # Grap the approved comments for this post
+  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
+
+  # Grab the gravatar if exists, or a default image if not
+  my $gravatar = gravatar_url(email => $email);
 
   if ( md5_hex($secret) eq session('secret') ) {
     # The user entered the correct secrete code
@@ -162,7 +172,9 @@ post '/comment/add' => sub {
           fullname => $fullname,
           content  => $text,
           email    => $email,
-          post_id   => $post_id
+          website  => $website,
+          avatar   => $gravatar,
+          post_id  => $post_id
         });
 
       # Notify the author that a new comment was submited
@@ -183,21 +195,19 @@ post '/comment/add' => sub {
     };
 
     error $@ if ( $@ );
-    redirect '/post/' . $post_id;
+    
+    template 'post', 
+      { 
+        post        => $post, 
+        categories  => \@categories, 
+        comments    => \@comments,       
+        success     => 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!'
+      }, 
+      { layout => 'main' };
   }
   else {
     # The secret code inncorrect
     # Repopulate the fields with the data
-    
-    my @categories   = resultset('Category')->all();
-
-    # Grap the approved comments for this post
-    my @post_comments;
-    my @comments;
-    eval{
-      @post_comments = $post->post_comments;    
-      @comments = grep { $_->comment->status eq 'approved' } @post_comments;
-    };
 
     # Generate a new captcha code
     my $captcha = Authen::Captcha->new();
@@ -223,6 +233,7 @@ post '/comment/add' => sub {
         comments    => \@comments,
         fullname    => $fullname,
         email       => $email,
+        website     => $website,
         text        => $text,
         warning     => 'Wrong secret code. Please enter the code again'
       }, 

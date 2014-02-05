@@ -50,6 +50,9 @@
                   <ul class="comment-list">
                     [% FOREACH comment in comments %]
                       <li class="comment">
+                          <a class="pull-left" href="#">
+                            <img class="avatar" src="[% comment.avatar %]" class="img-responsive" />
+                          </a>
                           <div class="comment-author"><a href="#">[% comment.fullname %]</a></div>
                           <div class="cmeta">Commented on [% comment.comment_date %]</div>
                           <p> [% comment.content %] </p>
@@ -63,16 +66,24 @@
                    <div class="title"><h5>Post Reply</h5></div>
                       <form role="form" action="/comment/add" method="post">
                         [% INCLUDE components/alerts.tt %]
+
                         <div class="form-group">
                           <label for="name">Your Name</label>
                           <input type="text" class="form-control" name="fullname" id="name" placeholder="Enter Name" value="[% fullname %]" required>
-                        </div>                                    
+                        </div>  
+
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email" value="[% email %]" required>
+                          <label for="email">Email address</label>
+                          <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="[% email %]" required>
                         </div>
+
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Comment</label>
+                          <label for="website">Website</label>
+                          <input type="text" class="form-control" name="website" id="website" placeholder="Enter your website" value="[% website %]">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="comment">Comment</label>
                           <textarea class="form-control" rows="3" name="comment" required>[% text %]</textarea>
                           <br />
                           <br /> 
@@ -83,6 +94,7 @@
                           <br />
                           <input type="hidden" value="[% post.id %]" name="id" />
                         </div>
+
                         <button type="submit" class="btn btn-info">Submit</button>
                         <button type="reset" class="btn btn-default">Reset</button>
                       </form>

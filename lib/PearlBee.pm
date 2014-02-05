@@ -49,8 +49,8 @@ get '/' => sub {
   my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
   my $previous_link = '#';
   my $next_link     =  ( $total_pages < 2 ) ? '#' : '/page/2';
-   my $posts2     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows })->first;
-error '>>>>>>>>>>>>>>' . Dumper @posts;
+  my $posts2     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows })->first;
+
 
     template 'index', 
       { 

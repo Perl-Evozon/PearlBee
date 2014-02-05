@@ -42,6 +42,18 @@ __PACKAGE__->table("comment");
   is_nullable: 1
   size: 200
 
+=head2 website
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
+=head2 avatar
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
 =head2 comment_date
 
   data_type: 'timestamp'
@@ -73,6 +85,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 100 },
   "email",
   { data_type => "varchar", is_nullable => 1, size => 200 },
+  "website",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
+  "avatar",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "comment_date",
   {
     data_type => "timestamp",
@@ -110,8 +126,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gTa5OAWKg0CbtMBywiJElA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 21:12:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kuNk7541mN45nffnpR5Rhw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

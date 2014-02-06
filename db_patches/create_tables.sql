@@ -88,7 +88,12 @@ CREATE TABLE IF NOT EXISTS settings (
 	FOREIGN KEY ( user_id ) REFERENCES user(id)
 );
 
-insert into user (first_name, last_name, username, password, email, status, role) values ("Andrei", "Cacio", "admin", "3ae52f9bffc2909cf5ea8342c244c12416e397ca", "andrei.cacio@yahoo.com", "activated", "admin");
+-- default login: 	   	admin
+-- default password: 	password
+insert into user (first_name, last_name, username, password, email, status, role) 
+	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
+			"you@domain.cow", "activated", "admin");
+	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
 

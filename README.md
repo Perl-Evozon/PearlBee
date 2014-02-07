@@ -30,7 +30,7 @@ After you've downloaded PearlBee source code, be sure to create the database by 
 
 <pre><blockquote>mysql> GRANT ALL PRIVILEGES ON PearlBee.* To 'your_user'@'localhost' IDENTIFIED BY 'yourPassWord';<blockquote></pre>
 and then initialize the database by running the script
-<pre><blockquote>mysql -u your_user -p your_password PearlBee &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+<pre><blockquote>mysql -u your_user -pyour_password &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
 After the database creation, you will need to configure the following file: pearlbee/config.yaml
 Under the user and pass tag, please write down your own database credentials.

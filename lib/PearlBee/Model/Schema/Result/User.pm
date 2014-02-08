@@ -1,21 +1,17 @@
-use utf8;
 package PearlBee::Model::Schema::Result::User;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
-
-=head1 NAME
-
-PearlBee::Model::Schema::Result::User
-
-=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<user>
+
+=head1 NAME
+
+PearlBee::Model::Schema::Result::User
 
 =cut
 
@@ -149,43 +145,8 @@ __PACKAGE__->add_columns(
   "salt",
   { data_type => "char", is_nullable => 0, size => 24 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
 __PACKAGE__->set_primary_key("id");
-
-=head1 UNIQUE CONSTRAINTS
-
-=head2 C<email>
-
-=over 4
-
-=item * L</email>
-
-=back
-
-=cut
-
 __PACKAGE__->add_unique_constraint("email", ["email"]);
-
-=head2 C<username>
-
-=over 4
-
-=item * L</username>
-
-=back
-
-=cut
-
 __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 =head1 RELATIONS
@@ -236,8 +197,8 @@ __PACKAGE__->might_have(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-02-08 22:14:01
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uJIVwMzP2PxNNfX3nZVniQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-07 19:20:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:p77Mchrc4+CVBv45OOTjcA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

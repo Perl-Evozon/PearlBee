@@ -23,6 +23,7 @@ use PearlBee::Admin::Tag;
 use PearlBee::Admin::Post;
 use PearlBee::Admin::Comment;
 use PearlBee::Admin::User;
+use PearlBee::Admin::Settings;
 
 # Author controllers
 use PearlBee::Author::Post;

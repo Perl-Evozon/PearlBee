@@ -19,7 +19,7 @@ sub generate_hash {
 	$salt = rand_bits(128) unless $salt;
 
 	my $bcrypt = Digest->new('Bcrypt');
-	$bcrypt->cost(16);
+	$bcrypt->cost(12);
 	$bcrypt->salt($salt);
 	$bcrypt->add($password);
 
@@ -29,5 +29,4 @@ sub generate_hash {
 	return $hashref;
 }
 
-# Other ideas for this module: random password generator, checking if a password is strong enough,...
 1;

@@ -91,9 +91,9 @@ CREATE TABLE IF NOT EXISTS settings (
 
 -- default login: 	   	admin
 -- default password: 	password
-insert into user (first_name, last_name, username, password, email, status, role) 
-	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
-			"you@domain.cow", "activated", "admin");
+insert into user (first_name, last_name, username, password, email, status, role, salt) 
+	values ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
+			"you@domain.cow", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
 	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 

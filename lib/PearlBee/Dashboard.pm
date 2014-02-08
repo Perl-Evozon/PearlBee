@@ -100,9 +100,8 @@ any '/profile' => sub {
 
     }
     else {
-
-      my $password_hash = generate_hash($new_password);
-      $user->update({ password => $password_hash->{hash}, salt => $password_hash{salt} });
+      $password_hash = generate_hash($new_password);
+      $user->update({ password => $password_hash->{hash}, salt => $password_hash->{salt} });
 
       template 'admin/profile', { user => $user, success => 'The password was changed succesfully!' }, { layout => 'admin' };
     }

@@ -2,7 +2,7 @@ package Dashboard;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use Digest::SHA1 qw(sha1_hex);
+use PearlBee::Password;
 
 =head
 
@@ -36,9 +36,11 @@ any '/dashboard' => sub {
         template 'admin/index', { user => $user, warning => 'The passwords don\'t match!' }, { layout => 'admin' };
       }
       else {
+	my $password_hash = generate_hash($password1);
         $user->update({
-          password => sha1_hex( $password1 ),
-          status   => 'activated'
+          password => $password_hash->{hash},
+          status   => 'activated',
+	  salt 	   => $password_hash->{salt}
         });
 
         template 'admin/index', { user => $user }, { layout => 'admin' };
@@ -86,7 +88,8 @@ any '/profile' => sub {
   }
   elsif ( $old_password && $new_password && $new_password2 ) {
 
-    if ( sha1_hex($old_password) ne $user->password ) {
+    my $password_hash = generate_hash($old_password, $user->salt);
+    if ( $password_hash->{hash} ne $user->password ) {
 
       template 'admin/profile', { user => $user, warning => 'Incorrect old password!' }, { layout => 'admin' };
 
@@ -97,8 +100,8 @@ any '/profile' => sub {
 
     }
     else {
-
-      $user->update({ password => sha1_hex($new_password) });
+      $password_hash = generate_hash($new_password);
+      $user->update({ password => $password_hash->{hash}, salt => $password_hash->{salt} });
 
       template 'admin/profile', { user => $user, success => 'The password was changed succesfully!' }, { layout => 'admin' };
     }

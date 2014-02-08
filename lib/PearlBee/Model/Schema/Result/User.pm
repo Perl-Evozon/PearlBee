@@ -181,24 +181,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 setting
 
-Type: might_have
-
-Related object: L<PearlBee::Model::Schema::Result::Setting>
-
-=cut
-
-__PACKAGE__->might_have(
-  "setting",
-  "PearlBee::Model::Schema::Result::Setting",
-  { "foreign.user_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-07 19:20:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:p77Mchrc4+CVBv45OOTjcA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-08 04:10:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uYnwrMByvWbvLKcaAAe0iQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

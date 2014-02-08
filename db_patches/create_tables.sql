@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS user (
 	role 			ENUM('author', 'admin') NOT NULL DEFAULT 'author',
 	activation_key  VARCHAR(100),
 	status 			ENUM('deactivated', 'activated', 'suspended') NOT NULL DEFAULT 'deactivated',
+	salt			CHAR(24) NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY (username),
 	UNIQUE KEY (email)

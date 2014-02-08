@@ -2,7 +2,7 @@ package PearlBee::Authentication;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use Digest::SHA1 qw(sha1_hex);
+use PearlBee::Password;
 
 =head
 
@@ -29,14 +29,14 @@ post '/login' => sub {
 
   my $user = resultset("User")->search({
       username => $username,
-      password => sha1_hex($password),
       -or => [
-        status => 'activated',
-        status => 'deactivated'
+	status => 'activated',
+	status => 'deactivated'
       ]
     })->first;
-
-  if ( $user ) {
+  
+  my $password_hash = generate_hash($password, $user->salt) if $user;
+  if($user && $user->password eq $password_hash->{hash}) {
     session user => $user;
     redirect('/dashboard');
   }

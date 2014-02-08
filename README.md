@@ -20,7 +20,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Email::Sender::Simple</li>
 <li>Template::Plugin::HTML::Strip</li>
 <li>You will need a MySQL server for the blog's database.</li>
-<li> You will need a SMTP Server for sending messages. Email are sent automatically byu PearlBee in different scenarios like adding a new user </li> 
+<li> You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
 </ul>
 
 <h4>Installing / Updating perl modules</h4>

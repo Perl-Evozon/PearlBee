@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS comment (
 CREATE TABLE IF NOT EXISTS settings (
 	timezone_id 	INT,
 	social_media 	BOOLEAN NOT NULL DEFAULT '1',
-	blog_path		VARCHAR(255) NOT NULL DEFAULT '/';
+	blog_path		VARCHAR(255) NOT NULL DEFAULT '/'
 );
 
 CREATE TABLE IF NOT EXISTS `timezone` (

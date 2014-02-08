@@ -9,8 +9,8 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(generate_hash);
 
-# Input: A string containing a password
-# Output: A hashref containing a salt and a hash. (keys are 'salt' and 'hash')
+# Input: A string containing a password and optionally a salt encoded in base64 (from the database for example)
+# Output: A hashref containing a salt and a hash. (keys are 'salt' and 'hash') If you provided the salt than the salt in the hashref will be the same.
 sub generate_hash {
 	return -1 if @_ < 1 || @_ > 2;
 	my $password = shift;

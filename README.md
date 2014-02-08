@@ -29,7 +29,7 @@ You will need a MySQL server for the blog's database.</li></ul>
 <pre><blockquote>./build.sh</blockquote></pre>
 
 <h4>Creating database</h4>
-After you've downloaded PearlBee source code, be sure to create the database by running the command: 
+After you've downloaded PearlBee source code, be sure to give your user the rights to the PearlBee database (in this example the database is called 'PearlBee'): 
 
 <pre><blockquote>mysql> GRANT ALL PRIVILEGES ON PearlBee.* To 'your_user'@'localhost' IDENTIFIED BY 'yourPassWord';<blockquote></pre>
 and then initialize the database by running the script

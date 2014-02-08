@@ -12,9 +12,6 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Dancer2::Plugin::DBIC</li>
 <li>Authen::Captcha ( needs libgd2-xpm-dev package)</li>
 <li>Digest::SHA1</li>
-<li>Digest::Bcrypt</li>
-<li>Data::Entropy::Algorithms</li>
-<li>MIME::Base64</li>
 <li>String::Dirify</li>
 <li>String::Util</li>
 <li>DateTime::Format::Strptime</li>
@@ -22,18 +19,19 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Email::MIME</li>
 <li>Email::Sender::Simple</li>
 <li>Template::Plugin::HTML::Strip</li>
-<li>
-You will need a MySQL server for the blog's database.</li></ul>
+<li>You will need a MySQL server for the blog's database.</li>
+<li> You will need a SMTP Server for sending messages. Email are sent automatically byu PearlBee in different scenarios like adding a new user </li> 
+</ul>
 
 <h4>Installing / Updating perl modules</h4>
 <pre><blockquote>./build.sh</blockquote></pre>
 
 <h4>Creating database</h4>
-After you've downloaded PearlBee source code, be sure to give your user the rights to the PearlBee database (in this example the database is called 'PearlBee'): 
+After you've downloaded PearlBee source code, be sure to create the database by running the command: 
 
 <pre><blockquote>mysql> GRANT ALL PRIVILEGES ON PearlBee.* To 'your_user'@'localhost' IDENTIFIED BY 'yourPassWord';<blockquote></pre>
 and then initialize the database by running the script
-<pre><blockquote>mysql -u your_user -pyour_password &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+<pre><blockquote>mysql -u your_user -p your_password PearlBee &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
 After the database creation, you will need to configure the following file: pearlbee/config.yaml
 Under the user and pass tag, please write down your own database credentials.

@@ -39,7 +39,7 @@ Home page
 =cut
 
 get '/' => sub {
-
+  
   my $nr_of_rows  = 5; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -137,7 +137,8 @@ get '/post/:slug' => sub {
   session secret => $md5sum;
 
   # Grab the approved comments for this post
-  my @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved' });
+  my @comments;
+  @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved' }) if ( $post );
 
   template 'post', { post => $post, categories => \@categories, comments => \@comments }, { layout => 'main' };
 };

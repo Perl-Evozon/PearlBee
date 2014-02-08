@@ -13,7 +13,50 @@
       <div class="col-md-12">
          <div class="awidget">
             <div class="awidget-head">
-               <h3>Comming soon ...</b></h3>
+               <h3>Social media buttons</b></h3>
+            </div>
+            <div class="awidget-body">
+
+              <form method="post" action="/admin/categories/edit/[% category.id %]">
+
+                <h5>Social media buttons</h5>
+                <div class="make-switch" data-on="success" data-off="danger">
+                    <input type="checkbox" checked>
+                </div>
+
+                <hr />
+
+                <h5>Timezone</h5>
+                <div class="btn-group">
+                  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Select time zone <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    [% FOREACH timezone IN timezones %]
+                      <li><a href="#"> [% timezone.name %] </li>
+                    [% END %]
+                  </ul>
+                </div>
+
+                <hr />
+                
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">Blog path</label>
+                  <div class="col-lg-10">
+                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.path %]" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-lg-offset-2 col-lg-10">
+                    <hr />
+                    <button type="submit" class="btn btn-default">Save</button>
+                    <a href="/admin/categories"> <button type="button" class="btn btn-danger">Cancel</button> </a>
+                  </div>
+                </div>
+
+               <br /><br /><br /><br />
+
+              </form>
+             
             </div>
             
          </div>

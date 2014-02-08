@@ -18,7 +18,15 @@ Index of settings page
 
 get '/admin/settings' => sub {
 
-	template 'admin/settings/index.tt', {}, { layout => 'admin' };
+	my $settings  = resultset('Setting')->first;
+	my @timezones = resultset('Timezone')->all;
+
+	template 'admin/settings/index.tt', 
+		{ 
+			settings  => $settings,
+			timezones => \@timezones
+		}, 
+		{ layout => 'admin' };
 
 };
 

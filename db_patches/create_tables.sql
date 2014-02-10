@@ -5,17 +5,18 @@ USE PearlBee;
 
 CREATE TABLE IF NOT EXISTS user (
 	id 				INT NOT NULL AUTO_INCREMENT,
-	first_name 		VARCHAR(300) NOT NULL,
-	last_name 		VARCHAR(300) NOT NULL,
+	first_name 		VARCHAR(255) NOT NULL,
+	last_name 		VARCHAR(255) NOT NULL,
 	username		VARCHAR(200) NOT NULL,
 	password		VARCHAR(100) NOT NULL,
 	register_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	email			VARCHAR(300) NOT NULL,
-	company 		VARCHAR(300),
+	email			VARCHAR(255) NOT NULL,
+	company 		VARCHAR(255),
 	telephone 		VARCHAR(12),
 	role 			ENUM('author', 'admin') NOT NULL DEFAULT 'author',
 	activation_key  VARCHAR(100),
 	status 			ENUM('deactivated', 'activated', 'suspended') NOT NULL DEFAULT 'deactivated',
+	salt			CHAR(24) NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY (username),
 	UNIQUE KEY (email)
@@ -33,8 +34,9 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	title 			VARCHAR(200) NOT NULL,
-	description 	VARCHAR(200),
+	title 			VARCHAR(255) NOT NULL,
+	slug 			VARCHAR(255) NOT NULL,
+	description 	VARCHAR(255),
 	cover 			VARCHAR(300) NOT NULL,
 	content 		TEXT NOT NULL,
 	created_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -90,9 +92,10 @@ CREATE TABLE IF NOT EXISTS settings (
 
 -- default login: 	   	admin
 -- default password: 	password
-insert into user (first_name, last_name, username, password, email, status, role) 
-	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
-			"you@domain.cow", "activated", "admin");
+
+insert into user (first_name, last_name, username, password, email, status, role, salt) 
+	values ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
+			"you@domain.cow", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
 	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 

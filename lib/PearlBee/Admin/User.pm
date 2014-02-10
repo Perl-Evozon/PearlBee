@@ -10,7 +10,7 @@ package PearlBee::Admin::User;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use Digest::SHA1 qw(sha1_hex);
+use PearlBee::Password;
 use Crypt::RandPasswd qw(chars);
 use Email::Template;
 
@@ -199,14 +199,16 @@ any '/admin/users/add' => sub {
       my $first_name = params->{first_name};
       my $last_name  = params->{last_name};
       my $role       = params->{role};
+      my $pass_hash  = generate_hash($password);
 
       resultset('User')->create({
         username   => $username,
-        password   => sha1_hex( $password ),
+        password   => $pass_hash->{hash},
         email      => $email,
         first_name => $first_name,
         last_name  => $last_name,
-        role       => $role
+        role       => $role,
+        salt       => $pass_hash->{salt}
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

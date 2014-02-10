@@ -28,7 +28,7 @@ use PearlBee::Admin::User;
 use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
-use Data::Dumper;
+use PearlBee::Helpers::Util qw(generate_crypted_filename);
 our $VERSION = '0.1';
 
 =head
@@ -40,12 +40,12 @@ Home page
 get '/' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
-  my @posts     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
-  my $nr_of_posts  = resultset('Post')->search({ status => 'published' })->count;
-  my @tags      = resultset('View::PublishedTags')->all();
-  my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
-  my @popular   = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
+  my @tags        = resultset('View::PublishedTags')->all();
+  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
   my $previous_link = '#';
@@ -55,14 +55,14 @@ get '/' => sub {
 
     template 'index', 
       { 
-        posts       => \@posts,
-        recent       => \@recent,
-        popular     => \@popular,
-        tags        => \@tags,
-        categories     => \@categories,
-        page       => 1,
+        posts         => \@posts,
+        recent        => \@recent,
+        popular       => \@popular,
+        tags          => \@tags,
+        categories    => \@categories,
+        page          => 1,
         total_pages   => $total_pages,
-        previous_link   => $previous_link,
+        previous_link => $previous_link,
         next_link     => $next_link
     }, 
     { layout => 'main' };
@@ -77,13 +77,13 @@ Home page
 get '/page/:page' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
-  my $page     = params->{page};
-  my @posts     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows, page => $page });
-  my $nr_of_posts  = resultset('Post')->search({ status => 'published' })->count;
-  my @tags      = resultset('View::PublishedTags')->all();
-  my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
-  my @popular   = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my $page        = params->{page};
+  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows, page => $page });
+  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
+  my @tags        = resultset('View::PublishedTags')->all();
+  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
 
@@ -93,14 +93,14 @@ get '/page/:page' => sub {
 
     template 'index', 
       { 
-        posts       => \@posts,
-        recent       => \@recent,
-        popular     => \@popular,
-        tags        => \@tags,
-        categories     => \@categories,
-        page       => $page,
+        posts         => \@posts,
+        recent        => \@recent,
+        popular       => \@popular,
+        tags          => \@tags,
+        categories    => \@categories,
+        page          => $page,
         total_pages   => $total_pages,
-        previous_link   => $previous_link,
+        previous_link => $previous_link,
         next_link     => $next_link
     }, 
     { layout => 'main' };
@@ -113,30 +113,30 @@ View post method
 
 =cut
 
-get '/post/:id' => sub {
+get '/post/:slug' => sub {
   
-  my $post_id   = params->{id};
-  my $post     = resultset('Post')->find( $post_id );
-  my @categories   = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my $slug       = params->{slug};
+  my $post       = resultset('Post')->find({ slug => $slug });
+  my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
 
-  my $captcha = Authen::Captcha->new();
+  my $captcha    = Authen::Captcha->new();
 
-    # set the data_folder. contains flatfile db to maintain state
-    $captcha->data_folder('public/captcha');
+  # set the data_folder. contains flatfile db to maintain state
+  $captcha->data_folder('public/captcha');
 
-    # set directory to hold publicly accessable images
-    $captcha->output_folder('public/captcha/image');
-    my $md5sum = $captcha->generate_code(5);
+  # set directory to hold publicly accessable images
+  $captcha->output_folder('public/captcha/image');
+  my $md5sum = $captcha->generate_code(5);
 
-    # Rename the image file so that the encrypted code won't show on the UI
-    my $command = "mv " . config->{captcha_folder} . "/image/" . $md5sum . ".png" . " " . config->{captcha_folder} . "/image/image.png";
-    `$command`;
+  # Rename the image file so that the encrypted code won't show on the UI
+  my $command = "mv " . config->{captcha_folder} . "/image/" . $md5sum . ".png" . " " . config->{captcha_folder} . "/image/image.png";
+  `$command`;
 
-    # Store the encrypted code on the session
-    session secret => $md5sum;
+  # Store the encrypted code on the session
+  session secret => $md5sum;
 
   # Grab the approved comments for this post
-  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
+  my @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved' });
 
   template 'post', { post => $post, categories => \@categories, comments => \@comments }, { layout => 'main' };
 };
@@ -212,19 +212,19 @@ post '/comment/add' => sub {
     # Generate a new captcha code
     my $captcha = Authen::Captcha->new();
 
-      # set the data_folder. contains flatfile db to maintain state
-      $captcha->data_folder('public/captcha');
+    # set the data_folder. contains flatfile db to maintain state
+    $captcha->data_folder('public/captcha');
 
-      # set directory to hold publicly accessable images
-      $captcha->output_folder('public/captcha/image');
-      my $md5sum = $captcha->generate_code(5);
+    # set directory to hold publicly accessable images
+    $captcha->output_folder('public/captcha/image');
+    my $md5sum = $captcha->generate_code(5);
 
-      # Rename the file so that the encrypted code won't show on the UI
-      my $command = "mv public/captcha/image/" . $md5sum . ".png" . " public/captcha/image/image.png";
-      `$command`;
+    # Rename the file so that the encrypted code won't show on the UI
+    my $command = "mv public/captcha/image/" . $md5sum . ".png" . " public/captcha/image/image.png";
+    `$command`;
 
-      # Store the encrypted code on the session
-      session secret => $md5sum;
+    # Store the encrypted code on the session
+    session secret => $md5sum;
 
     template 'post', 
       { 

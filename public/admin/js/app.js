@@ -38,4 +38,13 @@ $(document).ready(function() {
 		$('input[name="slug"]').val(slug);
 	});
 
+	$('input[name="title"').on('keyup', function(){
+		var slug = $(this).val();
+		
+		// Replace all non-alphanumeric characters with a hypen
+		slug = slug.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,.\/? ])+/g, '-').replace(/^(-)+|(-)+$/g,'').toLowerCase();
+
+		$('input[name="slug"]').val(slug);
+	});
+
 });

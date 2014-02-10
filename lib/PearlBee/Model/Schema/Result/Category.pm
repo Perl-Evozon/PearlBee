@@ -1,17 +1,21 @@
+use utf8;
 package PearlBee::Model::Schema::Result::Category;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PearlBee::Model::Schema::Result::Category
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PearlBee::Model::Schema::Result::Category
+=head1 TABLE: C<category>
 
 =cut
 
@@ -55,25 +59,34 @@ __PACKAGE__->add_columns(
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint("name", ["name"]);
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 user
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "user",
-  "PearlBee::Model::Schema::Result::User",
-  { id => "user_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<name>
+
+=over 4
+
+=item * L</name>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("name", ["name"]);
+
+=head1 RELATIONS
 
 =head2 post_categories
 
@@ -90,9 +103,34 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:R8Ow7zLipRWKbinE6XDuTg
+Type: belongs_to
+
+Related object: L<PearlBee::Model::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "user",
+  "PearlBee::Model::Schema::Result::User",
+  { id => "user_id" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+);
+
+=head2 posts
+
+Type: many_to_many
+
+Composing rels: L</post_categories> -> post
+
+=cut
+
+__PACKAGE__->many_to_many("posts", "post_categories", "post");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-02-08 22:14:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:It1dTc45qK2g3r+AyrIeQg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

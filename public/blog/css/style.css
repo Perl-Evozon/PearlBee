@@ -1130,6 +1130,10 @@ strong{
    box-shadow:0px 0px 1px #777;
 }
 
+.blog .bthumb .img-responsive  {
+   margin: 0 auto;
+} 
+
 .blog .btn{
    font-size:12px;
 }

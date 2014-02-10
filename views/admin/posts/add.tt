@@ -5,34 +5,34 @@
                   <hr />
                </div>
                <!-- Page title -->
-               
+
                   <form class="form-horizontal" method="post" enctype="multipart/form-data" action>
                     <div class="row">
-                       
+
                        <div class="col-md-8">
 
                          <div class="awidget">
                            <div class="awidget-head">
-                             <h3>Make Post</h3>
+                             <h3>Make Post</h3>  
                            </div>
 
                            <div class="awidget-body">
                             [% INCLUDE components/alerts.tt %]
-                               
-                            <input class="form-control" required pattern=".{3,200}" id="title" name="title" type="text" placeholder="Title">
+
+                            <input class="form-control" required maxlength="80" id="title" name="title" type="text" placeholder="Title">
                             <br />
                             <input class="form-control" required pattern=".{3,}" id="slug" name="slug" type="text" placeholder="Slug">
                             <br />
                             <input class="form-control" id="cover" name="cover" type="file" placeholder="Cover image">
                             <br />
-                            
+
                             <br />
                             <textarea name="post" required class="form-control cleditor" placeholder="Enter text ..." rows="20" cols="10"></textarea>
                             <input type="hidden" name="status" id="status" />
 
                            </div>
-                         </div>  
-                         
+                         </div>
+
                        </div>
 
                        <!-- post sidebar -->
@@ -54,24 +54,24 @@
                                    <label><input type="checkbox" name="category" id="category_[% category.id %]" value="[% category.id %]"> [% category.name %]</label>
                                   </div>
 
-                                [% END %]                             
+                                [% END %]
 
                                  <hr />
                                  <h5>Tags</h5>
                                  <input class="col-lg-12 form-control" id="tags" name="tags" type="text" placeholder="Tags"><br />
 
                                 <div class="buttons">
-                                       <button id="draft_btn" class="btn btn-default">Save Draft</button> 
+                                       <button id="draft_btn" class="btn btn-default">Save Draft</button>
                                        <button id="publish_btn" class="btn btn-info">Publish</button>
                                        <button id="trash_btn" class="btn btn-danger">Trash</button>
                                 </div>
 
                            </div>
-                         </div>  
+                         </div>
 
                        </div>
-                       
+
                     </div>
                   </form>
-                  
+
             </div>

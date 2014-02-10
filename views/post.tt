@@ -12,7 +12,7 @@
       <div class="blog">
         <div class="container">
           <div class="row">
-            <div >
+            <div class="col-md-12">
              <div class="posts">
                 <!-- Each posts should be enclosed inside "entry" class" -->
                 <!-- Post one -->
@@ -74,7 +74,7 @@
 
                         <div class="form-group">
                           <label for="email">Email address</label>
-                          <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="[% email %]" required>
+                          <input type="email" class="form-control" name="email" id="email" placeholder="Enter email (you could use your Gravatar email)" value="[% email %]" required>
                         </div>
 
                         <div class="form-group">

@@ -107,22 +107,3 @@
                       <li><a href="/post/[% post.slug %]">[% post.title %]</a></li>
                     [% END %] 
 >>>>>>> upstream/master
-                 </ul>
-              </div>
-            </div>
-            <div class="widget">
-              <h4 class="widget-head">Tags</h4>
-              <ul id="tag-list" class="cf">
-                [% FOREACH tag in tags %]
-                  <li><a href="/posts/tag/[% tag.slug %]" class="btn btn-info">[% tag.name %]</a></li>
-                [% END %]
-              </ul>
-            </div>
-         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-

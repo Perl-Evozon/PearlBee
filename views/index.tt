@@ -18,13 +18,7 @@
             <!-- Post one -->
             [% FOREACH post in posts %]
               <div class="entry">
-<<<<<<< HEAD
-                 <h2><a href="/post/[% post.id %]">[% post.title %]</a></h2>
-
-=======
                  <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
-                 
->>>>>>> upstream/master
                  <!-- Meta details -->
                  <div class="meta">
                     <i class="icon-calendar"></i> [% post.created_date %]
@@ -88,22 +82,31 @@
                 <div class="tab-pane fade in active" id="recent">
                   <ul class="simple-list">
                     [% FOREACH post in recent %]
-<<<<<<< HEAD
-                      <li><a href="/post/[% post.id %]">[% post.title %]</a></li>
-                    [% END %]
-=======
                       <li><a href="/post/[% post.slug %]">[% post.title %]</a></li>
-                    [% END %] 
->>>>>>> upstream/master
+                    [% END %]
                   </ul>
               </div>
               <div class="tab-pane fade" id="popular">
                 <ul class="simple-list">
                     [% FOREACH post in popular %]
-<<<<<<< HEAD
-                      <li><a href="/post/[% post.id %]">[% post.title %]</a></li>
-                    [% END %]
-=======
                       <li><a href="/post/[% post.slug %]">[% post.title %]</a></li>
-                    [% END %] 
->>>>>>> upstream/master
+                    [% END %]
+                 </ul>
+              </div>
+            </div>
+            <div class="widget">
+              <h4 class="widget-head">Tags</h4>
+              <ul id="tag-list" class="cf">
+                [% FOREACH tag in tags %]
+                  <li><a href="/posts/tag/[% tag.slug %]" class="btn btn-info">[% tag.name %]</a></li>
+                [% END %]
+              </ul>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

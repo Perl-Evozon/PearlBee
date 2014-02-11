@@ -1134,3 +1134,6 @@ footer .copy{
 .table.table-striped.table-bordered td { 
   vertical-align: middle;  
 } 
+.half-size {
+   width: 50%; 
+}

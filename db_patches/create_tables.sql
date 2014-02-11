@@ -83,17 +83,19 @@ CREATE TABLE IF NOT EXISTS comment (
 	FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
-CREATE TABLE IF NOT EXISTS settings (
-	timezone_id 	INT,
-	social_media 	BOOLEAN NOT NULL DEFAULT '1',
-	blog_path		VARCHAR(255) NOT NULL DEFAULT '/'
+CREATE TABLE IF NOT EXISTS timezone (
+	id  	INT NOT NULL AUTO_INCREMENT,
+	GMT 	VARCHAR(5) COLLATE utf8_bin NOT NULL,
+	name 	VARCHAR(120) COLLATE utf8_bin NOT NULL,
+	PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS `timezone` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
-	`GMT` varchar(5) COLLATE utf8_bin NOT NULL,
-	`name` varchar(120) COLLATE utf8_bin NOT NULL,
-	PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS settings (
+	timezone_id 	INT NOT NULL,
+	social_media 	BOOLEAN NOT NULL DEFAULT '1',
+	blog_path		VARCHAR(255) NOT NULL DEFAULT '/',
+	PRIMARY KEY (timezone_id, social_media, blog_path),
+	FOREIGN KEY (timezone_id) REFERENCES timezone(id)
 );
 
 -- default login: 	   	admin
@@ -257,4 +259,4 @@ INSERT INTO `timezone` (`id`, `GMT`, `name`) VALUES
 	(149, '13.0', '(GMT+13:00)-Nuku''alofa '
 );
 
-
+insert into settings ( timezone_id, social_media, blog_path ) values ( 34, 1, '/' );

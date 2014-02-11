@@ -39,7 +39,7 @@ Home page
 =cut
 
 get '/' => sub {
-  
+
   my $nr_of_rows  = 5; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -118,6 +118,7 @@ get '/post/:slug' => sub {
   
   my $slug       = params->{slug};
   my $post       = resultset('Post')->find({ slug => $slug });
+  my $settings   = resultset('Setting')->first;
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
 
   my $captcha    = Authen::Captcha->new();
@@ -140,7 +141,14 @@ get '/post/:slug' => sub {
   my @comments;
   @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved' }) if ( $post );
 
-  template 'post', { post => $post, categories => \@categories, comments => \@comments }, { layout => 'main' };
+  template 'post', 
+    { 
+      post        => $post, 
+      categories  => \@categories, 
+      comments    => \@comments,
+      setting    => $settings
+    }, 
+    { layout => 'main' };
 };
 
 =head 

@@ -11,9 +11,6 @@
 
       <div class="col-md-12">
          <div class="awidget">
-            <div class="awidget-head">
-               <h3>Social media buttons</b></h3>
-            </div>
             <div class="awidget-body">
 
               <form method="post" action="/admin/categories/edit/[% category.id %]">

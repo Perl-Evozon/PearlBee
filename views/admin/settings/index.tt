@@ -1,14 +1,14 @@
-              
+
 <div class="mainy">
    <!-- Page title -->
    <div class="page-title">
-      <h2><i class="icon-wrench color"></i> Settings <small>manage your blog's settings</small></h2> 
+      <h2><i class="icon-wrench color"></i> Settings <small>manage your blog's settings</small></h2>
       <hr />
    </div>
    <!-- Page title -->
-            
+
    <div class="row">
-   
+
       <div class="col-md-12">
          <div class="awidget">
             <div class="awidget-head">
@@ -28,41 +28,41 @@
                 <h5>Timezone</h5>
                 <div class="btn-group">
                   <!-- <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Select time zone <span class="caret"></span></button> -->
-                  <select class="chosen-select"> 
+                  <select class="chosen-select">
                     <option value=""> Select time zone </option>
                     [% FOREACH timezone IN timezones %]
                       <option value="[% timezone.name %]"> [% timezone.name %] </option>
                     [% END %]
-                  </select> 
+                  </select>
                 </div>
 
-                <hr /> 
-                
-                <h5>Blog path</h5>  
+                <hr />
+
+                <h5>Blog path</h5>
                 <div class="form-group">
-                  <div>   
-                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.path %]" required> 
+                  <div class="smaller-size">
+                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.path %]" required>
                   </div>
                 </div>
 
                 <hr />
 
                 <div class="form-group">
-                  <div class="half-size"> 
+                  <div>
                     <button type="submit" class="btn btn-default">Save</button>
                     <a href="/admin/categories"><button type="button" class="btn btn-danger">Cancel</button></a>
                   </div>
-                </div> 
+                </div>
 
                <br /><br /><br /><br />
 
               </form>
-             
+
             </div>
-            
+
          </div>
       </div>
-      
-   </div>       
-               
+
+   </div>
+
 </div>

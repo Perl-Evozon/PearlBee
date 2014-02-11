@@ -416,7 +416,14 @@ $(".peity-bar").peity("bar", {
 });
 
 /* Peity ends */
+// Chosen select 
+$(document).ready(function(){
 
+  if ($('.chosen-select').length) {
+    $(".chosen-select").chosen({disable_search_threshold: 10});
+  };
+
+});
 
 
 

@@ -36,6 +36,8 @@
       <link href="/admin/css/prettyPhoto.css" rel="stylesheet">
       <!-- Font awesome CSS -->
       <link href="/admin/css/font-awesome.min.css" rel="stylesheet">    
+      <!-- Chosen CSS -->
+      <link href="/admin/css/chosen.css" rel="stylesheet">    
       <!-- Custom CSS -->
       <link href="/admin/css/style.css" rel="stylesheet">
       
@@ -143,5 +145,7 @@
       <script src="/admin/js/custom.js"></script>
       <!-- App JS -->
       <script src="/admin/js/app.js"></script>
+      <!-- chosen JS -->
+      <script src="/admin/js/chosen.jquery.min.js"></script> 
    </body>  
 </html>

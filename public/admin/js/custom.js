@@ -420,7 +420,7 @@ $(".peity-bar").peity("bar", {
 $(document).ready(function(){
 
   if ($('.chosen-select').length) {
-    $(".chosen-select").chosen({disable_search_threshold: 150});
+    $(".chosen-select").chosen({disable_search_threshold: 10});
   };
 
 });

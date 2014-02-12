@@ -1,23 +1,9 @@
 <!-- Javascript files -->
     <!-- jQuery -->
-    <script src="/blog/js/jquery.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="/blog/js/bootstrap.min.js"></script>
-    <!-- Dropdown menu -->
-    <script src="/blog/js/ddlevelsmenu.js"></script>      
-      <!-- CaroFredSel -->
-      <script src="/blog/js/jquery.carouFredSel-6.2.1-packed.js"></script> 
-      <!-- Countdown -->
-      <script src="/blog/js/jquery.countdown.min.js"></script>      
-      <!-- Filter for support page -->
-      <script src="/blog/js/filter.js"></script>      
-      <!-- Isotope -->
-      <script src="/blog/js/isotope.js"></script>
-      <!-- prettyPhoto -->
-      <script src="/blog/js/jquery.prettyPhoto.js"></script>      
     <!-- Respond JS for IE8 -->
     <script src="/blog/js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
     <script src="/blog/js/html5shiv.js"></script>
-    <!-- Custom JS -->
-    <script src="/blog/js/custom.js"></script>

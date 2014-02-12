@@ -30,7 +30,7 @@
                     [% END %]
 
                     [% SET nr_of_comments = post.nr_of_comments %]
-                    <i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
+                    <span class="pull-right"><i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
                  </div>
 
                  <!-- Thumbnail -->

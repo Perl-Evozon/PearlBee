@@ -22,7 +22,6 @@
                    <div class="meta">
                       <i class="icon-calendar"></i> [% post.created_date %]
                       <i class="icon-user"></i> [% post.user.username %]
-                      <i class="icon-folder-open"></i>
 
                       [% FOREACH category in post.post_categories %]
                         <a href="/posts/category/[% category.category.slug %]"><i class="icon-list"></i>[% category.category.name %]</a>

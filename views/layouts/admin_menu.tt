@@ -23,11 +23,8 @@
 
                 <li><a href="/admin/categories"><i class="icon-list"></i> Categories</a></li>
             
-                <li><a href="/admin/tags"><i class="icon-tag"></i> Tags</a></li>
-                
-            [% END %]
-
-            [% IF (session.user.is_admin) %]
+                <li><a href="/admin/tags"><i class="icon-tag"></i> Tags</a></li>                
+            
                 <li class="has_submenu">
                      <a href="#">
                         <i class="icon-user"></i> Users
@@ -39,9 +36,10 @@
                         <li><a href="/admin/users/add">Add new</a></li>
                     </ul>
                 </li>
-            [% END %]
 
-            <li><a href="/admin/settings"><i class="icon-wrench"></i> Settings</a></li>          
+            <li><a href="/admin/settings"><i class="icon-wrench"></i> Settings</a></li>  
+            
+            [% END %]        
         </ul>
      </div>
   </div>

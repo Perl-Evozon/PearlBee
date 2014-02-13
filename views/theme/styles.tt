@@ -16,15 +16,8 @@
 <link href="/blog/css/bootstrap.min.css" rel="stylesheet">
 <!-- Animate css -->
 <link href="/blog/css/animate.min.css" rel="stylesheet">
-<!-- Dropdown menu -->
-<link href="/blog/css/ddlevelsmenu-base.css" rel="stylesheet">
-<link href="/blog/css/ddlevelsmenu-topbar.css" rel="stylesheet">
-<!-- Countdown -->
-<link href="/blog/css/jquery.countdown.css" rel="stylesheet">
-<!-- prettyPhoto -->
-<link href="/blog/css/prettyPhoto.css" rel="stylesheet">      
 <!-- Font awesome CSS -->
-<link href="/blog/css/font-awesome.min.css" rel="stylesheet">     
+<link href="/blog/css/font-awesome.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="/blog/css/style.css" rel="stylesheet">
 

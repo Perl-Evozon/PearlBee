@@ -14,6 +14,7 @@ use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name/
 
 use String::Dirify;
 use String::Util 'trim';
+use DateTime;
 
 =head
 
@@ -190,6 +191,11 @@ any '/admin/posts/add' => sub {
 
     eval {
         if ( params->{post} ) {
+          
+          # Set the proper timezone
+          my $dt       = DateTime->now;          
+          my $settings = resultset('Setting')->first;
+          $dt->set_time_zone( $settings->timezone );
 
           my $user    = session('user');
           my $status  = params->{status};
@@ -226,12 +232,13 @@ any '/admin/posts/add' => sub {
           # Next we can store the post into the database safely
           my $post = resultset('Post')->create(
               {
-                  title   => $title,
-                  slug    => $slug,
-                  content => $content,
-                  user_id => $user->id,
-                  status  => $status,
-                  cover   => ( $cover ) ? $crypted_filename . $ext : '',
+                  title        => $title,
+                  slug         => $slug,
+                  content      => $content,
+                  user_id      => $user->id,
+                  status       => $status,
+                  created_date => join ' ', $dt->ymd, $dt->hms,
+                  cover        => ( $cover ) ? $crypted_filename . $ext : '',
               });
           # Store the post id so that we can redirect the user to the post created
           $post_id = $post->id;

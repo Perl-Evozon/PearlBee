@@ -10,9 +10,10 @@ package PearlBee::Admin::User;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use PearlBee::Password;
+use Digest::SHA1 qw(sha1_hex);
 use Crypt::RandPasswd qw(chars);
 use Email::Template;
+use DateTime;
 
 =head
 
@@ -193,22 +194,27 @@ any '/admin/users/add' => sub {
   if ( params->{username} ) {
 
     eval {
+
+      # Set the proper timezone
+      my $dt       = DateTime->now;          
+      my $settings = resultset('Setting')->first;
+      $dt->set_time_zone( $settings->timezone );
+
       my $username   = params->{username};
       my $password   = Crypt::RandPasswd::chars(10, 15);
       my $email      = params->{email};
       my $first_name = params->{first_name};
       my $last_name  = params->{last_name};
       my $role       = params->{role};
-      my $pass_hash  = generate_hash($password);
 
       resultset('User')->create({
-        username   => $username,
-        password   => $pass_hash->{hash},
-        email      => $email,
-        first_name => $first_name,
-        last_name  => $last_name,
-        role       => $role,
-        salt       => $pass_hash->{salt}
+        username        => $username,
+        password        => sha1_hex( $password ),
+        email           => $email,
+        first_name      => $first_name,
+        last_name       => $last_name,
+        register_date   => join ' ', $dt->ymd, $dt->hms,
+        role            => $role
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

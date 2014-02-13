@@ -9,6 +9,7 @@ use Dancer2::Plugin::DBIC;
 use Authen::Captcha;
 use Digest::MD5 qw(md5_hex);
 use Gravatar::URL;
+use DateTime;
 
 # Included controllers
 
@@ -39,7 +40,7 @@ Home page
 =cut
 
 get '/' => sub {
-
+  
   my $nr_of_rows  = 5; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -159,6 +160,11 @@ Add a comment method
 
 post '/comment/add' => sub {
 
+  # Set the proper timezone
+  my $dt       = DateTime->now;          
+  my $settings = resultset('Setting')->first;
+  $dt->set_time_zone( $settings->timezone );
+
   my $fullname = params->{fullname};
   my $email    = params->{email};
   my $website  = params->{website} || '';
@@ -179,12 +185,13 @@ post '/comment/add' => sub {
     # The user entered the correct secrete code
     eval {
       my $comment = resultset('Comment')->create({
-          fullname => $fullname,
-          content  => $text,
-          email    => $email,
-          website  => $website,
-          avatar   => $gravatar,
-          post_id  => $post_id
+          fullname     => $fullname,
+          content      => $text,
+          email        => $email,
+          website      => $website,
+          avatar       => $gravatar,
+          post_id      => $post_id,
+          comment_date => join ' ', $dt->ymd, $dt->hms
         });
 
       # Notify the author that a new comment was submited

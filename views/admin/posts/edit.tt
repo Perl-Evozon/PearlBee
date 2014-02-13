@@ -6,7 +6,8 @@
                </div>
                <!-- Page title -->
                
-                  <form class="form-horizontal" method="post" enctype="multipart/form-data" action="/admin/posts/update/[% post.id %]">
+                  [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
+                  <form class="form-horizontal" method="post" enctype="multipart/form-data" action="/[% role %]/posts/update/[% post.id %]">
                     <div class="row">
                        
                        <div class="col-md-8">

@@ -15,23 +15,26 @@
                <h3>Social media buttons</b></h3>
             </div>
             <div class="awidget-body">
+              [% INCLUDE components/alerts.tt %]
 
-              <form method="post" action="/admin/categories/edit/[% category.id %]">
+              <form method="post" action="/admin/settings/save">
 
                 <h5>Social media buttons</h5>
                 <div class="make-switch" data-on="success" data-off="danger">
-                    <input type="checkbox" checked>
+                    <input id="social_media_check" name="social_media" type="checkbox" checked>
                 </div>
+                <input id="social_media_state" type="hidden" value="[% setting.social_media %]" />
 
                 <hr />
 
                 <h5>Timezone</h5>
                 <div class="btn-group">
                   <!-- <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Select time zone <span class="caret"></span></button> -->
-                  <select class="chosen-select">
+                  <select name="timezone" class="chosen-select">
                     <option value=""> Select time zone </option>
                     [% FOREACH timezone IN timezones %]
-                      <option value="[% timezone.name %]"> [% timezone.name %] </option>
+                      [% SET selected = timezone == setting.timezone ? "selected" : "" %]
+                      <option [% selected %] value="[% timezone %]"> [% timezone %] </option>
                     [% END %]
                   </select>
                 </div>
@@ -41,7 +44,7 @@
                 <h5>Blog path</h5>
                 <div class="form-group">
                   <div class="smaller-size">
-                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.path %]" required>
+                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.blog_path %]" required>
                   </div>
                 </div>
 

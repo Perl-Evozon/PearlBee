@@ -48,3 +48,14 @@ $(document).ready(function() {
 	});
 
 });
+
+// Auto switch the bootstrap switcer on the Settings page.
+
+$(document).ready(function(){
+
+	var state = $('#social_media_state').val();
+	state = parseInt(state);
+
+	$('.make-switch').bootstrapSwitch('setState' , state);
+
+});

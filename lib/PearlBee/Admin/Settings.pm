@@ -9,6 +9,8 @@ package PearlBee::Admin::Settings;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use DateTime::TimeZone;
+use POSIX qw(tzset);
 
 =haed
 
@@ -19,15 +21,44 @@ Index of settings page
 get '/admin/settings' => sub {
 
 	my $settings  = resultset('Setting')->first;
-	my @timezones = resultset('Timezone')->all;
+	my @timezones = DateTime::TimeZone->all_names;
 
 	template 'admin/settings/index.tt', 
 		{ 
-			settings  => $settings,
+			setting  => $settings,
 			timezones => \@timezones
 		}, 
 		{ layout => 'admin' };
 
+};
+
+post '/admin/settings/save' => sub {
+	
+	my $settings;
+	my @timezones 	 = DateTime::TimeZone->all_names;
+	my $path 		 = params->{path};
+	my $social_media = params->{social_media}; # If the social media checkbox isn't checked the value will be undef
+	my $timezone  	 = params->{timezone};
+
+	eval {
+		$settings = resultset('Setting')->first;
+
+		$settings->update({
+			blog_path => $path,
+			timezone => $timezone,
+			social_media => ($social_media) ? '1' : '0'
+		});
+	};
+
+	error $@ if ( $@ );
+
+	template 'admin/settings/index.tt', 
+		{ 
+			setting   => $settings,
+			timezones => \@timezones,
+			success   => 'The settings have been saved!'
+		}, 
+		{ layout => 'admin' };
 };
 
 1;

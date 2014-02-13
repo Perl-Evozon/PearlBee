@@ -11,6 +11,9 @@
 
       <div class="col-md-12">
          <div class="awidget">
+            <div class="awidget-head">
+               <h3>Social media buttons</b></h3>
+            </div>
             <div class="awidget-body">
               [% INCLUDE components/alerts.tt %]
 
@@ -50,11 +53,9 @@
                 <div class="form-group">
                   <div>
                     <button type="submit" class="btn btn-default">Save</button>
-                    <a href="/admin/categories"><button type="button" class="btn btn-danger">Cancel</button></a>
+                    <a href="/admin/settings"><button type="button" class="btn btn-danger">Cancel</button></a>
                   </div>
                 </div>
-
-               <br /><br /><br /><br />
 
               </form>
 

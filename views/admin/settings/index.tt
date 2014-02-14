@@ -17,7 +17,7 @@
             <div class="awidget-body">
               [% INCLUDE components/alerts.tt %]
 
-              <form method="post" action="/admin/settings/save">
+              <form method="post" action="[% session.app_url %]/admin/settings/save">
 
                 <h5>Social media buttons</h5>
                 <div class="make-switch" data-on="success" data-off="danger">
@@ -37,15 +37,6 @@
                       <option [% selected %] value="[% timezone %]"> [% timezone %] </option>
                     [% END %]
                   </select>
-                </div>
-
-                <hr />
-
-                <h5>Blog path</h5>
-                <div class="form-group">
-                  <div class="smaller-size">
-                       <input type="text" class="form-control" name="path" placeholder="Blog path" value="[% setting.blog_path %]" required>
-                  </div>
                 </div>
 
                 <hr />

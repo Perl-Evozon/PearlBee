@@ -44,6 +44,34 @@ get '/admin/posts' => sub {
 
 =head
 
+list all posts method per page
+
+=cut
+
+get '/admin/posts/page/:page' => sub {
+
+    my $nr_of_rows  = 6; # Number of posts per page
+    my $page        = params->{page};
+    my @posts       = resultset('Post')->search( {}, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page } );
+    my $publish     = resultset('Post')->search( { status       => 'published' } )->count;
+    my $trash       = resultset('Post')->search( { status       => 'trash' } )->count;
+    my $draft       = resultset('Post')->search( { status       => 'draft' } )->count;
+    my $all         = scalar(@posts);
+
+    template '/admin/posts/list',
+      {
+        posts   => \@posts,
+        trash   => $trash,
+        draft   => $draft,
+        publish => $publish,
+        all     => $all
+      },
+      { layout => 'admin' };
+
+};
+
+=head
+
 list all published posts
 
 =cut

@@ -13,7 +13,7 @@ Return the total number of pages
 sub get_total_pages {
 	my ($nr_of_items, $nr_of_rows) = @_;
 
-	my $total_pages   = ( ($nr_of_items / $nr_of_rows) != int($nr_of_items / $nr_of_rows) ) ? int($nr_of_items / $nr_of_rows) + 1 : ($nr_of_items % $nr_of_rows);
+	my $total_pages   = ( ($nr_of_items / $nr_of_rows) != int($nr_of_items / $nr_of_rows) ) ? int($nr_of_items / $nr_of_rows) + 1 : ($nr_of_items / $nr_of_rows);
 
 	return $total_pages;
 }

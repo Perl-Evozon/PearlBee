@@ -35,13 +35,25 @@ our $VERSION = '0.1';
 
 =head
 
+Prepare the blog path
+
+=cut
+
+hook 'before' => sub {
+
+  session app_url => config->{app_url} unless ( session('app_url') );
+
+};
+
+=head
+
 Home page
 
 =cut
 
 get '/' => sub {
   
-  my $nr_of_rows  = 5; # Number of posts per page
+  my $nr_of_rows  = 6; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -78,7 +90,7 @@ Home page
 
 get '/page/:page' => sub {
 
-  my $nr_of_rows  = 5; # Number of posts per page
+  my $nr_of_rows  = 6; # Number of posts per page
   my $page        = params->{page};
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;

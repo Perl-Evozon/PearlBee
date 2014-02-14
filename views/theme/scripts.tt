@@ -1,9 +1,9 @@
 <!-- Javascript files -->
     <!-- jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="[% session.app_url %]//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="/blog/js/bootstrap.min.js"></script>
+    <script src="[% session.app_url %]/blog/js/bootstrap.min.js"></script>
     <!-- Respond JS for IE8 -->
-    <script src="/blog/js/respond.min.js"></script>
+    <script src="[% session.app_url %]/blog/js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
-    <script src="/blog/js/html5shiv.js"></script>
+    <script src="[% session.app_url %]/blog/js/html5shiv.js"></script>

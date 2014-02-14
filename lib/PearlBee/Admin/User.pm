@@ -140,7 +140,7 @@ any '/admin/users/activate/:id' => sub {
       });
   };
 
-  redirect '/admin/users';
+  redirect session('app_url') . '/admin/users';
 };
 
 =head
@@ -160,7 +160,7 @@ any '/admin/users/deactivate/:id' => sub {
       });
   };
 
-  redirect '/admin/users';
+  redirect session('app_url') . '/admin/users';
 };
 
 =head
@@ -180,7 +180,7 @@ any '/admin/users/suspend/:id' => sub {
       });
   };
 
-  redirect '/admin/users';
+  redirect session('app_url') . '/admin/users';
 };
 
 =head

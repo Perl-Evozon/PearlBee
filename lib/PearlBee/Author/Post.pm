@@ -140,7 +140,7 @@ get '/author/posts/publish/:id' => sub {
       });
   };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -160,7 +160,7 @@ get '/author/posts/draft/:id' => sub {
       });
   };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -180,7 +180,7 @@ get '/author/posts/trash/:id' => sub {
       });
   };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -285,7 +285,7 @@ any '/author/posts/add' => sub {
 
   # If the user created a new post redirect him to the post created
   if ( $post_id ) {
-    redirect '/author/posts/edit/' . $post_id;
+    redirect session('app_url') . '/author/posts/edit/' . $post_id;
   }
   else {
     template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
@@ -437,7 +437,7 @@ post '/author/posts/update/:id' => sub {
   session success => 'The post was updated successfully!';
 
   error $post_id;
-  redirect '/author/posts/edit/' . $post_id;
+  redirect session('app_url') . '/author/posts/edit/' . $post_id;
 
 };
 

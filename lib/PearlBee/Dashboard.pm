@@ -13,7 +13,7 @@ Check if the user has authorization for this part of the web site
 hook 'before' => sub {
   my $user = session('user');
 
-  redirect('/') if ( !$user );
+  redirect session('app_url') . '/'  if ( !$user );
 };
 
 =head
@@ -40,7 +40,7 @@ any '/dashboard' => sub {
         $user->update({
           password => $password_hash->{hash},
           status   => 'activated',
-	  salt 	   => $password_hash->{salt}
+	        salt 	   => $password_hash->{salt}
         });
 
         template 'admin/index', { user => $user }, { layout => 'admin' };
@@ -51,8 +51,8 @@ any '/dashboard' => sub {
     }
   }
   else {
-    redirect('/admin/posts/add') if ( $user->is_admin );
-    redirect('/author/posts/add');
+    redirect session('app_url') . '/admin/posts/add'  if ( $user->is_admin );
+    redirect session('app_url') . '/author/posts/add';
   }
 
 };

@@ -136,7 +136,7 @@ get '/admin/posts/publish/:id' => sub {
         $post->update( { status => 'published' } );
     };
 
-    redirect '/admin/posts';
+    redirect session('app_url') . '/admin/posts';
 
 };
 
@@ -155,7 +155,7 @@ get '/admin/posts/draft/:id' => sub {
         $post->update( { status => 'draft' } );
     };
 
-    redirect '/admin/posts';
+    redirect session('app_url') . '/admin/posts';
 };
 
 =head
@@ -174,7 +174,7 @@ get '/admin/posts/trash/:id' => sub {
         $post->update( { status => 'trash' } );
     };
 
-    redirect '/admin/posts';
+    redirect session('app_url') . '/admin/posts';
 
 };
 
@@ -280,7 +280,7 @@ any '/admin/posts/add' => sub {
 
     # If the user created a new post redirect him to the post created
     if ( $post_id ) {
-      redirect '/admin/posts/edit/' . $post_id;
+      redirect session('app_url') . '/admin/posts/edit/' . $post_id;
     }
     else {
       template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
@@ -431,7 +431,7 @@ post '/admin/posts/update/:id' => sub {
 
     session success => 'The post was updated successfully!';
 
-    redirect '/admin/posts/edit/' . $post_id;
+    redirect session('app_url') . '/admin/posts/edit/' . $post_id;
 
 };
 

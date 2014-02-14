@@ -79,7 +79,7 @@ get '/admin/tags/delete/:id' => sub {
 
   error $@ if ( $@ );
 
-  redirect '/admin/tags';
+  redirect session('app_url') . '/admin/tags';
 
 };
 

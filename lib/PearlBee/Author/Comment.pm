@@ -170,7 +170,7 @@ get '/author/comments/approve/:id' => sub {
       });
   };
 
-  redirect '/author/comments';
+  redirect session('app_url') . '/author/comments';
 };
 
 =haed
@@ -190,7 +190,7 @@ get '/author/comments/trash/:id' => sub {
       });
   };
 
-  redirect '/author/comments';
+  redirect session('app_url') . '/author/comments';
 };
 
 =haed
@@ -210,7 +210,7 @@ get '/author/comments/spam/:id' => sub {
       });
   };
 
-  redirect '/author/comments';
+  redirect session('app_url') . '/author/comments';
 };
 
 =haed
@@ -230,7 +230,7 @@ get '/author/comments/pending/:id' => sub {
       });
   };
 
-  redirect '/author/comments';
+  redirect session('app_url') . '/author/comments';
 };
 
 

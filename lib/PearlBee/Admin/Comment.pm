@@ -171,7 +171,7 @@ get '/admin/comments/approve/:id' => sub {
       });
   };
 
-  redirect '/admin/comments';
+  redirect session('app_url') . '/admin/comments';
 };
 
 =haed
@@ -191,7 +191,7 @@ get '/admin/comments/trash/:id' => sub {
       });
   };
 
-  redirect '/admin/comments';
+  redirect session('app_url') . '/admin/comments';
 };
 
 =haed
@@ -211,7 +211,7 @@ get '/admin/comments/spam/:id' => sub {
       });
   };
 
-  redirect '/admin/comments';
+  redirect session('app_url') . '/admin/comments';
 };
 
 =haed
@@ -231,7 +231,7 @@ get '/admin/comments/pending/:id' => sub {
       });
   };
 
-  redirect '/admin/comments';
+  redirect session('app_url') . '/admin/comments';
 };
 
 

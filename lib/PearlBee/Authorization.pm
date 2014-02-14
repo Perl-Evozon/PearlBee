@@ -14,17 +14,17 @@ hook 'before' => sub {
   # Check if the user is logged in
   my $request = request->path_info;
   if ( $request =~ /admin/ && !$user ) {
-    redirect('/admin');
+    redirect session('app_url') . '/admin' ;
   }
 
   # Check if the user is activated
   if ( $request !~ /\/dashboard/ && $user) {
-    redirect('/dashboard') if ( $user->status eq 'deactivated' );
+    redirect session('app_url') . '/dashboard'  if ( $user->status eq 'deactivated' );
   }
 
   # Restrict access to non-admin users
   if ( $request =~ '/admin/' && $user->is_author ) {
-    redirect('/author/posts/add');
+    redirect session('app_url') . '/author/posts/add' ;
   }
 };
 

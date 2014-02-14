@@ -55,6 +55,7 @@ get '/admin/posts' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        action_url    => 'admin/posts/page',
         pages         => $pagination->pages_in_set
       },
       { layout => 'admin' };
@@ -98,6 +99,7 @@ get '/admin/posts/page/:page' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        action_url    => 'admin/posts/page',
         pages         => $pagination->pages_in_set
       },
       { layout => 'admin' };
@@ -141,6 +143,7 @@ get '/admin/posts/published/page/:page' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        action_url    => 'admin/posts/published/page',
         pages         => $pagination->pages_in_set
       },
       { layout => 'admin' };
@@ -183,6 +186,7 @@ get '/admin/posts/draft/page/:page' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        action_url    => 'admin/posts/draft/page',
         pages         => $pagination->pages_in_set
       },
       { layout => 'admin' };
@@ -207,7 +211,7 @@ get '/admin/posts/trash/page/:page' => sub {
 
     # Calculate the next and previous page link
     my $total_pages                 = get_total_pages($all, $nr_of_rows);
-    my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/posts/draft');
+    my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/posts/trash');
 
     # Generating the pagination navigation
     my $total_posts     = $trash;
@@ -227,6 +231,7 @@ get '/admin/posts/trash/page/:page' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        action_url    => 'admin/posts/trash/page',
         pages         => $pagination->pages_in_set
       },
       { layout => 'admin' };

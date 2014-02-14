@@ -14,10 +14,10 @@
 
 	        	[% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
 	        	<a href="/[% role %]/comments"> 	All </a>([% all %]) | 
-	        	<a href="/[% role %]/comments/pending"> Pending </a>([% pending %]) | 
-	        	<a href="/[% role %]/comments/approved"> Approved </a>([% approved %]) |
-	        	<a href="/[% role %]/comments/trash"> Trash </a>([% trash %]) | 
-	        	<a href="/[% role %]/comments/spam"> Spam </a>([% spam %])
+	        	<a href="/[% role %]/comments/pending/page/1"> Pending </a>([% pending %]) | 
+	        	<a href="/[% role %]/comments/approved/page/1"> Approved </a>([% approved %]) |
+	        	<a href="/[% role %]/comments/trash/page/1"> Trash </a>([% trash %]) | 
+	        	<a href="/[% role %]/comments/spam/page/1"> Spam </a>([% spam %])
 
 				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
 					<thead>
@@ -85,7 +85,13 @@
 						[% END %]	
 						
 					</tbody>
-				</table>                      
+				</table>
+
+				<ul class="pagination pull-right">
+                	[% INCLUDE components/pagination.tt %]
+              	</ul>
+
+              	<div class="clearfix"></div>            
 	       </div>
     	</div>    
  	</div>

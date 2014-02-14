@@ -1,6 +1,6 @@
 package PearlBee;
 
-# ABSTRACT: PearlBee Blog platform
+# ABSTRACT: PerlBee Blog platform
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
@@ -31,6 +31,7 @@ use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
 use PearlBee::Helpers::Util qw(generate_crypted_filename);
+use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 our $VERSION = '0.1';
 
 =head
@@ -61,11 +62,8 @@ get '/' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     =  ( $total_pages < 2 ) ? '#' : '/page/2';
-  my $posts2     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows })->first;
-
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
 
     template 'index', 
       { 
@@ -99,11 +97,9 @@ get '/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link   = ( $page == 1 ) ? '#' : '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
 
     template 'index', 
       { 
@@ -288,9 +284,9 @@ get '/posts/category/:slug' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     = ( $total_pages < 2 ) ? '#' : '/posts/category/' . $slug . '/page/2';
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/category/' . $slug);
 
   # Extract all posts with the wanted category
   template 'index', 
@@ -326,11 +322,9 @@ get '/posts/category/:slug/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link   = ( $page == 1 ) ? '#' : '/posts/category/' . $slug . '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/posts/category/' . $slug . '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
   template 'index', 
       { 
@@ -364,9 +358,9 @@ get '/posts/tag/:slug' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     = ( $total_pages < 2 ) ? '#' : '/posts/tag/' . $slug . '/page/2';
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
 
   template 'index', 
       {         
@@ -402,11 +396,9 @@ get '/posts/tag/:slug/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link = ( $page == 1 ) ? '#' : '/posts/tag/' . $slug . '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/posts/tag/' . $slug . '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/tag/' . $slug);
 
   template 'index', 
       { 

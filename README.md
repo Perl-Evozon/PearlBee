@@ -27,12 +27,12 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <pre><blockquote>./build.sh</blockquote></pre>
 
 <h4>Creating database</h4>
-You'll need to have installed and running either MySQL or MariaDB. To create and configure the database. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
+You'll need to have installed and running either MySQL or MariaDB. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
 
 At the terminal from the root application directory, run this command:
 <pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
-That's it, now you just go into the 'pearlbee' folder and run the following command:
+That's it, now from within the root directory run the following command:
 
 <pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>
 

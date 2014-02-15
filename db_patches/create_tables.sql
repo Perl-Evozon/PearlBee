@@ -7,8 +7,8 @@ USE PearlBee;
 
 CREATE TABLE IF NOT EXISTS user (
 	id 				INT NOT NULL AUTO_INCREMENT,
-	first_name 		VARCHAR(255) NOT NULL,
-	last_name 		VARCHAR(255) NOT NULL,
+	first_name 		VARCHAR(255) UNICODE NOT NULL,
+	last_name 		VARCHAR(255) UNICODE NOT NULL,
 	username		VARCHAR(200) NOT NULL,
 	password		VARCHAR(100) NOT NULL,
 	register_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS category (
 	id  	INT NOT NULL AUTO_INCREMENT,
-	name 	VARCHAR(100) NOT NULL,
-	slug 	VARCHAR(100) NOT NULL,
+	name 	VARCHAR(100) UNICODE NOT NULL,
+	slug 	VARCHAR(100) UNICODE NOT NULL,
 	user_id INT NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY (name),
@@ -36,11 +36,11 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	title 			VARCHAR(255) NOT NULL,
-	slug 			VARCHAR(255) NOT NULL,
-	description 	VARCHAR(255),
+	title 			VARCHAR(255) UNICODE NOT NULL,
+	slug 			VARCHAR(255) UNICODE NOT NULL,
+	description 	VARCHAR(255) UNICODE,
 	cover 			VARCHAR(300) NOT NULL,
-	content 		TEXT NOT NULL,
+	content 		TEXT UNICODE NOT NULL,
 	created_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	status 			ENUM('published', 'trash', 'draft') DEFAULT 'draft',
 	user_id 		INT NOT NULL,
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS post_category (
 
 CREATE TABLE IF NOT EXISTS tag (
 	id  	INT NOT NULL AUTO_INCREMENT,
-	name 	VARCHAR(100),
-	slug 	varchar(100),
+	name 	VARCHAR(100) UNICODE,
+	slug 	varchar(100) UNICODE,
 	PRIMARY KEY (id)
 );
 
@@ -73,8 +73,8 @@ CREATE TABLE IF NOT EXISTS post_tag (
 
 CREATE TABLE IF NOT EXISTS comment (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	content 		TEXT,
-	fullname 		VARCHAR(100),
+	content 		TEXT UNICODE,
+	fullname 		VARCHAR(100) UNICODE,
 	email 			VARCHAR(200),
 	website 		VARCHAR(255),
 	avatar 			VARCHAR(255),

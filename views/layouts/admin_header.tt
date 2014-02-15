@@ -5,7 +5,7 @@
                <div class="col-md-3">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="[% session.app_url %]/admin ">PerlBee Admin </a></h1>  
+                     <h1><a href="[% session.app_url %]/admin ">PearlBee Admin </a></h1>  
                   </div>
                </div>
                 

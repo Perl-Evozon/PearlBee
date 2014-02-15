@@ -55,7 +55,7 @@
 									|
 
 									[% IF (user.status == 'suspended') %]
-										<span class="label label-danger"> Supended </span>
+										<span class="label label-danger"> Suspended </span>
 									[% ELSE %]
 										<a href="/admin/users/suspend/[% user.id %]"> Suspend </a>
 									[% END %]

@@ -19,36 +19,35 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Email::MIME</li>
 <li>Email::Sender::Simple</li>
 <li>Template::Plugin::HTML::Strip</li>
-<li>You will need a MySQL server for the blog's database.</li>
-<li> You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
+<li>You will need a MySQL/MariaDB server for the blog's database.</li>
+<li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
 </ul>
 
 <h4>Installing / Updating perl modules</h4>
 <pre><blockquote>./build.sh</blockquote></pre>
 
 <h4>Creating database</h4>
-After you've downloaded PearlBee source code, be sure to create the database by running the command: 
+You'll need to have installed and running either MySQL or MariaDB. To create and configure the database. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
 
-<pre><blockquote>mysql> GRANT ALL PRIVILEGES ON PearlBee.* To 'your_user'@'localhost' IDENTIFIED BY 'yourPassWord';<blockquote></pre>
-and then initialize the database by running the script
-<pre><blockquote>mysql -u your_user -p your_password PearlBee &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+At the terminal from the root application directory, run this command:
+<pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
-After the database creation, you will need to configure the following file: pearlbee/config.yaml
-Under the user and pass tag, please write down your own database credentials.
-<p>
-That's it, now you just go into the 'pearlbee' folder and run the following command:  
+That's it, now you just go into the 'pearlbee' folder and run the following command:
 
 <pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>
+
+Or:
+
 <pre><blockquote>./scripts/launch-devel</p></blockquote></pre>
 
-And your blog is now running. 
+And your blog is now running!
 
 <h3>Usage</h3>
 
 <h4>Admin</h4>
 Once you have started your web server.
 Open your browser and go to the url http:://<YOUR_IP>:5000/admin
-Use the default login / password to enter, you should change them before starting using the blog !
+Use the default login / password to enter, you should change them before starting using the blog!
 via "My Account -> Profile".
 
 <pre><blockquote>http://127.0.0.1:5000/admin/

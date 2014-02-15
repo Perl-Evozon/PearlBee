@@ -1,3 +1,5 @@
+GRANT ALL PRIVILEGES ON PearlBee.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+
 DROP DATABASE IF EXISTS PearlBee;
 CREATE DATABASE IF NOT EXISTS PearlBee;
 

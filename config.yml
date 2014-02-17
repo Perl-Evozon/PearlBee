@@ -3,7 +3,7 @@
 # all the settings in this file will be loaded at Dancer's startup.
 
 # Your application's name
-appname: "PearlBee"
+appname: "PerlTricks"
 
 # The default layout to use for your application (located in
 # views/layouts/main.tt)
@@ -36,8 +36,8 @@ plugins:
         default:
           dsn: dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
-          user: root
-          pass: dev
+          user: username
+          pass: password
           options:
             RaiseError: 1
             PrintError: 1

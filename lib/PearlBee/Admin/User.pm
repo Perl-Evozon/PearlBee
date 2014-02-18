@@ -10,10 +10,14 @@ package PearlBee::Admin::User;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
+use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
+
 use Digest::SHA1 qw(sha1_hex);
 use Crypt::RandPasswd qw(chars);
 use Email::Template;
 use DateTime;
+
+get '/admin/users' => sub { redirect session('app_url') . '/admin/users/page/1'; };
 
 =head
 
@@ -21,22 +25,39 @@ List all users
 
 =cut
 
-get '/admin/users' => sub {
+get '/admin/users/page/:page' => sub {
 
-  my @users = resultset('User')->search({}, { order_by => "register_date DESC" });
-  
-  my $all     = scalar ( @users );
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page} || 1;
+  my @users       = resultset('User')->search({}, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my $all         = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'})->count;
   my $deactivated = resultset('User')->search({ status => 'deactivated'})->count;
   my $suspended   = resultset('User')->search({ status => 'suspended'})->count;
 
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/users');
+
+  # Generating the pagination navigation
+  my $total_users     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
+
   template '/admin/users/list',
     {
-      users     => \@users,
-      all       => $all, 
-      activated   => $activated,
-      deactivated => $deactivated,
-      suspended   => $suspended
+      users         => \@users,
+      all           => $all, 
+      activated     => $activated,
+      deactivated   => $deactivated,
+      suspended     => $suspended,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'admin/users/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 
@@ -48,22 +69,39 @@ List all deactivated users
 
 =cut
 
-get '/admin/users/deactivated' => sub {
+get '/admin/users/deactivated/page/:page' => sub {
 
-  my @users = resultset('User')->search({ status => 'deactivated' }, { order_by => "register_date DESC" });
-  
-  my $all     = resultset('User')->search({})->count;
-  my $activated   = resultset('User')->search({ status => 'activated'})->count;
-  my $deactivated = scalar ( @users );
-  my $suspended   = resultset('User')->search({ status => 'suspended'})->count;
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page} || 1;
+  my @users       = resultset('User')->search({ status => 'deactivated' }, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my $all         = resultset('User')->search({})->count;
+  my $activated   = resultset('User')->search({ status => 'activated' })->count;
+  my $deactivated = resultset('User')->search({ status => 'deactivated' })->count;
+  my $suspended   = resultset('User')->search({ status => 'suspended' })->count;
+
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/users/deactivated');
+
+  # Generating the pagination navigation
+  my $total_users     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/users/list',
     {
-      users     => \@users,
-      all       => $all, 
-      activated   => $activated,
-      deactivated => $deactivated,
-      suspended   => $suspended
+      users         => \@users,
+      all           => $all, 
+      activated     => $activated,
+      deactivated   => $deactivated,
+      suspended     => $suspended,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'admin/users/deactivated/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 
@@ -75,22 +113,39 @@ List all activated users
 
 =cut
 
-get '/admin/users/activated' => sub {
+get '/admin/users/activated/page/:page' => sub {
 
-  my @users = resultset('User')->search({ status => 'activated' }, { order_by => "register_date DESC" });
-  
-  my $all     = resultset('User')->search({})->count;
-  my $activated   = scalar ( @users );
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page} || 1;
+  my @users       = resultset('User')->search({ status => 'activated' }, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my $all         = resultset('User')->search({})->count;
+  my $activated   = resultset('User')->search({ status => 'activated' })->count;
   my $deactivated = resultset('User')->search({ status => 'deactivated'});
   my $suspended   = resultset('User')->search({ status => 'suspended'});
 
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/users/activated');
+
+  # Generating the pagination navigation
+  my $total_users     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
+
   template '/admin/users/list',
     {
-      users     => \@users,
-      all       => $all, 
-      activated   => $activated,
-      deactivated => $deactivated,
-      suspended   => $suspended
+      users         => \@users,
+      all           => $all, 
+      activated     => $activated,
+      deactivated   => $deactivated,
+      suspended     => $suspended,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'admin/users/activated/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 
@@ -102,22 +157,39 @@ List all suspended users
 
 =cut
 
-get '/admin/users/suspended' => sub {
+get '/admin/users/suspended/page/:page' => sub {
 
-  my @users = resultset('User')->search({ status => 'suspended' }, { order_by => "register_date DESC" });
-  
-  my $all     = resultset('User')->search({})->count;
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page} || 1;
+  my @users       = resultset('User')->search({ status => 'suspended' }, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my $all         = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'});
   my $deactivated = resultset('User')->search({ status => 'deactivated'});
-  my $suspended   = scalar ( @users );
+  my $suspended   = resultset('User')->search({ status => 'suspended'});
+
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/users/suspended');
+
+  # Generating the pagination navigation
+  my $total_users     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/users/list',
     {
-      users     => \@users,
-      all       => $all, 
-      activated   => $activated,
-      deactivated => $deactivated,
-      suspended   => $suspended
+      users         => \@users,
+      all           => $all, 
+      activated     => $activated,
+      deactivated   => $deactivated,
+      suspended     => $suspended,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'admin/users/suspended/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 

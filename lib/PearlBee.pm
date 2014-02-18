@@ -179,12 +179,9 @@ post '/comment/add' => sub {
   my $text     = params->{comment};
   my $post_id  = params->{id};
   my $secret   = params->{secret};
-
+  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
   my $post     = resultset('Post')->find( $post_id );
   my @categories   = resultset('Category')->all();
-
-  # Grap the approved comments for this post
-  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
 
   # Grab the gravatar if exists, or a default image if not
   my $gravatar = gravatar_url(email => $email);
@@ -192,6 +189,17 @@ post '/comment/add' => sub {
   if ( md5_hex($secret) eq session('secret') ) {
     # The user entered the correct secrete code
     eval {
+
+      # If the person who leaves the comment is either the author or the admin the comment is automaticly approved
+      my $user = session('user');
+      my $status;
+      if ($user) {
+        $status = ( $user->is_admin || $user->id == $post->user->id ) ? 'approved' : 'pending';
+      }
+      else {
+        $status = 'pending';
+      }
+
       my $comment = resultset('Comment')->create({
           fullname     => $fullname,
           content      => $text,
@@ -199,6 +207,7 @@ post '/comment/add' => sub {
           website      => $website,
           avatar       => $gravatar,
           post_id      => $post_id,
+          status       => $status,
           comment_date => join ' ', $dt->ymd, $dt->hms
         });
 
@@ -218,6 +227,9 @@ post '/comment/add' => sub {
           },
       }) or error "Could not send the email";
     };
+
+    # Grap the approved comments for this post
+    @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
 
     error $@ if ( $@ );
     

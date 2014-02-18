@@ -81,12 +81,14 @@ get '/author/posts/:status/page/:page' => sub {
   my $draft       = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
   my $publish     = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
 
+  my $status_count = resultset('Post')->search({ user_id => $user->id, status => $status })->count;
+
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/posts/' . $status);
 
   # Generating the pagination navigation
-  my $total_posts     = $all;
+  my $total_posts     = $status_count;
   my $posts_per_page  = $nr_of_rows;
   my $current_page    = $page;
   my $pages_per_set   = 7;

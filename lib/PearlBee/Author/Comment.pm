@@ -57,7 +57,7 @@ get '/author/comments/page/:page' => sub {
 
 =head
 
-List all pending comments
+List all comments grouped by status
 
 =cut
 
@@ -75,12 +75,14 @@ get '/author/comments/:status/page/:page' => sub {
   my $spam        = resultset('View::UserComments')->search({ status => 'spam'     }, { bind => [ $user->id ] })->count;
   my $pending     = resultset('View::UserComments')->search({ status => 'pending'  }, { bind => [ $user->id ] })->count;
 
+  my $status_count = resultset('View::UserComments')->search({ status => $status  }, { bind => [ $user->id ] })->count;
+
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/comments/' . $status);
 
   # Generating the pagination navigation
-  my $total_comments  = $all;
+  my $total_comments  = $status_count;
   my $posts_per_page  = $nr_of_rows;
   my $current_page    = $page;
   my $pages_per_set   = 7;

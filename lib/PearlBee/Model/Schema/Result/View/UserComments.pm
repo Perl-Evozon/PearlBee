@@ -60,7 +60,7 @@ __PACKAGE__->set_primary_key("id");
 
 __PACKAGE__->belongs_to(
   "post",
-  "Model::Schema::Result::Post",
+  "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );

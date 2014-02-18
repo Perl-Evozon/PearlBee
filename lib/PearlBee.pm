@@ -128,7 +128,10 @@ get '/post/:slug' => sub {
   my $slug       = params->{slug};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
+  my @tags        = resultset('View::PublishedTags')->all();
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   my $captcha    = Authen::Captcha->new();
 
@@ -152,10 +155,13 @@ get '/post/:slug' => sub {
 
   template 'post', 
     { 
-      post        => $post, 
-      categories  => \@categories, 
-      comments    => \@comments,
-      setting    => $settings
+      post       => $post, 
+      recent     => \@recent,
+      popular    => \@popular,
+      categories => \@categories, 
+      comments   => \@comments,
+      setting    => $settings,
+      tags       => \@tags,
     }, 
     { layout => 'main' };
 };

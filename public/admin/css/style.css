@@ -52,7 +52,7 @@ hr{
 strong{
    font-family: 'Open Sans', sans-serif !important;
    font-weight:600;
-}
+}  
 
 :focus {
 	outline:none;
@@ -159,7 +159,7 @@ strong{
 
 .input-group .btn{
    margin-top:0px !important;
-}
+} 
 
 /* CL Editor */
 
@@ -354,7 +354,7 @@ strong{
    border-top:1px solid #eee;
    border-right:2px solid #eee;
    border-bottom:2px solid #eee;
-   position:absolute;
+   position:absolute;   
 }
 
 .sidey ul.nav, .sidey ul.nav ul{
@@ -487,7 +487,7 @@ strong{
 
 .mainy .container{
 	width: 100%;
-}
+} 
 
 /* Make post */
 
@@ -610,7 +610,7 @@ strong{
 
 .activity li{
 	padding:10px 10px;
-  background-color: #fff;
+  background-color: #fff;	
   border-top: 1px dashed #eee;
 }
 
@@ -673,7 +673,7 @@ strong{
 }
 
 .task li{
-	padding:12px 10px;
+	padding:12px 10px;	
   border-top: 1px dashed #eee;
 }
 
@@ -705,26 +705,26 @@ strong{
     height:120px; float:left; margin:15px
 }
 
-.ui-slider .ui-slider-handle {
-	position: absolute;
-	z-index: 2;
-	width: 1.1em;
-	height: 1.1em;
-	cursor: default;
+.ui-slider .ui-slider-handle { 
+	position: absolute; 
+	z-index: 2; 
+	width: 1.1em; 
+	height: 1.1em; 
+	cursor: default; 
 	background: #fafafa !important;
-	border: 1px solid #ccc !important;
+	border: 1px solid #ccc !important; 
 }
 
-.ui-slider-horizontal {
-	height: .5em;
-	border: 0px solid #eee !important;
+.ui-slider-horizontal { 
+	height: .5em; 
+	border: 0px solid #eee !important; 
 	background: #dfdfdf !important;
 }
 
-.ui-slider-vertical {
-	height: 100px;
+.ui-slider-vertical { 
+	height: 100px; 
 	width: 0.5em;
-	border: 0px solid #fff !important;
+	border: 0px solid #fff !important; 
 	background: #dfdfdf !important;
 }
 
@@ -736,32 +736,32 @@ strong{
 .slider-red .ui-widget-header{
 	background: #dd514c !important;
 	border-color: #dd514c !important;
-}
+}	
 
 .slider-blue .ui-widget-header{
 	background: #36a5c6 !important;
 	border-color: #36a5c6 !important;
-}
+}	
 
 .slider-green .ui-widget-header{
 	background: #44c636 !important;
 	border-color: #44c636 !important;
-}
+}	
 
 .slider-yellow .ui-widget-header{
 	background: #fcd419 !important;
 	border-color: #fcd419 !important;
-}
+}	
 
 .slider-orange .ui-widget-header{
 	background: #fc9419 !important;
 	border-color: #fc9419 !important;
-}
+}	
 
 .slider-violet .ui-widget-header{
 	background: #9919fc !important;
 	border-color: #9919fc !important;
-}
+}	
 
 /* Toggle button */
 
@@ -871,37 +871,37 @@ div.ppt {
 
 .chats .by-me .chat-content{
 	margin-left: 60px;
-	position: relative;
-	background: #fcfcfc;
+	position: relative; 
+	background: #fcfcfc; 
 	padding: 7px 10px;
 	font-size: 13px;
    border-radius:5px;
    border:1px solid #eee;
 }
 
-.chats .by-me .chat-content:after, .chats .by-me .chat-content:before {
-	right: 100%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-}
+.chats .by-me .chat-content:after, .chats .by-me .chat-content:before { 
+	right: 100%; 
+	border: solid transparent; 
+	content: " "; 
+	height: 0; 
+	width: 0; 
+	position: absolute; 
+} 
 
-.chats .by-me .chat-content:after {
-	border-color: rgba(255, 255, 255, 1);
-	border-right-color: #16cbe6;
-	border-width: 10px;
-	top: 30%;
-	margin-top: -10px;
-}
+.chats .by-me .chat-content:after { 
+	border-color: rgba(255, 255, 255, 1); 
+	border-right-color: #16cbe6; 
+	border-width: 10px; 
+	top: 30%; 
+	margin-top: -10px; 
+} 
 
-.chats .by-me .chat-content:before {
-	border-color: rgba(238, 238, 238, 0);
-	border-right-color: #ccc;
-	border-width: 11px;
-	top: 30%;
-	margin-top: -11px;
+.chats .by-me .chat-content:before { 
+	border-color: rgba(238, 238, 238, 0); 
+	border-right-color: #ccc; 
+	border-width: 11px; 
+	top: 30%; 
+	margin-top: -11px; 
 }
 
 .chats .by-other img{
@@ -917,38 +917,38 @@ div.ppt {
 
 .chats .by-other .chat-content{
 	margin-right: 60px;
-	position: relative;
-	background: #fcfcfc;
+	position: relative; 
+	background: #fcfcfc; 
 	padding: 7px 10px;
 	font-size: 13px;
    border:1px solid #eee;
    border-radius:5px;
 }
 
-.chats .by-other .chat-content:after, .chats .by-other .chat-content:before {
-	left: 100%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
+.chats .by-other .chat-content:after, .chats .by-other .chat-content:before { 
+	left: 100%; 
+	border: solid transparent; 
+	content: " "; 
+	height: 0; 
+	width: 0; 
+	position: absolute; 
+	pointer-events: none; 
+} 
 
-.chats .by-other .chat-content:after {
-	border-color: rgba(255, 255, 255, 1);
-	border-left-color: #16cbe6;
-	border-width: 10px;
-	top: 30%;
-	margin-top: -10px;
-}
+.chats .by-other .chat-content:after { 
+	border-color: rgba(255, 255, 255, 1); 
+	border-left-color: #16cbe6; 
+	border-width: 10px; 
+	top: 30%; 
+	margin-top: -10px; 
+} 
 
-.chats .by-other .chat-content:before {
-	border-color: rgba(238, 238, 238, 0);
-	border-left-color: #ccc;
-	border-width: 11px;
-	top: 30%;
-	margin-top: -11px;
+.chats .by-other .chat-content:before { 
+	border-color: rgba(238, 238, 238, 0); 
+	border-left-color: #ccc; 
+	border-width: 11px; 
+	top: 30%; 
+	margin-top: -11px; 
 }
 
 /* Chat widget ends */
@@ -1007,7 +1007,7 @@ div.ppt {
 	bottom: 0px;
 	right: 0px;
 	z-index: 104400;
-	background: #16cbe6;
+	background: #16cbe6; 
 }
 
 .totop a, .totop a:visited{
@@ -1028,7 +1028,7 @@ div.ppt {
 
 footer{
    background:#333 url("../img/footer-back.png") repeat;
-   border-top:3px solid #ddd;
+   border-top:3px solid #ddd; 
    box-shadow:inset 0px 0px 3px #111;
    color:#ccc;
    font-size:14px;
@@ -1075,7 +1075,7 @@ footer .copy{
    .header{
       height:auto;
       padding:15px 0px;
-   }
+   }  
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -1095,7 +1095,7 @@ footer .copy{
    .header{
       height:auto;
       padding:15px 0px;
-   }
+   }  
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -1109,7 +1109,7 @@ footer .copy{
       float:none;
       display:none;
       position:relative;
-   }
+   }  
    .mainy{
       margin-left: 0px;
    }
@@ -1129,11 +1129,12 @@ footer .copy{
       border-bottom:0px;
       box-shadow:0px 0px 1px #0fa6bc;
       border-radius:10px;
-   }
+   }  
 }
-.table.table-striped.table-bordered td {
-  vertical-align: middle;
-}
-.smaller-size {
-   width: 409px;
+.table.table-striped.table-bordered td { 
+  vertical-align: middle;  
+} 
+
+#cover.form-control {
+  height: auto !important;
 }

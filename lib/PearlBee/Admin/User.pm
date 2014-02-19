@@ -12,7 +12,7 @@ use Dancer2::Plugin::DBIC;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-use Digest::SHA1 qw(sha1_hex);
+use PearlBee::Password;
 use Crypt::RandPasswd qw(chars);
 use Email::Template;
 use DateTime;
@@ -193,15 +193,17 @@ any '/admin/users/add' => sub {
       my $first_name = params->{first_name};
       my $last_name  = params->{last_name};
       my $role       = params->{role};
+      my $pass_hash  = generate_hash($password);
 
       resultset('User')->create({
         username        => $username,
-        password        => sha1_hex( $password ),
+        password        => $pass_hash->{hash},
         email           => $email,
         first_name      => $first_name,
         last_name       => $last_name,
         register_date   => join ' ', $dt->ymd, $dt->hms,
-        role            => $role
+        role            => $role,
+        salt            => $pass_hash->{salt}
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

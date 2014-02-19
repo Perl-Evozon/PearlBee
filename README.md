@@ -11,7 +11,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Dancer2</li>
 <li>Dancer2::Plugin::DBIC</li>
 <li>Authen::Captcha ( needs libgd2-xpm-dev package)</li>
-<li>Digest::SHA1</li>
+<li>Digest::Bcrypt</li>
 <li>String::Dirify</li>
 <li>String::Util</li>
 <li>DateTime::Format::Strptime</li>

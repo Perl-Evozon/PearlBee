@@ -29,7 +29,7 @@ get '/admin/users/page/:page' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
-  my @users       = resultset('User')->search({}, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my @users       = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $all         = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'})->count;
   my $deactivated = resultset('User')->search({ status => 'deactivated'})->count;
@@ -74,7 +74,7 @@ get '/admin/users/:status/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
   my $status      = params->{status};
-  my @users       = resultset('User')->search({ status => $status }, { order_by => "register_date DESC", rows => $nr_of_rows, page => $page });
+  my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $all         = resultset('User')->search({})->count;
   my $activated   = resultset('User')->search({ status => 'activated'   })->count;
   my $deactivated = resultset('User')->search({ status => 'deactivated' })->count;

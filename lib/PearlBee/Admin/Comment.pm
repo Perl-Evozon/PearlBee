@@ -24,7 +24,7 @@ get '/admin/comments/page/:page' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
-  my @comments    = resultset('Comment')->search({}, { order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
+  my @comments    = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
   my $all         = resultset('Comment')->search({})->count;
   my $approved    = resultset('Comment')->search({ status => 'approved' })->count;
   my $trash       = resultset('Comment')->search({ status => 'trash' })->count;
@@ -71,7 +71,7 @@ get '/admin/comments/:status/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
   my $status      = params->{status};
-  my @comments    = resultset('Comment')->search({ status => $status  }, { order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
+  my @comments    = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
   my $all         = resultset('Comment')->search({ 1 => '1'})->count;
   my $approved    = resultset('Comment')->search({ status => 'approved' })->count;
   my $trash       = resultset('Comment')->search({ status => 'trash' })->count;

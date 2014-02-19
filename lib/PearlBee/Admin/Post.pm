@@ -30,11 +30,11 @@ get '/admin/posts/page/:page' => sub {
 
     my $nr_of_rows  = 5; # Number of posts per page
     my $page        = params->{page};
-    my @posts       = resultset('Post')->search( {}, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page } );
+    my @posts       = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
     my $publish     = resultset('Post')->search( { status       => 'published' } )->count;
     my $trash       = resultset('Post')->search( { status       => 'trash' } )->count;
     my $draft       = resultset('Post')->search( { status       => 'draft' } )->count;
-    my $all         = resultset('Post')->search( {}, { order_by => 'created_date DESC' })->count;
+    my $all         = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' } })->count;
 
     # Calculate the next and previous page link
     my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -75,11 +75,11 @@ get '/admin/posts/:status/page/:page' => sub {
     my $nr_of_rows  = 5; # Number of posts per page
     my $page        = params->{page} || 1;
     my $status      = params->{status};
-    my @posts       = resultset('Post')->search( { status => $status }, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page } );
+    my @posts       = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
     my $all         = resultset('Post')->search( { 1      => '1' } )->count;
     my $trash       = resultset('Post')->search( { status => 'trash' } )->count;
     my $draft       = resultset('Post')->search( { status => 'draft' } )->count;
-    my $publish     = resultset('Post')->search( { status => 'published' }, { order_by => 'created_date DESC' } )->count;
+    my $publish     = resultset('Post')->search( { status => 'published' }, { order_by => { -desc => 'created_date' } } )->count;
     
     my $status_count = resultset('Post')->search( { status => $status } )->count;
 

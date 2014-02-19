@@ -219,6 +219,7 @@ any '/admin/posts/add' => sub {
           $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext ) if $cover;
 
           # Next we can store the post into the database safely
+          my $dtf = schema->storage->datetime_parser;
           my $post = resultset('Post')->create(
               {
                   title        => $title,
@@ -226,7 +227,7 @@ any '/admin/posts/add' => sub {
                   content      => $content,
                   user_id      => $user->id,
                   status       => $status,
-                  created_date => join ' ', $dt->ymd, $dt->hms,
+                  created_date => $dtf->format_datetime($dt),
                   cover        => ( $cover ) ? $crypted_filename . $ext : '',
               });
           # Store the post id so that we can redirect the user to the post created

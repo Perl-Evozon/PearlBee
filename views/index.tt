@@ -14,7 +14,6 @@
     <div class="row">
       <div class="col-md-8">
          <div class="posts">
-            [% session.app_url %]
             <!-- Each posts should be enclosed inside "entry" class" -->
             <!-- Post one -->
             [% FOREACH post in posts %]

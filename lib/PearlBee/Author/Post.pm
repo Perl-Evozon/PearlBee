@@ -9,11 +9,15 @@ package PearlBee::Author::Post;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+
 use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name/;
+use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
 use String::Dirify;
 use String::Util 'trim';
 use DateTime;
+
+get '/author/posts' => sub { redirect session('app_url') . '/author/posts/page/1'; };
 
 =head
 
@@ -21,104 +25,87 @@ list all posts method
 
 =cut
 
-get '/author/posts' => sub {
+get '/author/posts/page/:page' => sub {
 
-  my $user = session('user');
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page};
+  my $user        = session('user');
+  my @posts       = resultset('Post')->search({ user_id => $user->id }, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page });
+  my $publish     = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
+  my $trash       = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
+  my $draft       = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
+  my $all         = resultset('Post')->search({ user_id => $user->id })->count;
 
-  my @posts   = resultset('Post')->search({ user_id => $user->id }, { order_by => 'created_date DESC' });
-  my $publish  = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $all   = scalar( @posts );
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/posts');
+
+  # Generating the pagination navigation
+  my $total_posts     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/posts/list',
     {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
+      posts         => \@posts,
+      trash         => $trash,
+      draft         => $draft,
+      publish       => $publish,
+      all           => $all,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'author/posts/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 };
 
 =head
 
-list all published posts
+list all posts grouped by status
 
 =cut
 
-get '/author/posts/published' => sub {
+get '/author/posts/:status/page/:page' => sub {
 
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'published' }, { order_by => 'created_date DESC' });
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page};
+  my $status      = params->{status};
+  my $user        = session('user');
+  my @posts       = resultset('Post')->search({ user_id => $user->id, status => $status }, { order_by => 'created_date DESC' });
+  my $all         = resultset('Post')->search({ user_id => $user->id })->count;
+  my $trash       = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
+  my $draft       = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
+  my $publish     = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
 
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $publish = scalar( @posts );
+  my $status_count = resultset('Post')->search({ user_id => $user->id, status => $status })->count;
 
-  template '/admin/posts/list',
-    {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
-    },
-    { layout => 'admin' };
-};
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/posts/' . $status);
 
-=head
-
-list all draft posts
-
-=cut
-
-get '/author/posts/draft' => sub {
-
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'draft' }, { order_by => 'created_date DESC' });
-
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $publish  = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $draft   = scalar( @posts );
+  # Generating the pagination navigation
+  my $total_posts     = $status_count;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/posts/list',
     {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
-    },
-    { layout => 'admin' };
-};
-
-=head
-
-list all trash posts
-
-=cut
-
-get '/author/posts/trash' => sub {
-
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'trash' }, { order_by => 'created_date DESC' });
-
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $publish = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $trash   = scalar( @posts );
-
-  template '/admin/posts/list',
-    {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
+      posts         => \@posts,
+      trash         => $trash,
+      draft         => $draft,
+      publish       => $publish,
+      all           => $all,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'author/posts/' . $status . '/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 };

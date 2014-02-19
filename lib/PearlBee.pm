@@ -1,6 +1,6 @@
 package PearlBee;
 
-# ABSTRACT: PearlBee Blog platform
+# ABSTRACT: PerlBee Blog platform
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
@@ -31,6 +31,7 @@ use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
 use PearlBee::Helpers::Util qw(generate_crypted_filename);
+use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 our $VERSION = '0.1';
 
 =head
@@ -61,11 +62,8 @@ get '/' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     =  ( $total_pages < 2 ) ? '#' : '/page/2';
-  my $posts2     = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => $nr_of_rows })->first;
-
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
 
     template 'index', 
       { 
@@ -99,11 +97,9 @@ get '/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link   = ( $page == 1 ) ? '#' : '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
 
     template 'index', 
       { 
@@ -132,7 +128,10 @@ get '/post/:slug' => sub {
   my $slug       = params->{slug};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
+  my @tags        = resultset('View::PublishedTags')->all();
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   my $captcha    = Authen::Captcha->new();
 
@@ -156,10 +155,13 @@ get '/post/:slug' => sub {
 
   template 'post', 
     { 
-      post        => $post, 
-      categories  => \@categories, 
-      comments    => \@comments,
-      setting    => $settings
+      post       => $post, 
+      recent     => \@recent,
+      popular    => \@popular,
+      categories => \@categories, 
+      comments   => \@comments,
+      setting    => $settings,
+      tags       => \@tags,
     }, 
     { layout => 'main' };
 };
@@ -183,12 +185,9 @@ post '/comment/add' => sub {
   my $text     = params->{comment};
   my $post_id  = params->{id};
   my $secret   = params->{secret};
-
+  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
   my $post     = resultset('Post')->find( $post_id );
   my @categories   = resultset('Category')->all();
-
-  # Grap the approved comments for this post
-  my @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
 
   # Grab the gravatar if exists, or a default image if not
   my $gravatar = gravatar_url(email => $email);
@@ -196,6 +195,17 @@ post '/comment/add' => sub {
   if ( md5_hex($secret) eq session('secret') ) {
     # The user entered the correct secrete code
     eval {
+
+      # If the person who leaves the comment is either the author or the admin the comment is automaticly approved
+      my $user = session('user');
+      my $status;
+      if ($user) {
+        $status = ( $user->is_admin || $user->id == $post->user->id ) ? 'approved' : 'pending';
+      }
+      else {
+        $status = 'pending';
+      }
+
       my $comment = resultset('Comment')->create({
           fullname     => $fullname,
           content      => $text,
@@ -203,6 +213,7 @@ post '/comment/add' => sub {
           website      => $website,
           avatar       => $gravatar,
           post_id      => $post_id,
+          status       => $status,
           comment_date => join ' ', $dt->ymd, $dt->hms
         });
 
@@ -222,6 +233,9 @@ post '/comment/add' => sub {
           },
       }) or error "Could not send the email";
     };
+
+    # Grap the approved comments for this post
+    @comments = resultset('Comment')->search({ post_id => $post_id, status => 'approved' });
 
     error $@ if ( $@ );
     
@@ -288,9 +302,9 @@ get '/posts/category/:slug' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     = ( $total_pages < 2 ) ? '#' : '/posts/category/' . $slug . '/page/2';
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/category/' . $slug);
 
   # Extract all posts with the wanted category
   template 'index', 
@@ -326,11 +340,9 @@ get '/posts/category/:slug/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link   = ( $page == 1 ) ? '#' : '/posts/category/' . $slug . '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/posts/category/' . $slug . '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
   template 'index', 
       { 
@@ -364,9 +376,9 @@ get '/posts/tag/:slug' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-  my $previous_link = '#';
-  my $next_link     = ( $total_pages < 2 ) ? '#' : '/posts/tag/' . $slug . '/page/2';
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
 
   template 'index', 
       {         
@@ -402,11 +414,9 @@ get '/posts/tag/:slug/page/:page' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => "created_date DESC", rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $total_pages   = ( ($nr_of_posts / $nr_of_rows) != int($nr_of_posts / $nr_of_rows) ) ? int($nr_of_posts / $nr_of_rows) + 1 : ($nr_of_posts % $nr_of_rows);
-
   # Calculate the next and previous page link
-  my $previous_link = ( $page == 1 ) ? '#' : '/posts/tag/' . $slug . '/page/' . ( int($page) - 1 );
-  my $next_link     = ( $page == $total_pages ) ? '#' : '/posts/tag/' . $slug . '/page/' . ( int($page) + 1 );
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/tag/' . $slug);
 
   template 'index', 
       { 

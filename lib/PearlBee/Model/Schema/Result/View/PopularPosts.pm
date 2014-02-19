@@ -23,7 +23,7 @@ __PACKAGE__->result_source_instance->view_definition(
     WHERE
       P.status = 'published'
     GROUP BY
-      P.title
+      P.id, P.title, P.description, P.slug
     ORDER BY
       comments DESC
   ]

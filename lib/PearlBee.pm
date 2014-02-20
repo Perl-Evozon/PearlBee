@@ -32,6 +32,8 @@ use PearlBee::Author::Comment;
 
 use PearlBee::Helpers::Util qw(generate_crypted_filename);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
+use PearlBee::Helpers::Themes;
+
 our $VERSION = '0.1';
 
 =head
@@ -43,7 +45,7 @@ Prepare the blog path
 hook 'before' => sub {
 
   session app_url => config->{app_url} unless ( session('app_url') );
-
+  
 };
 
 =head
@@ -53,7 +55,7 @@ Home page
 =cut
 
 get '/' => sub {
-  
+
   my $nr_of_rows  = 6; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -143,6 +145,7 @@ get '/post/:slug' => sub {
   my $md5sum = $captcha->generate_code(5);
 
   # Rename the image file so that the encrypted code won't show on the UI
+  unlink config->{captcha_folder} . "/image/image.png";
   my $command = "mv " . config->{captcha_folder} . "/image/" . $md5sum . ".png" . " " . config->{captcha_folder} . "/image/image.png";
   `$command`;
 

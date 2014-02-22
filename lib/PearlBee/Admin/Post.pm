@@ -259,7 +259,7 @@ any '/admin/posts/add' => sub {
           # Connect and update the tags table
           my @tags = split( ',', params->{tags} );
           foreach my $tag (@tags) {
-
+            $tag = trim( $tag );
             # Replace all white spaces with hyphen
             my $slug = string_to_slug( $tag );
            

@@ -21,7 +21,11 @@
 
                 <h5>Social media buttons</h5>
                 <div class="make-switch" data-on="success" data-off="danger">
+                  [% IF setting.social_media %]
                     <input id="social_media_check" name="social_media" type="checkbox" checked>
+                  [% ELSE %]
+                    <input id="social_media_check" name="social_media" type="checkbox">
+                  [% END %]
                 </div>
                 <input id="social_media_state" type="hidden" value="[% setting.social_media %]" />
 

@@ -79,7 +79,7 @@
 						
 								</td>
 
-								<td width="15%"> <a href="/post/[% comment.post.id %]"> [% comment.post.title %] </a> </td>
+								<td width="15%"> <a href="/post/[% comment.post.slug %]"> [% comment.post.title %] </a> </td>
 							</tr>
 						
 						[% END %]	

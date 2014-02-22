@@ -245,12 +245,12 @@ any '/admin/posts/add' => sub {
           ) foreach (@categories_selected);
 
           # Connect and update the tags table
-          my @tags = split( ', ', params->{tags} );
+          my @tags = split( ',', params->{tags} );
           foreach my $tag (@tags) {
-
+            $tag = trim( $tag );
             # Replace all white spaces with hyphen
             my $slug = $tag;
-            $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
+            $slug = String::Dirify->dirify( $slug, '-' );    # Convert the string intro a valid slug
 
             my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 

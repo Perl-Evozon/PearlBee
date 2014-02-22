@@ -155,8 +155,8 @@
                   <div class="widget">
                     <h4 class="widget-head">Tags</h4>
                     <ul id="tag-list" class="cf">
-                      [% FOREACH tag in post.post_tags %]
-                       <li><a class="btn btn-info" href="[% session.app_url %]/posts/tag/[% tag.tag.slug %]">[% tag.tag.name %]</a></li>
+                      [% FOREACH tag in tags %]
+                       <li><a class="btn btn-info" href="[% session.app_url %]/posts/tag/[% tag.slug %]">[% tag.name %]</a></li>
                       [% END %]
                     </ul>
                   </div>

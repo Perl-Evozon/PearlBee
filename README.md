@@ -2,23 +2,38 @@
 An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
 <h3>Version</h3>
 0.9
+
 <h3>Setup</h3>
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
 <ul>
-<li>make</li>
-<li>libplack-perl</li>
+<li>Authen::Captcha ( needs GD, which neeeds libgd2-xpm-dev package)</li>
+<li>Crypt::RandPasswd</li>
 <li>Dancer2</li>
 <li>Dancer2::Plugin::DBIC</li>
-<li>Authen::Captcha ( needs libgd2-xpm-dev package)</li>
-<li>Digest::Bcrypt</li>
-<li>String::Dirify</li>
-<li>String::Util</li>
+<li>Data::Entropy::Algorithms</li>
+<li>Data::Pageset</li>
 <li>DateTime::Format::Strptime</li>
-<li>Crypt::RandPasswd</li>
+<li>DateTime</li>
+<li>DateTime::TimeZone</li>
+<li>DBI</li>
+<li>DBD::mysql and libmysqlclient-dev </li>
+<li>DBIx::Class</li>
+<li>Digest::Bcrypt</li>
+<li>Digest::MD5</li>
+<li>Digest::SHA1</li>
 <li>Email::MIME</li>
 <li>Email::Sender::Simple</li>
+<li>MIME::Base64</li>
+<li>Plack::Handler::FCGI</li>
+<li>Plack</li>
+<li>Plack::Runner</li>
+<li>String::Dirify</li>
+<li>String::Util</li>
 <li>Template::Plugin::HTML::Strip</li>
+<li>Template Toolkit</li>
+<li>Time::HiRes</li>
+
 <li>You will need a MySQL/MariaDB server for the blog's database.</li>
 <li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
 </ul>

@@ -200,12 +200,13 @@ any '/admin/users/add' => sub {
       resultset('User')->create({
         username        => $username,
         password        => $pass_hash->{hash},
-        salt            => $pass_hash->{salt},
-        email           => $email,
+        salt            => $pass_hash->{salt},        
         first_name      => $first_name,
         last_name       => $last_name,
-        register_date   => join ' ', $dt->ymd, $dt->hms,
-        role            => $role
+        register_date   => join (' ', $dt->ymd, $dt->hms),
+        role            => $role,
+        email           => $email,
+       
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

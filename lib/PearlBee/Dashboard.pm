@@ -1,4 +1,4 @@
-package Dashboard;
+package PearlBee::Dashboard;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
@@ -24,7 +24,8 @@ Dashboard index
 
 any '/dashboard' => sub {
 
-  my $user = session('user');
+  my $user_id = session('user_id');
+  my $user = resultset('User')->find($user_id);
 
   if ( $user->status eq 'deactivated' ) {
 
@@ -36,7 +37,7 @@ any '/dashboard' => sub {
         template 'admin/index', { user => $user, warning => 'The passwords don\'t match!' }, { layout => 'admin' };
       }
       else {
-	my $password_hash = generate_hash($password1);
+	      my $password_hash = generate_hash($password1);
         $user->update({
           password => $password_hash->{hash},
           status   => 'activated',

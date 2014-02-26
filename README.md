@@ -26,13 +26,11 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Email::MIME</li>
 <li>Email::Sender::Simple</li>
 <li>MIME::Base64</li>
-<li>Plack::Handler::FCGI</li>
 <li>Plack</li>
-<li>Plack::Runner</li>
 <li>String::Dirify</li>
 <li>String::Util</li>
+<li>Template</li>
 <li>Template::Plugin::HTML::Strip</li>
-<li>Template Toolkit</li>
 <li>Time::HiRes</li>
 
 <li>You will need a MySQL/MariaDB server for the blog's database.</li>

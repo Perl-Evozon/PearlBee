@@ -29,10 +29,18 @@ get '/author/posts/page/:page' => sub {
   my $page        = params->{page};
   my $user        = session('user');
   my @posts       = resultset('Post')->search({ user_id => $user->id }, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page });
-  my $publish     = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $trash       = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft       = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $all         = resultset('Post')->search({ user_id => $user->id })->count;
+  my @all_posts   = resultset('Post')->search({ user_id => $user->id });
+
+  my ( $publish, $trash, $draft );
+  $publish = $trash = $draft = 0;
+
+  # Count all post status
+  foreach( @all_posts ) {
+    $publish++ if ( $_->status eq 'published' );
+    $draft++   if ( $_->status eq 'draft'     );
+    $trash++   if ( $_->status eq 'trash'     );
+  }
+  my $all = scalar( @all_posts );
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -74,10 +82,18 @@ get '/author/posts/:status/page/:page' => sub {
   my $status      = params->{status};
   my $user        = session('user');
   my @posts       = resultset('Post')->search({ user_id => $user->id, status => $status }, { order_by => 'created_date DESC' });
-  my $all         = resultset('Post')->search({ user_id => $user->id })->count;
-  my $trash       = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft       = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $publish     = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
+  my @all_posts   = resultset('Post')->search({ user_id => $user->id });
+
+  my ( $publish, $trash, $draft );
+  $publish = $trash = $draft = 0;
+
+  # Count all post status
+  foreach( @all_posts ) {
+    $publish++ if ( $_->status eq 'published' );
+    $draft++   if ( $_->status eq 'draft'     );
+    $trash++   if ( $_->status eq 'trash'     );
+  }
+  my $all = scalar( @all_posts );
 
   my $status_count = resultset('Post')->search({ user_id => $user->id, status => $status })->count;
 

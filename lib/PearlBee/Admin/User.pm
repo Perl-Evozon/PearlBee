@@ -30,10 +30,17 @@ get '/admin/users/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
   my @users       = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
-  my $all         = resultset('User')->search({})->count;
-  my $activated   = resultset('User')->search({ status => 'activated'})->count;
-  my $deactivated = resultset('User')->search({ status => 'deactivated'})->count;
-  my $suspended   = resultset('User')->search({ status => 'suspended'})->count;
+  my @all_users   = resultset('User')->all;
+  
+  my ($activated, $deactivated, $suspended);
+  $activated = $deactivated = $suspended = 0;
+
+  foreach( @all_users ) {
+    $activated++    if ( $_->status eq 'activated'   );
+    $deactivated++  if ( $_->status eq 'deactivated' );
+    $suspended++    if ( $_->status eq 'suspended'   );
+  }
+  my $all = scalar( @all_users );
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -75,10 +82,17 @@ get '/admin/users/:status/page/:page' => sub {
   my $page        = params->{page} || 1;
   my $status      = params->{status};
   my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
-  my $all         = resultset('User')->search({})->count;
-  my $activated   = resultset('User')->search({ status => 'activated'   })->count;
-  my $deactivated = resultset('User')->search({ status => 'deactivated' })->count;
-  my $suspended   = resultset('User')->search({ status => 'suspended'   })->count;
+  my @all_users   = resultset('User')->all;
+  
+  my ($activated, $deactivated, $suspended);
+  $activated = $deactivated = $suspended = 0;
+
+  foreach( @all_users ) {
+    $activated++    if ( $_->status eq 'activated'   );
+    $deactivated++  if ( $_->status eq 'deactivated' );
+    $suspended++    if ( $_->status eq 'suspended'   );
+  }
+  my $all = scalar( @all_users );
 
   my $status_count = resultset('User')->search({ status => $status })->count;
 

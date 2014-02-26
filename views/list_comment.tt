@@ -1,0 +1,16 @@
+<div class="comments">
+  <div class="title"><h5>[% nr_of_comments %] Comments</h5></div>
+  <ul class="comment-list">
+    [% FOREACH comment in comments %]
+      <li class="comment">
+          <a class="pull-left" href="#">
+            <img class="avatar" src="[% comment.avatar %]" class="img-responsive" />
+          </a>
+          <div class="comment-author"><a href="#">[% comment.fullname %]</a></div>
+          <div class="cmeta">Commented on [% comment.comment_date %]</div>
+          <p> [% comment.content %] </p>
+          <div class="clearfix"></div>
+      </li>
+    [% END %]
+  </ul>
+</div>

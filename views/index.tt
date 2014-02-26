@@ -1,14 +1,3 @@
-[% USE HTML.Strip 'strip' %]
-
-<!-- Page title -->
-      <div class="page-title">  
-         <!-- <div class="container">
-            <h2><i class="icon-desktop color"></i> Blog <small>Subtext for header</small></h2>
-            <hr />
-         </div> --> 
-      </div> 
-<!-- Page title -->
-      
 <div class="blog">
   <div class="container">
     <div class="row">
@@ -23,9 +12,8 @@
                  <!-- Meta details -->
                  <div class="meta">
                     <i class="icon-calendar"></i> [% post.created_date %] 
-                    <i class="icon-user"></i> [% post.user.username %] 
-                    <i class="icon-folder-open"></i> 
-
+                    <i class="icon-user"></i>     [% post.user.username %] 
+                    
                     [% FOREACH category in post.post_categories %]
                       <a href="[% session.app_url %]/posts/category/[% category.category.slug %]"><i class="icon-list"></i>[% category.category.name %]</a>
                     [% END %]
@@ -34,18 +22,12 @@
                     <i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
                  </div>
                  
-                 <!-- Thumbnail -->
-                 [% IF post.cover -%]
-                   <div class="bthumb">
-                      <a href="#"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
-                   </div>
-                 [% END %]
+                 <!-- Post cover -->
+                 [% INCLUDE cover.tt %]
                  
-                 <!-- Para -->
+                 <!-- Post content -->
                  <p>
-                    [% FILTER strip %]
-                      [% post.content.substr(0, 500) %] ...
-                    [% END %]
+                    [% INCLUDE post_content_stripped.tt %]
                  </p>
                  <!-- Read more -->
                  <a href="[% session.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>
@@ -53,62 +35,16 @@
             [% END %]
             <!-- Pagination -->
             <div class="clearfix"></div>
-            <ul class="pager marginnone margintop35">
-              [% page %]
-              [% SET disabled_previous = ( page == 1 ) ? 'disabled' : '' %]
-              [% SET disabled_next = ( page == total_pages ) ? 'disabled' : '' %]
-              <li class="previous [% disabled_previous %]"><a href="[% session.app_url %][% previous_link %]">&larr; Older</a></li>
-              <li class="next [% disabled_next %]"><a href="[% session.app_url %][% next_link %]">Newer &rarr;</a></li>
-            </ul>           
+            [% INCLUDE index_pagination.tt %]     
             <div class="clearfix"></div>
          </div>
       </div>                        
       <div class="col-md-4">
+
         <!-- Sidebar 2 -->
-         <div class="sidebar">
-            <div class="widget">
-              <h4> Categories </h4>
-              <ul class="simple-list">
-              [% FOREACH category in categories %]
-                <li><a href="[% session.app_url %]/posts/category/[% category.slug %]"> [% category.name %] </a></li>
-              [% END %]
-              </ul>  
-            </div>
-            <div class="widget">
-              <ul id="myTab" class="nav nav-tabs">
-                <li class="active"><a href="#recent" data-toggle="tab">Recent</a></li>
-                <li><a href="#popular" data-toggle="tab">Popular</a></li>
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade in active" id="recent">
-                  <ul class="simple-list">
-                    [% FOREACH post in recent %]
-                      <li><a href="[% session.app_url %]/post/[% post.slug %]">[% post.title %]</a></li>
-                    [% END %] 
-                  </ul>
-              </div>
-              <div class="tab-pane fade" id="popular">
-                <ul class="simple-list">
-                    [% FOREACH post in popular %]
-                      <li><a href="[% session.app_url %]/post/[% post.slug %]">[% post.title %]</a></li>
-                    [% END %] 
-                 </ul>
-              </div>
-            </div>
-            <div class="widget">
-              <h4 class="widget-head">Tags</h4>
-              <ul id="tag-list" class="cf">
-                [% FOREACH tag in tags %]
-                  <li><a href="[% session.app_url %]/posts/tag/[% tag.slug %]" class="btn btn-info">[% tag.name %]</a></li>
-                [% END %]        
-              </ul>
-            </div>    
-         </div>                                                
+        [% INCLUDE sidebar.tt %]
+
       </div>
     </div>
   </div>
 </div>
-      
-    
-      
-     

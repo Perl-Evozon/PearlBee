@@ -22,14 +22,23 @@ List all comments
 
 get '/admin/comments/page/:page' => sub {
 
-  my $nr_of_rows  = 5; # Number of posts per page
-  my $page        = params->{page} || 1;
-  my @comments    = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my $all         = resultset('Comment')->search({})->count;
-  my $approved    = resultset('Comment')->search({ status => 'approved' })->count;
-  my $trash       = resultset('Comment')->search({ status => 'trash' })->count;
-  my $spam        = resultset('Comment')->search({ status => 'spam' })->count;
-  my $pending     = resultset('Comment')->search({ status => 'pending' })->count;
+  my $nr_of_rows   = 5; # Number of posts per page
+  my $page         = params->{page} || 1;
+  my @comments     = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
+  my @all_comments = resultset('Comment')->all;
+
+  my ( $approved, $trash, $spam, $pending );
+  $approved = $trash = $spam = $pending = 0;
+  
+  my $all = scalar ( @all_comments );
+
+  # Count all status for each comments
+  foreach ( @all_comments ) {
+    $approved++ if ( $_->status eq 'approved' );
+    $trash++    if ( $_->status eq 'trash'    );
+    $pending++  if ( $_->status eq 'pending' );
+    $spam++     if ( $_->status eq 'spam' );
+  }
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -68,15 +77,24 @@ List all spam comments
 
 get '/admin/comments/:status/page/:page' => sub {
 
-  my $nr_of_rows  = 5; # Number of posts per page
-  my $page        = params->{page} || 1;
-  my $status      = params->{status};
-  my @comments    = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my $all         = resultset('Comment')->search({ 1 => '1'})->count;
-  my $approved    = resultset('Comment')->search({ status => 'approved' })->count;
-  my $trash       = resultset('Comment')->search({ status => 'trash' })->count;
-  my $spam        = resultset('Comment')->search({ status => 'spam' })->count;
-  my $pending     = resultset('Comment')->search({ status => 'pending' })->count;
+  my $nr_of_rows   = 5; # Number of posts per page
+  my $page         = params->{page} || 1;
+  my $status       = params->{status};
+  my @comments     = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
+  my @all_comments = resultset('Comment')->all;
+
+  my ( $approved, $trash, $spam, $pending );
+  $approved = $trash = $spam = $pending = 0;
+
+  my $all = scalar ( @all_comments );
+
+  # Count all status for each comments
+  foreach ( @all_comments ) {
+    $approved++ if ( $_->status eq 'approved' );
+    $trash++    if ( $_->status eq 'trash'    );
+    $pending++  if ( $_->status eq 'pending' );
+    $spam++     if ( $_->status eq 'spam' );
+  }
   
   my $status_count = resultset('Comment')->search({ status => $status })->count;
 

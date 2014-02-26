@@ -2,7 +2,7 @@
 <html>
    <head>
       <!-- Title here -->
-      <title>Login - PearlBee Admin  </title> 
+      <title>Login - PerlBee Admin  </title> 
       <!-- Description, Keywords and Author -->
       <meta name="description" content="Your description">
       <meta name="keywords" content="Your,Keywords">
@@ -40,6 +40,10 @@
       <link href="[% session.app_url %]/admin/css/chosen.css" rel="stylesheet">    
       <!-- Custom CSS -->
       <link href="[% session.app_url %]/admin/css/style.css" rel="stylesheet">
+      <!-- Select CSS -->
+      <link href="[% session.app_url %]/admin/js/select2/select2.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/js/select2/select2-bootstrap.css" rel="stylesheet">
+      <!-- End Select CSS -->
       
       <!-- Favicon -->
       <link rel="shortcut icon" href="#">
@@ -64,7 +68,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="/admin ">PearlBee Admin</a></h1>
+                     <h1><a href="/admin ">PerlBee Admin</a></h1>
                   </div>
                </div>
             </div>
@@ -147,5 +151,7 @@
       <script src="[% session.app_url %]/admin/js/app.js"></script>
       <!-- chosen JS -->
       <script src="[% session.app_url %]/admin/js/chosen.jquery.min.js"></script> 
+      <!-- Select JS -->
+      <script src="[% session.app_url %]/admin/js/select2/select2.min.js"></script> 
    </body>  
 </html>

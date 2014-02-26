@@ -1,10 +1,12 @@
 package PearlBee::Helpers::Util;
 
 use Data::GUID;
+use String::Dirify;
+use String::Util 'trim';
 
 require Exporter;
 our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name/;
+our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
 
 =head
 
@@ -42,6 +44,20 @@ sub generate_new_slug_name {
 	my $new_slug_name = $original_slug . '-' . ++$max_number;				# Generate the new slug name
 
     return $new_slug_name;
+}
+
+=head
+
+Generate a valid slug kind name
+
+=cut
+
+sub string_to_slug {
+	my ($string) = @_;
+
+	my $slug = String::Dirify->dirify( trim($string), '-');
+
+	return $slug;
 }
 
 1;

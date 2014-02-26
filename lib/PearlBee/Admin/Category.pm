@@ -10,8 +10,7 @@ package PearlBee::Admin::Category;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use String::Dirify;
-use String::Util 'trim';
+use PearlBee::Helpers::Util qw(string_to_slug);
 
 =head
 
@@ -37,7 +36,7 @@ post '/admin/categories/add' => sub {
   my $name = params->{name};
   my $slug = params->{slug};
 
-  $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
+  $slug = string_to_slug($slug);
 
   my $found_slug_or_name = resultset('Category')->search({ -or => [ slug => $slug, name => $name ] })->first;
 
@@ -121,7 +120,7 @@ any '/admin/categories/edit/:id' => sub {
   # Check if the form was submited
   if ( $name && $slug ) {
 
-    $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
+    $slug = string_to_slug($slug);
 
     my $found_slug = resultset('Category')->search({ id => { '!=' => $category->id }, slug => $slug })->first;
     my $found_name = resultset('Category')->search({ id => { '!=' => $category->id }, name => $name })->first;

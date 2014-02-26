@@ -3,8 +3,7 @@ package PearlBee::Admin::Tag;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use String::Dirify;
-use String::Util 'trim';
+use PearlBee::Helpers::Util qw(string_to_slug);
 
 =haed
 
@@ -30,9 +29,7 @@ post '/admin/tags/add' => sub {
 
   my @tags;
   my $name = params->{name};
-  my $slug = params->{slug};
-
-  $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
+  my $slug = string_to_slug( params->{slug} );
 
   my $found_slug_or_name = resultset('Tag')->search({ -or => [ slug => $slug, name => $name ] })->first;
 
@@ -93,12 +90,10 @@ any '/admin/tags/edit/:id' => sub {
 
   my $tag_id = params->{id};
   my @tags   = resultset('Tag')->all;
-  my $tag   = resultset('Tag')->find( $tag_id );
+  my $tag    = resultset('Tag')->find( $tag_id );
 
   my $name = params->{name};
-  my $slug = params->{slug};
-
-  $slug = String::Dirify->dirify( trim($slug), '-'); # Convert the string intro a valid slug
+  my $slug = string_to_slug( params->{slug} );
 
   # Check if the form was submited
   if ( $name && $slug ) {

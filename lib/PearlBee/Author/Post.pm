@@ -10,11 +10,9 @@ package PearlBee::Author::Post;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name/;
+use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-use String::Dirify;
-use String::Util 'trim';
 use DateTime;
 
 get '/author/posts' => sub { redirect session('app_url') . '/author/posts/page/1'; };
@@ -179,7 +177,7 @@ add method
 any '/author/posts/add' => sub {
 
   my @categories = resultset('Category')->all();
-  my $post_id;
+  my $post;
 
   eval {
       if ( params->{post} ) {
@@ -193,7 +191,7 @@ any '/author/posts/add' => sub {
         my $status  = params->{status};
         my $title   = params->{title};
         my $content = params->{post};
-        my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+        my $slug    = string_to_slug( params->{slug} );
 
         # Check if the slug used is already taken
         my $found_slug = resultset('Post')->find({ slug => $slug });
@@ -222,18 +220,16 @@ any '/author/posts/add' => sub {
         $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext ) if $cover;
 
         # Next we can store the post into the database safely
-        my $post = resultset('Post')->create(
+        $post = resultset('Post')->create(
             {
                 title        => $title,
                 slug         => $slug,
                 content      => $content,
                 user_id      => $user->id,
                 status       => $status,
-                created_date => join ' ', $dt->ymd, $dt->hms,
+                created_date => join(' ', $dt->ymd, $dt->hms),
                 cover        => ( $cover ) ? $crypted_filename . $ext : '',
             });
-        # Store the post id so that we can redirect the user to the post created
-        $post_id = $post->id;
 
         # Connect the categories selected with the new post
         params->{category} = 1 if ( !params->{category} );                                                                # If no category is selected the Uncategorized category will be stored default
@@ -251,9 +247,7 @@ any '/author/posts/add' => sub {
         foreach my $tag (@tags) {
 
           # Replace all white spaces with hyphen
-          my $slug = $tag;
-          $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
-
+          my $slug = string_to_slug( $tag );
           my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
           resultset('PostTag')->create(
@@ -268,11 +262,11 @@ any '/author/posts/add' => sub {
 
   error $@ if ($@);
   # If the post was added successfully, store a success message to show on the view
-  session success => 'The post was added successfully' if ( !$@ && $post_id );
+  session success => 'The post was added successfully' if ( !$@ && $post );
 
   # If the user created a new post redirect him to the post created
-  if ( $post_id ) {
-    redirect session('app_url') . '/author/posts/edit/' . $post_id;
+  if ( $post ) {
+    redirect session('app_url') . '/author/posts/edit/' . $post->slug;
   }
   else {
     template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
@@ -343,7 +337,7 @@ post '/author/posts/update/:id' => sub {
   my $title     = params->{title};
   my $content   = params->{post};
   my $tags      = params->{tags};
-  my $slug      = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+  my $slug      = string_to_slug( params->{slug} );
 
   # Check if the slug used is already taken
   my $found_slug = resultset('Post')->search({ id => { '!=' => $post->id }, slug => $slug })->first;
@@ -404,8 +398,7 @@ post '/author/posts/update/:id' => sub {
 
       my @tags = split( ',', params->{tags} );
       foreach my $tag (@tags) {
-          my $slug = $tag;
-          $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
+          my $slug = string_to_slug( $tag );
 
           my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 

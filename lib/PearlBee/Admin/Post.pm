@@ -11,11 +11,9 @@ package PearlBee::Admin::Post;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name/;
+use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-use String::Dirify;
-use String::Util 'trim';
 use DateTime;
 
 get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
@@ -190,7 +188,7 @@ any '/admin/posts/add' => sub {
           my $status  = params->{status};
           my $title   = params->{title};
           my $content = params->{post};
-          my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+          my $slug    = string_to_slug( params->{slug} );
 
           # Check if the slug used is already taken
           my $found_slug = resultset('Post')->find({ slug => $slug });
@@ -247,9 +245,8 @@ any '/admin/posts/add' => sub {
           foreach my $tag (@tags) {
 
             # Replace all white spaces with hyphen
-            my $slug = $tag;
-            $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
-
+            my $slug = string_to_slug( $tag );
+           
             my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
             resultset('PostTag')->create(
@@ -341,7 +338,7 @@ post '/admin/posts/update/:id' => sub {
     my $title     = params->{title};
     my $content   = params->{post};
     my $tags      = params->{tags};
-    my $slug      = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+    my $slug      = string_to_slug( params->{slug} );
 
     # Check if the slug used is already taken
     my $found_slug = resultset('Post')->search({ id => { '!=' => $post->id }, slug => $slug })->first;
@@ -402,9 +399,8 @@ post '/admin/posts/update/:id' => sub {
 
         my @tags = split( ',', params->{tags} );
         foreach my $tag (@tags) {
-            my $slug = $tag;
-            $slug = String::Dirify->dirify( trim($slug), '-' );    # Convert the string intro a valid slug
-
+          
+            my $slug = string_to_slug( $tag );
             my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
             resultset('PostTag')->create(

@@ -87,7 +87,7 @@
                     
                     <td width="10%">
                        <a href="/post/[% post.slug %]"> <button class="btn btn-xs btn-success"><i class="icon-eye-open"></i> </button> </a>
-                       <a href="/[% role %]/posts/edit/[% post.id %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
+                       <a href="/[% role %]/posts/edit/[% post.slug %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
                    </td>
                   </tr>
 

@@ -247,7 +247,7 @@ any '/author/posts/add' => sub {
         ) foreach (@categories_selected);
 
         # Connect and update the tags table
-        my @tags = split( ', ', params->{tags} );
+        my @tags = split( ',', params->{tags} );
         foreach my $tag (@tags) {
 
           # Replace all white spaces with hyphen
@@ -286,10 +286,10 @@ edit method
 
 =cut
 
-get '/author/posts/edit/:id' => sub {
+get '/author/posts/edit/:slug' => sub {
 
-  my $post_id         = params->{id};
-  my $post            = resultset('Post')->find($post_id);
+  my $post_slug       = params->{slug};
+  my $post            = resultset('Post')->find({ slug => $post_slug });
   my @post_categories = $post->post_categories;
   my @post_tags       = $post->post_tags;
   my @all_categories  = resultset('Category')->all;
@@ -338,15 +338,15 @@ update method
 
 post '/author/posts/update/:id' => sub {
 
-  my $post_id = params->{id};
-  my $post    = resultset('Post')->find($post_id);
-  my $title   = params->{title};
-  my $content = params->{post};
-  my $tags    = params->{tags};
-  my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+  my $post_slug = params->{slug};
+  my $post      = resultset('Post')->find({ slug => $post_slug });
+  my $title     = params->{title};
+  my $content   = params->{post};
+  my $tags      = params->{tags};
+  my $slug      = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
 
   # Check if the slug used is already taken
-  my $found_slug = resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first;
+  my $found_slug = resultset('Post')->search({ id => { '!=' => $post->id }, slug => $slug })->first;
 
   if ( $found_slug ) {
     # Extract the posts with slugs starting the same with the submited slug
@@ -386,7 +386,7 @@ post '/author/posts/update/:id' => sub {
       );
 
       # Reconnect the categories with the new one and delete the old ones
-      my @post_categories = resultset('PostCategory')->search( { post_id => $post_id } );
+      my @post_categories = resultset('PostCategory')->search( { post_id => $post->id } );
       $_->delete foreach (@post_categories);
 
       my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
@@ -399,7 +399,7 @@ post '/author/posts/update/:id' => sub {
       ) foreach (@categories);
 
       # Reconnect and update the selected tags
-      my @post_tags = resultset('PostTag')->search( { post_id => $post_id } );
+      my @post_tags = resultset('PostTag')->search( { post_id => $post->id } );
       $_->delete foreach (@post_tags);
 
       my @tags = split( ',', params->{tags} );
@@ -423,8 +423,7 @@ post '/author/posts/update/:id' => sub {
 
   session success => 'The post was updated successfully!';
 
-  error $post_id;
-  redirect session('app_url') . '/author/posts/edit/' . $post_id;
+  redirect session('app_url') . '/author/posts/edit/' . $post->slug;
 
 };
 

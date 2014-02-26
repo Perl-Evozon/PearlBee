@@ -176,7 +176,7 @@ add method
 any '/admin/posts/add' => sub {
 
     my @categories = resultset('Category')->all();
-    my $post_id;
+    my $post;
 
     eval {
         if ( params->{post} ) {
@@ -220,7 +220,7 @@ any '/admin/posts/add' => sub {
 
           # Next we can store the post into the database safely
           my $dtf = schema->storage->datetime_parser;
-          my $post = resultset('Post')->create(
+          $post = resultset('Post')->create(
               {
                   title        => $title,
                   slug         => $slug,
@@ -230,8 +230,6 @@ any '/admin/posts/add' => sub {
                   created_date => $dtf->format_datetime($dt),
                   cover        => ( $cover ) ? $crypted_filename . $ext : '',
               });
-          # Store the post id so that we can redirect the user to the post created
-          $post_id = $post->id;
 
           # Connect the categories selected with the new post
           params->{category} = 1 if ( !params->{category} );                                                                # If no category is selected the Uncategorized category will be stored default
@@ -245,7 +243,7 @@ any '/admin/posts/add' => sub {
           ) foreach (@categories_selected);
 
           # Connect and update the tags table
-          my @tags = split( ', ', params->{tags} );
+          my @tags = split( ',', params->{tags} );
           foreach my $tag (@tags) {
 
             # Replace all white spaces with hyphen
@@ -266,11 +264,11 @@ any '/admin/posts/add' => sub {
 
     error $@ if ($@);
     # If the post was added successfully, store a success message to show on the view
-    session success => 'The post was added successfully' if ( !$@ && $post_id );
+    session success => 'The post was added successfully' if ( !$@ && $post );
 
     # If the user created a new post redirect him to the post created
-    if ( $post_id ) {
-      redirect session('app_url') . '/admin/posts/edit/' . $post_id;
+    if ( $post ) {
+      redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
     }
     else {
       template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
@@ -284,13 +282,14 @@ edit method
 
 =cut
 
-get '/admin/posts/edit/:id' => sub {
+get '/admin/posts/edit/:slug' => sub {
 
-    my $post_id         = params->{id};
-    my $post            = resultset('Post')->find($post_id);
+    my $post_slug       = params->{slug};
+    my $post            = resultset('Post')->find({ slug => $post_slug });
     my @post_categories = $post->post_categories;
     my @post_tags       = $post->post_tags;
     my @all_categories  = resultset('Category')->all;
+    my @all_tags        = resultset('Tag')->all;
 
     # Prepare tags for the UI
     my @tag_names;
@@ -310,7 +309,8 @@ get '/admin/posts/edit/:id' => sub {
         tags           => $joined_tags,
         categories     => \@categories,
         all_categories => \@all_categories,
-        ids            => \@categories_ids
+        ids            => \@categories_ids,
+        all_tags       => \@all_tags
       };
 
     # Check if there are any messages to show
@@ -336,15 +336,15 @@ update method
 
 post '/admin/posts/update/:id' => sub {
 
-    my $post_id = params->{id};
-    my $post    = resultset('Post')->find($post_id);
-    my $title   = params->{title};
-    my $content = params->{post};
-    my $tags    = params->{tags};
-    my $slug    = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
+    my $post_slug = params->{slug};
+    my $post      = resultset('Post')->find({ slug => $post_slug });
+    my $title     = params->{title};
+    my $content   = params->{post};
+    my $tags      = params->{tags};
+    my $slug      = String::Dirify->dirify( trim( params->{slug} ), '-' );    # Convert the string intro a valid slug
 
     # Check if the slug used is already taken
-    my $found_slug = resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first;
+    my $found_slug = resultset('Post')->search({ id => { '!=' => $post->id }, slug => $slug })->first;
 
     if ( $found_slug ) {
       # Extract the posts with slugs starting the same with the submited slug
@@ -384,7 +384,7 @@ post '/admin/posts/update/:id' => sub {
         );
 
         # Reconnect the categories with the new one and delete the old ones
-        my @post_categories = resultset('PostCategory')->search( { post_id => $post_id } );
+        my @post_categories = resultset('PostCategory')->search( { post_id => $post->id } );
         $_->delete foreach (@post_categories);
 
         my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
@@ -397,7 +397,7 @@ post '/admin/posts/update/:id' => sub {
         ) foreach (@categories);
 
         # Reconnect and update the selected tags
-        my @post_tags = resultset('PostTag')->search( { post_id => $post_id } );
+        my @post_tags = resultset('PostTag')->search( { post_id => $post->id } );
         $_->delete foreach (@post_tags);
 
         my @tags = split( ',', params->{tags} );
@@ -421,7 +421,7 @@ post '/admin/posts/update/:id' => sub {
 
     session success => 'The post was updated successfully!';
 
-    redirect session('app_url') . '/admin/posts/edit/' . $post_id;
+    redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
 
 };
 

@@ -219,9 +219,11 @@ any '/admin/users/add' => sub {
                 first_name  => $first_name,
                 url         => config->{app_url}
             },
+              # SEEME TODO: check if this calls die in eval: it might cause a memory leak
         }) or error "Could not send the email";
     };
 
+    # TODO: eval or die
     error $@ if ( $@ );
 
     if ( $@ ) {

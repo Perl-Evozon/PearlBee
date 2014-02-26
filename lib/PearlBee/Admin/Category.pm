@@ -47,6 +47,7 @@ post '/admin/categories/add' => sub {
     template '/admin/categories/list', { warning => "The category name or slug already exists", categories => \@categories } , { layout => 'admin' };
   }
   else {
+    # TODO: unchecked eval
     eval {
       my $user = session('user');
       my $category = resultset('Category')->create({
@@ -92,6 +93,7 @@ get '/admin/categories/delete/:id' => sub {
     $category->delete();
   };
 
+  # TODO: eval {...; 1;} or do {};, or else you might miss errors 
   if ( $@ ) {
     error $@;
     my @categories   = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });

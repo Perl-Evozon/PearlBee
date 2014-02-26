@@ -13,6 +13,10 @@ our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name/;
 
 Generate a random string based on the current time and date
 
+TODO: do not use localtime, ps or any other fake random source for random names, colisions will occur under sufficient stress
+
+use Data::GUID
+
 =cut
 
 sub generate_crypted_filename {

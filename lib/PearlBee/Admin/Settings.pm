@@ -41,6 +41,7 @@ post '/admin/settings/save' => sub {
 	my $timezone  	 = params->{timezone};
 
 	eval {
+    # ???
 		$settings = resultset('Setting')->first;
 
 		$settings->update({
@@ -50,6 +51,7 @@ post '/admin/settings/save' => sub {
 		});
 	};
 
+  # TODO eval or do
 	error $@ if ( $@ );
 
 	template 'admin/settings/index.tt', 

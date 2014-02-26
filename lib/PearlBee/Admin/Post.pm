@@ -8,6 +8,9 @@ Email: andrei.cacio@evozon.com
 
 package PearlBee::Admin::Post;
 
+use strict;
+use warnings;
+
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -17,6 +20,8 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link gene
 use String::Dirify;
 use String::Util 'trim';
 use DateTime;
+
+use Data::Dumper;
 
 get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
 
@@ -123,6 +128,12 @@ get '/admin/posts/publish/:id' => sub {
     eval {
         $post = resultset('Post')->find($post_id);
         $post->update( { status => 'published' } );
+        1;
+    } or do {
+      my $error = '';
+      $error = Dumper($@) if ($@);
+      # TODO: do more 
+      warn " failed to publish post "  .$post_id . $error;
     };
 
     redirect session('app_url') . '/admin/posts';
@@ -139,9 +150,16 @@ get '/admin/posts/draft/:id' => sub {
     my $post_id = params->{id};
 
     my $post;
+    # TODO: unhandled eval
     eval {
-        $post = resultset('Post')->find($post_id);
-        $post->update( { status => 'draft' } );
+      $post = resultset('Post')->find($post_id);
+      $post->update( { status => 'draft' } );
+      1;
+    } or do {
+      my $error = '';
+      $error = Dumper($@) if ($@);
+      # TODO: do more 
+      warn " failed to save draft for "  .$post_id . $error;
     };
 
     redirect session('app_url') . '/admin/posts';
@@ -158,9 +176,16 @@ get '/admin/posts/trash/:id' => sub {
     my $post_id = params->{id};
 
     my $post;
+    # TODO: unhandled eval
     eval {
         $post = resultset('Post')->find($post_id);
         $post->update( { status => 'trash' } );
+        1;
+    } or do {
+      my $error = '';
+      $error = Dumper($@) if ($@);
+      # TODO: do more 
+      warn " failed to trash post "  .$post_id . $error;
     };
 
     redirect session('app_url') . '/admin/posts';
@@ -186,7 +211,9 @@ any '/admin/posts/add' => sub {
           my $settings = resultset('Setting')->first;
           $dt->set_time_zone( $settings->timezone );
 
+          # TODO: add check if user retrieved 
           my $user    = session('user');
+          
           my $status  = params->{status};
           my $title   = params->{title};
           my $content = params->{post};
@@ -230,6 +257,8 @@ any '/admin/posts/add' => sub {
                   created_date => $dtf->format_datetime($dt),
                   cover        => ( $cover ) ? $crypted_filename . $ext : '',
               });
+
+          # TODO: add check if the post was indeeed created ;
           # Store the post id so that we can redirect the user to the post created
           $post_id = $post->id;
 
@@ -262,9 +291,14 @@ any '/admin/posts/add' => sub {
             );
           }
         }
+        1;
+    } or do {
+      my $error = '';
+      $error = Dumper($@) if ($@);
+      # TODO: do more 
+      warn " failed to add post "  . ($post_id ? $post_id : ' ' ). $error;
     };
-
-    error $@ if ($@);
+    
     # If the post was added successfully, store a success message to show on the view
     session success => 'The post was added successfully' if ( !$@ && $post_id );
 
@@ -414,10 +448,13 @@ post '/admin/posts/update/:id' => sub {
                 }
             );
         }
-
+        1;
+    } or do {
+      my $error = '';
+      $error = Dumper($@) if ($@);
+      # TODO: do more 
+      warn " failed to update edited post "  .$post_id . $error;
     };
-
-    error $@ if ($@);
 
     session success => 'The post was updated successfully!';
 

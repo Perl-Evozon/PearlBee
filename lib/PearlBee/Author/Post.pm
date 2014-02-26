@@ -264,9 +264,12 @@ any '/author/posts/add' => sub {
           );
         }
       }
+      1;
+  } or do {
+    error $@ if ($@);
   };
 
-  error $@ if ($@);
+  
   # If the post was added successfully, store a success message to show on the view
   session success => 'The post was added successfully' if ( !$@ && $post_id );
 

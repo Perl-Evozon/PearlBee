@@ -11,7 +11,10 @@ index
 =cut
 
 get '/admin' => sub {
-  my $user = session('user');
+  my $user_id = session('user_id');
+
+  my $user = resultset('User')->find( $user_id ) if ( $user_id );
+  session user => $user;
 
   redirect('/dashboard') if ( $user );
   template 'login', {}, { layout => 'admin' };
@@ -38,6 +41,7 @@ post '/login' => sub {
   my $password_hash = generate_hash($password, $user->salt) if $user;
   if($user && $user->password eq $password_hash->{hash}) {
     session user => $user;
+    session user_id => $user->id;
     redirect('/dashboard');
   }
   else {

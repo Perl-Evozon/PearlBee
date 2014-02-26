@@ -1,6 +1,7 @@
 package PearlBee::Authorization;
 
 use Dancer2;
+use Dancer2::Plugin::DBIC;
 
 =head
 
@@ -9,7 +10,10 @@ Check if the user has authorization
 =cut
 
 hook 'before' => sub {
-  my $user = session('user');
+  my $user_id = session('user_id');
+
+  my $user = resultset('User')->find( $user_id ) if ( $user_id );
+  session user => $user;
 
   # Check if the user is logged in
   my $request = request->path_info;

@@ -59,3 +59,13 @@ $(document).ready(function(){
 	$('.make-switch').bootstrapSwitch('setState' , state);
 
 });
+
+// Activate the tag input
+
+$(document).ready(function() {
+
+	$.getJSON('/api/tags.json', function(tags_list) {
+		$("#tags").select2({tags: tags_list});
+	});
+	
+});

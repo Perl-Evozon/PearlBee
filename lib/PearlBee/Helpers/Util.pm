@@ -1,9 +1,6 @@
 package PearlBee::Helpers::Util;
 
-use Time::HiRes qw(time);
-use DateTime::Format::Strptime;
-use POSIX qw(strftime);
-use Digest::SHA1 qw(sha1_hex);
+use Data::GUID;
 
 require Exporter;
 our @ISA 		= qw(Exporter);
@@ -11,17 +8,15 @@ our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name/;
 
 =head
 
-Generate a random string based on the current time and date
+Generate a unique filename using GUID
 
 =cut
 
 sub generate_crypted_filename {
-  	my $t = time;
-  	my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-  	$date .= sprintf ".%03d", ( $t - int($t) ) * 1000;    # without rounding
-  	$date = sha1_hex($date);
+  	my $guid 	 = Data::GUID->new;
+  	my $filename = $guid->as_string;
 
-  	return $date;
+  	return $filename;
 }
 
 =head

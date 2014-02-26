@@ -209,6 +209,12 @@ post '/comment/add' => sub {
         $status = 'pending';
       }
 
+      # Filter the input data
+      $fullname =~ s/[^a-zA-Z\d\s:]//g;
+      $text     =~ s/[^a-zA-Z\d\s:]//g;
+      $email    =~ s/[^a-zA-Z\d\s:]//g;
+      $website  =~ s/[^a-zA-Z\d\s:]//g;
+
       my $comment = resultset('Comment')->create({
           fullname     => $fullname,
           content      => $text,

@@ -32,7 +32,6 @@ use PearlBee::Author::Comment;
 
 use PearlBee::Helpers::Util qw(generate_crypted_filename);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
-use PearlBee::Helpers::Themes;
 
 our $VERSION = '0.1';
 

@@ -195,15 +195,17 @@ any '/admin/users/add' => sub {
       my $role       = params->{role};
       my $pass_hash  = generate_hash($password);
 
+      warn $pass_hash->{hash} . ' ' . $pass_hash->{salt};
+
       resultset('User')->create({
         username        => $username,
         password        => $pass_hash->{hash},
+        salt            => $pass_hash->{salt},
         email           => $email,
         first_name      => $first_name,
         last_name       => $last_name,
         register_date   => join ' ', $dt->ymd, $dt->hms,
-        role            => $role,
-        salt            => $pass_hash->{salt}
+        role            => $role
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

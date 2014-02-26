@@ -40,6 +40,12 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <h4>Installing / Updating perl modules</h4>
 <pre><blockquote>./build.sh</blockquote></pre>
 
+or, if cpanm is available (App::cpanminus on CPAN)
+run 
+<pre><blockquote>cpanm --installdeps . </blockquote></pre>
+in the folder where PearlBee was checked out and the Makefile.PL is.
+
+
 <h4>Creating database</h4>
 You'll need to have installed and running either MySQL or MariaDB. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
 

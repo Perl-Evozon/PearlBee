@@ -25,20 +25,9 @@ get '/admin/comments/page/:page' => sub {
   my $nr_of_rows   = 5; # Number of posts per page
   my $page         = params->{page} || 1;
   my @comments     = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my @all_comments = resultset('Comment')->all;
+  my $count        = resultset('View::Count::StatusComment')->first;
 
-  my ( $approved, $trash, $spam, $pending );
-  $approved = $trash = $spam = $pending = 0;
-  
-  my $all = scalar ( @all_comments );
-
-  # Count all status for each comments
-  foreach ( @all_comments ) {
-    $approved++ if ( $_->status eq 'approved' );
-    $trash++    if ( $_->status eq 'trash'    );
-    $pending++  if ( $_->status eq 'pending' );
-    $spam++     if ( $_->status eq 'spam' );
-  }
+  my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -81,22 +70,10 @@ get '/admin/comments/:status/page/:page' => sub {
   my $page         = params->{page} || 1;
   my $status       = params->{status};
   my @comments     = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my @all_comments = resultset('Comment')->all;
+  my $count        = resultset('View::Count::StatusComment')->first;
 
-  my ( $approved, $trash, $spam, $pending );
-  $approved = $trash = $spam = $pending = 0;
-
-  my $all = scalar ( @all_comments );
-
-  # Count all status for each comments
-  foreach ( @all_comments ) {
-    $approved++ if ( $_->status eq 'approved' );
-    $trash++    if ( $_->status eq 'trash'    );
-    $pending++  if ( $_->status eq 'pending' );
-    $spam++     if ( $_->status eq 'spam' );
-  }
-  
-  my $status_count = resultset('Comment')->search({ status => $status })->count;
+  my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
+  my $status_count                              = $count->get_status_count($status);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);

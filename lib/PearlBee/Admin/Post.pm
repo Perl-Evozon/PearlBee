@@ -29,18 +29,9 @@ get '/admin/posts/page/:page' => sub {
     my $nr_of_rows  = 5; # Number of posts per page
     my $page        = params->{page};
     my @posts       = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
-    my @all_posts   = resultset('Post')->all;
+    my $count       = resultset('View::Count::StatusPost')->first;
 
-    my ( $publish, $trash, $draft );
-    $publish = $trash = $draft = 0;
-
-    # Count all post status
-    foreach( @all_posts ) {
-      $publish++ if ( $_->status eq 'published' );
-      $draft++   if ( $_->status eq 'draft'     );
-      $trash++   if ( $_->status eq 'trash'     );
-    }
-    my $all = scalar( @all_posts );
+    my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
 
     # Calculate the next and previous page link
     my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -82,20 +73,10 @@ get '/admin/posts/:status/page/:page' => sub {
     my $page        = params->{page} || 1;
     my $status      = params->{status};
     my @posts       = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
-    my @all_posts   = resultset('Post')->all;
+    my $count      = resultset('View::Count::StatusPost')->first;
 
-    my ( $publish, $trash, $draft );
-    $publish = $trash = $draft = 0;
-
-    # Count all post status
-    foreach( @all_posts ) {
-      $publish++ if ( $_->status eq 'published' );
-      $draft++   if ( $_->status eq 'draft'     );
-      $trash++   if ( $_->status eq 'trash'     );
-    }
-    my $all = scalar( @all_posts );
-    
-    my $status_count = resultset('Post')->search( { status => $status } )->count;
+    my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
+    my $status_count                    = $count->get_status_count($status);
 
     # Calculate the next and previous page link
     my $total_pages                 = get_total_pages($status_count, $nr_of_rows);

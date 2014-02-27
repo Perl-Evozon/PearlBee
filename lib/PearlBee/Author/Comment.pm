@@ -19,20 +19,9 @@ get '/author/comments/page/:page' => sub {
   my $page         = params->{page} || 1;
   my $user         = session('user');
   my @comments     = resultset('View::UserComments')->search({}, { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
-  my @all_comments = resultset('View::UserComments')->search({}, { bind => [ $user->id ] });
-  
-  my ( $approved, $trash, $spam, $pending );
-  $approved = $trash = $spam = $pending = 0;
-  
-  my $all = scalar( @all_comments );
+  my $count        = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
-  # Count all status for each comments
-  foreach ( @all_comments ) {
-    $approved++ if ( $_->status eq 'approved' );
-    $trash++    if ( $_->status eq 'trash'    );
-    $pending++  if ( $_->status eq 'pending' );
-    $spam++     if ( $_->status eq 'spam' );
-  }
+  my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -76,23 +65,10 @@ get '/author/comments/:status/page/:page' => sub {
   my $status      = params->{status};
   my $user        = session('user');
   my @comments    = resultset('View::UserComments')->search({ status => $status },  { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
+  my $count       = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
-  my @all_comments = resultset('View::UserComments')->search({}, { bind => [ $user->id ] });
-  
-  my ( $approved, $trash, $spam, $pending );
-  $approved = $trash = $spam = $pending = 0;
-  
-  my $all = scalar( @all_comments );
-
-  # Count all status for each comments
-  foreach ( @all_comments ) {
-    $approved++ if ( $_->status eq 'approved' );
-    $trash++    if ( $_->status eq 'trash'    );
-    $pending++  if ( $_->status eq 'pending' );
-    $spam++     if ( $_->status eq 'spam' );
-  }
-
-  my $status_count = resultset('View::UserComments')->search({ status => $status  }, { bind => [ $user->id ] })->count;
+  my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
+  my $status_count                              = $count->get_status_count($status);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);

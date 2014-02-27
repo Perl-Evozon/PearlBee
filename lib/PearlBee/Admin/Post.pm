@@ -15,6 +15,7 @@ use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
 use DateTime;
+use String::Util qw(trim);
 
 get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
 
@@ -244,7 +245,7 @@ any '/admin/posts/add' => sub {
             # Replace all white spaces with hyphen
             my $slug = string_to_slug( $tag );
            
-            my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
+            my $db_tag = resultset('Tag')->find_or_create( { name => trim($tag), slug => $slug } );
 
             resultset('PostTag')->create(
                 {
@@ -398,7 +399,7 @@ post '/admin/posts/update/:id' => sub {
         foreach my $tag (@tags) {
           
             my $slug = string_to_slug( $tag );
-            my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
+            my $db_tag = resultset('Tag')->find_or_create( { name => trim($tag), slug => $slug } );
 
             resultset('PostTag')->create(
                 {

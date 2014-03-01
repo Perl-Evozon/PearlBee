@@ -415,8 +415,15 @@ post '/admin/posts/update/:id' => sub {
 
         my @tags = split( ',', params->{tags} );
         foreach my $tag (@tags) {
+<<<<<<< HEAD
           
             my $slug = string_to_slug( $tag );
+=======
+	    $tag = trim( $tag );
+            my $slug = $tag;
+            $slug = String::Dirify->dirify( $slug, '-' );    # Convert the string intro a valid slug
+
+>>>>>>> origin/fixes
             my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
 
             resultset('PostTag')->create(

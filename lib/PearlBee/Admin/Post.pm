@@ -417,7 +417,7 @@ post '/admin/posts/update/:id' => sub {
         foreach my $tag (@tags) {
           
             my $slug = string_to_slug( $tag );
-            my $db_tag = resultset('Tag')->find_or_create( { name => $tag, slug => $slug } );
+            my $db_tag = resultset('Tag')->find_or_create( { name => string_to_slug($tag), slug => $slug } );
 
             resultset('PostTag')->create(
                 {

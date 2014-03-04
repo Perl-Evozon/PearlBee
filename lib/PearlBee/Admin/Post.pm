@@ -182,78 +182,40 @@ any '/admin/posts/add' => sub {
           my $settings = resultset('Setting')->first;
           $dt->set_time_zone( $settings->timezone );
 
-          my $user    = session('user');
-          my $status  = params->{status};
-          my $title   = params->{title};
-          my $content = params->{post};
-          my $slug    = string_to_slug( params->{slug} );
-
-          # Check if the slug used is already taken
-          my $found_slug = resultset('Post')->find({ slug => $slug });
-
-          if ( $found_slug ) {
-            # Extract the posts with slugs starting the same with the submited slug
-            my @posts_with_same_slug = resultset('Post')->search({ slug => { like => "$slug%"}});
-            my @slugs;
-            push @slugs, $_->slug foreach @posts_with_same_slug;
-
-            $slug = generate_new_slug_name($slug, \@slugs);
-
-            # Store a warning message so it can be shown on the view
-            session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.';
-          }
+          my $user              = session('user');
+          my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug} );
+          session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
           # Upload the cover image first so we'll have the generated filename ( if exists )
-          my $cover;
-          my $ext;
-          my $crypted_filename = generate_crypted_filename();
+          my $cover_filename;
           if ( upload('cover') ) {
-              $cover = upload('cover');
-              ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
-              $ext = lc($ext);
+              my $cover        = upload('cover');
+              $cover_filename  = generate_crypted_filename();
+              my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
+              $ext             = lc($ext);
+              $cover_filename .= $ext;
+
+              $cover->copy_to( config->{covers_folder} . $cover_filename );
           }
-          $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext ) if $cover;
 
           # Next we can store the post into the database safely
           my $dtf = schema->storage->datetime_parser;
-          $post = resultset('Post')->create(
-              {
-                  title        => $title,
-                  slug         => $slug,
-                  content      => $content,
-                  user_id      => $user->id,
-                  status       => $status,
-                  created_date => $dtf->format_datetime($dt),
-                  cover        => ( $cover ) ? $crypted_filename . $ext : '',
-              });
-
-          # Connect the categories selected with the new post
-          params->{category} = 1 if ( !params->{category} );                                                                # If no category is selected the Uncategorized category will be stored default
-          my @categories_selected = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
-
-          resultset('PostCategory')->create(
-              {
-                  category_id => $_,
-                  post_id     => $post->id
-              }
-          ) foreach (@categories_selected);
+          my $params = {
+              title        => params->{title},
+              slug         => $slug,
+              content      => params->{post},
+              user_id      => $user->id,
+              status       => params->{status},
+              cover        => ( $cover_filename ) ? $cover_filename : '',
+              created_date => $dtf->format_datetime($dt),
+          };
+          $post = resultset('Post')->can_create($params);
+  
+          # Insert the categories selected with the new post
+          resultset('PostCategory')->connect_categories( params->{category}, $post->id );
 
           # Connect and update the tags table
-          my @tags = split( ',', params->{tags} );
-          foreach my $tag (@tags) {
-
-            # Replace all white spaces with hyphen
-            my $slug = string_to_slug( $tag );
-           
-            my $db_tag = resultset('Tag')->find_or_create( { name => trim($tag), slug => $slug } );
-
-            resultset('PostTag')->create(
-                {
-                    tag_id  => $db_tag->id,
-                    post_id => $post->id
-                }
-            );
-          }
+          resultset('PostTag')->connect_tags( params->{tags}, $post->id );
         }
     };
 
@@ -331,25 +293,14 @@ update method
 
 post '/admin/posts/update/:id' => sub {
 
-    my $post_slug = params->{slug};
-    my $post      = resultset('Post')->find({ slug => $post_slug });
+    my $post_id   = params->{id};
+    my $post      = resultset('Post')->find({ id => $post_id });
     my $title     = params->{title};
     my $content   = params->{post};
     my $tags      = params->{tags};
-    my $slug      = string_to_slug( params->{slug} );
 
-    # Check if the slug used is already taken
-    my $found_slug = resultset('Post')->search({ id => { '!=' => $post->id }, slug => $slug })->first;
-
-    if ( $found_slug ) {
-      # Extract the posts with slugs starting the same with the submited slug
-      my @posts_with_same_slug = resultset('Post')->search({ slug => { like => "$slug%"}});
-      my @slugs;
-      push @slugs, $_->slug foreach @posts_with_same_slug;
-
-      $slug = generate_new_slug_name($slug, \@slugs);
-      session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.';
-    }
+    my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug}, $post->id );
+    session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
     eval {
         # Upload the cover image
@@ -379,35 +330,10 @@ post '/admin/posts/update/:id' => sub {
         );
 
         # Reconnect the categories with the new one and delete the old ones
-        my @post_categories = resultset('PostCategory')->search( { post_id => $post->id } );
-        $_->delete foreach (@post_categories);
-
-        my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category};    # Force an array if only one category was selected
-
-        resultset('PostCategory')->create(
-            {
-                category_id => $_,
-                post_id     => $post->id
-            }
-        ) foreach (@categories);
+        resultset('PostCategory')->connect_categories( params->{category}, $post->id );
 
         # Reconnect and update the selected tags
-        my @post_tags = resultset('PostTag')->search( { post_id => $post->id } );
-        $_->delete foreach (@post_tags);
-
-        my @tags = split( ',', params->{tags} );
-        foreach my $tag (@tags) {
-          
-            my $slug = string_to_slug( $tag );
-            my $db_tag = resultset('Tag')->find_or_create( { name => trim($tag), slug => $slug } );
-
-            resultset('PostTag')->create(
-                {
-                    tag_id  => $db_tag->id,
-                    post_id => $post->id
-                }
-            );
-        }
+        resultset('PostTag')->connect_tags( params->{tags}, $post->id );
 
     };
 

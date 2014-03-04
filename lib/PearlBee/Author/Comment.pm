@@ -18,6 +18,7 @@ get '/author/comments/page/:page' => sub {
   my $nr_of_rows   = 5; # Number of posts per page
   my $page         = params->{page} || 1;
   my $user         = session('user');
+  $user            = resultset('User')->find( $user->{id} );
   my @comments     = resultset('View::UserComments')->search({}, { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count        = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
@@ -64,6 +65,7 @@ get '/author/comments/:status/page/:page' => sub {
   my $page        = params->{page} || 1;
   my $status      = params->{status};
   my $user        = session('user');
+  $user           = resultset('User')->find( $user->{id} );
   my @comments    = resultset('View::UserComments')->search({ status => $status },  { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
@@ -108,13 +110,10 @@ Accept comment
 get '/author/comments/approve/:id' => sub {
 
   my $comment_id = params->{id};
-  my $comment = resultset('Comment')->find( $comment_id );
+  my $comment    = resultset('Comment')->find( $comment_id );
+  my $user       = session('user');
 
-  eval {
-    $comment->update({
-        status => 'approved'
-      });
-  };
+  eval { $comment->approve($user); };
 
   redirect session('app_url') . '/author/comments';
 };
@@ -127,14 +126,11 @@ Trash a comment
 
 get '/author/comments/trash/:id' => sub {
 
-  my $comment_id = params->{id};
-  my $comment = resultset('Comment')->find( $comment_id );
+ my $comment_id  = params->{id};
+  my $comment    = resultset('Comment')->find( $comment_id );
+  my $user       = session('user');
 
-  eval {
-    $comment->update({
-        status => 'trash'
-      });
-  };
+  eval { $comment->trash($user); };
 
   redirect session('app_url') . '/author/comments';
 };
@@ -148,13 +144,10 @@ Spam a comment
 get '/author/comments/spam/:id' => sub {
 
   my $comment_id = params->{id};
-  my $comment = resultset('Comment')->find( $comment_id );
+  my $comment    = resultset('Comment')->find( $comment_id );
+  my $user       = session('user');
 
-  eval {
-    $comment->update({
-        status => 'spam'
-      });
-  };
+  eval { $comment->spam($user); };
 
   redirect session('app_url') . '/author/comments';
 };
@@ -168,13 +161,10 @@ Pending a comment
 get '/author/comments/pending/:id' => sub {
 
   my $comment_id = params->{id};
-  my $comment = resultset('Comment')->find( $comment_id );
+  my $comment    = resultset('Comment')->find( $comment_id );
+  my $user       = session('user');
 
-  eval {
-    $comment->update({
-        status => 'pending'
-      });
-  };
+  eval { $comment->pending($user); };
 
   redirect session('app_url') . '/author/comments';
 };

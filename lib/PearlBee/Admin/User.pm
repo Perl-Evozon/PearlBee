@@ -118,11 +118,7 @@ any '/admin/users/activate/:id' => sub {
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
 
-  eval {
-    $user->update({
-        status => 'activated'
-      });
-  };
+  eval { $user->activate(); };
 
   redirect session('app_url') . '/admin/users';
 };
@@ -138,11 +134,7 @@ any '/admin/users/deactivate/:id' => sub {
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
 
-  eval {
-    $user->update({
-        status => 'deactivated'
-      });
-  };
+  eval { $user->deactivate(); };
 
   redirect session('app_url') . '/admin/users';
 };
@@ -158,11 +150,7 @@ any '/admin/users/suspend/:id' => sub {
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
 
-  eval {
-    $user->update({
-        status => 'suspended'
-      });
-  };
+  eval { $user->suspend(); };
 
   redirect session('app_url') . '/admin/users';
 };

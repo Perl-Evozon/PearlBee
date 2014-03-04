@@ -113,15 +113,14 @@ publish method
 =cut
 
 get '/admin/posts/publish/:id' => sub {
-    my $post_id = params->{id};
+    
+  my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-    my $post;
-    eval {
-        $post = resultset('Post')->find($post_id);
-        $post->update( { status => 'published' } );
-    };
+  eval { $post->publish($user); };
 
-    redirect session('app_url') . '/admin/posts';
+  redirect session('app_url') . '/admin/posts';
 
 };
 
@@ -132,15 +131,14 @@ draft method
 =cut
 
 get '/admin/posts/draft/:id' => sub {
-    my $post_id = params->{id};
 
-    my $post;
-    eval {
-        $post = resultset('Post')->find($post_id);
-        $post->update( { status => 'draft' } );
-    };
+  my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-    redirect session('app_url') . '/admin/posts';
+  eval { $post->draft($user); };
+
+  redirect session('app_url') . '/admin/posts';
 };
 
 =head
@@ -151,15 +149,13 @@ trash method
 
 get '/admin/posts/trash/:id' => sub {
 
-    my $post_id = params->{id};
+  my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-    my $post;
-    eval {
-        $post = resultset('Post')->find($post_id);
-        $post->update( { status => 'trash' } );
-    };
+  eval { $post->trash($user); };
 
-    redirect session('app_url') . '/admin/posts';
+  redirect session('app_url') . '/admin/posts';
 
 };
 

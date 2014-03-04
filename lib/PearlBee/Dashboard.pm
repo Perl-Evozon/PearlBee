@@ -67,6 +67,7 @@ Edit profile
 any '/profile' => sub {
 
   my $user = session('user');
+  $user    = resultset('User')->find( $user->{id} );
 
   my $first_name     = params->{first_name};
   my $last_name     = params->{last_name};

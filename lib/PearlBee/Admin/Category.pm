@@ -51,7 +51,7 @@ post '/admin/categories/add' => sub {
       my $category = resultset('Category')->create({
           name   => $name,
           slug   => $slug,
-          user_id => $user->id
+          user_id => $user->{id}
         });
     };
 

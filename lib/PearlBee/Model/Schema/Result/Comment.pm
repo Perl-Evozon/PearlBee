@@ -131,4 +131,47 @@ __PACKAGE__->belongs_to(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub approve {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'approved '}) if ( $self->is_authorized( $user ) );
+}
+
+sub trash {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'trash '}) if ( $self->is_authorized( $user ) );
+}
+
+sub spam {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'spam '}) if ( $self->is_authorized( $user ) );
+}
+
+sub pending {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'pending '}) if ( $self->is_authorized( $user ) );
+}
+
+=haed
+
+Check if the user has enough authorization for modifying
+
+=cut
+
+sub is_authorized {
+  my ($self, $user) = @_;
+
+  my $schema     = $self->result_source->schema;
+  $user          = $schema->resultset('User')->find( $user->{id} );
+  my $authorized = 0;
+  $authorized    = 1 if ( $user->is_admin );
+  $authorized    = 1 if ( !$user->is_admin && $self->post->user_id == $user->id );
+
+  return $authorized;
+}
+
 1;

@@ -243,4 +243,28 @@ sub is_deactive {
   return 0;
 }
 
+=head
+
+Status changes
+
+=cut
+
+sub deactivate {
+  my $self = shift;
+
+  $self->update({ status => 'deactivated' });
+}
+
+sub activate {
+  my $self = shift;
+
+  $self->update({ status => 'activated' });
+}
+
+sub suspend {
+  my $self = shift;
+
+  $self->update({ status => 'suspended' });
+}
+
 1;

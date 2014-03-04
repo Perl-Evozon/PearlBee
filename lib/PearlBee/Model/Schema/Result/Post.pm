@@ -210,4 +210,47 @@ sub get_string_tags {
   return $joined_tags;
 }
 
+=head 
+
+Status updates
+
+=cut
+
+sub publish {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
+}
+
+sub draft {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
+}
+
+
+sub trash {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
+}
+
+=haed
+
+Check if the user has enough authorization for modifying
+
+=cut
+
+sub is_authorized {
+  my ($self, $user) = @_;
+
+  my $schema     = $self->result_source->schema;
+  $user          = $schema->resultset('User')->find( $user->{id} );
+  my $authorized = 0;
+  $authorized    = 1 if ( $user->is_admin );
+  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
+
+  return $authorized;
+}
+
 1;

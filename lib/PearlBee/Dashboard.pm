@@ -24,8 +24,8 @@ Dashboard index
 
 any '/dashboard' => sub {
 
-  my $user_id = session('user_id');
-  my $user = resultset('User')->find($user_id);
+  my $user = session('user');
+     $user = resultset('User')->find( $user->{id} );
 
   if ( $user->status eq 'deactivated' ) {
 

@@ -11,10 +11,7 @@ index
 =cut
 
 get '/admin' => sub {
-  my $user_id = session('user_id');
-
-  my $user = resultset('User')->find( $user_id ) if ( $user_id );
-  session user => $user;
+  my $user = session('user');
 
   redirect('/dashboard') if ( $user );
   template 'login', {}, { layout => 'admin' };
@@ -33,14 +30,19 @@ post '/login' => sub {
   my $user = resultset("User")->search({
       username => $username,
       -or => [
-	status => 'activated',
-	status => 'deactivated'
+      	status => 'activated',
+      	status => 'deactivated'
       ]
     })->first;
   
   my $password_hash = generate_hash($password, $user->salt) if $user;
   if($user && $user->password eq $password_hash->{hash}) {
-    session user => $user;
+    
+    my $user_obj->{is_admin} = $user->is_admin;
+    $user_obj->{role}        = $user->role;
+    $user_obj->{id}          = $user->id;
+
+    session user => $user_obj;
     session user_id => $user->id;
     redirect('/dashboard');
   }

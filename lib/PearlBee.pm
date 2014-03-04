@@ -197,6 +197,7 @@ post '/comment/add' => sub {
 
       # If the person who leaves the comment is either the author or the admin the comment is automaticly approved
       my $user = session('user');
+      $user = resultset('User')->find( $user->{id} );
       my $status;
       if ($user) {
         $status = ( $user->is_admin || $user->id == $post->user->id ) ? 'approved' : 'pending';

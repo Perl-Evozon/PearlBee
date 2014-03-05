@@ -25,8 +25,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Digest::Bcrypt</li>
 <li>Digest::MD5</li>
 <li>Digest::SHA1</li>
-<li>Email::MIME</li>
-<li>Email::Sender::Simple</li>
+<li>Email::Template</li>
 <li>MIME::Base64</li>
 <li>Plack</li>
 <li>String::Dirify</li>

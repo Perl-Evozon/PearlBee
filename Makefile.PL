@@ -35,8 +35,6 @@ WriteMakefile(
         'Digest::Bcrypt'                => 0,
         'Digest::MD5'                   => 0,
         'Digest::SHA1'                  => 0,
-        'Email::MIME'                   => 0,
-        'Email::Sender::Simple'         => 0,
         'Email::Template'               => 0,
         'Gravatar::URL'                 => 0,
         'MIME::Base64'                  => 0,

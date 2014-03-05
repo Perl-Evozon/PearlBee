@@ -2,29 +2,51 @@
 An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
 <h3>Version</h3>
 0.9
+
 <h3>Setup</h3>
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
 <ul>
-<li>make</li>
-<li>libplack-perl</li>
+<li>Authen::Captcha ( needs GD, which neeeds libgd2-xpm-dev package)</li>
+<li>Crypt::RandPasswd</li>
 <li>Dancer2</li>
 <li>Dancer2::Plugin::DBIC</li>
-<li>Authen::Captcha ( needs libgd2-xpm-dev package)</li>
-<li>Digest::Bcrypt</li>
-<li>String::Dirify</li>
-<li>String::Util</li>
+<li>Data::GUID</li>
+<li>Data::Entropy::Algorithms</li>
+<li>Data::Pageset</li>
 <li>DateTime::Format::Strptime</li>
+<li>DateTime</li>
+<li>DateTime::TimeZone</li>
+<li>DateTime::Format::MySQL</li>
+<li>DBI</li>
+<li>DBD::mysql and libmysqlclient-dev </li>
+<li>DBIx::Class</li>
 <li>Crypt::RandPasswd</li>
+<li>Digest::Bcrypt</li>
+<li>Digest::MD5</li>
+<li>Digest::SHA1</li>
 <li>Email::MIME</li>
 <li>Email::Sender::Simple</li>
+<li>MIME::Base64</li>
+<li>Plack</li>
+<li>String::Dirify</li>
+<li>String::Util</li>
+<li>Template</li>
 <li>Template::Plugin::HTML::Strip</li>
+<li>Time::HiRes</li>
+
 <li>You will need a MySQL/MariaDB server for the blog's database.</li>
 <li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
 </ul>
 
 <h4>Installing / Updating perl modules</h4>
 <pre><blockquote>./build.sh</blockquote></pre>
+
+or, if cpanm is available (App::cpanminus on CPAN)
+run 
+<pre><blockquote>cpanm --installdeps . </blockquote></pre>
+in the folder where PearlBee was checked out and the Makefile.PL is.
+
 
 <h4>Creating database</h4>
 You'll need to have installed and running either MySQL or MariaDB. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
@@ -58,4 +80,3 @@ password: password
 
 
 Thank you for using PearlBee!
-

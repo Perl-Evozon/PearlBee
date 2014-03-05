@@ -69,13 +69,13 @@ any '/profile' => sub {
   my $user = session('user');
   $user    = resultset('User')->find( $user->{id} );
 
-  my $first_name     = params->{first_name};
-  my $last_name     = params->{last_name};
-  my $email       = params->{email};
+  my $first_name = params->{first_name};
+  my $last_name  = params->{last_name};
+  my $email      = params->{email};
 
   my $old_password   = params->{old_password};
   my $new_password   = params->{new_password};
-  my $new_password2   = params->{new_password2};
+  my $new_password2  = params->{new_password2};
 
   if ( $first_name && $last_name && $email ) {
 

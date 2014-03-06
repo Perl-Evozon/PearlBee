@@ -96,4 +96,33 @@ __PACKAGE__->has_many(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+=head
+
+Safely cascade delete a category
+
+=cut
+
+sub safe_cascade_delete {
+  my $self = shift;
+
+  my $schema = $self->result_source->schema;
+  
+  foreach ( $self->post_categories ) {
+      my $post = $_->post;
+      my @post_categories = $post->post_categories;
+
+      if ( scalar ( @post_categories ) == 1 ) {
+        $schema->resultset('PostCategory')->create({
+            post_id => $post->id,
+            category_id => '1'
+          });
+      }
+
+      $_->delete();
+    }
+
+    $self->delete();
+}
+
 1;

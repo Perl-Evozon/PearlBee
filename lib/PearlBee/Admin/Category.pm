@@ -33,8 +33,9 @@ create method
 post '/admin/categories/add' => sub {
 
   my @categories;
-  my $name = params->{name};
-  my $slug = params->{slug};
+  my $name   = params->{name};
+  my $slug   = params->{slug};
+  my $params = {};
 
   $slug = string_to_slug($slug);
 
@@ -43,7 +44,7 @@ post '/admin/categories/add' => sub {
   if ( $found_slug_or_name ) {
     @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
-    template '/admin/categories/list', { warning => "The category name or slug already exists", categories => \@categories } , { layout => 'admin' };
+    $params->{warning} = "The category name or slug already exists";
   }
   else {
     eval {
@@ -55,10 +56,13 @@ post '/admin/categories/add' => sub {
         });
     };
 
-    @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
-
-    template '/admin/categories/list', { success => "The cateogry was successfully added.", categories => \@categories }, { layout => 'admin' };
+    $params->{success} = "The cateogry was successfully added.";
   }
+
+  @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
+  $params->{categories} = \@categories;
+
+  template '/admin/categories/list', $params, { layout => 'admin' };
 
 };
 
@@ -70,25 +74,12 @@ delete method
 
 get '/admin/categories/delete/:id' => sub {
 
+  my $id = params->{id};
+
   eval {
-    my $id = params->{id};
     my $category = resultset('Category')->find( $id );
 
-    foreach ( $category->post_categories ) {
-      my $post = $_->post;
-      my @post_categories = $post->post_categories;
-
-      if ( scalar ( @post_categories ) == 1 ) {
-        resultset('PostCategory')->create({
-            post_id => $post->id,
-            category_id => '1'
-          });
-      }
-
-      $_->delete();
-    }
-
-    $category->delete();
+    $category->safe_cascade_delete();
   };
 
   if ( $@ ) {
@@ -112,11 +103,12 @@ edit method
 any '/admin/categories/edit/:id' => sub {
 
   my $category_id = params->{id};
-  my @categories   = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
-  my $category   = resultset('Category')->find( $category_id );
+  my $name        = params->{name};
+  my $slug        = params->{slug};
+  my $category    = resultset('Category')->find( $category_id );
+  my @categories;
+  my $params = {};
 
-  my $name = params->{name};
-  my $slug = params->{slug};
   # Check if the form was submited
   if ( $name && $slug ) {
 
@@ -128,25 +120,13 @@ any '/admin/categories/edit/:id' => sub {
     # Check if the user entered an existing slug
     if ( $found_slug ) {
 
-      template '/admin/categories/list',
-      {
-        category   => $category,
-        categories => \@categories,
-        warning    => 'The category slug already exists'
-      },
-      { layout => 'admin' };
+      $params->{warning} = 'The category slug already exists';
 
     }
     # Check if the user entered an existing name
     elsif ( $found_name ) {
 
-      template '/admin/categories/list',
-      {
-        category   => $category,
-        categories => \@categories,
-        warning    => 'The category name already exists'
-      },
-      { layout => 'admin' };
+      $params->{warning} = 'The category name already exists';
 
     }
     else {
@@ -157,26 +137,18 @@ any '/admin/categories/edit/:id' => sub {
           });
       };
 
-      @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
-
-      template '/admin/categories/list',
-      {
-        category   => $category,
-        categories => \@categories,
-        success    => 'The category was updated successfully'
-      },
-      { layout => 'admin' };
+      $params->{success} = 'The category was updated successfully'
     }
   }
-  else {
-    # If the form wasn't submited just list the categories
-    template '/admin/categories/list',
-      {
-        category   => $category,
-        categories => \@categories
-      },
-      { layout => 'admin' };
-  }
+
+  @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
+
+  $params->{category}   = $category;
+  $params->{categories} = \@categories;
+  
+  # If the form wasn't submited just list the categories
+  template '/admin/categories/list', $params, { layout => 'admin' };
+
 
 };
 

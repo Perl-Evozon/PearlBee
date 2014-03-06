@@ -23,6 +23,7 @@ WriteMakefile(
         'Crypt::RandPasswd'             => 0,
         'Dancer2'                       => 0.11,
         'Dancer2::Plugin::DBIC'         => 0,
+        'Dancer2::Plugin::REST'         => 0,
         'Data::Entropy::Algorithms'     => 0,
         'Data::Pageset'                 => 0,
         'DateTime'                      => 0,

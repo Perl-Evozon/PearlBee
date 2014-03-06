@@ -2,6 +2,9 @@ package PearlBee::REST;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::REST;
+
+prepare_serializer_for_format;
 
 =haed
 
@@ -9,7 +12,7 @@ Get an array with all tags
 
 =cut
 
-get '/api/tags.json' => sub {
+get '/api/tags.:format' => sub {
   
 	my $user = session('user');
 
@@ -18,9 +21,8 @@ get '/api/tags.json' => sub {
 	  my @list;
 
 	  push @list, $_->name foreach(@tags);
-	  content_type 'application/json';
-
-	  return to_json(\@list);
+	  
+	  return \@list;
    }
 };
 

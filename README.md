@@ -11,6 +11,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Crypt::RandPasswd</li>
 <li>Dancer2</li>
 <li>Dancer2::Plugin::DBIC</li>
+<li>Dancer2::Plugin::REST</li>
 <li>Data::GUID</li>
 <li>Data::Entropy::Algorithms</li>
 <li>Data::Pageset</li>

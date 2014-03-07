@@ -103,4 +103,4 @@ insert into user (first_name, last_name, username, password, email, status, role
 	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
-insert into settings ( timezone, social_media, blog_path ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');
+insert into settings ( timezone, social_media, theme_folder, blog_path ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');

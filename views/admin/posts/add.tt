@@ -27,7 +27,7 @@
                             <br />
 
                             <br />
-                            <textarea name="post" required class="form-control cleditor" placeholder="Enter text ..." rows="20" cols="10"></textarea>
+                            <textarea name="post" required class="form-control ckeditor" placeholder="Enter text ..." rows="20" cols="10"></textarea>
                             <input type="hidden" name="status" id="status" />
 
                            </div>

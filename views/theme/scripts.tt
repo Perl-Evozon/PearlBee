@@ -7,3 +7,7 @@
     <script src="[% session.app_url %]/blog/js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
     <script src="[% session.app_url %]/blog/js/html5shiv.js"></script>
+    <!-- App JS -->
+    <script src="[% session.app_url %]/blog/js/app.js"></script>
+    <!-- Google code syntax highlighter -->
+	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>

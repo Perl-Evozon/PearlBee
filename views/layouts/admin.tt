@@ -153,5 +153,7 @@
       <script src="[% session.app_url %]/admin/js/chosen.jquery.min.js"></script> 
       <!-- Select JS -->
       <script src="[% session.app_url %]/admin/js/select2/select2.min.js"></script> 
+      <!-- Select JS -->
+      <script src="[% session.app_url %]/admin/js/ckeditor/ckeditor.js"></script> 
    </body>  
 </html>

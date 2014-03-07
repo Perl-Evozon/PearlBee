@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS settings (
 	social_media 	BOOLEAN NOT NULL DEFAULT '1',
 	blog_path		VARCHAR(255) NOT NULL DEFAULT '/',
 	theme_folder 	VARCHAR(255) NOT NULL,
+	blog_name 		VARCHAR(255) NOT NULL,
 	PRIMARY KEY (timezone, social_media, blog_path)
 );
 
@@ -102,4 +103,4 @@ insert into user (first_name, last_name, username, password, email, status, role
 	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
-insert into settings ( timezone, social_media, blog_path, theme_folder ) values ( 'Europe/Bucharest', 1, '/', 'Olson');
+insert into settings ( timezone, social_media, blog_path ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');

@@ -44,6 +44,12 @@ __PACKAGE__->table("settings");
   is_nullable: 0
   size: 255
 
+=head2 blog_name
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 255
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -55,12 +61,14 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", default_value => "/", is_nullable => 0, size => 255 },
   "theme_folder",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "blog_name",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
 );
 __PACKAGE__->set_primary_key("timezone", "social_media", "blog_path");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-19 13:04:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sjAaQriUfS1F2la73bKTcg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-03-06 16:50:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w62Hs9dC9yPBqU3YHClvKQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

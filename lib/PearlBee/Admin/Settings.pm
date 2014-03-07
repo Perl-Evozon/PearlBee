@@ -9,6 +9,9 @@ package PearlBee::Admin::Settings;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+
+use PearlBee::Helpers::Util qw/generate_crypted_filename/;
+
 use DateTime::TimeZone;
 use POSIX qw(tzset);
 
@@ -39,14 +42,16 @@ post '/admin/settings/save' => sub {
 	my $path 		 = params->{path};
 	my $social_media = params->{social_media}; # If the social media checkbox isn't checked the value will be undef
 	my $timezone  	 = params->{timezone};
+	my $blog_name 	 = params->{blog_name};
 
 	eval {
 		$settings = resultset('Setting')->first;
 
 		$settings->update({
-			blog_path => $path,
-			timezone => $timezone,
-			social_media => ($social_media) ? '1' : '0'
+			blog_path    => $path,
+			timezone     => $timezone,
+			social_media => ($social_media) ? '1' : '0',
+			blog_name    => $blog_name
 		});
 	};
 

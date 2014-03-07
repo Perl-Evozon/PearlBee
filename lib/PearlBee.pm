@@ -41,7 +41,10 @@ Prepare the blog path
 
 =cut
 
-hook 'before' => sub { session app_url => config->{app_url} unless ( session('app_url') ); };
+hook 'before' => sub { 
+  session app_url   => config->{app_url} unless ( session('app_url') ); 
+  session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') ); 
+};
 
 =head
 

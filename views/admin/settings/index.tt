@@ -19,9 +19,15 @@
 
               <form method="post" action="[% session.app_url %]/admin/settings/save">
 
+                <h5>Blog name</h5>
+
+                <input class="form-control" required name="blog_name" type="text" placeholder="Name" value="[% setting.blog_name %]">
+
+                <hr />
+                
                 <h5>Social media buttons</h5>
                 <div class="make-switch" data-on="success" data-off="danger">
-		    [% IF setting.social_media %]
+		                [% IF setting.social_media %]
                       <input id="social_media_check" name="social_media" type="checkbox" checked>
                     [% ELSE %]
                       <input id="social_media_check" name="social_media" type="checkbox">

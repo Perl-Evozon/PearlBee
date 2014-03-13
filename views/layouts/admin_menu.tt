@@ -37,8 +37,18 @@
                     </ul>
                 </li>
 
-                <li><a href="[% session.app_url %]/admin/settings"><i class="icon-wrench"></i> Settings</a></li>  
-            
+                
+                <li class="has_submenu">
+                    <a href="#">
+                       <i class="icon-file"></i> Settings
+                       <span class="caret pull-right"></span>
+                    </a>
+                    <!-- Sub menu -->
+                    <ul>
+                       <li><a href="[% session.app_url %]/admin/settings">General</a></li>
+                       <li><a href="[% session.app_url %]/admin/settings/import">Import</a></li>
+                    </ul>
+                </li>            
             [% END %]        
         </ul>
      </div>

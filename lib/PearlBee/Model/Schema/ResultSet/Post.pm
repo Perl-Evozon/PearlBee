@@ -69,4 +69,13 @@ sub check_slug {
 	return ($slug, $slug_changed);
 }
 
+sub post_slug_exists {
+	my ($self, $slug, $user_id) = @_;
+
+	my $schema 	   	 = $self->result_source->schema;
+	my $post 	     = $schema->resultset('Post')->search({ slug => $slug, user_id => $user_id })->first();
+
+	return $post
+}
+
 1;

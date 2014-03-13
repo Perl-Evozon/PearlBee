@@ -76,7 +76,7 @@ sub _wp_import {
         }
         
         #import user posts with related data
-        foreach my $post ( @{ $args->{parsed_file}->{channel}->{item} } ) {            
+        foreach my $post ( @{ $args->{parsed_file}{channel}{item} } ) {            
             #insert new posts in db, avoid existing ones
             my $categories         = ( ref $post->{category} ne 'ARRAY' ) ? [ $post->{category} ] : $post->{category};
             my $comments           = ( ref $post->{"wp:comment"} ne 'ARRAY' ) ? [ $post->{"wp:comment"} ] : $post->{"wp:comment"};
@@ -85,7 +85,7 @@ sub _wp_import {
             #replace image links with the ones related to our application           
             my $post_content       = $post->{"content:encoded"} =~ s/${content_link}/${images_upload_path}/rg;
             
-            my $existing_post = $args->{schema}->resultset('Post')->search({ slug => string_to_slug($post->{title}), user_id => $args->{session}->data->{user_id} })->first();
+            my $existing_post = $args->{schema}->resultset('Post')->post_slug_exists( string_to_slug($post->{title}), $args->{session}->data->{user_id} );
             if ( $existing_post ) {
                 $self->_update_wp_posts_on_import( $categories, $comments, $existing_post->id );
                 next;

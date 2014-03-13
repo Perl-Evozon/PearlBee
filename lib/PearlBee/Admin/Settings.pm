@@ -90,8 +90,8 @@ post '/admin/settings/wp_import' => sub {
         $import_filename .= $ext;
         $import->copy_to( config->{import_folder} . $import_filename );
         
-        my $xs          = XML::Simple->new();
-        my $parsed_file = $xs->XMLin( config->{import_folder} . $import_filename, ForceArray => 0, KeyAttr => 0 );
+        my $xml_handler = XML::Simple->new();
+        my $parsed_file = $xml_handler->XMLin( config->{import_folder} . $import_filename, ForceArray => 0, KeyAttr => 0 );
 
         return template 'admin/settings/import.tt', 
             { 
@@ -107,18 +107,13 @@ post '/admin/settings/wp_import' => sub {
                 config      => config
             }
         );
-        
+        my $import_response = ( $import_handler->run_wp_import() )
+                            ? { success => 'Blog content successfuly imported!' }
+                            : { error   => 'There has been a problem with the import. Please contact support.' };
+                                
         return	template 'admin/settings/import.tt', 
-            { 
-                success   => 'Successfuly imported data from file'
-            }, 
-            { layout => 'admin' } if ( $import_handler->run_wp_import() );
-            
-        return	template 'admin/settings/import.tt', 
-            { 
-                error   => 'There has been a problem with the import. Please contact support'
-            }, 
-            { layout => 'admin' };
+            $import_response, 
+            { layout => 'admin' };            
     }
     
     return	template 'admin/settings/import.tt', 

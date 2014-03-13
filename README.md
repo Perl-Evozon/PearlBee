@@ -78,5 +78,7 @@ user:        admin
 password: password
 </blockquote></pre>
 
+<h3>PearlBee in news</h3>
+<a href="http://perltricks.com/article/69/2014/2/17/Is-PearlBee-Perl-s-next-great-blogging-platform-">Is PearlBee Perl's next great blogging platform?</a> -Perl Tricks
 
 Thank you for using PearlBee!

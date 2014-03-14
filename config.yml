@@ -40,7 +40,7 @@ plugins:
           dsn: dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
           user: root
-          pass: tudor
+          pass: dev
           options:
             RaiseError: 1
             PrintError: 1
@@ -51,5 +51,5 @@ covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
-app_url:          'http://thepearlbee.com:5000'
+app_url:          'http://localhost:5000'
 email_templates:  'views/emails/'

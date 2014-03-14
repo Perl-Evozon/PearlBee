@@ -102,9 +102,7 @@ post '/admin/settings/wp_import' => sub {
         my $import_handler = PearlBee::Helpers::Import->new(
             args => {
                 parsed_file => $parsed_file,
-                session     => session,
-                schema      => schema,
-                config      => config
+                session     => session
             }
         );
         my $import_response = ( $import_handler->run_wp_import() )

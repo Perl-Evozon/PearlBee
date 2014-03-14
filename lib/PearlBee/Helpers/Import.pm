@@ -2,6 +2,9 @@ package PearlBee::Helpers::Import;
 
 use Moose;
 
+use Dancer2;
+use Dancer2::Plugin::DBIC;
+
 use LWP::UserAgent;
 use LWP::Simple qw(getstore);
 use File::Path qw( make_path );
@@ -21,9 +24,7 @@ SubMan::Helpers::Import Helpers for PearlBee import functionality
     Arguments necessary to create the object:
         args => {
             parsed_file => $parsed_file, #the data gathered from the xml file
-            session     => session,
-            schema      => schema,
-            config      => config # app configuration data from config.yml
+            session     => $args->{session}
         }
 =cut
 
@@ -69,8 +70,8 @@ sub _wp_import {
                     my $image_save_path = $month_link =~ s/\/.*\/wp-content//r;
                     my $image_file_path = $image =~ s/\/.*\/wp-content//r;
     
-                    make_path( $args->{config}->{images_folder} . $image_save_path ) if ( ! -d $args->{config}->{images_folder} . $image_save_path );
-                    getstore( $host_link . $image, $args->{config}->{images_folder} . $image_file_path );
+                    make_path( config->{images_folder} . $image_save_path ) if ( ! -d config->{images_folder} . $image_save_path );
+                    getstore( $host_link . $image, config->{images_folder} . $image_file_path );
                 }
             }
         }
@@ -80,18 +81,18 @@ sub _wp_import {
             #insert new posts in db, avoid existing ones
             my $categories         = ( ref $post->{category} ne 'ARRAY' ) ? [ $post->{category} ] : $post->{category};
             my $comments           = ( ref $post->{"wp:comment"} ne 'ARRAY' ) ? [ $post->{"wp:comment"} ] : $post->{"wp:comment"};
-            my $images_upload_path = $args->{config}->{images_path};
+            my $images_upload_path = config->{images_path};
             
             #replace image links with the ones related to our application           
             my $post_content       = $post->{"content:encoded"} =~ s/${content_link}/${images_upload_path}/rg;
             
-            my $existing_post = $args->{schema}->resultset('Post')->post_slug_exists( string_to_slug($post->{title}), $args->{session}->data->{user_id} );
+            my $existing_post = schema->resultset('Post')->post_slug_exists( string_to_slug($post->{title}), $args->{session}->data->{user_id} );
             if ( $existing_post ) {
                 $self->_update_wp_posts_on_import( $categories, $comments, $existing_post->id );
                 next;
             }
             
-            my $post_entry = $args->{schema}->resultset('Post')->create({
+            my $post_entry = schema->resultset('Post')->create({
                 title        => $post->{title},
                 slug         => string_to_slug($post->{title}),
                 content      => $post_content,
@@ -116,11 +117,11 @@ sub _update_wp_posts_on_import {
         my $category_set = {
             category => sub {
                 #insert new categories
-                $args->{schema}->resultset('PostCategory')->connect_categories( $category->{content}, $post_id, $args->{session}->data->{user_id} );
+                schema->resultset('PostCategory')->connect_categories( $category->{content}, $post_id, $args->{session}->data->{user_id} );
             },
             post_tag => sub {
                 #insert new tags
-                $args->{schema}->resultset('PostTag')->connect_tags( $category->{content}, $post_id );
+                schema->resultset('PostTag')->connect_tags( $category->{content}, $post_id );
             }
         };
         
@@ -129,7 +130,7 @@ sub _update_wp_posts_on_import {
     
     #import comments
     foreach my $comment ( grep { defined } @{$comments} ) {
-        $args->{schema}->resultset('Comment')->create({
+        schema->resultset('Comment')->create({
             content      => $comment->{"wp:comment_content"},
             email        => $comment->{"wp:comment_author_email"},
             comment_date => $comment->{"wp:comment_date"},

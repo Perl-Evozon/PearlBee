@@ -117,7 +117,7 @@ sub _update_wp_posts_on_import {
         my $category_set = {
             category => sub {
                 #insert new categories
-                schema->resultset('PostCategory')->connect_categories( $category->{content}, $post_id, $args->{session}->data->{user_id} );
+                schema->resultset('PostCategory')->bind_categories( $category->{content}, $post_id, $args->{session}->data->{user_id} );
             },
             post_tag => sub {
                 #insert new tags

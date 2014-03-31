@@ -1,7 +1,7 @@
 <h2>PearlBee</h2>
 An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
 <h3>Version</h3>
-0.9
+1.0
 
 <h3>Setup</h3>
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.

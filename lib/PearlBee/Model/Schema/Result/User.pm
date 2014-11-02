@@ -29,13 +29,13 @@ __PACKAGE__->table("user");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 300
+  size: 255
 
 =head2 last_name
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 300
+  size: 255
 
 =head2 username
 
@@ -60,13 +60,13 @@ __PACKAGE__->table("user");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 300
+  size: 255
 
 =head2 company
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 300
+  size: 255
 
 =head2 telephone
 
@@ -94,15 +94,21 @@ __PACKAGE__->table("user");
   extra: {list => ["deactivated","activated","suspended"]}
   is_nullable: 0
 
+=head2 salt
+
+  data_type: 'char'
+  is_nullable: 0
+  size: 24
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "first_name",
-  { data_type => "varchar", is_nullable => 0, size => 300 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "last_name",
-  { data_type => "varchar", is_nullable => 0, size => 300 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "username",
   { data_type => "varchar", is_nullable => 0, size => 200 },
   "password",
@@ -115,9 +121,9 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "email",
-  { data_type => "varchar", is_nullable => 0, size => 300 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "company",
-  { data_type => "varchar", is_nullable => 1, size => 300 },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "telephone",
   { data_type => "varchar", is_nullable => 1, size => 12 },
   "role",
@@ -136,6 +142,8 @@ __PACKAGE__->add_columns(
     extra => { list => ["deactivated", "activated", "suspended"] },
     is_nullable => 0,
   },
+  "salt",
+  { data_type => "char", is_nullable => 0, size => 24 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint("email", ["email"]);
@@ -173,24 +181,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 setting
 
-Type: might_have
-
-Related object: L<PearlBee::Model::Schema::Result::Setting>
-
-=cut
-
-__PACKAGE__->might_have(
-  "setting",
-  "PearlBee::Model::Schema::Result::Setting",
-  { "foreign.user_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-04 12:34:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qCIkJ+Ha5R5utDlemNehBA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-08 04:10:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uYnwrMByvWbvLKcaAAe0iQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -248,6 +241,30 @@ sub is_deactive {
   return 1 if ( $self->role eq 'deactivated' );
 
   return 0;
+}
+
+=head
+
+Status changes
+
+=cut
+
+sub deactivate {
+  my $self = shift;
+
+  $self->update({ status => 'deactivated' });
+}
+
+sub activate {
+  my $self = shift;
+
+  $self->update({ status => 'activated' });
+}
+
+sub suspend {
+  my $self = shift;
+
+  $self->update({ status => 'suspended' });
 }
 
 1;

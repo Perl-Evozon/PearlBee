@@ -19,7 +19,7 @@ charset: "UTF-8"
 # simple: default and very basic template engine
 # template_toolkit: TT
 
-session: "Simple"
+session: "YAML"
 
 #Logging
 #logger: "file"
@@ -30,6 +30,9 @@ engines:
     template_toolkit:
       start_tag: '[%'
       end_tag:   '%]'
+  session:
+    YAML:
+      session_dir: "/tmp/pearlbee"
 
 plugins:
       DBIC:
@@ -45,5 +48,8 @@ plugins:
 # Constants
 captcha_folder :  'public/captcha/'
 covers_folder:    'public/uploads/covers/'
+import_folder:    'public/uploads/import/'
+images_folder:    'public/uploads/images/'
+images_path:      '/uploads/images' 
 app_url:          'http://localhost:5000'
 email_templates:  'views/emails/'

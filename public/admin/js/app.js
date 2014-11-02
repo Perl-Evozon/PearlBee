@@ -38,4 +38,34 @@ $(document).ready(function() {
 		$('input[name="slug"]').val(slug);
 	});
 
+	$('input[name="title"').on('keyup', function(){
+		var slug = $(this).val();
+		
+		// Replace all non-alphanumeric characters with a hypen
+		slug = slug.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,.\/? ])+/g, '-').replace(/^(-)+|(-)+$/g,'').toLowerCase();
+
+		$('input[name="slug"]').val(slug);
+	});
+
+});
+
+// Auto switch the bootstrap switcer on the Settings page.
+
+$(document).ready(function(){
+
+	var state = $('#social_media_state').val();
+	state = parseInt(state);
+
+	$('.make-switch').bootstrapSwitch('setState' , state);
+
+});
+
+// Activate the tag input
+
+$(document).ready(function() {
+
+	$.getJSON('/api/tags.json', function(tags_list) {
+		$("#tags").select2({tags: tags_list});
+	});
+	
 });

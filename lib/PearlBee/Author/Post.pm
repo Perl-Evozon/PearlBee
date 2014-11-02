@@ -9,11 +9,13 @@ package PearlBee::Author::Post;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use Digest::SHA1 qw(sha1_hex);
-use Time::HiRes qw(time);
-use DateTime::Format::Strptime;
-use POSIX qw(strftime);
-use Cwd;
+
+use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
+use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
+
+use DateTime;
+
+get '/author/posts' => sub { redirect session('app_url') . '/author/posts/page/1'; };
 
 =head
 
@@ -21,104 +23,84 @@ list all posts method
 
 =cut
 
-get '/author/posts' => sub {
+get '/author/posts/page/:page' => sub {
 
-  my $user = session('user');
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page};
+  my $user        = session('user');
+  my @posts       = resultset('Post')->search({ user_id => $user->{id} }, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page });
+  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
 
-  my @posts   = resultset('Post')->search({ user_id => $user->id }, { order_by => 'created_date DESC' });
-  my $publish  = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $all   = scalar( @posts );
+  my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
+
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/posts');
+
+  # Generating the pagination navigation
+  my $total_posts     = $all;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/posts/list',
     {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
+      posts         => \@posts,
+      trash         => $trash,
+      draft         => $draft,
+      publish       => $publish,
+      all           => $all,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'author/posts/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 };
 
 =head
 
-list all published posts
+list all posts grouped by status
 
 =cut
 
-get '/author/posts/published' => sub {
+get '/author/posts/:status/page/:page' => sub {
 
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'published' }, { order_by => 'created_date DESC' });
+  my $nr_of_rows  = 5; # Number of posts per page
+  my $page        = params->{page};
+  my $status      = params->{status};
+  my $user        = session('user');
+  my @posts       = resultset('Post')->search({ user_id => $user->{id}, status => $status }, { order_by => 'created_date DESC' });
+  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
 
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $publish = scalar( @posts );
+  my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
+  my $status_count                    = $count->get_status_count($status);
 
-  template '/admin/posts/list',
-    {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
-    },
-    { layout => 'admin' };
-};
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($all, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/author/posts/' . $status);
 
-=head
-
-list all draft posts
-
-=cut
-
-get '/author/posts/draft' => sub {
-
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'draft' }, { order_by => 'created_date DESC' });
-
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $trash   = resultset('Post')->search({ user_id => $user->id, status => 'trash' })->count;
-  my $publish  = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $draft   = scalar( @posts );
+  # Generating the pagination navigation
+  my $total_posts     = $status_count;
+  my $posts_per_page  = $nr_of_rows;
+  my $current_page    = $page;
+  my $pages_per_set   = 7;
+  my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
   template '/admin/posts/list',
     {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
-    },
-    { layout => 'admin' };
-};
-
-=head
-
-list all trash posts
-
-=cut
-
-get '/author/posts/trash' => sub {
-
-  my $user = session('user');
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'trash' }, { order_by => 'created_date DESC' });
-
-  my $all   = resultset('Post')->search({ user_id => $user->id })->count;
-  my $publish = resultset('Post')->search({ user_id => $user->id, status => 'published' })->count;
-  my $draft   = resultset('Post')->search({ user_id => $user->id, status => 'draft' })->count;
-  my $trash   = scalar( @posts );
-
-  template '/admin/posts/list',
-    {
-      posts   => \@posts,
-      trash   => $trash,
-      draft   => $draft,
-      publish => $publish,
-      all   => $all
+      posts         => \@posts,
+      trash         => $trash,
+      draft         => $draft,
+      publish       => $publish,
+      all           => $all,
+      page          => $page,
+      next_link     => $next_link,
+      previous_link => $previous_link,
+      action_url    => 'author/posts/' . $status . '/page',
+      pages         => $pagination->pages_in_set
     },
     { layout => 'admin' };
 };
@@ -130,17 +112,14 @@ publish method
 =cut
 
 get '/author/posts/publish/:id' => sub {
+  
   my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-  my $post;
-  eval {
-    $post = resultset('Post')->find( $post_id );
-    $post->update({
-        status => 'published'
-      });
-  };
+  eval { $post->publish($user); };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -150,17 +129,14 @@ draft method
 =cut
 
 get '/author/posts/draft/:id' => sub {
+
   my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-  my $post;
-  eval {
-    $post = resultset('Post')->find( $post_id );
-    $post->update({
-        status => 'draft'
-      });
-  };
+  eval { $post->draft($user); };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -170,17 +146,14 @@ trash method
 =cut
 
 get '/author/posts/trash/:id' => sub {
+  
   my $post_id = params->{id};
+  my $post    = resultset('Post')->find($post_id);
+  my $user    = session('user');
 
-  my $post;
-  eval {
-    $post = resultset('Post')->find( $post_id );
-    $post->update({
-        status => 'trash'
-      });
-  };
+  eval { $post->trash($user); };
 
-  redirect '/author/posts';
+  redirect session('app_url') . '/author/posts';
 };
 
 =head
@@ -192,59 +165,65 @@ add method
 any '/author/posts/add' => sub {
 
   my @categories = resultset('Category')->all();
+  my $post;
 
   eval {
-    # Generate a random string based on the current time and date
-    my $t = time;
-    my $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-    $date .= sprintf ".%03d", ($t-int($t))*1000; # without rounding
-    $date = sha1_hex($date);
+      if ( params->{post} ) {
+        
+        # Set the proper timezone
+        my $dt       = DateTime->now;          
+        my $settings = resultset('Setting')->first;
+        $dt->set_time_zone( $settings->timezone );
 
-    # Upload the cover image
-    my $cover;
-    my $ext;
-    if ( upload('cover') ) {
-      $cover = upload('cover');
-      ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
-      $ext = lc($ext);
-    }
-    $cover->copy_to('public/uploads/covers/' . $date . $ext);
+        my $user              = session('user');
+        my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug} );
+        session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
-    # Save the post into the database
-    my $user   = session('user');
-    my $status   = params->{status};
-    my $post = resultset('Post')->create({
-        title     => params->{title},
-        description => params->{description},
-        cover     => $date . $ext,
-        content   => params->{post},
-        user_id   => $user->id,
-        status     => $status
-      });
+        # Upload the cover image first so we'll have the generated filename ( if exists )
+        my $cover_filename;
+        if ( upload('cover') ) {
+            my $cover        = upload('cover');
+            $cover_filename  = generate_crypted_filename();
+            my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
+            $ext             = lc($ext);
+            $cover_filename .= $ext;
 
-    # Connect the categories selected with the new post
-    params->{category} = 1 if ( !params->{category} ); # If no category is selected the Uncategorized category will be stored default
-    my @categories_selected = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category}; # Force an array if only one category was selected
+            $cover->copy_to( config->{covers_folder} . $cover_filename );
+        }
 
-    resultset('PostCategory')->create({
-        category_id => $_,
-        post_id   => $post->id
-      }) foreach ( @categories_selected );
+        # Next we can store the post into the database safely
+        my $dtf = schema->storage->datetime_parser;
+        my $params = {
+            title        => params->{title},
+            slug         => $slug,
+            content      => params->{post},
+            user_id      => $user->{id},
+            status       => params->{status},
+            cover        => ( $cover_filename ) ? $cover_filename : '',
+            created_date => $dtf->format_datetime($dt),
+        };
+        $post = resultset('Post')->can_create($params);
 
-    # Connect and update the tags table
-    my @tags = split( ', ', params->{tags} );
-    foreach my $tag ( @tags ) {
-      my $db_tag = resultset('Tag')->find_or_create({ name => $tag });
-      resultset('PostTag')->create({
-          tag_id   => $db_tag->id,
-          post_id => $post->id
-        });
-    }
+        # Insert the categories selected with the new post
+        resultset('PostCategory')->connect_categories( params->{category}, $post->id );
+
+        # Connect and update the tags table
+        resultset('PostTag')->connect_tags( params->{tags}, $post->id );
+      }
   };
 
-  error $@ if ( $@ );
+  error $@ if ($@);
+  # If the post was added successfully, store a success message to show on the view
+  session success => 'The post was added successfully' if ( !$@ && $post );
 
-  template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+  # If the user created a new post redirect him to the post created
+  if ( $post ) {
+    redirect session('app_url') . '/author/posts/edit/' . $post->slug;
+  }
+  else {
+    template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+  }
+
 };
 
 =head
@@ -253,36 +232,51 @@ edit method
 
 =cut
 
-get '/author/posts/edit/:id' => sub {
+get '/author/posts/edit/:slug' => sub {
 
-  my $post_id       = params->{id};
-  my $post         = resultset('Post')->find( $post_id );
-  my @post_categories   = $post->post_categories;
+  my $post_slug       = params->{slug};
+  my $post            = resultset('Post')->find({ slug => $post_slug });
+  my @post_categories = $post->post_categories;
   my @post_tags       = $post->post_tags;
-  my @all_categories     = resultset('Category')->all;
-
+  my @all_categories  = resultset('Category')->all;
+  
+  # Check if the author has enough permissions for editing this post
+  my $user = session('user');
+  redirect session('app_url') . '/author/posts' if ( !$post->is_authorized( $user ) );
+  
   # Prepare tags for the UI
   my @tag_names;
-  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
-  my $joined_tags = join(',', @tag_names);
+  push( @tag_names, $_->tag->name ) foreach (@post_tags);
+  my $joined_tags = join( ', ', @tag_names );
 
   # Prepare the categories
   my @categories;
-  push ( @categories, $_->category ) foreach ( @post_categories );
+  push( @categories, $_->category ) foreach (@post_categories);
 
   # Array of post categories id for populating the checkboxes
   my @categories_ids;
-  push ( @categories_ids, $_->id ) foreach ( @categories );
+  push( @categories_ids, $_->id ) foreach (@categories);
 
-  template '/admin/posts/edit',
-    {
-      post       => $post,
-      tags       => $joined_tags,
+  my $params = {
+      post           => $post,
+      tags           => $joined_tags,
       categories     => \@categories,
-      all_categories   => \@all_categories,
-      ids       => \@categories_ids
-    },
-    { layout => 'admin' };
+      all_categories => \@all_categories,
+      ids            => \@categories_ids
+    };
+
+  # Check if there are any messages to show
+  # Delete them after stored on the stash
+  if ( session('warning') ) {
+    $params->{warning} = session('warning');
+    session warning => undef
+  }
+  elsif ( session('success') ) {
+    $params->{success} = session('success');
+    session success => undef;
+  }
+
+  template '/admin/posts/edit', $params, { layout => 'admin' };
 
 };
 
@@ -295,70 +289,54 @@ update method
 post '/author/posts/update/:id' => sub {
 
   my $post_id   = params->{id};
+  my $post      = resultset('Post')->find({ id => $post_id });
   my $title     = params->{title};
-  my $description = params->{description};
-  my $content    = params->{content};
-  my $tags     = params->{tags};
+  my $content   = params->{post};
+  my $tags      = params->{tags};
 
-  my $post     = resultset('Post')->find( $post_id );
+  my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug}, $post->id );
+  session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
   eval {
-    # Upload the cover image
-    my $cover;
-    my $ext;
-    my $date;
+      # Upload the cover image
+      my $cover;
+      my $ext;
+      my $crypted_filename;
 
-    if ( upload('cover') ) {
-      # Generate a random string based on the current time and date
-      my $t = time;
-      $date = strftime "%Y%m%d %H:%M:%S", localtime $t;
-      $date .= sprintf ".%03d", ($t-int($t))*1000; # without rounding
-      $date = sha1_hex($date);
+      if ( upload('cover') ) {
 
-      $cover = upload('cover');
-      ($ext) = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
-      $ext = lc($ext);
-      $cover->copy_to('public/uploads/covers/' . $date . $ext);
-    }
+          # If the user uploaded a cover image, generate a crypted name for uploading
+          $crypted_filename = generate_crypted_filename();            
+          $cover = upload('cover');
+          ($ext) = $cover->filename =~ /(\.[^.]+)$/;            #extract the extension
+          $ext = lc($ext);
+          $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext );
+      }
 
-    my $status   = params->{status};
-    $post->update({
-      title     => params->{title},
-      description => params->{description},
-      cover     => ( $date ) ? $date . $ext : $post->cover,
-      status     => $status,
-      content   => params->{post},
-    });
+      my $status = params->{status};
+      $post->update(
+          {
+              title   => $title,
+              slug    => $slug,
+              cover   => ($crypted_filename) ? $crypted_filename . $ext : $post->cover,
+              status  => $status,
+              content => $content,
+          }
+      );
 
-    # Reconnect the categories with the new one and delete the old ones
-    my @post_categories = resultset('PostCategory')->search({ post_id => $post_id });
-    $_->delete foreach ( @post_categories );
+      # Reconnect the categories with the new one and delete the old ones
+        resultset('PostCategory')->connect_categories( params->{category}, $post->id );
 
-    my @categories = ref( params->{category} ) eq 'ARRAY' ? @{ params->{category} } : params->{category}; # Force an array if only one category was selected
-
-    resultset('PostCategory')->create({
-        category_id => $_,
-        post_id   => $post->id
-      }) foreach ( @categories );
-
-    # Reconnect and update the selected tags
-    my @post_tags = resultset('PostTag')->search({ post_id => $post_id });
-    $_->delete foreach( @post_tags );
-
-    my @tags = split( ',', params->{tags} );
-    foreach my $tag ( @tags ) {
-      my $db_tag = resultset('Tag')->find_or_create({ name => $tag });
-      resultset('PostTag')->create({
-          tag_id   => $db_tag->id,
-          post_id => $post->id
-        });
-    }
+        # Reconnect and update the selected tags
+        resultset('PostTag')->connect_tags( params->{tags}, $post->id );
 
   };
 
-  error $@ if ( $@ );
+  error $@ if ($@);
 
-  redirect '/author/posts/edit/' . $post_id;
+  session success => 'The post was updated successfully!';
+
+  redirect session('app_url') . '/author/posts/edit/' . $post->slug;
 
 };
 

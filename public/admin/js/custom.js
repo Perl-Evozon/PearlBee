@@ -6,7 +6,7 @@ $(document).ready(function(){
   {
     if($(window).width() >= 991){
       $(".sidey").slideDown(350);
-    }                
+    }
   });
 
 });
@@ -29,7 +29,7 @@ $(document).ready(function(){
       menu_li.addClass("open");
     }
   });
-  
+
 });
 
 $(document).ready(function(){
@@ -40,12 +40,12 @@ $(document).ready(function(){
         // hide any open menus and remove all other classes
         $(".sidey").slideUp(350);
         $(".sidebar-dropdown a").removeClass("dropy");
-        
+
         // open our new menu and add the dropy class
         $(".sidey").slideDown(350);
         $(this).addClass("dropy");
       }
-      
+
       else if($(this).hasClass("dropy")) {
         $(this).removeClass("dropy");
         $(".sidey").slideUp(350);
@@ -63,12 +63,12 @@ $(document).ready(function(){
 /* Calendar starts */
 
   $(document).ready(function() {
-  
+
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-    
+
     $('#calendar').fullCalendar({
       header: {
         left: 'prev',
@@ -123,11 +123,11 @@ $(document).ready(function(){
         }
       ]
     });
-    
+
   });
 
   /* Calendar ends */
-  
+
 /* ************************************** */
 
 /* Progressbar animation starts */
@@ -156,11 +156,11 @@ $(document).ready(function(){
 
         });
 
-    },600);  
-    
-/* Progressbar animation ends */ 
+    },600);
 
-/* ************************************** */   
+/* Progressbar animation ends */
+
+/* ************************************** */
 
 /* Slider starts */
 
@@ -178,7 +178,7 @@ $(document).ready(function(){
             orientation: "horizontal",
             range: "min",
             animate: true
-        });        
+        });
 
         $("#master5, #master6").slider({
             range: true,
@@ -191,7 +191,7 @@ $(document).ready(function(){
         });
 
 
-        // Vertical slider 
+        // Vertical slider
         $( "#eq > span" ).each(function() {
             // read initial values from markup and remove that
             var value = parseInt( $( this ).text(), 10 );
@@ -203,8 +203,8 @@ $(document).ready(function(){
             });
         });
     });
-    
-/* Slider ends */    
+
+/* Slider ends */
 
 /* ************************************** */
 
@@ -217,7 +217,7 @@ $(document).ready(function(){
       if ($(this).scrollTop()>300)
       {
         $('.totop').slideDown();
-      } 
+      }
       else
       {
         $('.totop').slideUp();
@@ -230,10 +230,10 @@ $(document).ready(function(){
     });
 
   });
-  
+
 /* Scroll to top ends */
 
-/* ************************************** */  
+/* ************************************** */
 
 /* jQuery Notification (Gritter) starts */
 
@@ -268,7 +268,7 @@ $(document).ready(function(){
 
 //   }, 4000);
 
-  
+
 //   /* On click notification. Refer ui.html file */
 
 //   /* Regulat notification */
@@ -350,7 +350,7 @@ $(document).ready(function(){
 //     });
 
 
-// });   
+// });
 
 /* Notification ends */
 
@@ -380,7 +380,7 @@ $(document).ready(function(){
 /* Date and time picker ends */
 
 /* ************************************** */
-  
+
 
 
 
@@ -416,11 +416,18 @@ $(".peity-bar").peity("bar", {
 });
 
 /* Peity ends */
+// Chosen select
+$(document).ready(function(){
+
+  if ($('.chosen-select').length) {
+    $(".chosen-select").chosen({disable_search_threshold: 10});
+  };
+
+});
 
 
 
 
-  
 
 
 

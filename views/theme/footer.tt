@@ -6,7 +6,7 @@
                         <div class="col-md-4 col-sm-4">
                            <div class="fwidget">
                            
-                              <h4>Oslon de<span class="color">'</span> Techno</h4>
+                              <h4>PearlBee</h4>
                               <hr />
                               <p>Duis leo risus, vehicula luctus nunc.  Quiue rhoncus, a sodales enim arcu quis turpis. Duis leo risus, condimentum ut posuere ac, vehicula luctus nunc.  Quisque rhoncus, a sodales enim arcu quis turpis.</p>
                               
@@ -42,10 +42,8 @@
                            <h4>Get In Touch</h4>
                            <hr />
                            <div class="address">
-                              <p><i class="icon-home color contact-icon"></i> #12, Plot No.14, Raj Karmara Street, </p>
-                              <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 5th Stage, Koramangala, Madiwala,</p>
-                              <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bangalore - 493922, Karananana.</p>
-                              <p><i class="icon-phone color contact-icon"></i> +94-948-323-5532</p>
+                              <p><i class="icon-home color contact-icon"></i> Your address here</p>
+                              <p><i class="icon-phone color contact-icon"></i> +12-345-678-9101</p>
                               <p><i class="icon-envelope color contact-icon"></i> <a href="mailto:something@gmail.com">some.thing@gmail.com</a></p>
                            </div>
                            
@@ -59,7 +57,7 @@
             <hr />
             
             <div class="copy text-center">
-               Copyright 2013 &copy; - <a href="http://responsivewebinc.com/bootstrap-themes">Bootstrap Themes</a>
+               Copyright 2013 &copy; - <a href="http://pearlbee.org">PearlBee</a>
             </div>
          </div>
       </footer>

@@ -5,7 +5,7 @@
                <div class="col-md-3">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="/admin ">PerlBee Admin </a></h1>  
+                     <h1><a href="[% session.app_url %]/admin ">PearlBee Admin </a></h1>  
                   </div>
                </div>
                 
@@ -21,8 +21,8 @@
                           <li class="dropdown"> 
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="/profile">Profile</a></li>
-                              <li><a href="/logout">Logout</a></li>
+                              <li><a href="[% session.app_url %]/profile">Profile</a></li>
+                              <li><a href="[% session.app_url %]/logout">Logout</a></li>
                             </ul> 
                           </li> 
                         </ul> 

@@ -526,7 +526,7 @@ Button
   background-image: none;
   background-repeat: none;
   border: none;
-  filter: none;  
+  filter: none;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
           box-shadow: none;
@@ -536,7 +536,7 @@ Button
 	transition-property:background .3s linear 0s;
 	-moz-transition:background .3s linear 0s;
 	-webkit-transition:background .3s linear 0s;
-	-o-transition:background .3s linear 0s; 		  
+	-o-transition:background .3s linear 0s;
 }
 
 .btn .caret{
@@ -555,7 +555,7 @@ Button
 	transition-property:background .3s linear 0s;
 	-moz-transition:background .3s linear 0s;
 	-webkit-transition:background .3s linear 0s;
-	-o-transition:background .3s linear 0s;   
+	-o-transition:background .3s linear 0s;
 }
 
 .btn.active,
@@ -770,11 +770,11 @@ Button
 .btn-inverse[disabled]{
   color: #ffffff;
   background-color: #242a32;
-  *background-color: none; 
+  *background-color: none;
 	transition-property:background .3s linear 0s;
 	-moz-transition:background .3s linear 0s;
 	-webkit-transition:background .3s linear 0s;
-	-o-transition:background .3s linear 0s;   
+	-o-transition:background .3s linear 0s;
 }
 
 .btn-bevel.btn-warning {
@@ -1265,7 +1265,7 @@ Tabs
   margin-top:-21px;
 }
 
-.tabs-left .tab-content, 
+.tabs-left .tab-content,
 .tabs-right .tab-content{
   background:#fafafa;
   border: 1px solid #e6e6e6;
@@ -1476,7 +1476,7 @@ a.thumbnail:focus {
           border-radius: 4px;
 }
 
-.thumbnail.circle, 
+.thumbnail.circle,
 .thumbnail.circle img{
   -webkit-border-radius: 100%;
      -moz-border-radius: 100%;
@@ -1509,7 +1509,7 @@ Median
 }
 
 /*
-Label and badge 
+Label and badge
 =========================== */
 .label,
 .badge {
@@ -1529,7 +1529,7 @@ Label and badge
 }
 
 /*
-Progres bar 
+Progres bar
 =========================== */
 .progress {
   -webkit-border-radius: 0;
@@ -1637,30 +1637,30 @@ blockquote p {
   width: 100%;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  margin-bottom: 0; 
+  margin-bottom: 0;
   resize: vertical;
-} 
+}
 .media-body form img {
   display: inline-block;
-  margin-right: 10px; 
-  float: left; 
+  margin-right: 10px;
+  float: left;
 }
 .media-body form .btn[type="submit"] {
-  float: right; 
+  float: right;
 }
 .media-body form input[name=secret] {
   font-size: 14px;
   padding: 6px 0px;
-  width: 125px; 
-  text-indent: 10px; 
+  width: 125px;
+  text-indent: 10px;
   letter-spacing: 13px;
-  font-size: 20px; 
-  float: left;   
-  border-color: #000;   
+  font-size: 20px;
+  float: left;
+  border-color: #000;
 }
-#cover.form-control { 
-  height: auto;   
+#cover.form-control {
+  height: auto;
 }
 .post-contain {
-  padding-top: 163px; 
-} 
+  padding-top: 163px;
+}

@@ -17,9 +17,9 @@
               
               [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
               <a href="/[% role %]/posts"> All </a>([% all %]) | 
-              <a href="/[% role %]/posts/published"> Publish </a>([% publish %]) | 
-              <a href="/[% role %]/posts/draft"> Draft </a>([% draft %]) | 
-              <a href="/[% role %]/posts/trash"> Trash </a>([% trash %])
+              <a href="/[% role %]/posts/published/page/1"> Publish </a>([% publish %]) | 
+              <a href="/[% role %]/posts/draft/page/1"> Draft </a>([% draft %]) | 
+              <a href="/[% role %]/posts/trash/page/1"> Trash </a>([% trash %])
 
               <table class="table table-hover table-bordered ">
                <thead>
@@ -44,7 +44,7 @@
                     </td>
 
                     <td width="25%"> 
-                      <b> <a href="/post/[% post.id %]"> [% post.title %] </a> </b>
+                      <b> <a href="/post/[% post.slug %]"> [% post.title %] </a> </b>
                       <br />
                       <br />
 
@@ -86,8 +86,8 @@
                     <td width="5"> [% post.nr_of_comments %] </td>
                     
                     <td width="10%">
-                       <a href="/post/[% post.id %]"> <button class="btn btn-xs btn-success"><i class="icon-eye-open"></i> </button> </a>
-                       <a href="/[% role %]/posts/edit/[% post.id %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
+                       <a href="/post/[% post.slug %]"> <button class="btn btn-xs btn-success"><i class="icon-eye-open"></i> </button> </a>
+                       <a href="/[% role %]/posts/edit/[% post.slug %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
                    </td>
                   </tr>
 
@@ -97,13 +97,7 @@
              </table>
              
               <ul class="pagination pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
+                [% INCLUDE components/pagination.tt %]
               </ul>
                
                <div class="clearfix"></div>

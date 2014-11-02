@@ -29,13 +29,19 @@ __PACKAGE__->table("post");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 200
+  size: 255
+
+=head2 slug
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 255
 
 =head2 description
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 200
+  size: 255
 
 =head2 cover
 
@@ -74,9 +80,11 @@ __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "title",
-  { data_type => "varchar", is_nullable => 0, size => 200 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
+  "slug",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "description",
-  { data_type => "varchar", is_nullable => 1, size => 200 },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "cover",
   { data_type => "varchar", is_nullable => 0, size => 300 },
   "content",
@@ -163,8 +171,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-01-29 20:14:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+v13twhaUv8SlucdDUVcoQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-07 19:20:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:o8AORcJ8sKoBZ7dZIuEpMw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -200,6 +208,49 @@ sub get_string_tags {
   my $joined_tags = join(', ', @tag_names);
 
   return $joined_tags;
+}
+
+=head 
+
+Status updates
+
+=cut
+
+sub publish {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
+}
+
+sub draft {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
+}
+
+
+sub trash {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
+}
+
+=haed
+
+Check if the user has enough authorization for modifying
+
+=cut
+
+sub is_authorized {
+  my ($self, $user) = @_;
+
+  my $schema     = $self->result_source->schema;
+  $user          = $schema->resultset('User')->find( $user->{id} );
+  my $authorized = 0;
+  $authorized    = 1 if ( $user->is_admin );
+  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
+
+  return $authorized;
 }
 
 1;

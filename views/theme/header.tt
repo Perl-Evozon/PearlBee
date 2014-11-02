@@ -4,52 +4,11 @@
               <div class="col-md-3 col-sm-3">
                 <!-- Logo -->
                 <div class="logo">
-                   <h1><a href="/ ">Pearlbee </a></h1>
+                   <h1><a href="[% session.app_url %]"> [% session.blog_name %] </a></h1>
                 </div>
               </div>
               <div class="col-md-9 col-sm-9">
-                  <!-- Navigation menu -->
-              <!-- <div class="navi">
-                <div id="ddtopmenubar" class="mattblackmenu">
-                  <ul>
-                    <li>
-                      <a href="index.html" rel="ddsubmenu1">Home</a>
-                      <ul id="ddsubmenu1" class="ddsubmenustyle">
-                        <li><a href="index2.html">Alternative Header</a></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#" rel="ddsubmenu1">Themes</a>
-                      <ul id="ddsubmenu1" class="ddsubmenustyle">
-                        <li><a href="https://wrapbootstrap.com/theme/olsonadmin-basic-admin-theme-WB048F96J" target="_blank">Admin Theme</a></li>
-                        <li><a href="https://wrapbootstrap.com/theme/olsonkart-bootstrap-e-commerce-theme-WB0CRMB12" target="_blank">E-Commerce Theme</a></li>
-                        <li><a href="comingsoon.html">Coming Soon</a>
-                        <li><a href="landingpage.html">Landing Page</a></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#" rel="ddsubmenu1">Pages</a>
-                      <ul id="ddsubmenu1" class="ddsubmenustyle">
-                        <li><a href="features.html">Features</a></li>
-                        <li><a href="404.html">404</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="service.html">Service</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="components.html">Components</a></li>
-                        <li><a href="careers.html">Careers</a>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="register.html">Register</a></li>
-                        <li><a href="pricing.html">Pricing</a></li>
-                        <li><a href="support.html">Support</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="aboutus.html">About</a></li>
-                    <li><a href="contactus.html">Contact</a></li>
-                  </ul>
-                </div>
-              </div> -->  
+                 
               <!-- Dropdown NavBar -->
               <div class="navis"></div>                  
              </div>

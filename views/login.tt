@@ -13,7 +13,7 @@
             <!-- Page title -->
             
             <br />
-            <form class="form-horizontal" role="form" action="/login" method="post">
+            <form class="form-horizontal" role="form" action="[% session.app_url %]/login" method="post">
               <div class="form-group">
                 <label for="inputEmail1" class="col-lg-2 control-label">Email</label>
                 <div class="col-lg-10">

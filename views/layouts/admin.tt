@@ -15,29 +15,35 @@
       
       <!-- Styles -->
       <!-- Bootstrap CSS -->
-      <link href="/admin/css/bootstrap.min.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/bootstrap.min.css" rel="stylesheet">
       <!-- Animate css -->
-      <link href="/admin/css/animate.min.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/animate.min.css" rel="stylesheet">
       <!-- Gritter -->
       <!-- <link href="/admin/css/jquery.gritter.css" rel="stylesheet"> -->
       <!-- Calendar -->
-      <link href="/admin/css/fullcalendar.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/fullcalendar.css" rel="stylesheet">
       <!-- Bootstrap toggable -->
-      <link href="/admin/css/bootstrap-switch.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/bootstrap-switch.css" rel="stylesheet">
       <!-- Date and Time picker -->
-      <link href="/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
       <!-- Star rating -->
-      <link href="/admin/css/rateit.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/rateit.css" rel="stylesheet">
       <!-- Star rating -->
-      <link href="/admin/css/jquery.cleditor.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/jquery.cleditor.css" rel="stylesheet">
       <!-- jQuery UI -->
-      <link href="/admin/css/jquery-ui.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/jquery-ui.css" rel="stylesheet">
       <!-- prettyPhoto -->
-      <link href="/admin/css/prettyPhoto.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/prettyPhoto.css" rel="stylesheet">
       <!-- Font awesome CSS -->
-      <link href="/admin/css/font-awesome.min.css" rel="stylesheet">    
+      <link href="[% session.app_url %]/admin/css/font-awesome.min.css" rel="stylesheet">    
+      <!-- Chosen CSS -->
+      <link href="[% session.app_url %]/admin/css/chosen.css" rel="stylesheet">    
       <!-- Custom CSS -->
-      <link href="/admin/css/style.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/css/style.css" rel="stylesheet">
+      <!-- Select CSS -->
+      <link href="[% session.app_url %]/admin/js/select2/select2.css" rel="stylesheet">
+      <link href="[% session.app_url %]/admin/js/select2/select2-bootstrap.css" rel="stylesheet">
+      <!-- End Select CSS -->
       
       <!-- Favicon -->
       <link rel="shortcut icon" href="#">
@@ -106,42 +112,48 @@
       
       <!-- Javascript files -->
       <!-- jQuery -->
-      <script src="/js/jquery.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <!-- Bootstrap JS -->
-      <script src="/admin/js/bootstrap.min.js"></script>  
+      <script src="[% session.app_url %]/admin/js/bootstrap.min.js"></script>  
       <!-- jQuery UI -->
-      <script src="/admin/js/jquery-ui-1.10.2.custom.min.js"></script>     
+      <script src="[% session.app_url %]/admin/js/jquery-ui-1.10.2.custom.min.js"></script>     
       <!-- jQuery Peity -->
-      <script src="/admin/js/peity.js"></script>  
+      <script src="[% session.app_url %]/admin/js/peity.js"></script>  
       <!-- Calendar -->
-      <script src="/admin/js/fullcalendar.min.js"></script>  
+      <script src="[% session.app_url %]/admin/js/fullcalendar.min.js"></script>  
       <!-- jQuery Star rating -->
-      <script src="/admin/js/jquery.rateit.min.js"></script>
+      <script src="[% session.app_url %]/admin/js/jquery.rateit.min.js"></script>
       <!-- prettyPhoto -->
-      <script src="/admin/js/jquery.prettyPhoto.js"></script>  
+      <script src="[% session.app_url %]/admin/js/jquery.prettyPhoto.js"></script>  
       
       <!-- jQuery flot -->
       <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
-      <script src="/admin/js/jquery.flot.js"></script>     
-      <script src="/admin/js/jquery.flot.pie.js"></script>
-      <script src="/admin/js/jquery.flot.stack.js"></script>
-      <script src="/admin/js/jquery.flot.resize.js"></script>
+      <script src="[% session.app_url %]/admin/js/jquery.flot.js"></script>     
+      <script src="[% session.app_url %]/admin/js/jquery.flot.pie.js"></script>
+      <script src="[% session.app_url %]/admin/js/jquery.flot.stack.js"></script>
+      <script src="[% session.app_url %]/admin/js/jquery.flot.resize.js"></script>
 
       <!-- Gritter plugin -->
       <!-- <script src="/admin/js/jquery.gritter.min.js"></script> -->
       <!-- CLEditor -->
-      <script src="/admin/js/jquery.cleditor.min.js"></script> 
+      <script src="[% session.app_url %]/admin/js/jquery.cleditor.min.js"></script> 
       <!-- Date and Time picker -->
-      <script src="/admin/js/bootstrap-datetimepicker.min.js"></script>  
+      <script src="[% session.app_url %]/admin/js/bootstrap-datetimepicker.min.js"></script>  
       <!-- jQuery Toggable -->
-      <script src="/admin/js/bootstrap-switch.min.js"></script>
+      <script src="[% session.app_url %]/admin/js/bootstrap-switch.min.js"></script>
       <!-- Respond JS for IE8 -->
-      <script src="/admin/js/respond.min.js"></script>
+      <script src="[% session.app_url %]/admin/js/respond.min.js"></script>
       <!-- HTML5 Support for IE -->
-      <script src="/admin/js/html5shiv.js"></script>
+      <script src="[% session.app_url %]/admin/js/html5shiv.js"></script>
       <!-- Custom JS -->
-      <script src="/admin/js/custom.js"></script>
+      <script src="[% session.app_url %]/admin/js/custom.js"></script>
       <!-- App JS -->
-      <script src="/admin/js/app.js"></script>
+      <script src="[% session.app_url %]/admin/js/app.js"></script>
+      <!-- chosen JS -->
+      <script src="[% session.app_url %]/admin/js/chosen.jquery.min.js"></script> 
+      <!-- Select JS -->
+      <script src="[% session.app_url %]/admin/js/select2/select2.min.js"></script> 
+      <!-- Select JS -->
+      <script src="[% session.app_url %]/admin/js/ckeditor/ckeditor.js"></script> 
    </body>  
 </html>

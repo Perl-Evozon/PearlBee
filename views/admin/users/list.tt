@@ -12,10 +12,10 @@
 	        </div>
 	        <div class="awidget-body">          
 
-	        	<a href="/admin/users"> 	All </a>([% all %]) | 
-	        	<a href="/admin/users/deactivated"> Deactivated </a>([% deactivated %]) | 
-	        	<a href="/admin/users/activated"> Activated </a>([% activated %]) |
-	        	<a href="/admin/users/suspended"> Suspended </a>([% suspended %])
+	        	<a href="/admin/users/page/1"> 	All </a>([% all %]) | 
+	        	<a href="/admin/users/deactivated/page/1"> Deactivated </a>([% deactivated %]) | 
+	        	<a href="/admin/users/activated/page/1"> Activated </a>([% activated %]) |
+	        	<a href="/admin/users/suspended/page/1"> Suspended </a>([% suspended %])
 
 				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
 					<thead>
@@ -74,7 +74,13 @@
 						[% END %]	
 						
 					</tbody>
-				</table>                      
+				</table>
+
+				<ul class="pagination pull-right">
+                	[% INCLUDE components/pagination.tt %]
+              	</ul>
+
+              	<div class="clearfix"></div>                    
 	       </div>
     	</div>    
  	</div>

@@ -1,18 +1,24 @@
+GRANT ALL PRIVILEGES ON PearlBee.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+
+DROP DATABASE IF EXISTS PearlBee;
+CREATE DATABASE IF NOT EXISTS PearlBee;
+
+USE PearlBee;
 
 CREATE TABLE IF NOT EXISTS user (
 	id 				INT NOT NULL AUTO_INCREMENT,
-	first_name 		VARCHAR(255) NOT NULL,
-	last_name 		VARCHAR(255) NOT NULL,
+	first_name 		VARCHAR(255) UNICODE NOT NULL,
+	last_name 		VARCHAR(255) UNICODE NOT NULL,
 	username		VARCHAR(200) NOT NULL,
 	password		VARCHAR(100) NOT NULL,
 	register_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
--- MySQL 5.6 cannot add a key if email is longer than 255
 	email			VARCHAR(255) NOT NULL,
 	company 		VARCHAR(255),
 	telephone 		VARCHAR(12),
 	role 			ENUM('author', 'admin') NOT NULL DEFAULT 'author',
 	activation_key  VARCHAR(100),
 	status 			ENUM('deactivated', 'activated', 'suspended') NOT NULL DEFAULT 'deactivated',
+	salt			CHAR(24) NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY (username),
 	UNIQUE KEY (email)
@@ -20,8 +26,8 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS category (
 	id  	INT NOT NULL AUTO_INCREMENT,
-	name 	VARCHAR(100) NOT NULL,
-	slug 	VARCHAR(100) NOT NULL,
+	name 	VARCHAR(100) UNICODE NOT NULL,
+	slug 	VARCHAR(100) UNICODE NOT NULL,
 	user_id INT NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE KEY (name),
@@ -30,10 +36,11 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	title 			VARCHAR(200) NOT NULL,
-	description 	VARCHAR(200),
-	cover 			VARCHAR(255) NOT NULL,
-	content 		TEXT NOT NULL,
+	title 			VARCHAR(255) UNICODE NOT NULL,
+	slug 			VARCHAR(255) UNICODE NOT NULL,
+	description 	VARCHAR(255) UNICODE,
+	cover 			VARCHAR(300) NOT NULL,
+	content 		TEXT UNICODE NOT NULL,
 	created_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	status 			ENUM('published', 'trash', 'draft') DEFAULT 'draft',
 	user_id 		INT NOT NULL,
@@ -51,8 +58,8 @@ CREATE TABLE IF NOT EXISTS post_category (
 
 CREATE TABLE IF NOT EXISTS tag (
 	id  	INT NOT NULL AUTO_INCREMENT,
-	name 	VARCHAR(100),
-	slug 	varchar(100),
+	name 	VARCHAR(100) UNICODE,
+	slug 	varchar(100) UNICODE,
 	PRIMARY KEY (id)
 );
 
@@ -66,9 +73,11 @@ CREATE TABLE IF NOT EXISTS post_tag (
 
 CREATE TABLE IF NOT EXISTS comment (
 	id  			INT NOT NULL AUTO_INCREMENT,
-	content 		TEXT,
-	fullname 		VARCHAR(100),
+	content 		TEXT UNICODE,
+	fullname 		VARCHAR(100) UNICODE,
 	email 			VARCHAR(200),
+	website 		VARCHAR(255),
+	avatar 			VARCHAR(255),
 	comment_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	status 			ENUM('approved', 'spam', 'pending', 'trash') DEFAULT 'pending',
 	post_id 		INT NOT NULL,
@@ -77,17 +86,21 @@ CREATE TABLE IF NOT EXISTS comment (
 );
 
 CREATE TABLE IF NOT EXISTS settings (
-	user_id 	INT NOT NULL,
-	timezone 	varchar(200) NOT NULL,
-	PRIMARY KEY ( user_id ),
-	FOREIGN KEY ( user_id ) REFERENCES user(id)
+	timezone 		VARCHAR(255) NOT NULL,
+	social_media 	BOOLEAN NOT NULL DEFAULT '1',
+	blog_path		VARCHAR(255) NOT NULL DEFAULT '/',
+	theme_folder 	VARCHAR(255) NOT NULL,
+	blog_name 		VARCHAR(255) NOT NULL,
+	PRIMARY KEY (timezone, social_media, blog_path)
 );
 
 -- default login: 	   	admin
 -- default password: 	password
-insert into user (first_name, last_name, username, password, email, status, role) 
-	values ("Default", "Admin", "admin", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8", 
-			"you@domain.cow", "activated", "admin");
+
+insert into user (first_name, last_name, username, password, email, status, role, salt) 
+	values ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
+			"you@domain.cow", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
+	
 insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
-
+insert into settings ( timezone, social_media, theme_folder, blog_path, blog_name ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');

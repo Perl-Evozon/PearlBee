@@ -22,7 +22,9 @@ CREATE TABLE IF NOT EXISTS user (
 	PRIMARY KEY (id),
 	UNIQUE KEY (username),
 	UNIQUE KEY (email)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'User table.'
+;
 
 CREATE TABLE IF NOT EXISTS category (
 	id  	INT NOT NULL AUTO_INCREMENT,
@@ -32,7 +34,9 @@ CREATE TABLE IF NOT EXISTS category (
 	PRIMARY KEY (id),
 	UNIQUE KEY (name),
 	FOREIGN KEY (user_id) REFERENCES user(id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Category table.'
+;
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
@@ -46,7 +50,9 @@ CREATE TABLE IF NOT EXISTS post (
 	user_id 		INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (user_id) REFERENCES user(id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Post table.'
+;
 
 CREATE TABLE IF NOT EXISTS post_category (
 	category_id INT NOT NULL,
@@ -54,14 +60,18 @@ CREATE TABLE IF NOT EXISTS post_category (
 	PRIMARY KEY (category_id, post_id),
 	FOREIGN KEY (category_id) REFERENCES category(id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Post category table.'
+;
 
 CREATE TABLE IF NOT EXISTS tag (
 	id  	INT NOT NULL AUTO_INCREMENT,
 	name 	VARCHAR(100) UNICODE,
 	slug 	varchar(100) UNICODE,
 	PRIMARY KEY (id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Tag table.'
+;
 
 CREATE TABLE IF NOT EXISTS post_tag (
 	tag_id  	INT NOT NULL,
@@ -69,7 +79,9 @@ CREATE TABLE IF NOT EXISTS post_tag (
 	PRIMARY KEY (tag_id, post_id),
 	FOREIGN KEY (tag_id) REFERENCES tag(id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Post tag table.'
+;
 
 CREATE TABLE IF NOT EXISTS comment (
 	id  			INT NOT NULL AUTO_INCREMENT,
@@ -83,7 +95,9 @@ CREATE TABLE IF NOT EXISTS comment (
 	post_id 		INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Comment table.'
+;
 
 CREATE TABLE IF NOT EXISTS settings (
 	timezone 		VARCHAR(255) NOT NULL,
@@ -92,15 +106,17 @@ CREATE TABLE IF NOT EXISTS settings (
 	theme_folder 	VARCHAR(255) NOT NULL,
 	blog_name 		VARCHAR(255) NOT NULL,
 	PRIMARY KEY (timezone, social_media, blog_path)
-);
+)   CHARACTER SET 'utf8'
+    COMMENT 'Settings table.'
+;
 
 -- default login: 	   	admin
 -- default password: 	password
 
-insert into user (first_name, last_name, username, password, email, status, role, salt) 
-	values ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
+INSERT INTO user (first_name, last_name, username, password, email, status, role, salt) 
+	VALUES ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
 			"you@domain.cow", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
 	
-insert into category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
+INSERT INTO category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 
-insert into settings ( timezone, social_media, theme_folder, blog_path, blog_name ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');
+INSERT INTO settings ( timezone, social_media, theme_folder, blog_path, blog_name ) values ( 'Europe/Bucharest', 1, '/', 'Olson', 'PearlBee');

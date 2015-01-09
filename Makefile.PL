@@ -47,6 +47,8 @@ WriteMakefile(
         'Test::More'                    => 0,
         'Time::HiRes'                   => 0,
         'YAML'                          => 0,
+        'Moose'                         => 0,
+        'XML::Simple'                   => 0
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'PearlBee-*' },

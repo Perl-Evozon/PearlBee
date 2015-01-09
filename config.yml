@@ -28,6 +28,7 @@ template: "template_toolkit"
 engines:
   template:
     template_toolkit:
+      encoding: 'utf8'
       start_tag: '[%'
       end_tag:   '%]'
   session:
@@ -40,10 +41,11 @@ plugins:
           dsn: dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
           user: root
-          pass: dev
+          password: dev
           options:
             RaiseError: 1
             PrintError: 1
+            mysql_enable_utf8: 1
 
 # Constants
 captcha_folder :  'public/captcha/'

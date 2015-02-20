@@ -22,9 +22,8 @@ CREATE TABLE IF NOT EXISTS user (
 	PRIMARY KEY (id),
 	UNIQUE KEY (username),
 	UNIQUE KEY (email)
-)   CHARACTER SET 'utf8'
-    COMMENT 'User table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'User table.';
+
 
 CREATE TABLE IF NOT EXISTS category (
 	id  	INT NOT NULL AUTO_INCREMENT,
@@ -34,9 +33,8 @@ CREATE TABLE IF NOT EXISTS category (
 	PRIMARY KEY (id),
 	UNIQUE KEY (name),
 	FOREIGN KEY (user_id) REFERENCES user(id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Category table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Category table.';
+
 
 CREATE TABLE IF NOT EXISTS post (
 	id  			INT NOT NULL AUTO_INCREMENT,
@@ -50,9 +48,8 @@ CREATE TABLE IF NOT EXISTS post (
 	user_id 		INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (user_id) REFERENCES user(id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Post table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Post table.';
+
 
 CREATE TABLE IF NOT EXISTS post_category (
 	category_id INT NOT NULL,
@@ -60,18 +57,16 @@ CREATE TABLE IF NOT EXISTS post_category (
 	PRIMARY KEY (category_id, post_id),
 	FOREIGN KEY (category_id) REFERENCES category(id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Post category table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Post category table.';
+
 
 CREATE TABLE IF NOT EXISTS tag (
 	id  	INT NOT NULL AUTO_INCREMENT,
 	name 	VARCHAR(100) UNICODE,
 	slug 	varchar(100) UNICODE,
 	PRIMARY KEY (id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Tag table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Tag table.';
+
 
 CREATE TABLE IF NOT EXISTS post_tag (
 	tag_id  	INT NOT NULL,
@@ -79,9 +74,8 @@ CREATE TABLE IF NOT EXISTS post_tag (
 	PRIMARY KEY (tag_id, post_id),
 	FOREIGN KEY (tag_id) REFERENCES tag(id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Post tag table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Post tag table.';
+
 
 CREATE TABLE IF NOT EXISTS comment (
 	id  			INT NOT NULL AUTO_INCREMENT,
@@ -95,27 +89,23 @@ CREATE TABLE IF NOT EXISTS comment (
 	post_id 		INT NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (post_id) REFERENCES post(id)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Comment table.'
-;
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Comment table.';
+
 
 CREATE TABLE IF NOT EXISTS settings (
 	timezone 		VARCHAR(255) NOT NULL,
 	social_media 	BOOLEAN NOT NULL DEFAULT '1',
 	blog_path		VARCHAR(255) NOT NULL DEFAULT '/',
 	theme_folder 	VARCHAR(255) NOT NULL,
-	blog_name 		VARCHAR(255) NOT NULL,
-	PRIMARY KEY (timezone, social_media, blog_path)
-)   CHARACTER SET 'utf8'
-    COMMENT 'Settings table.'
-;
+	blog_name 		VARCHAR(255) NOT NULL
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci COMMENT 'Settings table.';
 
--- default login: 	   	admin
--- default password: 	password
+-- default admin login user : admin
+-- default admin login pass : password
 
 INSERT INTO user (first_name, last_name, username, password, email, status, role, salt) 
 	VALUES ("Default", "Admin", "admin", "ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972", 
-			"you@domain.cow", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
+			"you@domain.com", "activated", "admin", "IQbmVFR+SEgTju9y+UzhwA==");
 	
 INSERT INTO category (name, slug, user_id) values ("Uncategorized", "uncategorized", 1);
 

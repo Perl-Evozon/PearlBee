@@ -18,7 +18,7 @@ body{
 }
 
 h1,h2,h3,h4{
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 h5,h6{
@@ -297,13 +297,13 @@ strong{
 .carousel .carousel-caption h2{
    font-size:60px;
    text-transform:capitalize;
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
    font-weight:normal;
 }
 
 .carousel .carousel-caption p{
    font-size:25px;
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 .carousel-indicators .active{
@@ -333,7 +333,7 @@ strong{
 
 .header .logo h1 a{
    color:#fff;
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 .header .logo h1 a:hover{
@@ -1564,7 +1564,7 @@ div.ppt {
 .soon-big{
    font-size:70px;
    line-height:90px;
-   font-family:"Open Sans Condensed", sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 .soon-small{

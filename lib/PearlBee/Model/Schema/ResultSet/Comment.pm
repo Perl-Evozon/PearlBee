@@ -8,6 +8,9 @@ use base 'DBIx::Class::ResultSet';
 use Gravatar::URL;
 use DateTime;
 
+use HTML::Strip;
+my $hs = HTML::Strip->new();
+
 sub can_create {
 	my ($self, $params, $user) = @_;
 
@@ -27,17 +30,14 @@ sub can_create {
 	my $dtf 	 = $schema->storage->datetime_parser;
 	$dt->set_time_zone( $settings->timezone );
 
-	# Filter the input data
-    $fullname =~ s/[^a-zA-Z\d\s:]//g;
-    $text     =~ s/[^a-zA-Z\d\s:]//g;
-    $email    =~ s/[^a-zA-Z\d\s:]//g;
-    $website  =~ s/[^a-zA-Z\d\s:]//g;
+    # Filter the input data (avoid js injection)
+	map { $_ = $hs->parse( $_ ); $hs->eof; } ($fullname, $text, $email, $website);
 
 	$user 	 = $schema->resultset('User')->find( $user->{id} );
 	my $post = $schema->resultset('Post')->find( $post_id );
 
 	my $status = 'pending';
-	$status    = ( $user->is_admin || $user->id == $post->user->id ) ? 'approved' : 'pending' if ($user);
+	$status = 'approved' if ($user && ( $user->is_admin || $user->id == $post->user->id ));
 
 	my $comment = $self->create({
           fullname     => $fullname,

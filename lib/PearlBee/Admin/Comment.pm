@@ -119,7 +119,7 @@ get '/admin/comments/approve/:id' => sub {
 
   eval { $comment->approve($user); };
 
-  redirect session('app_url') . '/admin/comments';
+  redirect request()->{headers}->{referer};
 };
 
 =haed
@@ -136,7 +136,7 @@ get '/admin/comments/trash/:id' => sub {
 
   eval { $comment->trash($user); };
 
-  redirect session('app_url') . '/admin/comments';
+  redirect request()->{headers}->{referer};
 };
 
 =haed
@@ -153,7 +153,7 @@ get '/admin/comments/spam/:id' => sub {
 
   eval { $comment->spam($user); };
 
-  redirect session('app_url') . '/admin/comments';
+  redirect request()->{headers}->{referer};
 };
 
 =haed
@@ -170,7 +170,7 @@ get '/admin/comments/pending/:id' => sub {
 
   eval { $comment->pending($user); };
 
-  redirect session('app_url') . '/admin/comments';
+  redirect request()->{headers}->{referer};
 };
 
 

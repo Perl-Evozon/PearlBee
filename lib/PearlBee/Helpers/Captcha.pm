@@ -27,11 +27,6 @@ sub generate {
     $captcha->output_folder( config->{captcha_folder} .'/image' );
     my $md5sum = $captcha->generate_code(5);
 
-    # Rename the image file so that the encrypted code won't show on the UI
-    unlink config->{captcha_folder} . "/image/image.png";
-    my $command = "mv " . config->{captcha_folder} . "/image/" . $md5sum . ".png" . " " . config->{captcha_folder} . "/image/image.png";
-   `$command`;
-
    return $md5sum;
 
 }

@@ -43,7 +43,7 @@
 
 	 <div class="page-title">
 	     <div class="container">
-	        <h2><i class="icon-comment color"></i> A new comment was submited </h2>
+	        <h2><i class="icon-comment color"></i> A new comment was submitted </h2>
 	        <hr />
 	     </div>  
 	  </div>
@@ -52,18 +52,18 @@
         <div class="container">
           	<div class="row">
   				
-          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% url %] / [% post_url %]"> [% title %] </a> </b>
+          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% post_url %]"> [% title %]</a></b> :
           		<br />
+				  See the comment here : "[% comment %]"
           		<br />
-          		<i> You can login with your user account to manage your comments </i>
+          		<i> You can log in with your user account to manage your comments </i>
           		<br />
 				<br />
           		<i> Sincerely, </i>
 				<br />
-				<i> The PearlBee team </i>
+				<i>[% signature %]</i>
 				<br />
-				<a href="[% url %]"> http://www.PearlBee.org </a>
-
+				<a href="[% app_url %]"> [% app_name %] </a>
 			</div>
 		</div>
 	</div>

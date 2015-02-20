@@ -3,7 +3,8 @@
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
+chdir("$FindBin::Bin/../");
+
 use PearlBee;
-use Data::Dumper;
 
 PearlBee->dance;

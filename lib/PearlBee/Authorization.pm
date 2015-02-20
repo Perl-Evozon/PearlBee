@@ -27,7 +27,7 @@ hook 'before' => sub {
 
   # Restrict access to non-admin users
   if ( $request =~ '/admin/' && $user->is_author ) {
-    redirect session('app_url') . '/author/posts/add' ;
+    redirect session('app_url') . '/author/posts' ;
   }
 };
 

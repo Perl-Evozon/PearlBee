@@ -14,7 +14,7 @@ body{
 }
 
 h1,h2,h3,h4{
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 h5,h6{
@@ -190,7 +190,7 @@ strong{
 
 .header .logo h1 a{
    color:#fff;
-   font-family: 'Open Sans Condensed', sans-serif;
+   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 .header .logo h1 a:hover{

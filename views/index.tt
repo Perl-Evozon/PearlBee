@@ -27,7 +27,8 @@
                  
                  <!-- Post content -->
                  <p>
-                    [% INCLUDE post_content_stripped.tt %]
+                    <!--[% INCLUDE post_content_stripped.tt %]--> <!-- Only for non utf8 usage -->
+                    [% post.content %] ...
                  </p>
                  <!-- Read more -->
                  <a href="[% session.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>

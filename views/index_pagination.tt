@@ -1,7 +1,13 @@
- <ul class="pager marginnone margintop35">
-   [% page %]
-   [% SET disabled_previous = ( page == 1 ) ? 'disabled' : '' %]
-   [% SET disabled_next = ( page == total_pages ) ? 'disabled' : '' %]
-   <li class="previous [% disabled_previous %]"><a href="[% session.app_url %][% previous_link %]">&larr; Older</a></li>
-   <li class="next [% disabled_next %]"><a href="[% session.app_url %][% next_link %]">Newer &rarr;</a></li>
+<ul class="pager marginnone margintop35">
+    [% page %]
+    [% IF page == 1 %]
+        <li class="previous disabled"><a href="javascript:void(0);">&larr; Older</a></li>
+    [% ELSE %]
+        <li class="previous"><a href="[% session.app_url %][% previous_link %]">&larr; Older</a></li>
+    [% END %]
+    [% IF page >= total_pages %]
+        <li class="next disabled"><a href="javascript:void(0);">Newer &rarr;</a></li>
+    [% ELSE %]
+        <li class="next"><a href="[% session.app_url %][% next_link %]">Newer &rarr;</a></li>
+    [% END %] 
 </ul>

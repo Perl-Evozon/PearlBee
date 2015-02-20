@@ -7,7 +7,9 @@ use Dancer2::Plugin::DBIC;
 
 # Other used modules
 use Digest::MD5 qw(md5_hex);
+use Authen::Captcha;
 use DateTime;
+use Data::Dumper;
 
 # Included controllers
 
@@ -29,7 +31,7 @@ use PearlBee::Admin::Settings;
 use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
-use PearlBee::Helpers::Util qw(generate_crypted_filename);
+use PearlBee::Helpers::Util qw(generate_crypted_filename get_presentation_posts_info);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
 
@@ -61,13 +63,16 @@ get '/' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  
+  # extract demo posts info
+  my @mapped_posts = get_presentation_posts_info(@posts);
 
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
 
     template 'index', 
       { 
-        posts         => \@posts,
+        posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
         tags          => \@tags,
@@ -96,6 +101,9 @@ get '/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  
+  # extract demo posts info
+  my @mapped_posts = get_presentation_posts_info(@posts);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
@@ -103,7 +111,7 @@ get '/page/:page' => sub {
 
     template 'index', 
       { 
-        posts         => \@posts,
+        posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
         tags          => \@tags,
@@ -179,8 +187,14 @@ post '/comment/add' => sub {
     comments    => \@comments,
     warning     => 'The secret code is incorrect'
   };
-
-  if ( md5_hex($secret) eq session('secret') ) {
+  
+  my $captcha = Authen::Captcha->new(
+    data_folder => config->{captcha_folder},
+    output_folder => config->{captcha_folder} .'/image',
+  );
+  
+  my $result= $captcha->check_code($secret, session('secret'));
+  if ( $result == 1 ) {
     # The user entered the correct secrete code
     eval {
 
@@ -194,13 +208,16 @@ post '/comment/add' => sub {
       {
           From    => 'no-reply@PearlBee.com',
           To      => $author->email,
-          Subject => 'A new comment was submited to your post',
+          Subject => 'A new comment was submitted to your post',
 
           tt_vars => { 
-              fullname => $fullname,
-              title    => $post->title,
-              post_url => config->{app_url} . '/post/' . $post->id,
-              url      => config->{app_url}
+            fullname   => $fullname,
+            title      => $post->title,
+            comment    => $params->{comment},
+            signature  => config->{email_signature},
+            post_url   => config->{app_url} . '/post/' . $post->slug,
+            app_url    => config->{app_url},
+            app_name   => config->{appname},
           },
       }) or error "Could not send the email";
     };
@@ -244,6 +261,9 @@ get '/posts/category/:slug' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  
+  # extract demo posts info
+  my @mapped_posts = get_presentation_posts_info(@posts);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
@@ -252,7 +272,7 @@ get '/posts/category/:slug' => sub {
   # Extract all posts with the wanted category
   template 'index', 
       { 
-        posts         => \@posts,
+        posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
         tags          => \@tags,
@@ -282,6 +302,9 @@ get '/posts/category/:slug/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  
+  # extract demo posts info
+  my @mapped_posts = get_presentation_posts_info(@posts);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
@@ -289,7 +312,7 @@ get '/posts/category/:slug/page/:page' => sub {
 
   template 'index', 
       { 
-        posts         => \@posts,
+        posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
         tags          => \@tags,
@@ -318,6 +341,9 @@ get '/posts/tag/:slug' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  
+  # extract demo posts info
+  my @mapped_posts = get_presentation_posts_info(@posts);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
@@ -325,7 +351,7 @@ get '/posts/tag/:slug' => sub {
 
   template 'index', 
       {         
-        posts         => \@posts,
+        posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
         tags          => \@tags,

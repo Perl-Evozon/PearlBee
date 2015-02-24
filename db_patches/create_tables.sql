@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS comment (
 	email 			VARCHAR(200),
 	website 		VARCHAR(255),
 	avatar 			VARCHAR(255),
-	comment_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	comment_date 	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	status 			ENUM('approved', 'spam', 'pending', 'trash') DEFAULT 'pending',
 	post_id 		INT NOT NULL,
 	PRIMARY KEY (id),

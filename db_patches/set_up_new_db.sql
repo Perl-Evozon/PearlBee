@@ -58,7 +58,7 @@ CREATE TABLE `comment` (
   `email` varchar(200) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
-  `comment_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `comment_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('approved','spam','pending','trash') DEFAULT 'pending',
   `post_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),

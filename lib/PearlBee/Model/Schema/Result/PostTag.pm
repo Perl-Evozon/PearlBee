@@ -1,17 +1,21 @@
+use utf8;
 package PearlBee::Model::Schema::Result::PostTag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PearlBee::Model::Schema::Result::PostTag - Post tag table.
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PearlBee::Model::Schema::Result::PostTag
+=head1 TABLE: C<post_tag>
 
 =cut
 
@@ -39,24 +43,22 @@ __PACKAGE__->add_columns(
   "post_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("tag_id", "post_id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 tag
+=over 4
 
-Type: belongs_to
+=item * L</tag_id>
 
-Related object: L<PearlBee::Model::Schema::Result::Tag>
+=item * L</post_id>
+
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "tag",
-  "PearlBee::Model::Schema::Result::Tag",
-  { id => "tag_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("tag_id", "post_id");
+
+=head1 RELATIONS
 
 =head2 post
 
@@ -70,12 +72,27 @@ __PACKAGE__->belongs_to(
   "post",
   "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+);
+
+=head2 tag
+
+Type: belongs_to
+
+Related object: L<PearlBee::Model::Schema::Result::Tag>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "tag",
+  "PearlBee::Model::Schema::Result::Tag",
+  { id => "tag_id" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-07 19:20:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+ZBnuxydK4USGrfS0LPnJw
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:X6jXKbLzGuv5nx7NvsFNwA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

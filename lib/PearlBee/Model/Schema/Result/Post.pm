@@ -1,17 +1,21 @@
+use utf8;
 package PearlBee::Model::Schema::Result::Post;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+PearlBee::Model::Schema::Result::Post - Post table.
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-PearlBee::Model::Schema::Result::Post
+=head1 TABLE: C<post>
 
 =cut
 
@@ -106,6 +110,17 @@ __PACKAGE__->add_columns(
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -123,21 +138,6 @@ __PACKAGE__->has_many(
   "PearlBee::Model::Schema::Result::Comment",
   { "foreign.post_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 user
-
-Type: belongs_to
-
-Related object: L<PearlBee::Model::Schema::Result::User>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "user",
-  "PearlBee::Model::Schema::Result::User",
-  { id => "user_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 post_categories
@@ -170,9 +170,44 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-02-07 19:20:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:o8AORcJ8sKoBZ7dZIuEpMw
+Type: belongs_to
+
+Related object: L<PearlBee::Model::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "user",
+  "PearlBee::Model::Schema::Result::User",
+  { id => "user_id" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+);
+
+=head2 categories
+
+Type: many_to_many
+
+Composing rels: L</post_categories> -> category
+
+=cut
+
+__PACKAGE__->many_to_many("categories", "post_categories", "category");
+
+=head2 tags
+
+Type: many_to_many
+
+Composing rels: L</post_tags> -> tag
+
+=cut
+
+__PACKAGE__->many_to_many("tags", "post_tags", "tag");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5V6erZKi9jLOYo38x62HWg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

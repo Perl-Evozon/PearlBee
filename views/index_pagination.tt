@@ -1,13 +1,13 @@
 <ul class="pager marginnone margintop35">
     [% page %]
     [% IF page == 1 %]
-        <li class="previous disabled"><a href="javascript:void(0);">&larr; Older</a></li>
+        <li class="previous disabled"><a href="javascript:void(0);">&larr; Newer</a></li>
     [% ELSE %]
-        <li class="previous"><a href="[% session.app_url %][% previous_link %]">&larr; Older</a></li>
+        <li class="previous"><a href="[% session.app_url %][% previous_link %]">&larr; Newer</a></li>
     [% END %]
     [% IF page >= total_pages %]
-        <li class="next disabled"><a href="javascript:void(0);">Newer &rarr;</a></li>
+        <li class="next disabled"><a href="javascript:void(0);">Older &rarr;</a></li>
     [% ELSE %]
-        <li class="next"><a href="[% session.app_url %][% next_link %]">Newer &rarr;</a></li>
+        <li class="next"><a href="[% session.app_url %][% next_link %]">Older &rarr;</a></li>
     [% END %] 
 </ul>

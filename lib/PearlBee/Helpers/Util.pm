@@ -4,6 +4,9 @@ use Data::GUID;
 use String::Dirify;
 use String::Util 'trim';
 
+use HTML::Strip;
+my $hs = HTML::Strip->new();
+
 require Exporter;
 our @ISA 		= qw(Exporter);
 our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug get_presentation_posts_info/;
@@ -74,7 +77,9 @@ sub get_presentation_posts_info {
     foreach my $post (@posts) {
         my $el;
         map {$el->{$_} = eval{$post->$_}} ('title', 'content', 'id', 'slug', 'description', 'cover', 'created_date', 'status', 'user_id');
+        
         # extract a sample from the content (first words)
+        $el->{content} = $hs->parse( $el->{content} ); $hs->eof;
         $el->{content} = substr($el->{content}, 0, 510);
         $el->{content} =~ s/([,\s\.])*[^,\s\.]*$/ /is; # make sure we do not split inside of a word
         push(@mapped_posts, $el)

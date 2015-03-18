@@ -58,3 +58,6 @@ email_templates:  'views/emails/'
 
 # Specifics
 email_signature:       'The PearlBee Team'
+default_email_sender:  'no-reply@pearlbee.com'
+welcome_email_subject: 'Welcome to PearlBee!'
+posts_on_page:         5

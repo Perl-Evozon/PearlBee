@@ -9,7 +9,6 @@ use Dancer2::Plugin::DBIC;
 use Digest::MD5 qw(md5_hex);
 use Authen::Captcha;
 use DateTime;
-use Data::Dumper;
 
 # Included controllers
 
@@ -548,8 +547,6 @@ get '/sign-up' => sub {
 post '/sign-up' => sub {
   my $params = params();
   
-  use Data::Dumper;
-  print STDERR Dumper($params) . "\n";
   my $err;
   
   my $template_params = {
@@ -603,7 +600,6 @@ post '/sign-up' => sub {
             # Notify the author that a new comment was submited
             my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
 
-            print STDERR Dumper(session()) ."\n~~ SESSION\n";
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
               From     => config->{default_email_sender},

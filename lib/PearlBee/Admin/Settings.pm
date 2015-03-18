@@ -16,7 +16,6 @@ use PearlBee::Helpers::Import;
 use DateTime::TimeZone;
 use POSIX qw(tzset);
 use XML::Simple qw(:strict);
-use Data::Dumper;
 
 
 =head

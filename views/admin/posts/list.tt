@@ -1,7 +1,7 @@
 <div class="mainy">
  <!-- Page title -->
  <div class="page-title">
-    <h2><i class="icon-file color"></i> Posts <small>Subtext for header</small></h2>
+    <h2><i class="icon-file color"></i> Posts <small>Manage blog posts</small></h2>
     <hr />
  </div>
  <!-- Page title -->
@@ -11,13 +11,17 @@
 
         <div class="awidget">
            <div class="awidget-head">
-              <h3>All posts</h3>
+               [% IF status %]
+				  <h3>All [% status %] posts</h3>
+			   [% ELSE %]
+				  <h3>All posts</h3>
+			   [% END %]
            </div>
            <div class="awidget-body">
               
               [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
               <a href="/[% role %]/posts"> All </a>([% all %]) | 
-              <a href="/[% role %]/posts/published/page/1"> Publish </a>([% publish %]) | 
+              <a href="/[% role %]/posts/published/page/1"> Published </a>([% publish %]) | 
               <a href="/[% role %]/posts/draft/page/1"> Draft </a>([% draft %]) | 
               <a href="/[% role %]/posts/trash/page/1"> Trash </a>([% trash %])
 
@@ -25,7 +29,7 @@
                <thead>
                  <tr>
                    <th> Author     </th>
-                   <th> Ttile      </th>
+                   <th> Title      </th>
                    <th> Categories </th>
                    <th> Tags       </th>
                    <th> Comments   </th>
@@ -37,7 +41,9 @@
                 [% FOREACH post in posts %]
 
                   <tr>
-                    <td width="20%"> 
+                    <td width="20%">
+                      <b> <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a></b>
+                      <br />
                       <b> [% post.user.first_name %] [% post.user.last_name %] </b>
                       <br />
                       <i> [% post.created_date %] </i>
@@ -73,17 +79,19 @@
 
                     <td>
                         [% FOREACH post_category IN post.post_categories %]
-                          <a href="#"> [% post_category.category.name %] </a>
+                          <a href="/posts/category/[% post_category.category.slug %]"> [% post_category.category.name %] </a>
                         [% END %]
                     </td>
 
                     <td width="5%"> 
                       [% FOREACH post_tag IN post.post_tags %]
-                        <a href="#"> [% post_tag.tag.name %] </a>
+                        <a href="/posts/tag/[% post_tag.tag.slug %]"> [% post_tag.tag.name %] </a>
                       [% END %]
                     </td>
 
-                    <td width="5"> [% post.nr_of_comments %] </td>
+                    <td width="5"> 
+                      <a href="/post/[% post.slug %]#comments"> [% post.nr_of_comments %] </a>
+                    </td>
                     
                     <td width="10%">
                        <a href="/post/[% post.slug %]"> <button class="btn btn-xs btn-success"><i class="icon-eye-open"></i> </button> </a>

@@ -100,6 +100,7 @@ get '/admin/posts/:status/page/:page' => sub {
         page          => $page,
         next_link     => $next_link,
         previous_link => $previous_link,
+        status        => $status,
         action_url    => 'admin/posts/' . $status . '/page',
         pages         => $pagination->pages_in_set
       },

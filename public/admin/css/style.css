@@ -38,7 +38,7 @@ a{
 a:hover{
    color:#0fa6bc;
    text-decoration:none;
-   border-bottom:1px dotted #0fa6bc;
+/*    border-bottom:1px dotted #0fa6bc; */
 }
 
 a:hover,a:active,a:focus {
@@ -270,7 +270,7 @@ strong{
 .header .dropdown-menu li{
    font-size:13px;
    padding:6px 15px;
-   border-bottom:1px dashed #f3f3f3;
+/*    border-bottom:1px dashed #f3f3f3; */ 
 }
 
 .header .dropdown-menu li a {
@@ -330,6 +330,15 @@ strong{
    border-bottom:0px;
 }
 
+.header .navbar .nav > .dropdown a:hover {
+   color: #fff !important;
+}
+
+.header .navbar .nav .dropdown-menu a:hover {
+   color: #444 !important;
+}
+
+
 .header .navbar-nav .caret{
    border-top-color:#fff !important;
    border-bottom-color:#fff !important;
@@ -338,6 +347,17 @@ strong{
 .header .navbar-nav>.open>a .caret,.header  .navbar-nav>.open>a:hover .caret,.header  .navbar-nav>.open>a:focus .caret {
    border-top-color: #fff !important;
    border-bottom-color: #fff !important;
+}
+
+.header .navbar .nav > li > a:hover{
+   background-color: #16cbe6;
+   color: #0fa6bc !important;
+   border: none;
+}
+
+.header .navbar .nav > li > .my_account:hover{
+   color: white !important;
+   border: none;
 }
 
 /* Sidebar navigation */
@@ -473,6 +493,14 @@ strong{
 
 .sidebar-dropdown{
    display:none;
+}
+
+.sidebar .widget .btn-info:hover,
+.sidebar .widget .btn-info:focus,
+.sidebar .widget .btn-info:active,
+.sidebar .widget .btn-info.active,
+.sidebar .widget .open .dropdown-toggle.btn-info {
+   margin: 0 2px 2px 0;
 }
 
 /* Main */
@@ -629,6 +657,7 @@ strong{
 	margin: 0px !important;
 	padding: 0px !important;
 }
+
 
 /* Recent posts & Comments widgets starts */
 
@@ -1039,7 +1068,7 @@ footer{
 footer a{
    color:#eee;
    text-decoration:none;
-   border-bottom:1px dotted #888;
+/*    border-bottom:1px dotted #888; */
 }
 
 footer a:hover{
@@ -1095,11 +1124,15 @@ footer .copy{
    .header{
       height:auto;
       padding:15px 0px;
-   }  
-   .header .logo{
-      text-align:center;
-      padding-bottom:10px;
    }
+   .header .pull-right {
+      float: none !important;
+      text-align: center;
+   }
+    .header .logo{
+   text-align:center;
+   padding-bottom:10px;
+} 
    .header .form{
       margin:10px auto;
    }
@@ -1164,3 +1197,25 @@ footer .copy{
    .themes-container #portfolio .element p {
       margin-bottom: 10px;
    }
+
+/* Comment list */ 
+
+.coments .comment-list.comment-replies-list {
+   list-style: none;
+   padding-left: 30px;
+}
+
+@media (max-width: 992px) {
+   .collapse {
+      display: block;
+   }
+   .header .navbar .nav > li > a:hover {
+      color: #fff !important;
+   }
+}
+
+@media (max-width: 648px) {
+   .mainy .awidget {
+      overflow: scroll;
+   }
+}

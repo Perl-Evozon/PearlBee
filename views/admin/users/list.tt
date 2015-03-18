@@ -8,14 +8,23 @@
             
 	    <div class="awidget">
 	        <div class="awidget-head">
-	           <h3>All users</h3>
+			   [% IF status %]
+				  <h3>All [% status %] users</h3>
+			   [% ELSE %]
+				  <h3>All users</h3>
+			   [% END %]
 	        </div>
 	        <div class="awidget-body">          
 
 	        	<a href="/admin/users/page/1"> 	All </a>([% all %]) | 
 	        	<a href="/admin/users/deactivated/page/1"> Deactivated </a>([% deactivated %]) | 
 	        	<a href="/admin/users/activated/page/1"> Activated </a>([% activated %]) |
-	        	<a href="/admin/users/suspended/page/1"> Suspended </a>([% suspended %])
+				[% IF session.multiuser %]
+				  <a href="/admin/users/suspended/page/1"> Suspended </a>([% suspended %]) |
+				  <a href="/admin/users/pending/page/1"> Pending </a>([% pending %])
+				[% ELSE %]
+				  <a href="/admin/users/suspended/page/1"> Suspended </a>([% suspended %])
+				[% END %]
 
 				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
 					<thead>
@@ -38,27 +47,40 @@
 									<br />
 									<br />
 
-									[% IF (user.status == 'deactivated') %]
-										<span class="label label-warning"> Deactivated </span>
+									[% IF (user.status == 'pending') %]
+									   <span class="label label-warning"> Pending </span>&nbsp;&nbsp;|
+   									   <a href="/admin/users/allow/[% user.id %]"> Allow </a>
 									[% ELSE %]
-										<a href="/admin/users/deactivate/[% user.id %]" > Deactivate </a>
+									   [% IF (user.status == 'deactivated') %]
+										   <span class="label label-warning"> Deactivated </span>
+									   [% ELSE %]
+										   <a href="/admin/users/deactivate/[% user.id %]" > Deactivate </a>
+									   [% END %]
+   
+									   |
+   
+									   [% IF (user.status == 'activated') %]
+										   <span class="label label-success"> Activated </span>
+									   [% ELSE %]
+										   <a href="/admin/users/activate/[% user.id %]"> Activate </a>
+									   [% END %]
+   
+									   |
+   
+									   [% IF (user.status == 'suspended') %]
+										   <span class="label label-danger"> Supended </span>
+									   [% ELSE %]
+										   <a href="/admin/users/suspend/[% user.id %]"> Supend </a>
+									   [% END %]
 									[% END %]
-
-									|
-
-									[% IF (user.status == 'activated') %]
-										<span class="label label-success"> Activated </span>
+									
+									<!--
+									[% IF (user.status == 'pending') %]
+										<span class="label label-danger"> Pending </span>
 									[% ELSE %]
-										<a href="/admin/users/activate/[% user.id %]"> Activate </a>
+										<a href="/admin/users/allow/[% user.id %]"> Allow </a>
 									[% END %]
-
-									|
-
-									[% IF (user.status == 'suspended') %]
-										<span class="label label-danger"> Supended </span>
-									[% ELSE %]
-										<a href="/admin/users/suspend/[% user.id %]"> Supend </a>
-									[% END %]
+									-->
 
 								</td>
 

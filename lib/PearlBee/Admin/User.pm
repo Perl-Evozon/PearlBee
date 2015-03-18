@@ -11,9 +11,8 @@ use Dancer2;
 use Dancer2::Plugin::DBIC;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
+use PearlBee::Helpers::Util qw(create_password);
 
-use PearlBee::Password;
-use Crypt::RandPasswd qw(chars);
 use Email::Template;
 use DateTime;
 
@@ -29,10 +28,24 @@ get '/admin/users/page/:page' => sub {
 
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
-  my @users       = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  my @users;
+  if (session('multiuser')) {
+    @users = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  } else {
+    @users = resultset('User')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  }
+  
+  
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended) = $count->get_all_status_counts;
+  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
+  
+  if (! session('multiuser')) {
+    # do not count 'pending' users
+    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
+    $all -= $count_pending;
+  }
+  
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -52,6 +65,7 @@ get '/admin/users/page/:page' => sub {
       activated     => $activated,
       deactivated   => $deactivated,
       suspended     => $suspended,
+      pending       => $pending,
       page          => $page,
       next_link     => $next_link,
       previous_link => $previous_link,
@@ -76,8 +90,14 @@ get '/admin/users/:status/page/:page' => sub {
   my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended) = $count->get_all_status_counts;
+  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
   my $status_count                                = $count->get_status_count($status);
+  
+  if (! session('multiuser')) {
+    # do not count 'pending' users
+    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
+    $all -= $count_pending;
+  }
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -97,11 +117,13 @@ get '/admin/users/:status/page/:page' => sub {
       activated     => $activated,
       deactivated   => $deactivated,
       suspended     => $suspended,
+      pending       => $pending,
       page          => $page,
       next_link     => $next_link,
       previous_link => $previous_link,
       action_url    => 'admin/users/' . $status . '/page',
-      pages         => $pagination->pages_in_set
+      pages         => $pagination->pages_in_set,
+      status        => $status
     },
     { layout => 'admin' };
 
@@ -157,6 +179,48 @@ any '/admin/users/suspend/:id' => sub {
 
 =head
 
+Allow pending user
+
+=cut
+
+any '/admin/users/allow/:id' => sub {
+
+  my $user_id = params->{id};
+  my $user   = resultset('User')->find( $user_id );
+  
+  if ($user) {
+    eval {
+      my ($password, $pass_hash, $salt) = create_password();
+      
+      $user->update( {password => $pass_hash, salt => $salt} );
+    
+      $user->allow();
+      
+      Email::Template->send( config->{email_templates} . 'welcome.tt',
+          {
+              From    => config->{default_email_sender},
+              To      => $user->email,
+              Subject => config->{welcome_email_subject},
+  
+              tt_vars => {
+                  role        => $user->role,
+                  username    => $user->username,
+                  password    => $password,
+                  first_name  => $user->first_name,
+                  app_url     => config->{app_url},
+                  blog_name   => session('blog_name'),
+                  signature   => config->{email_signature},
+                  allowed     => 1,
+              },
+      }) or error "Could not send the email";
+    };
+  }
+
+  redirect session('app_url') . '/admin/users';
+};
+
+=head
+
 Add a new user
 
 =cut
@@ -171,41 +235,39 @@ any '/admin/users/add' => sub {
       my $dt       = DateTime->now;          
       my $settings = resultset('Setting')->first;
       $dt->set_time_zone( $settings->timezone );
-
+      
+      my ($password, $pass_hash, $salt) = create_password();
       my $username   = params->{username};
-      my $password   = Crypt::RandPasswd::chars(10, 15);
       my $email      = params->{email};
       my $first_name = params->{first_name};
       my $last_name  = params->{last_name};
       my $role       = params->{role};
-      my $pass_hash  = generate_hash($password);
-
-      warn $pass_hash->{hash} . ' ' . $pass_hash->{salt};
 
       resultset('User')->create({
         username        => $username,
-        password        => $pass_hash->{hash},
-        salt            => $pass_hash->{salt},        
+        password        => $pass_hash,
+        salt            => $salt,        
         first_name      => $first_name,
         last_name       => $last_name,
         register_date   => join (' ', $dt->ymd, $dt->hms),
         role            => $role,
         email           => $email,
-       
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',
         {
-            From    => 'no-reply@PearlBee.com',
+            From    => config->{default_email_sender},
             To      => $email,
-            Subject => 'Welcome to PearlBee!',
+            Subject => config->{welcome_email_subject},
 
-            tt_vars => { 
+            tt_vars => {
                 role        => $role,
                 username    => $username,
                 password    => $password,
                 first_name  => $first_name,
-                url         => config->{app_url}
+                app_url     => config->{app_url},
+                blog_name   => session('blog_name'),
+                signature   => config->{email_signature}
             },
         }) or error "Could not send the email";
     };
@@ -222,7 +284,7 @@ any '/admin/users/add' => sub {
     else {
       template 'admin/users/add', 
         {
-          success => 'The user was added succesfully and will be activated after he logs in'
+          success => 'The user was added succesfully and will be activated after he logs in.'
         }, 
         { layout => 'admin' };
     }

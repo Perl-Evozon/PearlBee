@@ -31,7 +31,7 @@ CREATE TABLE `category` (
   UNIQUE KEY `name` (`name`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='Category table.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Category table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ LOCK TABLES `category` WRITE;
 INSERT INTO `category` VALUES (1,'Uncategorized','uncategorized',1);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `comment`
@@ -61,20 +62,17 @@ CREATE TABLE `comment` (
   `comment_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('approved','spam','pending','trash') DEFAULT 'pending',
   `post_id` int(11) NOT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `reply_to` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`),
+  KEY `fk_comment_reply_to` (`reply_to`),
+  KEY `comment_ibfk_2` (`uid`),
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `user` (`id`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Comment table.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Comment table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `comment`
---
-
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `post`
@@ -96,17 +94,9 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post table.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Post table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `post`
---
-
-LOCK TABLES `post` WRITE;
-/*!40000 ALTER TABLE `post` DISABLE KEYS */;
-/*!40000 ALTER TABLE `post` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `post_category`
@@ -125,14 +115,6 @@ CREATE TABLE `post_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post category table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `post_category`
---
-
-LOCK TABLES `post_category` WRITE;
-/*!40000 ALTER TABLE `post_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `post_category` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `post_tag`
@@ -151,14 +133,6 @@ CREATE TABLE `post_tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post tag table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `post_tag`
---
-
-LOCK TABLES `post_tag` WRITE;
-/*!40000 ALTER TABLE `post_tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `post_tag` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `settings`
@@ -172,7 +146,10 @@ CREATE TABLE `settings` (
   `social_media` tinyint(1) NOT NULL DEFAULT '1',
   `blog_path` varchar(255) NOT NULL DEFAULT '/',
   `theme_folder` varchar(255) NOT NULL,
-  `blog_name` varchar(255) NOT NULL
+  `blog_name` varchar(255) NOT NULL,
+  `multiuser` tinyint(1) NOT NULL DEFAULT '0',
+  `id` int(2) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Settings table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,9 +159,10 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'Olson','/','PearlBee');
+INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'','/','PearlBee',1,0);
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `tag`
@@ -198,17 +176,9 @@ CREATE TABLE `tag` (
   `name` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
   `slug` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Tag table.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Tag table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `tag`
---
-
-LOCK TABLES `tag` WRITE;
-/*!40000 ALTER TABLE `tag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tag` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -229,12 +199,12 @@ CREATE TABLE `user` (
   `telephone` varchar(12) DEFAULT NULL,
   `role` enum('author','admin') NOT NULL DEFAULT 'author',
   `activation_key` varchar(100) DEFAULT NULL,
-  `status` enum('deactivated','activated','suspended') NOT NULL DEFAULT 'deactivated',
+  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   `salt` char(24) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='User table.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='User table.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +213,9 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','you@domain.com',NULL,NULL,'admin',NULL,'activated','IQbmVFR+SEgTju9y+UzhwA==');
+/* default username : admin */
+/* default password : password */
+INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated','IQbmVFR+SEgTju9y+UzhwA==');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -256,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-02-18 17:28:53
+-- Dump completed on 2015-03-18 12:17:33

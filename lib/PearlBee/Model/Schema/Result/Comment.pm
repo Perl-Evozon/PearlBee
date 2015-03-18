@@ -78,6 +78,17 @@ __PACKAGE__->table("comment");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 uid
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 reply_to
+
+  data_type: 'integer'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -109,6 +120,10 @@ __PACKAGE__->add_columns(
   },
   "post_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "uid",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  "reply_to",
+  { data_type => "integer", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -140,9 +155,29 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
+=head2 uid
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WEXTV+ThsgJ7JfaYv8+Naw
+Type: belongs_to
+
+Related object: L<PearlBee::Model::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "uid",
+  "PearlBee::Model::Schema::Result::User",
+  { id => "uid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-12 11:32:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kXOgl6BN015P4v3rssxB+g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1,7 +1,7 @@
 <div class="mainy">
    <!-- Page title -->
     <div class="page-title">
-       <h2><i class="icon-comment color"></i> Comments <small>Subtext for header</small></h2>
+       <h2><i class="icon-comment color"></i> Comments <small>Manage comments</small></h2>
        <hr />
     </div>
     <div class="col-md-12">         
@@ -19,12 +19,13 @@
 	        	<a href="/[% role %]/comments/trash/page/1"> Trash </a>([% trash %]) | 
 	        	<a href="/[% role %]/comments/spam/page/1"> Spam </a>([% spam %])
 
-				<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+				<table class="table table-hover table-bordered">
 					<thead>
 						<tr>
 							<th> Author </th>
 							<th> Comment </th>
 							<th> Post </th>
+							<th> Type </th>
 						</tr>
 					</thead>
 					<tbody>
@@ -32,13 +33,20 @@
 						[% FOREACH comment IN comments %]
 
 							<tr>
-								<td width="15%"> 
-									<b> [% comment.fullname %] </b> 
+								<td width="20%">
+									[% IF comment.fullname %]
+									   <b> [% comment.fullname %] </b>
+									[% ELSE %]
+									   <b> <i class="icon-user"></i> <a href="/posts/user/[% comment.uid.username %]">[% comment.uid.username %]</a></b>
+									[% END %]
 									<br />
-									<i> [% comment.email %] </i>
+									[% IF comment.email %]
+									   <i> [% comment.email %] </i>
+									[% ELSE %]
+									   <i> [% comment.uid.email %] </i>
+									[% END %]
 									<br />
-									<br />
-									<h5> [% comment.comment_date %] </h5>
+									<i>[% comment.comment_date %]</i>
 								</td>
 
 								<td> 
@@ -76,10 +84,21 @@
 									[% ELSE %]
 										<a href="/[% role %]/comments/spam/[% comment.id %]" > Spam </a>
 									[% END %]
-						
 								</td>
 
-								<td width="15%"> <a href="/post/[% comment.post.id %]"> [% comment.post.title %] </a> </td>
+								<td width="15%"> <a href="/post/[% comment.post.slug %]"> [% comment.post.title %] </a> </td>
+								
+								 <td width="10%">
+									[% IF comment.reply_to %]
+    								   <a href="/post/[% comment.post.slug %]#comment_[% comment.reply_to %]"> Reply </a>
+									[% ELSE %]
+									   [% IF comment.status == 'approved' %]
+										  <a href="/post/[% comment.post.slug %]#comment_[% comment.id %]"> Comment </a>
+									   [% ELSE %]
+										  Comment
+									   [% END %]
+									[% END %]
+								 </td>
 							</tr>
 						
 						[% END %]	

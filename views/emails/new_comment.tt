@@ -31,7 +31,7 @@
 	          <div class="col-md-3 col-sm-3">
 	            <!-- Logo -->
 	            <div class="logo">
-	               <h1><a href="[% url %]">Pearlbee </a></h1>
+	               <h1><a href="[% url %]">[% session.blog_name %]</a></h1>
 	            </div>
 	          </div>
 	          <div class="col-md-9 col-sm-9">
@@ -43,7 +43,7 @@
 
 	 <div class="page-title">
 	     <div class="container">
-	        <h2><i class="icon-comment color"></i> A new comment was submitted </h2>
+	        <h2>A new comment was submitted </h2>
 	        <hr />
 	     </div>  
 	  </div>
@@ -52,10 +52,12 @@
         <div class="container">
           	<div class="row">
   				
-          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% post_url %]"> [% title %]</a></b> :
+          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% post_url %]"> [% title %]</a></b>
           		<br />
 				  See the comment here : "[% comment %]"
           		<br />
+				  This comment is in reply to [% reply_to_user %]'s previous comment : "[% reply_to_content %]" 
+				<br />
           		<i> You can log in with your user account to manage your comments </i>
           		<br />
 				<br />
@@ -63,7 +65,7 @@
 				<br />
 				<i>[% signature %]</i>
 				<br />
-				<a href="[% app_url %]"> [% app_name %] </a>
+				<a href="[% app_url %]"> [% app_url %] </a>
 			</div>
 		</div>
 	</div>

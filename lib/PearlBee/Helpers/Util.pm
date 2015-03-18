@@ -2,14 +2,19 @@ package PearlBee::Helpers::Util;
 
 use Data::GUID;
 use String::Dirify;
+use String::Random;
 use String::Util 'trim';
 
-use HTML::Strip;
-my $hs = HTML::Strip->new();
+use PearlBee::Password;
+
+# we use this to make sure we don't break the post content in places where the HTML code could break
+use HTML::Lint;
+my $lint = HTML::Lint->new;
 
 require Exporter;
 our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug get_presentation_posts_info/;
+our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug map_posts create_password/;
+
 
 =head
 
@@ -69,23 +74,59 @@ Generate a valid slug kind name
 
 =cut
 
-sub get_presentation_posts_info {
+sub map_posts {
     my (@posts) = @_;
-
+    
+    
     # map info (utf8 compliance)
     my @mapped_posts = ();
     foreach my $post (@posts) {
         my $el;
-        map {$el->{$_} = eval{$post->$_}} ('title', 'content', 'id', 'slug', 'description', 'cover', 'created_date', 'status', 'user_id');
+        map {$el->{$_} = eval{$post->$_}} ('title', 'content', 'id', 'slug', 'description', 'cover', 'created_date', 'status', 'user_id', 'nr_of_comments');
         
         # extract a sample from the content (first words)
-        $el->{content} = $hs->parse( $el->{content} ); $hs->eof;
-        $el->{content} = substr($el->{content}, 0, 510);
+        my $chunk = 600;
+        my $post_content = $el->{content};
+        
+=aaa
+        $el->{content} = substr($post_content, 0, $chunk);
         $el->{content} =~ s/([,\s\.])*[^,\s\.]*$/ /is; # make sure we do not split inside of a word
+        $el->{content} =~ s/\W*$//is; # make sure we do not split inside of a word
+        
+        $el->{content} .= ' ...';
+=cut
+        
+        # get post author
+        $el->{user}->{username} = $post->user->username;
+        $el->{user}->{id} = $post->user->id;
+        
+        # add post categories
+        foreach my $category ($post->post_categories) {
+            my $details;
+            $details->{category}->{name} = $category->category->name;
+            $details->{category}->{slug} = $category->category->slug;
+            push(@{$el->{post_categories}}, $details);
+        }
+
         push(@mapped_posts, $el)
 	}
 
 	return @mapped_posts;
+}
+
+=head
+
+Create a password
+
+=cut
+
+sub create_password {
+	
+    my $pass       = new String::Random;
+    my $password   = $pass->randpattern("Ccc!cCn");
+    my $pass_hash  = generate_hash($password);
+
+	return $password, $pass_hash->{hash}, $pass_hash->{salt};
 }
 
 1;

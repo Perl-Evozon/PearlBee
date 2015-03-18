@@ -19,6 +19,7 @@ sub can_create {
 	my $website  = $params->{website} || '';
 	my $text     = $params->{comment};
 	my $post_id  = $params->{id};
+	my $uid      = $params->{comment_as};
 	my $schema 	 = $self->result_source->schema;
 
 	# Grab the gravatar if exists, or a default image if not
@@ -47,6 +48,8 @@ sub can_create {
           avatar       => $gravatar,
           post_id      => $post_id,
           status       => $status,
+		  uid          => $uid,
+		  reply_to     => $params->{reply_to},
           comment_date => $dtf->format_datetime($dt)
     });
 

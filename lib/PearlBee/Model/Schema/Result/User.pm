@@ -95,7 +95,7 @@ __PACKAGE__->table("user");
 
   data_type: 'enum'
   default_value: 'deactivated'
-  extra: {list => ["deactivated","activated","suspended"]}
+  extra: {list => ["deactivated","activated","suspended","pending"]}
   is_nullable: 0
 
 =head2 salt
@@ -143,7 +143,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "enum",
     default_value => "deactivated",
-    extra => { list => ["deactivated", "activated", "suspended"] },
+    extra => { list => ["deactivated", "activated", "suspended", "pending"] },
     is_nullable => 0,
   },
   "salt",
@@ -205,6 +205,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 comments
+
+Type: has_many
+
+Related object: L<PearlBee::Model::Schema::Result::Comment>
+
+=cut
+
+__PACKAGE__->has_many(
+  "comments",
+  "PearlBee::Model::Schema::Result::Comment",
+  { "foreign.uid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 posts
 
 Type: has_many
@@ -221,8 +236,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VoWbKncYCc0DC7UR5wIJfQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-12 11:32:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K9HSB67oau0IzWdJILumFg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -304,6 +319,16 @@ sub suspend {
   my $self = shift;
 
   $self->update({ status => 'suspended' });
+}
+
+sub allow {
+  my $self = shift;
+  
+  # set a password for the user
+  
+  # welcome the user in an email
+
+  $self->update({ status => 'deactivated' });
 }
 
 1;

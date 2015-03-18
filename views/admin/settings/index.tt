@@ -50,6 +50,18 @@
                 </div>
 
                 <hr />
+				
+				<h5>Multiuser</h5>
+                <div class="make-switch" data-on="success" data-off="danger">
+		            [% IF setting.multiuser %]
+                      <input id="multiuser_check" name="multiuser" type="checkbox" checked>
+                    [% ELSE %]
+                      <input id="multiuser_check" name="multiuser" type="checkbox">
+                    [% END %]
+                </div>
+                <input id="multiuser_state" type="hidden" value="[% setting.multiuser %]" />
+
+                <hr />
 
                 <div class="form-group">
                   <div>

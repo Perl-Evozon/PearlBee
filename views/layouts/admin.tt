@@ -2,7 +2,8 @@
 <html>
    <head>
       <!-- Title here -->
-      <title>Login - PerlBee Admin  </title> 
+      <title>[% session.blog_name %] [% session.user.role FILTER ucfirst %]</title>
+
       <!-- Description, Keywords and Author -->
       <meta name="description" content="Your description">
       <meta name="keywords" content="Your,Keywords">
@@ -68,7 +69,7 @@
                <div class="col-md-12">
                   <!-- Logo -->
                   <div class="logo text-center">
-                     <h1><a href="/admin ">PerlBee Admin</a></h1>
+                     <h1><a href="[% session.app_url %]">[% session.blog_name %] [% session.user.role FILTER ucfirst %]</a></h1>
                   </div>
                </div>
             </div>
@@ -100,7 +101,7 @@
          <div class="container">
          
             <div class="copy text-center">
-               Copyright 2013 &copy; - <a href="http://responsivewebinc.com/bootstrap-themes">Bootstrap Themes</a>
+               Copyright 2013 &copy; - <a href="http://pearlbee.org">PearlBee</a>
             </div>
             
          </div>

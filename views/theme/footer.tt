@@ -6,7 +6,7 @@
                         <div class="col-md-4 col-sm-4">
                            <div class="fwidget">
                            
-                              <h4>PearlBee</h4>
+                              <h4>[% session.blog_name %]</h4>
                               <hr />
                               <p>Duis leo risus, vehicula luctus nunc.  Quiue rhoncus, a sodales enim arcu quis turpis. Duis leo risus, condimentum ut posuere ac, vehicula luctus nunc.  Quisque rhoncus, a sodales enim arcu quis turpis.</p>
                               

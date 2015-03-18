@@ -2,42 +2,80 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8">
+        [% IF posts_for_user %]
+          <div class="filtered_posts">
+            <h2> <i class="icon-user"></i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
+          </div>
+        [% END %]
+        [% IF posts_for_category %]
+          <div class="filtered_posts">
+            <h2> <i class="icon-list"></i> <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
+          </div>
+        [% END %]
+        [% IF posts_for_tag %]
+          <div class="filtered_posts">
+            <h2> <i class="icon-tag"></i> <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
+          </div>
+        [% END %]
          <div class="posts">
-            <!-- Each posts should be enclosed inside "entry" class" -->
-            <!-- Post one -->
+            [% IF posts.first %]
+              <!-- Pagination -->
+              <div class="clearfix"></div>
+              [% INCLUDE index_pagination.tt %]     
+              <div class="clearfix"></div>
+              <!-- Each posts should be enclosed inside "entry" class" -->
+              <!-- Post one -->
+            [% END %]
             [% FOREACH post in posts %]
               <div class="entry">
                  <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
                  
                  <!-- Meta details -->
                  <div class="meta">
-                    <i class="icon-calendar"></i> [% post.created_date %] 
-                    <i class="icon-user"></i>     [% post.user.username %] 
+                    <div class="block_elements">
+                      <i class="icon-calendar"></i> [% post.created_date %]
+                    </div>
+                    <div class="block_elements">
+                      <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                    </div>
                     
                     [% FOREACH category in post.post_categories %]
-                      <a href="[% session.app_url %]/posts/category/[% category.category.slug %]"><i class="icon-list"></i>[% category.category.name %]</a>
+                      <div class="block_elements">
+                        <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                      </div>
                     [% END %]
 
                     [% SET nr_of_comments = post.nr_of_comments %]
-                    <i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
+                    <div class="block_elements">
+                      <i class="icon-comment"></i> <a href="/post/[% post.slug %]#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %]</a></span>
+                    </div>
                  </div>
                  
                  <!-- Post cover -->
                  [% INCLUDE cover.tt %]
                  
                  <!-- Post content -->
-                 <p>
-                    <!--[% INCLUDE post_content_stripped.tt %]--> <!-- Only for non utf8 usage -->
-                    [% post.content %] ...
-                 </p>
+                 <div class="post_preview">
+                    <p>
+                      [% post.content %]
+                    </p>
+                 </div>
+                 
                  <!-- Read more -->
                  <a href="[% session.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>
               </div>
             [% END %]
-            <!-- Pagination -->
-            <div class="clearfix"></div>
-            [% INCLUDE index_pagination.tt %]     
-            <div class="clearfix"></div>
+            [% IF posts.first %]
+              <!-- Pagination -->
+              <div class="clearfix"></div>
+              [% INCLUDE index_pagination.tt %]     
+              <div class="clearfix"></div>
+              <!-- Each posts should be enclosed inside "entry" class" -->
+              <!-- Post one -->
+            [% ELSE %]
+                <br />
+                <h5>No posts found.</h5>
+            [% END %]
          </div>
       </div>                        
       <div class="col-md-4">

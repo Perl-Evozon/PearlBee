@@ -13,7 +13,7 @@
                  <!-- Sub menu -->
                  <ul>
                     <li><a href="[% session.app_url %]/[% role %]/posts">All</a></li>
-                    <li><a href="[% session.app_url %]/[% role %]/posts/add">Add new</a></li>
+                    <li><a href="[% session.app_url %]/[% role %]/posts/add">Create post</a></li>
                 </ul>
             </li>
 
@@ -33,7 +33,7 @@
                      <!-- Sub menu -->
                      <ul>
                         <li><a href="[% session.app_url %]/admin/users">All</a></li>
-                        <li><a href="[% session.app_url %]/admin/users/add">Add new</a></li>
+                        <li><a href="[% session.app_url %]/admin/users/add">Create user</a></li>
                     </ul>
                 </li>
 

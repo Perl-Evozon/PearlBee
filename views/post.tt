@@ -1,59 +1,62 @@
-
-      <div class="page-title">
-         <!-- <div class="container">
-            <h2><i class="icon-desktop color"></i> Blog <small>Subtext for header</small></h2>
-            <hr />
-         </div> -->
-      </div>
-      <!-- Page title -->
-
-      <!-- Page content -->
-
-      <div class="blog">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12"><h2>[% post.title %]</h2></div>
+<!-- Page content -->
+<div class="blog">
+    <div class="container">
+        <div class="row">
+        
+            [% INCLUDE components/alerts.tt %]
+            
             <div class="col-md-8">
-             <div class="posts">
-                <!-- Each posts should be enclosed inside "entry" class" -->
-                <!-- Post one -->
-                <div class="entry">
-                   <!-- Meta details -->
-                   <div class="meta">
-                      <i class="icon-calendar"></i> [% post.created_date %]
-                      <i class="icon-user"></i> [% post.user.username %]
+                <h2>[% post.title %]</h2>
+                <div class="posts">
+                    <!-- Each posts should be enclosed inside "entry" class" -->
+                    <!-- Post one -->
+                    <div class="entry">
+                        <!-- Meta details -->
+                        <div class="meta">
+                            <div class="block_elements">
+                                <i class="icon-calendar"></i> [% post.created_date %]
+                            </div>
+                            <div class="block_elements">
+                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                            </div>
 
-                      [% FOREACH category in post.post_categories %]
-                        <a href="[% session.app_url %]/posts/category/[% category.category.slug %]"><i class="icon-list"></i>[% category.category.name %]</a>
-                      [% END %]
+                            [% FOREACH category in post.post_categories %]
+                                <div class="block_elements">
+                                    <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                                </div>
+                            [% END %]
 
-                      [% SET nr_of_comments = post.nr_of_comments %]
-                      <span class="pull-right"><i class="icon-comment"></i> <a href="#">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a></span>
-                   </div>
+                            [% SET nr_of_comments = post.nr_of_comments %]
+                            <div class="block_elements">
+                                <i class="icon-comment"></i>
+                                <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a>
+                            </div
+                        </div>
 
-                   <!-- Thumbnail -->
-                   [% INCLUDE cover.tt %]
+                        <!-- Thumbnail -->
+                        [% INCLUDE cover.tt %]
 
-                   <!-- Para -->
-                   <p>
-                      [% post.content %]
-                   </p>
+                        <!-- Para -->
+                        <p>
+                           [% post.content %]
+                        </p>
 
-                   [% IF (setting.social_media == '1') %]
-                      [% INCLUDE social_media_buttons.tt %]                    
-                   [% END %]
-
-                </div>
-                <!-- Comment section -->
-                [% INCLUDE list_comments.tt %]
+                        [% IF (setting.social_media == '1') %]
+                            [% INCLUDE social_media_buttons.tt %]
+                        [% END %]
+                    </div>
+                    
+                    <!-- Comment posting -->
+                    [% INCLUDE comment_form.tt %]
                 
-                <!-- Comment posting -->
-                [% INCLUDE comment_form.tt %]
+                    <!-- Comment section -->
+                    [% INCLUDE list_comments.tt %]
+                </div>
             </div>
-            <!-- start sidebar -->
-            <aside class="col-md-4">
-             [% INCLUDE post_sidebar.tt %]
-          </aside>
         </div>
-       </div>
+        <!-- start sidebar -->
+        <aside class="col-md-4">
+            [% INCLUDE post_sidebar.tt %]
+        </aside>
     </div>
+</div>

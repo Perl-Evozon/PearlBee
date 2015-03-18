@@ -16,6 +16,7 @@ __PACKAGE__->result_source_instance->view_definition(
       	SUM( status = 'deactivated' ) AS deactivated,
       	SUM( status = 'activated') AS activated,
       	SUM( status = 'suspended' ) AS suspended,
+        SUM( status = 'pending' ) AS pending,
       	COUNT(*) AS total
       FROM
       	user
@@ -29,6 +30,8 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 0 },
   "suspended",
   { data_type => "integer", is_nullable => 0 },
+  "pending",
+  { data_type => "integer", is_nullable => 0 },
   "total",
   { data_type => "integer", is_nullable => 0 },
 );
@@ -36,13 +39,13 @@ __PACKAGE__->add_columns(
 sub get_all_status_counts {
   my $self = shift;
 
-  return ( $self->total, $self->activated, $self->deactivated, $self->suspended );
+  return ( $self->total, $self->activated, $self->deactivated, $self->suspended, $self->pending );
 }
 
 sub get_status_count {
   my ($self, $status) = @_;
 
-  return ( $status eq 'activated' ) ? $self->activated : ( $status eq 'deactivated' ) ? $self->deactivated : $self->suspended;
+  return ( $status eq 'activated' ) ? $self->activated : ( $status eq 'deactivated' ) ? $self->deactivated : ( $status eq 'suspended' ) ? $self->suspended : $self->pending;
 }
 
 1;

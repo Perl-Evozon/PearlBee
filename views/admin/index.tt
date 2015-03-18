@@ -3,7 +3,7 @@
 <div class="mainy">
    <!-- Page title -->
    <div class="page-title">
-      <h2><i class="icon-desktop color"></i> Dashboard <small>Subtext for header</small></h2> 
+      <h2><i class="icon-desktop color"></i> Dashboard <small>Author details</small></h2> 
       <hr />
    </div>
    <!-- Page title -->
@@ -13,7 +13,16 @@
       <div class="col-md-12">
          <div class="awidget">
             <div class="awidget-head">
-               <h3>Welcome <b> [% user.first_name %]!</b></h3>
+                [% IF user.status == 'deactivated' %]
+                    <h3>
+                        Welcome <b> [% user.first_name %]!</b>
+                        <br />
+                        Please set a new password for your account.
+                    </h3>
+                    <h3><i>(Features are disabled until you set your password)</i></h3>
+                [% ELSE %]
+                    <h3>Welcome <b> [% user.first_name %]!</b></h3>
+                [% END %]
             </div>
             <div class="awidget-body">
                [% IF user.status == 'deactivated' %]
@@ -44,7 +53,7 @@
                       </div>
                   </form>
                 [% ELSE %]
-                  <h3> Welcome to our blog </h3> now you can post an article!
+                  <h3> Welcome to our blog, </h3> Now you can post articles...
                 [% END %]
             </div>
          </div>

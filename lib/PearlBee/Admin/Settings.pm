@@ -16,6 +16,8 @@ use PearlBee::Helpers::Import;
 use DateTime::TimeZone;
 use POSIX qw(tzset);
 use XML::Simple qw(:strict);
+use Data::Dumper;
+
 
 =head
 
@@ -34,7 +36,6 @@ get '/admin/settings' => sub {
 			timezones => \@timezones
 		}, 
 		{ layout => 'admin' };
-
 };
 
 post '/admin/settings/save' => sub {
@@ -42,8 +43,9 @@ post '/admin/settings/save' => sub {
 	my $settings;
 	my @timezones 	 = DateTime::TimeZone->all_names;
 	my $path 		 = params->{path};
-	my $social_media = params->{social_media}; # If the social media checkbox isn't checked the value will be undef
+	my $social_media = (params->{social_media} ? 1 : 0); # If the social media checkbox isn't checked the value will be undef
 	my $timezone  	 = params->{timezone};
+	my $multiuser    = (params->{multiuser} ? 1 : 0); # If the multiuser checkbox isn't checked the value will be undef
 	my $blog_name 	 = params->{blog_name};
 
 	eval {
@@ -52,7 +54,8 @@ post '/admin/settings/save' => sub {
 		$settings->update({
 			blog_path    => $path,
 			timezone     => $timezone,
-			social_media => ($social_media) ? '1' : '0',
+			social_media => ($social_media ? '1' : '0'),
+			multiuser    => ($multiuser ? '1' : '0'),
 			blog_name    => $blog_name
 		});
 	};

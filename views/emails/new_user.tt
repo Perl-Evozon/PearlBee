@@ -43,7 +43,7 @@
 
 	 <div class="page-title">
 	     <div class="container">
-	        <h2>Welcome <small>[% first_name %]</small></h2>
+	        <h2>A new user applied as an 'author'</h2>
 	        <hr />
 	     </div>  
 	  </div>
@@ -51,23 +51,19 @@
       <div class="blog">
         <div class="container">
           	<div class="row">
-  
-			    The admin of <a href="[% app_url %]"> [% blog_name %] </a> [% allowed ? 'accepted you' : 'added you' %] as an <b> [% role %]</b> to the blog.
-			    <br />         
-				Here is your login information:
+  				
+          		<b> '[% first_name %] [% last_name %]' </b> applied as an author for <b> <a href="[% app_url %]"> [% blog_name %]</a></b>
+          		<br />
+				  Username : '[% username %]'
+          		<br />
+				  Email : '[% email %]' 
 				<br />
+          		<i> You can approve this request from the admin panel. </i>
+          		<br />
 				<br />
-				<b>Username:</b> "[% username %]" (quote signs are not part of the username)
+          		<i> Sincerely, </i>
 				<br />
-				<b>Password:</b> "[% password %]" (quote signs are not part of the password)
-				<br />
-				<br />
-				After you log in you will be asked to change the current temporary password.
-				<br />
-				<br />
-				<i> Sincerely, </i>
-				<br />
-				<i> [% signature %] </i>
+				<i>[% signature %]</i>
 				<br />
 				<a href="[% app_url %]"> [% app_url %] </a>
 			</div>

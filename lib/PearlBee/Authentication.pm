@@ -4,6 +4,8 @@ use Dancer2;
 use Dancer2::Plugin::DBIC;
 use PearlBee::Password;
 
+use Data::Dumper;
+
 =head
 
 index
@@ -26,7 +28,7 @@ login metehod
 post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
-
+  
   my $user = resultset("User")->search({
       username => $username,
       -or => [
@@ -41,13 +43,15 @@ post '/login' => sub {
     my $user_obj->{is_admin} = $user->is_admin;
     $user_obj->{role}        = $user->role;
     $user_obj->{id}          = $user->id;
+	$user_obj->{username}    = $user->username;
 
     session user => $user_obj;
     session user_id => $user->id;
+	
     redirect('/dashboard');
   }
   else {
-    template 'login', { warning => "Incorrect login" }, { layout => 'admin' };
+    template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
   }
 };
 
@@ -58,9 +62,13 @@ logout method
 =cut
 
 get '/logout' => sub {
+  
   context->destroy_session;
+  
+  session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
+  session app_url   => config->{app_url};
 
-  template 'login', {}, { layout => 'admin' };
+  template 'login', { success => "You were successfully logged out." }, { layout => 'admin' };
 };
 
 true;

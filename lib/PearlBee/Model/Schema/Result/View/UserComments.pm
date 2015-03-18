@@ -13,7 +13,7 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT
-        C.content AS content, C.id AS id, C.comment_date AS comment_date, C.email AS email, C.status as status, C.fullname AS fullname, P.title AS post_title, P.id AS post_id
+        C.content AS content, C.id AS id, C.uid AS uid, C.reply_to AS reply_to, C.comment_date AS comment_date, C.email AS email, C.status as status, C.fullname AS fullname, P.title AS post_title, P.id AS post_id
     FROM
       comment as C
       INNER JOIN
@@ -55,6 +55,10 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "post_id",
   { data_type => "integer" },
+  "uid",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  "reply_to",
+  { data_type => "integer", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -63,6 +67,26 @@ __PACKAGE__->belongs_to(
   "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+=head2 uid
+
+Type: belongs_to
+
+Related object: L<PearlBee::Model::Schema::Result::User>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "uid",
+  "PearlBee::Model::Schema::Result::User",
+  { id => "uid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
+  },
 );
 
 

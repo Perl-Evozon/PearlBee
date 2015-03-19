@@ -598,6 +598,15 @@ strong{
    color:#777;
 }
 
+.awidget-edit{
+   display:block;
+   text-align:center;
+}
+
+.awidget-edit img{
+   max-width: 589px;
+}
+
 .chart-container {
 	box-sizing: border-box;
 	width: 100%;

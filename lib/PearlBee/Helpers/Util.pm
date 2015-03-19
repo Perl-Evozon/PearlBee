@@ -7,10 +7,6 @@ use String::Util 'trim';
 
 use PearlBee::Password;
 
-# we use this to make sure we don't break the post content in places where the HTML code could break
-use HTML::Lint;
-my $lint = HTML::Lint->new;
-
 require Exporter;
 our @ISA 		= qw(Exporter);
 our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug map_posts create_password/;

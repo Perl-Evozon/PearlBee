@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.1.73, for redhat-linux-gnu (x86_64)
 --
--- Host: localhost    Database: PearlBee_devel
+-- Host: localhost    Database: PearlBee
 -- ------------------------------------------------------
 -- Server version	5.1.73
 

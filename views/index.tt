@@ -56,9 +56,11 @@
                  
                  <!-- Post content -->
                  <div class="post_preview">
+                  <div class="post_preview_wrapper">
                     <p>
                       [% post.content %]
                     </p>
+                  </div>
                  </div>
                  
                  <!-- Read more -->

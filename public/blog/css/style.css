@@ -2142,6 +2142,13 @@ footer .copy{
    margin-bottom: 15px;
 }
 
+.post_preview_wrapper {
+   height: 100%;
+   column-width: 636px;
+   -webkit-column-width: 636px; /* Chrome, Safari, Opera */
+   -moz-column-width: 636px; /* Firefox */
+}
+
 .post_preview p {
    line-height: 2.5;
    text-align: justify;

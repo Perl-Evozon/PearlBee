@@ -604,7 +604,7 @@ strong{
 }
 
 .awidget-edit img{
-   max-width: 589px;
+   max-width: 100%;
 }
 
 .chart-container {

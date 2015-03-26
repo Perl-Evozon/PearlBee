@@ -5,7 +5,12 @@ use Authen::Captcha;
 
 require Exporter;
 our @ISA 	= qw(Exporter);
-our @EXPORT	= qw/generate/;
+our @EXPORT	= qw/generate $captcha/;
+
+our $captcha = Authen::Captcha->new(
+  data_folder => config->{captcha_folder},
+  output_folder => config->{captcha_folder} .'/image',
+);
 
 =head
 
@@ -18,15 +23,8 @@ sub generate {
 	my $self = shift;
 
 	# Generate a new captcha code
-    my $captcha = Authen::Captcha->new();
 
-    # set the data_folder. contains flatfile db to maintain state
-    $captcha->data_folder( config->{captcha_folder} );
-
-    # set directory to hold publicly accessable images
-    $captcha->output_folder( config->{captcha_folder} .'/image' );
     my $md5sum = $captcha->generate_code(5);
-
-   return $md5sum;
-
+    
+    return $md5sum;
 }

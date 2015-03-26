@@ -1286,6 +1286,10 @@ strong{
    padding-left: 80px;
 }
 
+.comment_reply {
+  cursor: pointer;
+}
+
 .respond{
    border:1px solid #eee;
    border-radius:10px;

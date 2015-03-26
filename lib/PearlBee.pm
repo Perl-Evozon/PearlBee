@@ -7,7 +7,6 @@ use Dancer2::Plugin::DBIC;
 
 # Other used modules
 use Digest::MD5 qw(md5_hex);
-use Authen::Captcha;
 use DateTime;
 
 # Included controllers
@@ -141,8 +140,7 @@ get '/post/:slug' => sub {
   my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  # Store the encrypted code on the session
-  session secret => PearlBee::Helpers::Captcha::generate();
+  new_captcha_code();
 
   # Grab the approved comments for this post and the corresponding reply comments
   my @comments;
@@ -206,14 +204,8 @@ post '/comment/add' => sub {
     warning     => 'The secret code is incorrect'
   };
 
-  my $captcha = Authen::Captcha->new(
-    data_folder => config->{captcha_folder},
-    output_folder => config->{captcha_folder} .'/image',
-  );
-  
-  my $result= $captcha->check_code($secret, session('secret'));
-  if ( $result == 1 ) {
-    # The user entered the correct secrete code
+  if ( check_captcha_code($secret) ) {
+    # The user entered the correct secret code
     eval {
 
       # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
@@ -244,13 +236,12 @@ post '/comment/add' => sub {
     error $@ if ( $@ );
 
     # Grab the approved comments for this post
-    my @comments;
     @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
 
     delete $template_params->{warning};
     delete $template_params->{in_reply_to};
     
-    if ($post->user_id && $user && $post->user_id == $user->{id}) {
+    if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $template_params->{success} = 'Your comment has been submited. Thank you!';
     } else {
       $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
@@ -274,9 +265,7 @@ post '/comment/add' => sub {
   }
   $template_params->{comments} = \@comments;
 
-
-  # Store the encrypted code on the session
-  session secret => PearlBee::Helpers::Captcha::generate();
+  new_captcha_code();
 
   template 'post', $template_params, { layout => 'main' };
   
@@ -538,8 +527,7 @@ get '/posts/tag/:slug/page/:page' => sub {
 
 get '/sign-up' => sub {
   
-  # Store the encrypted code on the session
-  session secret => PearlBee::Helpers::Captcha::generate();
+  new_captcha_code();
 
   template 'signup', {}, { layout => 'main' };
 };
@@ -556,13 +544,7 @@ post '/sign-up' => sub {
     last_name       => $params->{last_name},
   };
 
-  my $captcha = Authen::Captcha->new(
-    data_folder => config->{captcha_folder},
-    output_folder => config->{captcha_folder} .'/image',
-  );
-
-  my $result= $captcha->check_code($params->{secret}, session('secret'));
-  if ( $result == 1 ) {
+  if ( check_captcha_code($params->{secret}) ) {
     # The user entered the correct secrete code
     eval {
       
@@ -634,14 +616,45 @@ post '/sign-up' => sub {
   if ($err) {
     $template_params->{warning} = $err if $err;
 
-    # Store the encrypted code on the session
-    session secret => PearlBee::Helpers::Captcha::generate();
+    new_captcha_code();
   
     template 'signup', $template_params, { layout => 'main' };
   } else {
     template 'notify', {success => 'The user was created and it is waiting for admin approval.'},  { layout => 'main'};
   }
 };
+
+sub new_captcha_code {
+  
+  my $code = PearlBee::Helpers::Captcha::generate();
+  
+  session secret => $code;
+  session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
+  push(session('secrets'), $code);
+  
+  return $code;
+}
+
+sub check_captcha_code {
+  my $code = shift;
+  
+  my $ok = 0;
+  my $sess = session();
+  
+  if ($sess->{data}->{secrets}) {
+    foreach my $secret (@{$sess->{data}->{secrets}}) {
+      my $result= $PearlBee::Helpers::Captcha::captcha->check_code($code, $secret);
+      if ( $result == 1 ) {
+        $ok = 1;
+        session secrets => [];
+        last;
+      }
+    }
+  }
+    
+  return $ok;
+}
+
 
 
 true;

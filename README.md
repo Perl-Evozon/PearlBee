@@ -60,6 +60,10 @@ You'll need to have installed and running either MySQL or MariaDB. Update the fi
 At the terminal from the root application directory, run this command:
 <pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
 
+An alternative way of setting up the db is by running this command:
+<pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/set_up_new_db.sql</blockquote></pre>
+
+
 That's it, now from within the root directory run the following command:
 
 <pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>

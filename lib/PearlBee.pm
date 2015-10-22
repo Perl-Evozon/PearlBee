@@ -1,5 +1,4 @@
 package PearlBee;
-
 # ABSTRACT: PerlBee Blog platform
 
 use Dancer2;
@@ -41,9 +40,9 @@ Prepare the blog path
 =cut
 
 hook 'before' => sub {
-  session app_url   => config->{app_url} unless ( session('app_url') ); 
+  session app_url   => config->{app_url} unless ( session('app_url') );
   session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
-  session multiuser => resultset('Setting')->first->multiuser; 
+  session multiuser => resultset('Setting')->first->multiuser;
 };
 
 =head
@@ -61,15 +60,15 @@ get '/' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
 
-    template 'index', 
-      { 
+    template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -79,7 +78,7 @@ get '/' => sub {
         total_pages   => $total_pages,
         previous_link => $previous_link,
         next_link     => $next_link
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -99,7 +98,7 @@ get '/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -107,8 +106,8 @@ get '/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
 
-    template 'index', 
-      { 
+    template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -118,7 +117,7 @@ get '/page/:page' => sub {
         total_pages   => $total_pages,
         previous_link => $previous_link,
         next_link     => $next_link
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -154,20 +153,20 @@ get '/post/:slug' => sub {
     }
   }
 
-  template 'post', 
-    { 
-      post       => $post, 
+  template 'post',
+    {
+      post       => $post,
       recent     => \@recent,
       popular    => \@popular,
-      categories => \@categories, 
+      categories => \@categories,
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
-    }, 
+    },
     { layout => 'main' };
 };
 
-=head 
+=head
 
 Add a comment method
 
@@ -208,7 +207,7 @@ post '/comment/add' => sub {
     eval {
 
       # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
-      
+
       my $comment = resultset('Comment')->can_create( $params, $user );
 
       # Notify the author that a new comment was submited
@@ -239,7 +238,7 @@ post '/comment/add' => sub {
 
     delete $template_params->{warning};
     delete $template_params->{in_reply_to};
-    
+
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $template_params->{success} = 'Your comment has been submited. Thank you!';
     } else {
@@ -249,10 +248,10 @@ post '/comment/add' => sub {
   else {
     # The secret code inncorrect
     # Repopulate the fields with the data
-   
+
     $template_params->{fields} = $params;
   }
-  
+
   foreach my $comment (@comments) {
     my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
     foreach my $reply (@comment_replies) {
@@ -267,7 +266,7 @@ post '/comment/add' => sub {
   new_captcha_code();
 
   template 'post', $template_params, { layout => 'main' };
-  
+
 };
 
 =head
@@ -286,7 +285,7 @@ get '/posts/category/:slug' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -295,8 +294,8 @@ get '/posts/category/:slug' => sub {
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/category/' . $slug);
 
   # Extract all posts with the wanted category
-  template 'index', 
-      { 
+  template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -307,7 +306,7 @@ get '/posts/category/:slug' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_category => $slug
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -328,7 +327,7 @@ get '/posts/category/:slug/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -336,8 +335,8 @@ get '/posts/category/:slug/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
-  template 'index', 
-      { 
+  template 'index',
+      {
         posts              => \@mapped_posts,
         recent             => \@recent,
         popular            => \@popular,
@@ -348,7 +347,7 @@ get '/posts/category/:slug/page/:page' => sub {
         next_link          => $next_link,
         previous_link      => $previous_link,
         posts_for_category => $slug
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -372,7 +371,7 @@ get '/posts/user/:username' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -381,8 +380,8 @@ get '/posts/user/:username' => sub {
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
 
   # Extract all posts with the wanted category
-  template 'index', 
-      { 
+  template 'index',
+      {
         posts          => \@mapped_posts,
         recent         => \@recent,
         popular        => \@popular,
@@ -393,7 +392,7 @@ get '/posts/user/:username' => sub {
         next_link      => $next_link,
         previous_link  => $previous_link,
         posts_for_user => $username,
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -418,7 +417,7 @@ get '/posts/user/:username/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -426,8 +425,8 @@ get '/posts/user/:username/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/user/' . $username);
 
-  template 'index', 
-      { 
+  template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -438,7 +437,7 @@ get '/posts/user/:username/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_user => $username,
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -458,7 +457,7 @@ get '/posts/tag/:slug' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -466,8 +465,8 @@ get '/posts/tag/:slug' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
 
-  template 'index', 
-      {         
+  template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -478,7 +477,7 @@ get '/posts/tag/:slug' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_tag => $slug
-    }, 
+    },
     { layout => 'main' };
 };
 
@@ -500,7 +499,7 @@ get '/posts/tag/:slug/page/:page' => sub {
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  
+
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
@@ -508,8 +507,8 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/tag/' . $slug);
 
-  template 'index', 
-      { 
+  template 'index',
+      {
         posts         => \@mapped_posts,
         recent        => \@recent,
         popular       => \@popular,
@@ -520,12 +519,12 @@ get '/posts/tag/:slug/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_tag => $slug
-    }, 
+    },
     { layout => 'main' };
 };
 
 get '/sign-up' => sub {
-  
+
   new_captcha_code();
 
   template 'signup', {}, { layout => 'main' };
@@ -535,7 +534,7 @@ post '/sign-up' => sub {
   my $params = params();
   
   my $err;
-  
+
   my $template_params = {
     username        => $params->{username},
     email           => $params->{email},
@@ -560,12 +559,12 @@ post '/sign-up' => sub {
           if ( params->{username} ) {
   
             # Set the proper timezone
-            my $dt       = DateTime->now;          
+            my $dt       = DateTime->now;
             my $settings = resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
-            
+
             my ($password, $pass_hash, $salt) = create_password();
-            
+
             resultset('User')->create({
               username        => $params->{username},
               password        => $pass_hash,
@@ -586,7 +585,7 @@ post '/sign-up' => sub {
               From     => config->{default_email_sender},
               To       => $first_admin->email,
               Subject  => 'A new user applied as an author to the blog',
-  
+
               tt_vars  => {
                 first_name       => $params->{first_name},
                 last_name        => $params->{last_name},
@@ -616,7 +615,7 @@ post '/sign-up' => sub {
     $template_params->{warning} = $err if $err;
 
     new_captcha_code();
-  
+
     template 'signup', $template_params, { layout => 'main' };
   } else {
     template 'notify', {success => 'The user was created and it is waiting for admin approval.'},  { layout => 'main'};
@@ -624,22 +623,22 @@ post '/sign-up' => sub {
 };
 
 sub new_captcha_code {
-  
+
   my $code = PearlBee::Helpers::Captcha::generate();
-  
+
   session secret => $code;
   session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
   push(session('secrets'), $code);
-  
+
   return $code;
 }
 
 sub check_captcha_code {
   my $code = shift;
-  
+
   my $ok = 0;
   my $sess = session();
-  
+
   if ($sess->{data}->{secrets}) {
     foreach my $secret (@{$sess->{data}->{secrets}}) {
       my $result= $PearlBee::Helpers::Captcha::captcha->check_code($code, $secret);
@@ -650,10 +649,8 @@ sub check_captcha_code {
       }
     }
   }
-    
+
   return $ok;
 }
 
-
-
-true;
+1;

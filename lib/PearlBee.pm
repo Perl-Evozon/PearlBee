@@ -6,7 +6,6 @@ use Dancer2;
 use Dancer2::Plugin::DBIC;
 
 # Other used modules
-use Digest::MD5 qw(md5_hex);
 use DateTime;
 
 # Included controllers

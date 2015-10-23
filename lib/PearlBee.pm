@@ -1,7 +1,7 @@
 package PearlBee;
 # ABSTRACT: PerlBee Blog platform
 
-use Dancer2;
+use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
 
 # Other used modules
@@ -86,7 +86,7 @@ Home page
 get '/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = params->{page};
+  my $page        = route_parameters->{'page'};
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -124,8 +124,8 @@ View post method
 =cut
 
 get '/post/:slug' => sub {
-  
-  my $slug       = params->{slug};
+
+  my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
   my @tags       = resultset('View::PublishedTags')->all();
@@ -169,23 +169,23 @@ Add a comment method
 
 post '/comment/add' => sub {
 
-  my $fullname    = params->{fullname};
-  my $post_id     = params->{id};
-  my $secret      = params->{secret};
+  my $parameters  = body_parameters;
+  my $fullname    = $parameters->{'fullname'};
+  my $post_id     = $parameters->{'id'};
+  my $secret      = $parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $params      = params;
   my $user        = session('user');
-  
-  $params->{reply_to} = $1 if ($params->{in_reply_to} =~ /(\d+)/);
-  if ($params->{reply_to}) {
-    my $comm = resultset('Comment')->find({ id => $params->{reply_to} });
+
+  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
+  if ($parameters->{'reply_to'}) {
+    my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
     if ($comm) {
-      $params->{reply_to_content} = $comm->content;
-      $params->{reply_to_user} = $comm->fullname;
+      $parameters->{'reply_to_content'} = $comm->content;
+      $parameters->{'reply_to_user'} = $comm->fullname;
     }
   }
 
@@ -212,17 +212,17 @@ post '/comment/add' => sub {
       {
           From    => config->{default_email_sender},
           To      => $author->email,
-          Subject => ($params->{reply_to} ? 'A comment reply was submitted to your post' : 'A new comment was submitted to your post'),
+          Subject => ($parameters->{'reply_to'} ? 'A comment reply was submitted to your post' : 'A new comment was submitted to your post'),
 
           tt_vars => {
             fullname         => $fullname,
             title            => $post->title,
-            comment          => $params->{comment},
+            comment          => $parameters->{'comment'},
             signature        => config->{email_signature},
             post_url         => config->{app_url} . '/post/' . $post->slug,
             app_url          => config->{app_url},
-            reply_to_content => $params->{reply_to_content} || '',
-            reply_to_user    => $params->{reply_to_user} || '',
+            reply_to_content => $parameters->{'reply_to_content'} || '',
+            reply_to_user    => $parameters->{'reply_to_user'}    || '',
           },
       }) or error "Could not send the email";
     };
@@ -273,7 +273,7 @@ List all posts by selected category
 get '/posts/category/:slug' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $slug        = params->{slug};
+  my $slug        = route_parameters->{'slug'};
   my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -314,8 +314,8 @@ List all posts by selected category
 get '/posts/category/:slug/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = params->{page};
-  my $slug        = params->{slug};
+  my $page        = route_parameters->{'page'};
+  my $slug        = route_parameters->{'slug'};
   my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -355,7 +355,7 @@ List all posts by selected author
 get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $username    = params->{username};
+  my $username    = route_parameters->{'username'};
   my $user         = resultset('User')->find({username => $username});
   unless ($user) {
     # we did not identify the user
@@ -400,12 +400,12 @@ List all posts by selected category
 get '/posts/user/:username/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $username    = params->{username};
-  my $user         = resultset('User')->find({username => $username});
+  my $username    = route_parameters->{'username'};
+  my $user        = resultset('User')->find({username => $username});
   unless ($user) {
     # we did not identify the user
   }
-  my $page        = params->{page};
+  my $page        = route_parameters->{'page'};
   my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -445,7 +445,7 @@ List all posts by selected tag
 get '/posts/tag/:slug' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $slug        = params->{slug};
+  my $slug        = route_parameters->{'slug'};
   my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
   my @tags        = resultset('View::PublishedTags')->all();
@@ -485,8 +485,8 @@ List all posts by selected tag
 get '/posts/tag/:slug/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = params->{page};
-  my $slug        = params->{slug};
+  my $page        = route_parameters->{'page'};
+  my $slug        = route_parameters->{'slug'};
   my $tag         = resultset('Tag')->find({ slug => $slug });
   my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
@@ -526,33 +526,33 @@ get '/sign-up' => sub {
 };
 
 post '/sign-up' => sub {
-  my $params = params();
-  
+  my $params = body_parameters;
+
   my $err;
 
   my $template_params = {
-    username        => $params->{username},
-    email           => $params->{email},
-    first_name      => $params->{first_name},
-    last_name       => $params->{last_name},
+    username        => $params->{'username'},
+    email           => $params->{'email'},
+    first_name      => $params->{'first_name'},
+    last_name       => $params->{'last_name'},
   };
 
-  if ( check_captcha_code($params->{secret}) ) {
+  if ( check_captcha_code($params->{'secret'}) ) {
     # The user entered the correct secrete code
     eval {
-      
-      my $u = resultset('User')->search( { email => $params->{email} } )->first;
+
+      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
       if ($u) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('User')->search( { username => $params->{username} } )->first;
+        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
         if ($u) {
           $err = "The provided username is already in use.";
         } else {
 
           # Create the user
-          if ( params->{username} ) {
-  
+          if ( $params->{'username'} ) {
+
             # Set the proper timezone
             my $dt       = DateTime->now;
             my $settings = resultset('Setting')->first;
@@ -564,9 +564,9 @@ post '/sign-up' => sub {
               username        => $params->{username},
               password        => $pass_hash,
               salt            => $salt,
-              email           => $params->{email},
-              first_name      => $params->{first_name},
-              last_name       => $params->{last_name},
+              email           => $params->{'email'},
+              first_name      => $params->{'first_name'},
+              last_name       => $params->{'last_name'},
               register_date   => join (' ', $dt->ymd, $dt->hms),
               role            => 'author',
               status          => 'pending'
@@ -582,10 +582,10 @@ post '/sign-up' => sub {
               Subject  => 'A new user applied as an author to the blog',
 
               tt_vars  => {
-                first_name       => $params->{first_name},
-                last_name        => $params->{last_name},
-                username         => $params->{username},
-                email            => $params->{email},
+                first_name       => $params->{'first_name'},
+                last_name        => $params->{'last_name'},
+                username         => $params->{'username'},
+                email            => $params->{'email'},
                 signature        => config->{email_signature},
                 blog_name        => session('blog_name'),
                 app_url          => session('app_url'),

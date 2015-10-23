@@ -73,8 +73,7 @@ get '/' => sub {
         total_pages   => $total_pages,
         previous_link => $previous_link,
         next_link     => $next_link
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -112,8 +111,7 @@ get '/page/:page' => sub {
         total_pages   => $total_pages,
         previous_link => $previous_link,
         next_link     => $next_link
-    },
-    { layout => 'main' };
+    };
 };
 
 
@@ -157,8 +155,7 @@ get '/post/:slug' => sub {
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -260,7 +257,7 @@ post '/comment/add' => sub {
 
   new_captcha_code();
 
-  template 'post', $template_params, { layout => 'main' };
+  template 'post', $template_params;
 
 };
 
@@ -301,8 +298,7 @@ get '/posts/category/:slug' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_category => $slug
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -342,8 +338,7 @@ get '/posts/category/:slug/page/:page' => sub {
         next_link          => $next_link,
         previous_link      => $previous_link,
         posts_for_category => $slug
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -387,8 +382,7 @@ get '/posts/user/:username' => sub {
         next_link      => $next_link,
         previous_link  => $previous_link,
         posts_for_user => $username,
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -432,8 +426,7 @@ get '/posts/user/:username/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_user => $username,
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -472,8 +465,7 @@ get '/posts/tag/:slug' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_tag => $slug
-    },
-    { layout => 'main' };
+    };
 };
 
 =head
@@ -514,15 +506,14 @@ get '/posts/tag/:slug/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         posts_for_tag => $slug
-    },
-    { layout => 'main' };
+    };
 };
 
 get '/sign-up' => sub {
 
   new_captcha_code();
 
-  template 'signup', {}, { layout => 'main' };
+  template 'signup', {};
 };
 
 post '/sign-up' => sub {
@@ -611,9 +602,9 @@ post '/sign-up' => sub {
 
     new_captcha_code();
 
-    template 'signup', $template_params, { layout => 'main' };
+    template 'signup', $template_params;
   } else {
-    template 'notify', {success => 'The user was created and it is waiting for admin approval.'},  { layout => 'main'};
+    template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
   }
 };
 

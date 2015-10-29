@@ -47,7 +47,6 @@ Home page
 =cut
 
 get '/' => sub {
-
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -200,7 +199,7 @@ post '/comment/add' => sub {
 
       # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
-      my $comment = resultset('Comment')->can_create( $params, $user );
+      my $comment = resultset('Comment')->can_create( $parameters, $user );
 
       # Notify the author that a new comment was submited
       my $author = $post->user;
@@ -241,7 +240,7 @@ post '/comment/add' => sub {
     # The secret code inncorrect
     # Repopulate the fields with the data
 
-    $template_params->{fields} = $params;
+    $template_params->{fields} = $parameters;
   }
 
   foreach my $comment (@comments) {

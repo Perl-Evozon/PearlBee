@@ -36,7 +36,12 @@
                             <br />
                             <textarea name="post" required class="form-control ckeditor" placeholder="Enter text ..." rows="20" cols="10">[% post.content %]</textarea>
                             <input type="hidden" name="status" id="status" />
+                            <br />
 
+                            [% FOREACH meta_field IN meta_fields %]
+                              <input class="form-control" type="text" name="meta_[%meta_field.key%]" placeholder="[% meta_field.name %]" value="[% meta_field.value%]">
+                              <br />
+                            [% END %]
                            </div>
                          </div>  
                          

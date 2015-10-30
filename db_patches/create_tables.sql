@@ -62,6 +62,13 @@ CREATE TABLE IF NOT EXISTS `post_category` (
   CONSTRAINT `post_category_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post category table.';
 
+CREATE TABLE IF NOT EXISTS `post_meta` (
+  `post_id` int(11) NOT NULL,
+  `meta_key` varchar(50) NOT NULL,
+  `meta_value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`post_id`, `meta_key`),
+  CONSTRAINT `post_id_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` ( `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post metadata table.';
 
 CREATE TABLE IF NOT EXISTS `tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

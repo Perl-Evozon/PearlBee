@@ -155,6 +155,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 post_metas
+
+Type: has_many
+
+Related object: L<PearlBee::Model::Schema::Result::PostMeta>
+
+=cut
+
+__PACKAGE__->has_many(
+  "post_metas",
+  "PearlBee::Model::Schema::Result::PostMeta",
+  { "foreign.post_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 post_tags
 
 Type: has_many
@@ -206,8 +221,8 @@ Composing rels: L</post_tags> -> tag
 __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5V6erZKi9jLOYo38x62HWg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-10-30 11:18:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GJwOF1l9sE+LTifMxXJ/5w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

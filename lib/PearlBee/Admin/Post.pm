@@ -114,7 +114,7 @@ publish method
 =cut
 
 get '/admin/posts/publish/:id' => sub {
-    
+
   my $post_id = params->{id};
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
@@ -169,13 +169,15 @@ add method
 any '/admin/posts/add' => sub {
 
     my @categories = resultset('Category')->all();
+    my @meta_fields = resultset('PostMeta')->get_meta_fields();
+
     my $post;
 
     eval {
         if ( params->{post} ) {
-          
+
           # Set the proper timezone
-          my $dt       = DateTime->now;          
+          my $dt       = DateTime->now;
           my $settings = resultset('Setting')->first;
           $dt->set_time_zone( $settings->timezone );
 
@@ -207,12 +209,17 @@ any '/admin/posts/add' => sub {
               created_date => $dtf->format_datetime($dt),
           };
           $post = resultset('Post')->can_create($params);
-  
+
           # Insert the categories selected with the new post
           resultset('PostCategory')->connect_categories( params->{category}, $post->id );
 
           # Connect and update the tags table
           resultset('PostTag')->connect_tags( params->{tags}, $post->id );
+
+          # Insert the post metadata in the db
+          my %metadata = map { $_->{key} => params->{ 'meta_' . $_->{key} } } @meta_fields;
+          resultset('PostMeta')->update_meta_fields( \%metadata, $post->id );
+
         }
     };
 
@@ -225,7 +232,10 @@ any '/admin/posts/add' => sub {
       redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
     }
     else {
-      template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+      template '/admin/posts/add', {
+        categories => \@categories,
+        meta_fields => \@meta_fields
+      }, { layout => 'admin' };
     }
 
 };
@@ -242,8 +252,11 @@ get '/admin/posts/edit/:slug' => sub {
     my $post            = resultset('Post')->find({ slug => $post_slug });
     my @post_categories = $post->post_categories;
     my @post_tags       = $post->post_tags;
+    my @post_meta       = $post->post_metas;
+
     my @all_categories  = resultset('Category')->all;
     my @all_tags        = resultset('Tag')->all;
+    my @meta_fields     = resultset('PostMeta')->get_meta_fields();
 
     # Prepare tags for the UI
     my @tag_names;
@@ -258,13 +271,21 @@ get '/admin/posts/edit/:slug' => sub {
     my @categories_ids;
     push( @categories_ids, $_->id ) foreach (@categories);
 
+    # Hash of post metadata for filling in the input boxes
+    my %metadata = map { $_->meta_key => $_->meta_value } @post_meta;
+
+    foreach my $meta_field ( @meta_fields ) {
+      $meta_field->{value} = $metadata{ $meta_field->{key} } ? $metadata { $meta_field->{key} } : "";
+    }
+
     my $params = {
         post           => $post,
         tags           => $joined_tags,
         categories     => \@categories,
         all_categories => \@all_categories,
         ids            => \@categories_ids,
-        all_tags       => \@all_tags
+        all_tags       => \@all_tags,
+        meta_fields    => \@meta_fields,
       };
 
     # Check if there are any messages to show
@@ -290,11 +311,12 @@ update method
 
 post '/admin/posts/update/:id' => sub {
 
-    my $post_id   = params->{id};
-    my $post      = resultset('Post')->find({ id => $post_id });
-    my $title     = params->{title};
-    my $content   = params->{post};
-    my $tags      = params->{tags};
+    my $post_id     = params->{id};
+    my $post        = resultset('Post')->find({ id => $post_id });
+    my $title       = params->{title};
+    my $content     = params->{post};
+    my $tags        = params->{tags};
+    my @meta_fields = resultset('PostMeta')->get_meta_fields();
 
     my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug}, $post->id );
     session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
@@ -308,7 +330,7 @@ post '/admin/posts/update/:id' => sub {
         if ( upload('cover') ) {
 
             # If the user uploaded a cover image, generate a crypted name for uploading
-            $crypted_filename = generate_crypted_filename();            
+            $crypted_filename = generate_crypted_filename();
             $cover = upload('cover');
             ($ext) = $cover->filename =~ /(\.[^.]+)$/;            #extract the extension
             $ext = lc($ext);
@@ -324,6 +346,7 @@ post '/admin/posts/update/:id' => sub {
                 status  => $status,
                 content => $content,
             }
+
         );
 
         # Reconnect the categories with the new one and delete the old ones
@@ -331,6 +354,10 @@ post '/admin/posts/update/:id' => sub {
 
         # Reconnect and update the selected tags
         resultset('PostTag')->connect_tags( params->{tags}, $post->id );
+
+        #update the metadata
+        my %metadata = map { $_->{key} => params->{ 'meta_' . $_->{key} } } @meta_fields;
+        resultset('PostMeta')->update_meta_fields( \%metadata, $post->id );
 
     };
 

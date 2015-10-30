@@ -135,6 +135,21 @@ CREATE TABLE `post_tag` (
 
 
 --
+-- Table structure for table `post_meta`
+--
+
+DROP TABLE IF EXISTS `post_meta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `post_meta` (
+  `post_id` int(11) NOT NULL,
+  `meta_key` varchar(50) NOT NULL,
+  `meta_value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`post_id`, `meta_key`),
+  CONSTRAINT `post_id_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` ( `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Post metadata table.';
+
+--
 -- Table structure for table `settings`
 --
 

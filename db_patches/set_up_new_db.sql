@@ -90,6 +90,7 @@ CREATE TABLE `post` (
   `content` text CHARACTER SET ucs2 NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('published','trash','draft') DEFAULT 'draft',
+  `post_type` varchar(50) NOT NULL DEFAULT 'post',
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),

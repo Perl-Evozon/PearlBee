@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `content` text CHARACTER SET ucs2 NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('published','trash','draft') DEFAULT 'draft',
+  `post_type` varchar(50) NOT NULL DEFAULT 'post',
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -123,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 -- default admin login user : admin
 -- default admin login pass : password
 INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated','IQbmVFR+SEgTju9y+UzhwA==');
-	
+
 INSERT INTO `category` VALUES (1,'Uncategorized','uncategorized',1);
 
 INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'','/','PearlBee',1,0);

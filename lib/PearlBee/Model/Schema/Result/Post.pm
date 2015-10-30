@@ -72,6 +72,13 @@ __PACKAGE__->table("post");
   extra: {list => ["published","trash","draft"]}
   is_nullable: 1
 
+=head2 post_type
+
+  data_type: 'varchar'
+  default_value: 'post'
+  is_nullable: 0
+  size: 50
+
 =head2 user_id
 
   data_type: 'integer'
@@ -106,6 +113,13 @@ __PACKAGE__->add_columns(
     default_value => "draft",
     extra => { list => ["published", "trash", "draft"] },
     is_nullable => 1,
+  },
+  "post_type",
+  {
+    data_type => "varchar",
+    default_value => "post",
+    is_nullable => 0,
+    size => 50,
   },
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
@@ -221,8 +235,8 @@ Composing rels: L</post_tags> -> tag
 __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-10-30 11:18:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GJwOF1l9sE+LTifMxXJ/5w
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-10-30 12:44:40
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lrCo7DCadmJg4ISnV+XxsQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

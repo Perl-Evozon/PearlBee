@@ -51,7 +51,7 @@ sub check_slug {
 	my $schema 	   	 = $self->result_source->schema;
 	$slug    		 = string_to_slug( $slug );
 
-	my $found_slug 	 = ($post_id) 
+	my $found_slug 	 = ($post_id)
 						? $schema->resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first
 						: $schema->resultset('Post')->find({ slug => $slug });
 	my $slug_changed = 0;
@@ -76,6 +76,29 @@ sub post_slug_exists {
 	my $post 	     = $schema->resultset('Post')->search({ slug => $slug, user_id => $user_id })->first();
 
 	return $post
+}
+
+sub get_post_types {
+	return (
+		{
+			slug => "post",
+			menu_label => "Posts",
+			name_singular => "post",
+			name_plural => "posts",
+		},
+		{
+			slug => "page",
+			menu_label => "Pages",
+			name_singular => "page",
+			name_plural => "pages",
+		},
+		{
+			slug => "event",
+			menu_label => "Events",
+			name_singular => "event",
+			name_plural => "events",
+		}
+	);
 }
 
 1;

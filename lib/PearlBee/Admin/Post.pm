@@ -18,12 +18,17 @@ use DateTime;
 use String::Util qw(trim);
 
 get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
+get '/admin/posts/type/:post_type' => sub { redirect session('app_url') . '/admin/posts/type/' . params->{post_type} . '/page/1'; };
 
 =head
 
 list all posts method per page
 
 =cut
+
+hook 'before' => sub {
+  session post_types => [ resultset('Post')->get_post_types ];
+};
 
 get '/admin/posts/page/:page' => sub {
 
@@ -101,6 +106,94 @@ get '/admin/posts/:status/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         status        => $status,
+        action_url    => 'admin/posts/' . $status . '/page',
+        pages         => $pagination->pages_in_set
+      },
+      { layout => 'admin' };
+};
+
+
+=head
+
+list all posts of a certain post type
+
+=cut
+
+get '/admin/posts/type/:post_type/page/:page' => sub {
+
+    my $nr_of_rows  = 5; # Number of posts per page
+    my $page        = params->{page} || 1;
+    my ($post_type) = grep { $_->{slug} eq params->{post_type} } @{ session('post_types') };
+    my @posts       = resultset('Post')->search( { post_type => $post_type->{slug} }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $count       = resultset('View::Count::TypePost');
+
+    my ($all, $publish, $draft, $trash) = $count->get_all_status_counts( $post_type->{slug} );
+
+    my $total_pages                 = get_total_pages($all, $nr_of_rows);
+    my ($previous_link, $next_link) = get_previous_next_link($page, 1, '/admin/posts/type' . $post_type->{slug});
+    my $pages_per_set   = 7;
+
+    my $pagination      = generate_pagination_numbering($all, $nr_of_rows, $page, $pages_per_set);
+
+    template '/admin/posts/list',
+      {
+        posts         => \@posts,
+        trash         => $trash,
+        draft         => $draft,
+        publish       => $publish,
+        all           => $all,
+        page          => $page,
+        next_link     => $next_link,
+        previous_link => $previous_link,
+        post_type     => $post_type,
+        action_url    => 'admin/posts/type' . $post_type . '/page',
+        pages         => $pagination->pages_in_set
+      },
+      { layout => 'admin' };
+};
+
+
+=head
+
+list all published posts of a certain post type
+
+=cut
+
+get '/admin/posts/:status/type/:post_type/page/:page' => sub {
+
+    my $nr_of_rows  = 5; # Number of posts per page
+    my $page        = params->{page} || 1;
+    my $status      = params->{status};
+    my ($post_type) = grep { $_->{slug} eq params->{post_type} } @{ session('post_types') };
+    my @posts       = resultset('Post')->search({ status => $status, post_type => $post_type->{slug} }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $count       = resultset('View::Count::TypePost');
+
+    my ($all, $publish, $draft, $trash) = $count->get_all_status_counts( $post_type->{slug} );
+    my $status_count                    = $count->get_status_count( $status, $post_type->{slug} );
+
+    # Calculate the next and previous page link
+    my $total_pages                 = get_total_pages($status_count, $nr_of_rows);
+    my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/posts/' . $status . '/type/' . $post_type );
+
+    # Generating the pagination navigation
+    my $total_posts     = $status_count;
+    my $posts_per_page  = $nr_of_rows;
+    my $current_page    = $page;
+    my $pages_per_set   = 7;
+    my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
+
+    template '/admin/posts/list',
+      {
+        posts         => \@posts,
+        trash         => $trash,
+        draft         => $draft,
+        publish       => $publish,
+        all           => $all,
+        page          => $page,
+        next_link     => $next_link,
+        previous_link => $previous_link,
+        status        => $status,
+        post_type     => $post_type,
         action_url    => 'admin/posts/' . $status . '/page',
         pages         => $pagination->pages_in_set
       },

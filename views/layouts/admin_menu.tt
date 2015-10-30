@@ -13,6 +13,9 @@
                  <!-- Sub menu -->
                  <ul>
                     <li><a href="[% session.app_url %]/[% role %]/posts">All</a></li>
+                    [% FOREACH post_type IN session.post_types %]
+                        <li><a href="[% session.app_url %]/[% role %]/posts/type/[% post_type.slug%]">[% post_type.menu_label %]</a></li>
+                    [% END %]
                     <li><a href="[% session.app_url %]/[% role %]/posts/add">Create post</a></li>
                 </ul>
             </li>
@@ -22,9 +25,9 @@
             [% IF (session.user.is_admin) %]
 
                 <li><a href="[% session.app_url %]/admin/categories"><i class="icon-list"></i> Categories</a></li>
-            
-                <li><a href="[% session.app_url %]/admin/tags"><i class="icon-tag"></i> Tags</a></li>                
-            
+
+                <li><a href="[% session.app_url %]/admin/tags"><i class="icon-tag"></i> Tags</a></li>
+
                 <li class="has_submenu">
                      <a href="#">
                         <i class="icon-user"></i> Users
@@ -37,7 +40,7 @@
                     </ul>
                 </li>
 
-                
+
                 <li class="has_submenu">
                     <a href="#">
                        <i class="icon-file"></i> Settings
@@ -48,10 +51,10 @@
                        <li><a href="[% session.app_url %]/admin/settings">General</a></li>
                        <li><a href="[% session.app_url %]/admin/settings/import">Import</a></li>
                     </ul>
-                </li>            
-            [% END %]        
+                </li>
+            [% END %]
         </ul>
      </div>
   </div>
 
-  
+

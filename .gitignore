@@ -16,3 +16,4 @@ logs
 public/covers/*
 public/captcha/*
 config.yml
+local/

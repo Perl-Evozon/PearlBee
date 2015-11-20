@@ -16,6 +16,7 @@
                                  <a href="#" class="google-plus"><i class="icon-google-plus"></i></a>
                                  <a href="#" class="linkedin"><i class="icon-linkedin"></i></a>
                                  <a href="#" class="pinterest"><i class="icon-pinterest"></i></a>
+                                 <a href="/feed" class="rss"><i class="icon-rss"></i></a>
                               </div>
                            </div>
                        </div>
@@ -57,7 +58,7 @@
             <hr />
             
             <div class="copy text-center">
-               Copyright 2013 &copy; - <a href="http://pearlbee.org">PearlBee</a>
+               Copyright 2013-2015 &copy; - <a href="http://pearlbee.org">PearlBee</a>
             </div>
          </div>
       </footer>

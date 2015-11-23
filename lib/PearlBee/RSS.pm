@@ -6,8 +6,6 @@ use Dancer2::Plugin::Feed;
 
 use Try::Tiny;
 
-prepare_serializer_for_format;
-
 =head2
 
 Get XML feed of all current posts

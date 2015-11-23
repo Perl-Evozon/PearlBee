@@ -1,4 +1,3 @@
-use utf8;
 package PearlBee::Model::Schema;
 
 # Created by DBIx::Class::Schema::Loader

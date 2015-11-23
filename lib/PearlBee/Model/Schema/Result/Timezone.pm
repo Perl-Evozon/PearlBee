@@ -1,3 +1,4 @@
+use utf8;
 package PearlBee::Model::Schema::Result::Timezone;
 
 # Created by DBIx::Class::Schema::Loader

@@ -122,7 +122,7 @@ sub create_password {
     my $password   = $pass->randpattern("Ccc!cCn");
     my $pass_hash  = generate_hash($password);
 
-	return $password, $pass_hash->{hash}, $pass_hash->{salt};
+	return $password, $pass_hash->{hash};#, $pass_hash->{salt};
 }
 
 1;

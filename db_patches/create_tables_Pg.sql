@@ -29,18 +29,16 @@ CREATE TYPE active_state AS ENUM (
 --
 CREATE TABLE "user" (
   id serial UNIQUE,
-  first_name varchar(255) NOT NULL,
-  last_name varchar(255) NOT NULL,
+  name varchar(255) NULL,
   username varchar(200) NOT NULL UNIQUE,
-  password varchar(100) NOT NULL,
+  password varchar(128) NOT NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255) NOT NULL UNIQUE,
   company varchar(255) DEFAULT NULL,
   telephone varchar(12) DEFAULT NULL,
   role varchar(255) NOT NULL REFERENCES role (name) DEFAULT 'author',
   activation_key varchar(100) DEFAULT NULL,
-  status active_state NOT NULL DEFAULT 'deactivated',
-  salt char(24) NOT NULL
+  status active_state NOT NULL DEFAULT 'deactivated'
 );
 
 
@@ -66,7 +64,8 @@ CREATE TABLE acl (
 
 CREATE TABLE blog (
   id serial UNIQUE,
-  name varchar(255) NOT NULL UNIQUE,
+  name varchar(255) NOT NULL,
+  description varchar(255),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
   status active_state NOT NULL DEFAULT 'deactivated'
@@ -104,9 +103,9 @@ CREATE TYPE post_status AS ENUM (
 CREATE TABLE post (
   id serial UNIQUE,
   title varchar(255) NOT NULL,
-  slug varchar(255) NOT NULL,
-  description varchar(255) DEFAULT NULL,
-  cover varchar(300) NOT NULL,
+  slug varchar(255),
+  description varchar(255),
+  cover varchar(300),
   content text NOT NULL,
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   type post_format DEFAULT 'HTML',

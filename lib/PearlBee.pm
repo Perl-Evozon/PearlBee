@@ -524,8 +524,7 @@ post '/sign-up' => sub {
   my $template_params = {
     username        => $params->{'username'},
     email           => $params->{'email'},
-    first_name      => $params->{'first_name'},
-    last_name       => $params->{'last_name'},
+    name            => $params->{'name'},
   };
 
   if ( check_captcha_code($params->{'secret'}) ) {
@@ -549,15 +548,13 @@ post '/sign-up' => sub {
             my $settings = resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
 
-            my ($password, $pass_hash, $salt) = create_password();
+            my ($password, $pass_hash) = create_password();#, $salt) = create_password();
 
             resultset('User')->create({
               username        => $params->{username},
               password        => $pass_hash,
-              salt            => $salt,
               email           => $params->{'email'},
-              first_name      => $params->{'first_name'},
-              last_name       => $params->{'last_name'},
+              name            => $params->{'name'},
               register_date   => join (' ', $dt->ymd, $dt->hms),
               role            => 'author',
               status          => 'pending'
@@ -573,8 +570,7 @@ post '/sign-up' => sub {
               Subject  => 'A new user applied as an author to the blog',
 
               tt_vars  => {
-                first_name       => $params->{'first_name'},
-                last_name        => $params->{'last_name'},
+                name             => $params->{'name'},
                 username         => $params->{'username'},
                 email            => $params->{'email'},
                 signature        => config->{email_signature},

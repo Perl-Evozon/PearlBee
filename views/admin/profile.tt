@@ -17,18 +17,9 @@
 				<form method="post" action>
 
 		        	<div class="form-group">
-                      <label class="col-lg-2 control-label">First name</label>
+                      <label class="col-lg-2 control-label">Name</label>
                       <div class="col-lg-10">
-                        <input type="text" class="form-control" name="first_name" placeholder="First name" value="[% user.first_name %]" required>
-                      </div>
-                    </div>
-
-                    <br /><br />
-
-                    <div class="form-group">
-                      <label class="col-lg-2 control-label">Last name</label>
-                      <div class="col-lg-10">
-                        <input type="text" class="form-control" name="last_name" placeholder="Last name" value="[% user.last_name %]" required>
+                        <input type="text" class="form-control" name="name" placeholder="Name" value="[% user.name %]" required>
                       </div>
                     </div>
 

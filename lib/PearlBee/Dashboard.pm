@@ -40,8 +40,7 @@ any '/dashboard' => sub {
 	      my $password_hash = generate_hash($password1);
         $user->update({
           password => $password_hash->{hash},
-          status   => 'activated',
-	        salt 	   => $password_hash->{salt}
+          status   => 'activated'
         });
 
         template 'admin/index', { user => $user }, { layout => 'admin' };
@@ -69,20 +68,18 @@ any '/profile' => sub {
   my $user = session('user');
   $user    = resultset('User')->find( $user->{id} );
 
-  my $first_name = params->{first_name};
-  my $last_name  = params->{last_name};
-  my $email      = params->{email};
+  my $name  = params->{name};
+  my $email = params->{email};
 
   my $old_password   = params->{old_password};
   my $new_password   = params->{new_password};
   my $new_password2  = params->{new_password2};
 
-  if ( $first_name && $last_name && $email ) {
+  if ( $name && $email ) {
 
     $user->update({
-        first_name   => $first_name,
-        last_name   => $last_name,
-        email     => $email
+        name  => $name,
+        email => $email
       });
 
     template 'admin/profile', { user => $user, success => 'Your data was updated succesfully!' }, { layout => 'admin' };
@@ -90,7 +87,7 @@ any '/profile' => sub {
   }
   elsif ( $old_password && $new_password && $new_password2 ) {
 
-    my $password_hash = generate_hash($old_password, $user->salt);
+    my $password_hash = generate_hash($old_password); #, $user->salt);
     if ( $password_hash->{hash} ne $user->password ) {
 
       template 'admin/profile', { user => $user, warning => 'Incorrect old password!' }, { layout => 'admin' };
@@ -103,7 +100,7 @@ any '/profile' => sub {
     }
     else {
       $password_hash = generate_hash($new_password);
-      $user->update({ password => $password_hash->{hash}, salt => $password_hash->{salt} });
+      $user->update({ password => $password_hash->{hash} });#, salt => $password_hash->{salt} });
 
       template 'admin/profile', { user => $user, success => 'The password was changed succesfully!' }, { layout => 'admin' };
     }

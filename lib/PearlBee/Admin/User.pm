@@ -190,9 +190,9 @@ any '/admin/users/allow/:id' => sub {
   
   if ($user) {
     eval {
-      my ($password, $pass_hash, $salt) = create_password();
+      my ($password, $pass_hash) = create_password();#, $salt) = create_password();
       
-      $user->update( {password => $pass_hash, salt => $salt} );
+      $user->update( {password => $pass_hash} );#, salt => $salt} );
     
       $user->allow();
       
@@ -236,19 +236,16 @@ any '/admin/users/add' => sub {
       my $settings = resultset('Setting')->first;
       $dt->set_time_zone( $settings->timezone );
       
-      my ($password, $pass_hash, $salt) = create_password();
+      my ($password, $pass_hash) = create_password();#, $salt) = create_password();
       my $username   = params->{username};
       my $email      = params->{email};
-      my $first_name = params->{first_name};
-      my $last_name  = params->{last_name};
+      my $name       = params->{name};
       my $role       = params->{role};
 
       resultset('User')->create({
         username        => $username,
         password        => $pass_hash,
-        salt            => $salt,        
-        first_name      => $first_name,
-        last_name       => $last_name,
+        name            => $name,
         register_date   => join (' ', $dt->ymd, $dt->hms),
         role            => $role,
         email           => $email,

@@ -52,7 +52,7 @@
         <div class="container">
           	<div class="row">
   				
-          		<b> '[% first_name %] [% last_name %]' </b> applied as an author for <b> <a href="[% app_url %]"> [% blog_name %]</a></b>
+          		<b> '[% name %]' </b> applied as an author for <b> <a href="[% app_url %]"> [% blog_name %]</a></b>
           		<br />
 				  Username : '[% username %]'
           		<br />

@@ -16,8 +16,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 --
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) CHARACTER SET ucs2 NOT NULL,
-  `last_name` varchar(255) CHARACTER SET ucs2 NOT NULL,
+  `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
   `username` varchar(200) NOT NULL,
   `password` varchar(100) NOT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,8 +25,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `telephone` varchar(12) DEFAULT NULL,
   `role` varchar(255) CHARACTER SET ucs2 NOT NULL DEFAULT 'author',
   `activation_key` varchar(100) DEFAULT NULL,
-  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
-  `salt` char(24) NOT NULL,
+  `status` enum('active', 'inactive', 'suspended') NOT NULL,
+--  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
@@ -61,11 +60,11 @@ CREATE TABLE IF NOT EXISTS `acl` (
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
+  `description` varchar(255) CHARACTER SET ucs2,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,
   `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog information.';
 
 
@@ -93,9 +92,9 @@ CREATE TABLE IF NOT EXISTS `category` (
 CREATE TABLE IF NOT EXISTS `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET ucs2 NOT NULL,
-  `slug` varchar(255) CHARACTER SET ucs2 NOT NULL,
+  `slug` varchar(255) CHARACTER SET ucs2,
   `description` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
-  `cover` varchar(300) NOT NULL,
+  `cover` varchar(300),
   `content` text CHARACTER SET ucs2 NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` enum('HTML','Markdown') DEFAULT 'HTML',

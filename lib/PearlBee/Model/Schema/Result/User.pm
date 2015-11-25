@@ -29,13 +29,7 @@ __PACKAGE__->table("user");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 first_name
-
-  data_type: 'varchar'
-  is_nullable: 0
-  size: 255
-
-=head2 last_name
+=head2 name
 
   data_type: 'varchar'
   is_nullable: 0
@@ -98,20 +92,12 @@ __PACKAGE__->table("user");
   extra: {list => ["deactivated","activated","suspended","pending"]}
   is_nullable: 0
 
-=head2 salt
-
-  data_type: 'char'
-  is_nullable: 0
-  size: 24
-
 =cut
 
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "first_name",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
-  "last_name",
+  "name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "username",
   { data_type => "varchar", is_nullable => 0, size => 200 },
@@ -146,8 +132,6 @@ __PACKAGE__->add_columns(
     extra => { list => ["deactivated", "activated", "suspended", "pending"] },
     is_nullable => 0,
   },
-  "salt",
-  { data_type => "char", is_nullable => 0, size => 24 },
 );
 
 =head1 PRIMARY KEY

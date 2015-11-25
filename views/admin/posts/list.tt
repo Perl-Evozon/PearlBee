@@ -44,7 +44,7 @@
                     <td width="20%">
                       <b> <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a></b>
                       <br />
-                      <b> [% post.user.first_name %] [% post.user.last_name %] </b>
+                      <b> [% post.user.name %] </b>
                       <br />
                       <i> [% post.created_date %] </i>
                     </td>

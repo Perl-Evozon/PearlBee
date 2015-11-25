@@ -23,11 +23,13 @@ INSERT INTO acl VALUES('admin',   'create user'),
                       ('author',  'delete post'),
                       ('visitor', 'view post');
 
+--
+-- Administrator users are created during the import
+--
 
-INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated','IQbmVFR+SEgTju9y+UzhwA==');
+-- INSERT INTO "user" VALUES (1,'Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated');
 	
-
-INSERT INTO category VALUES (1,'Uncategorized','uncategorized',1);
+-- INSERT INTO category VALUES (1,'Uncategorized','uncategorized',1);
 
 
 INSERT INTO settings VALUES ('Europe/Bucharest',1,'','/','BlogsPerlOrg',1,0);

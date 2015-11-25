@@ -1,0 +1,331 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use DBI;
+use Try::Tiny;
+
+$|++;
+
+my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
+my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
+
+my $in_dbh = DBI->connect($in_dsn,'root');
+my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
+
+sub map_user {
+  my $user = shift;
+  return {
+    id            => $user->{author_id},
+    name          => $user->{author_nickname},
+    username      => $user->{author_name},
+    password      => $user->{author_password},
+    register_date => $user->{author_created_on},
+    email         => $user->{author_email},
+#    company   => # XXX not present in MT data
+#    telephone => # XXX not present in MT data
+    role => $user->{author_is_superuser} ? 'admin' : 'author',
+#    activation_key => undef, # XXX not present in MT data
+#    status => 
+#    salt =>
+  };
+}
+
+#$mt_author = {
+#          'author_can_view_log' => undef,
+#          'author_entry_prefs' => 'tag_delim=',
+#          'author_modified_by' => '8',
+#          'author_can_create_blog' => undef,
+#          'author_id' => '1',
+#          'author_auth_type' => 'MT',
+#          'author_status' => '1',
+#          'author_userpic_asset_id' => '0',
+#          'author_remote_auth_username' => undef,
+#          'author_basename' => 'mtadmin',
+#          'author_hint' => undef,
+#          'author_text_format' => '0',
+#          'author_created_by' => undef,
+#          'author_is_superuser' => undef,
+#          'author_type' => '1',
+#          'author_api_password' => '0dogx6wf',
+#          'author_modified_on' => '2009-11-18 16:43:57',
+#          'author_public_key' => undef,
+#          'author_external_id' => '',
+#          'author_url' => '',
+#          'author_nickname' => 'mtadmin',
+#          'author_remote_auth_token' => undef,
+#          'author_preferred_language' => 'en-us'
+#        };
+
+sub migrate_users {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_author ORDER BY author_id');
+  my $out_sth = $out_dbh->prepare('INSERT INTO "user"(id,name,username,password,register_date,email,role) VALUES(?,?,?,?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count = 0;
+  while ( my $in_user = $in_sth->fetchrow_hashref  ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_user);
+#last;
+    my $out_user = map_user($in_user);
+try {
+    $out_sth->execute(
+        @{$out_user}{qw( id name username password register_date email role )}
+    );
+}
+catch {
+  die "Failed to insert user '$in_user->{name}: $_ $!\n";
+};
+  }
+}
+
+print "migrating users: ";
+migrate_users;
+print "\n";
+
+###############################################################################
+
+sub map_blog {
+  my $blog = shift;
+  return {
+    id           => $blog->{blog_id},
+    name         => $blog->{blog_name},
+    description  => $blog->{blog_description},
+    created_date => $blog->{blog_created_on},
+    edited_date  => $blog->{blog_modified_on},
+  };
+}
+
+#$mt_blog = {
+#          'blog_junk_folder_expiry' => '14',
+#          'blog_ping_others' => undef,
+#          'blog_allow_unreg_comments' => '0',
+#          'blog_ping_google' => '0',
+#          'blog_allow_pings_default' => '1',
+#          'blog_use_comment_confirmation' => '1',
+#          'blog_sort_order_posts' => 'descend',
+#          'blog_basename_limit' => '100',
+#          'blog_autodiscover_links' => undef,
+#          'blog_convert_paras' => 'shtransformlinebreaks',
+#          'blog_moderate_unreg_comments' => '2',
+#          'blog_archive_tmpl_weekly' => undef,
+#          'blog_description' => 'There\'s more than one way to blog it.',
+#          'blog_google_api_key' => undef,
+#          'blog_days_on_index' => '0',
+#          'blog_site_path' => '/var/www/',
+#          'blog_server_offset' => '-5',
+#          'blog_archive_tmpl_daily' => undef,
+#          'blog_custom_dynamic_templates' => 'none',
+#          'blog_words_in_excerpt' => '40',
+#          'blog_archive_path' => '',
+#          'blog_autolink_urls' => '1',
+#          'blog_language' => 'en',
+#          'blog_name' => 'blogs.perl.org',
+#          'blog_archive_tmpl_monthly' => undef,
+#          'blog_archive_tmpl_individual' => undef,
+#          'blog_is_dynamic' => undef,
+#          'blog_email_new_pings' => '1',
+#          'blog_archive_type_preferred' => undef,
+#          'blog_id' => '1',
+#          'blog_allow_anon_comments' => undef,
+#          'blog_children_modified_on' => '2013-10-12 05:01:44',
+#          'blog_status_default' => '2',
+#          'blog_welcome_msg' => undef,
+#          'blog_archive_url' => '',
+#          'blog_file_extension' => 'html',
+#          'blog_internal_autodiscovery' => '0',
+#          'blog_remote_auth_token' => undef,
+#          'blog_sort_order_comments' => 'ascend',
+#          'blog_allow_commenter_regist' => '1',
+#          'blog_created_by' => '1',
+#          'blog_moderate_pings' => '1',
+#          'blog_require_comment_emails' => '0',
+#          'blog_ping_weblogs' => '0',
+#          'blog_entries_on_index' => '10',
+#          'blog_archive_type' => '',
+#          'blog_sanitize_spec' => '0',
+#          'blog_allow_comments_default' => '1',
+#          'blog_site_url' => 'http://blogs.perl.org/',
+#          'blog_ping_technorati' => '0',
+#          'blog_manual_approve_commenters' => undef,
+#          'blog_allow_reg_comments' => '1',
+#          'blog_mt_update_key' => undef,
+#          'blog_old_style_archive_links' => undef,
+#          'blog_cc_license' => '',
+#          'blog_email_new_comments' => '1',
+#          'blog_modified_by' => '8',
+#          'blog_archive_tmpl_category' => undef,
+#          'blog_allow_comment_html' => '1',
+#          'blog_convert_paras_comments' => '__default__',
+#          'blog_allow_pings' => '1',
+#          'blog_ping_blogs' => '0',
+#          'blog_junk_score_threshold' => '0',
+#          'blog_modified_on' => '2013-07-10 08:21:01',
+#          'blog_created_on' => '2009-10-07 20:13:17'
+#        };
+
+sub migrate_blogs {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_blog ORDER BY blog_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO "blog"(id,name,description,created_date,edited_date) VALUES(?,?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_blog = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_blog);
+#last;
+    my $out_blog = map_blog($in_blog);
+    $out_sth->execute(
+        @{$out_blog}{qw( id name description created_date edited_date )}
+    );
+  }
+}
+
+print "migrating blogs: ";
+migrate_blogs;
+print "\n";
+
+###############################################################################
+
+sub map_post {
+  my $post = shift;
+  return {
+    id           => $post->{entry_id},
+    title        => $post->{entry_title},
+    #slug varchar(255) NOT NULL,
+    description  => $post->{entry_basename}, # XXX ?
+    #cover varchar(300) NOT NULL,
+    content      => $post->{entry_text},
+    created_date => $post->{entry_authored_on},
+    #type post_format DEFAULT 'HTML',
+    #status post_status DEFAULT 'draft',
+    status       => 'published', # XXX Imported posts are already published
+    user_id      => $post->{entry_author_id},
+  };
+}
+
+#$mt_post = {
+#  'entry_status' => '2',
+#  'entry_ping_count' => '0',
+#  'entry_class' => 'entry',
+#  'entry_excerpt' => '',
+#  'entry_tangent_cache' => undef,
+#  'entry_allow_pings' => '1',
+#  'entry_atom_id' => 'tag:blogs.perl.org,2009:/users/dave_cross//8.9',
+#  'entry_category_id' => undef,
+#  'entry_template_id' => undef,
+#  'entry_pinged_urls' => undef,
+#  'entry_created_on' => '2009-11-06 17:24:22',
+#  'entry_authored_on' => '2009-11-06 17:23:16',
+#  'entry_author_id' => '8',
+#  'entry_created_by' => '8',
+#  'entry_week_number' => '200945',
+#  'entry_title' => 'A Blog Post',
+#  'entry_keywords' => '',
+#  'entry_to_ping_urls' => '',
+#  'entry_basename' => 'a_blog_post',
+#  'entry_text_more' => '',
+#  'entry_id' => '9',
+#  'entry_convert_breaks' => 'richtext',
+#  'entry_blog_id' => '8',
+#  'entry_allow_comments' => '1',
+#  'entry_comment_count' => '0',
+#  'entry_modified_on' => '2009-11-06 17:24:22',
+#  'entry_modified_by' => undef,
+#  'entry_text' => 'Introducing <a href="http://blogs.perl.org/">blogs.perl.org</a>. I\'m so happy!<br />'
+#};
+
+sub migrate_posts {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_entry ORDER BY entry_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO "post"(id,title,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_post = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_post);
+#last;
+    my $out_post = map_post($in_post);
+    $out_sth->execute(
+        @{$out_post}{qw( id title description content created_date status user_id )}
+    );
+  }
+}
+
+print "migrating posts: ";
+migrate_posts;
+print "\n";
+
+###############################################################################
+
+sub map_comment {
+  my $comment = shift;
+  return {
+    id => $comment->{comment_id},
+    content => $comment->{comment_text},
+    fullname => $comment->{comment_author},
+    email => $comment->{comment_email},
+    website => $comment->{comment_url},
+#  avatar varchar(255) DEFAULT NULL,
+    comment_date => $comment->{comment_created_on},
+#  type post_format DEFAULT 'HTML', # Remain default
+    status => $comment->{comment_visible} == 1 ? 'approved' : 'pending',
+    post_id => $comment->{comment_entry_id},
+    uid => $comment->{comment_commenter_id},
+    reply_to => $comment->{comment_parent_id}, # XXX Not sure here
+  };
+}
+
+#$mt_comment = {
+#          'comment_visible' => '1',
+#          'comment_email' => 'curtis_ovid_poe@yahoo.com',
+#          'comment_junk_score' => '1',
+#          'comment_commenter_id' => '13',
+#          'comment_junk_log' => 'SpamLookup - Link (1): No links are present in feedback
+#
+#---> Composite score: 1.00',
+#          'comment_author' => 'Ovid',
+#          'comment_modified_on' => '2009-11-07 08:55:42',
+#          'comment_entry_id' => '11',
+#          'comment_created_by' => '13',
+#          'comment_modified_by' => undef,
+#          'comment_url' => '',
+#          'comment_ip' => '82.45.209.59',
+#          'comment_junk_status' => '1',
+#          'comment_blog_id' => '11',
+#          'comment_last_moved_on' => '2000-01-01 00:00:00',
+#          'comment_id' => '9',
+#          'comment_text' => 'Obviously that was an ugly test post. Please ignore.',
+#          'comment_parent_id' => undef,
+#          'comment_created_on' => '2009-11-07 08:55:42'
+#};
+
+sub migrate_comments {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_comment ORDER BY comment_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO "comment"(id,content,fullname,email,website,comment_date,status,post_id,uid,reply_to) VALUES(?,?,?,?,?,?,?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_comment = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+    next unless $in_comment->{comment_commenter_id}; # XXX Eliminate spam?
+#use Data::Dumper; print Dumper($in_comment);
+#last;
+    my $out_comment = map_comment($in_comment);
+    $out_sth->execute(
+        @{$out_comment}{qw( id content fullname email website comment_date status post_id uid reply_to ) }
+    );
+  }
+}
+
+print "migrating comments: ";
+migrate_comments;
+print "\n";

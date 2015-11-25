@@ -14,20 +14,6 @@ use PearlBee::Password;
 use DateTime;
 
 
-=head
-    Activation of users.
-    
-    Link of the form: '/activation?token=sometoken'
-
-    The steps followed:
-
-    1. if token exists the expiration time of the token is verified
-        1.1. if is vali then the input is shown for setting the password
-        1.2. else the token is deleted and an error message is displayed
-    2. else if no token an error message is shown
-
-=cut
-
 get '/activation' => sub {
 
     info "\n\n~~~~~~~~~~~~ activation link ~~~~~~~~~~~~~~~~~~~~~~~~\n\n";

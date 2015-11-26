@@ -144,7 +144,6 @@ DROP TABLE IF EXISTS `settings`;
 CREATE TABLE `settings` (
   `timezone` varchar(255) NOT NULL,
   `social_media` tinyint(1) NOT NULL DEFAULT '1',
-  `blog_path` varchar(255) NOT NULL DEFAULT '/',
   `theme_folder` varchar(255) NOT NULL,
   `blog_name` varchar(255) NOT NULL,
   `multiuser` tinyint(1) NOT NULL DEFAULT '0',

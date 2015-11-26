@@ -51,7 +51,6 @@ post '/admin/settings/save' => sub {
 		$settings = resultset('Setting')->first;
 
 		$settings->update({
-			blog_path    => $path,
 			timezone     => $timezone,
 			social_media => ($social_media ? '1' : '0'),
 			multiuser    => ($multiuser ? '1' : '0'),

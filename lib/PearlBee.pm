@@ -15,6 +15,7 @@ use PearlBee::Authorization;
 use PearlBee::Dashboard;
 use PearlBee::REST;
 use PearlBee::RSS;
+use PearlBee::ResetPassword;
 
 # Admin controllers
 use PearlBee::Admin;

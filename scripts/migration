@@ -17,15 +17,16 @@ my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
 sub map_user {
   my $user = shift;
   return {
-    id            => $user->{author_id},
-    name          => $user->{author_nickname},
-    username      => $user->{author_name},
-    password      => $user->{author_password},
-    register_date => $user->{author_created_on},
-    email         => $user->{author_email},
+    id                 => $user->{author_id},
+    name               => $user->{author_nickname},
+    username           => $user->{author_name},
+    password           => $user->{author_password},
+    preferred_language => $user->{preferred_language},
+    register_date      => $user->{author_created_on},
+    email              => $user->{author_email},
 #    company   => # XXX not present in MT data
 #    telephone => # XXX not present in MT data
-    role => $user->{author_is_superuser} ? 'admin' : 'author',
+    role               => $user->{author_is_superuser} ? 'admin' : 'author',
 #    activation_key => undef, # XXX not present in MT data
 #    status => 
 #    salt =>
@@ -60,7 +61,7 @@ sub map_user {
 
 sub migrate_users {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_author ORDER BY author_id');
-  my $out_sth = $out_dbh->prepare('INSERT INTO "user"(id,name,username,password,register_date,email,role) VALUES(?,?,?,?,?,?,?)'
+  my $out_sth = $out_dbh->prepare('INSERT INTO "user"(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -72,7 +73,7 @@ sub migrate_users {
     my $out_user = map_user($in_user);
 try {
     $out_sth->execute(
-        @{$out_user}{qw( id name username password register_date email role )}
+        @{$out_user}{qw( id name username password preferred_language register_date email role )}
     );
 }
 catch {
@@ -80,10 +81,6 @@ catch {
 };
   }
 }
-
-print "migrating users: ";
-migrate_users;
-print "\n";
 
 ###############################################################################
 
@@ -166,6 +163,8 @@ sub map_blog {
 #          'blog_created_on' => '2009-10-07 20:13:17'
 #        };
 
+my %blog_owner;
+
 sub migrate_blogs {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_blog ORDER BY blog_id');
   my $out_sth = $out_dbh->prepare(
@@ -176,6 +175,9 @@ sub migrate_blogs {
   my $count  = 0;
   while ( my $in_blog = $in_sth->fetchrow_hashref ) {
     print '.' if $count++ % 100 == 0;
+
+    push @{$blog_owner{$in_blog->{blog_id}}}, $in_blog->{blog_created_by};
+
 #use Data::Dumper; print Dumper($in_blog);
 #last;
     my $out_blog = map_blog($in_blog);
@@ -184,10 +186,6 @@ sub migrate_blogs {
     );
   }
 }
-
-print "migrating blogs: ";
-migrate_blogs;
-print "\n";
 
 ###############################################################################
 
@@ -258,10 +256,6 @@ sub migrate_posts {
   }
 }
 
-print "migrating posts: ";
-migrate_posts;
-print "\n";
-
 ###############################################################################
 
 sub map_comment {
@@ -326,6 +320,87 @@ sub migrate_comments {
   }
 }
 
+###############################################################################
+
+sub synthesize_blog_owners {
+#    push @{$blog_owner{$in_blog->{blog_id}}, $in_blog->{blog_created_by};
+
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO "blog_owners"(user_id,blog_id,status) VALUES(?,?,?)'
+  );
+
+  my $count  = 0;
+  for my $blog_id ( sort keys %blog_owner ) {
+    for my $user_id ( @{ $blog_owner{$blog_id} } ) {
+      print '.' if $count++ % 100 == 0;
+      $out_sth->execute( $user_id, $blog_id, 'activated' );
+    }
+  }
+}
+
+###############################################################################
+
+sub map_category {
+  my $category = shift;
+  return {
+    id => $category->{category_id},
+    name => $category->{category_label},
+    slug => $category->{category_id},
+    user_id => $category->{category_created_by},
+  };
+}
+#$mt_category = {
+#};
+
+sub migrate_categories {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO "category"(id,name,slug,user_id) VALUES(?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_category = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_category);
+#last;
+    my $out_category = map_category($in_category);
+    $out_sth->execute(
+        @{$out_category}{qw( id name slug user_id )}
+    );
+  }
+}
+
+###############################################################################
+
+print "migrating users: ";
+migrate_users;
+print "\n";
+
+#exit;
+
+print "migrating blogs: ";
+migrate_blogs;
+print "\n";
+
+print "synthesizing blog owners: ";
+synthesize_blog_owners;
+print "\n";
+
+#exit;
+
+print "migrating posts: ";
+migrate_posts;
+print "\n";
+
+#exit;
+
 print "migrating comments: ";
 migrate_comments;
+print "\n";
+
+#exit;
+
+print "migrating categories: ";
+migrate_categories;
 print "\n";

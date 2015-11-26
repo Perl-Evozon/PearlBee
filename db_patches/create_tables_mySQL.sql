@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
   `username` varchar(200) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `preferred_language` varchar(50) DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255) NOT NULL,
   `company` varchar(255) DEFAULT NULL,
@@ -59,8 +60,8 @@ CREATE TABLE IF NOT EXISTS `acl` (
 
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
-  `description` varchar(255) CHARACTER SET ucs2,
+  `name` varchar(512) CHARACTER SET ucs2 NOT NULL,
+  `description` varchar(512) CHARACTER SET ucs2,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,
   `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
@@ -73,7 +74,9 @@ CREATE TABLE IF NOT EXISTS `blog_owners` (
   `blog_id` int(11) NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
-  PRIMARY KEY (`user_id`,`blog_id`)
+  PRIMARY KEY (`user_id`,`blog_id`),
+  CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `blog_owner_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog owners.';
 
 
@@ -83,7 +86,6 @@ CREATE TABLE IF NOT EXISTS `category` (
   `slug` varchar(100) CHARACTER SET ucs2 NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Category table.';

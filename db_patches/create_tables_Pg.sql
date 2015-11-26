@@ -32,6 +32,7 @@ CREATE TABLE "user" (
   name varchar(255) NULL,
   username varchar(200) NOT NULL UNIQUE,
   password varchar(128) NOT NULL,
+  preferred_language varchar(50) NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255) NOT NULL UNIQUE,
   company varchar(255) DEFAULT NULL,
@@ -64,8 +65,8 @@ CREATE TABLE acl (
 
 CREATE TABLE blog (
   id serial UNIQUE,
-  name varchar(255) NOT NULL,
-  description varchar(255),
+  name varchar(512) NOT NULL,
+  description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
   status active_state NOT NULL DEFAULT 'deactivated'
@@ -73,8 +74,8 @@ CREATE TABLE blog (
 
 
 CREATE TABLE blog_owners (
-  user_id integer NOT NULL,
-  blog_id integer NOT NULL,
+  user_id integer NOT NULL REFERENCES "user" (id),
+  blog_id integer NOT NULL REFERENCES blog (id),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   status active_state NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (user_id,blog_id)
@@ -83,7 +84,7 @@ CREATE TABLE blog_owners (
 
 CREATE TABLE category (
   id serial UNIQUE,
-  name varchar(100) NOT NULL UNIQUE,
+  name varchar(100) NOT NULL,
   slug varchar(100) NOT NULL,
   user_id integer NOT NULL REFERENCES "user" (id)
 );

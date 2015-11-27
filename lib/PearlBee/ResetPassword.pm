@@ -104,7 +104,7 @@ any ['get', 'post'] => '/forgot-password' => sub {
                                 Subject => 'Reset password link on blog.cluj.pm',
 
                                 tt_vars => {
-                                    first_name => $user->first_name,
+                                    name      => $user->name,
                                     app_url   => config->{app_url},
                                     token     => "/activation?token=$token",
                                     blog_name => session('blog_name'),

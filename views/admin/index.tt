@@ -15,13 +15,13 @@
             <div class="awidget-head">
                 [% IF user.status == 'deactivated' %]
                     <h3>
-                        Welcome <b> [% user.first_name %]!</b>
+                        Welcome <b> [% user.name %]!</b>
                         <br />
                         Please set a new password for your account.
                     </h3>
                     <h3><i>(Features are disabled until you set your password)</i></h3>
                 [% ELSE %]
-                    <h3>Welcome <b> [% user.first_name %]!</b></h3>
+                    <h3>Welcome <b> [% user.name %]!</b></h3>
                 [% END %]
             </div>
             <div class="awidget-body">

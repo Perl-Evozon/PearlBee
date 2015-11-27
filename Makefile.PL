@@ -24,6 +24,7 @@ WriteMakefile(
         'Test::Warnings'            => 0,
         'Dancer2'                   => 0.136000,
         'Dancer2::Plugin::DBIC'     => 0,
+        'DBIx::Class::TimeStamp'    => 0,
         'DateTime'                  => 0,
         'Digest::Bcrypt'            => 0,
         'Data::Entropy::Algorithms' => 0,

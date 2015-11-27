@@ -203,14 +203,14 @@ any '/admin/users/allow/:id' => sub {
               Subject => config->{welcome_email_subject},
   
               tt_vars => {
-                  role        => $user->role,
-                  username    => $user->username,
-                  password    => $password,
-                  first_name  => $user->first_name,
-                  app_url     => config->{app_url},
-                  blog_name   => session('blog_name'),
-                  signature   => config->{email_signature},
-                  allowed     => 1,
+                  role      => $user->role,
+                  username  => $user->username,
+                  password  => $password,
+                  name      => $user->name,
+                  app_url   => config->{app_url},
+                  blog_name => session('blog_name'),
+                  signature => config->{email_signature},
+                  allowed   => 1,
               },
       }) or error "Could not send the email";
     };
@@ -258,13 +258,13 @@ any '/admin/users/add' => sub {
             Subject => config->{welcome_email_subject},
 
             tt_vars => {
-                role        => $role,
-                username    => $username,
-                password    => $password,
-                first_name  => $first_name,
-                app_url     => config->{app_url},
-                blog_name   => session('blog_name'),
-                signature   => config->{email_signature}
+                role      => $role,
+                username  => $username,
+                password  => $password,
+                name      => $name,
+                app_url   => config->{app_url},
+                blog_name => session('blog_name'),
+                signature => config->{email_signature}
             },
         }) or error "Could not send the email";
     };

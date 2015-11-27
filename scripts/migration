@@ -9,10 +9,12 @@ use Try::Tiny;
 $|++;
 
 my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
-my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
+#my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
+my $out_dsn = 'dbi:mysql:dbname=BlogsPerlOrg';
 
 my $in_dbh = DBI->connect($in_dsn,'root');
-my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
+#my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
+my $out_dbh = DBI->connect($out_dsn,'root','');
 
 sub map_user {
   my $user = shift;
@@ -61,7 +63,9 @@ sub map_user {
 
 sub migrate_users {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_author ORDER BY author_id');
-  my $out_sth = $out_dbh->prepare('INSERT INTO "user"(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
+  my $out_sth = $out_dbh->prepare(
+    #'INSERT INTO "user"(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
+    'INSERT INTO `user`(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -168,7 +172,7 @@ my %blog_owner;
 sub migrate_blogs {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_blog ORDER BY blog_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO "blog"(id,name,description,created_date,edited_date) VALUES(?,?,?,?,?)'
+    'INSERT INTO blog(id,name,description,created_date,edited_date) VALUES(?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -240,7 +244,7 @@ sub map_post {
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_entry ORDER BY entry_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO "post"(id,title,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?)'
+    'INSERT INTO post(id,title,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -303,7 +307,7 @@ sub map_comment {
 sub migrate_comments {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_comment ORDER BY comment_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO "comment"(id,content,fullname,email,website,comment_date,status,post_id,uid,reply_to) VALUES(?,?,?,?,?,?,?,?,?,?)'
+    'INSERT INTO comment(id,content,fullname,email,website,comment_date,status,post_id,uid,reply_to) VALUES(?,?,?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -326,7 +330,7 @@ sub synthesize_blog_owners {
 #    push @{$blog_owner{$in_blog->{blog_id}}, $in_blog->{blog_created_by};
 
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO "blog_owners"(user_id,blog_id,status) VALUES(?,?,?)'
+    'INSERT INTO blog_owners(user_id,blog_id,status) VALUES(?,?,?)'
   );
 
   my $count  = 0;
@@ -355,7 +359,7 @@ sub map_category {
 sub migrate_categories {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO "category"(id,name,slug,user_id) VALUES(?,?,?,?)'
+    'INSERT INTO category(id,name,slug,user_id) VALUES(?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -370,6 +374,38 @@ sub migrate_categories {
     );
   }
 }
+
+###############################################################################
+
+sub map_tag {
+  my $tag = shift;
+  return {
+    id => $tag->{tag_id},
+    name => $tag->{tag_label},
+  };
+}
+#$mt_tag = {
+#};
+
+sub migrate_tags {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_tag ORDER BY tag_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO tag(id,name) VALUES(?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_tag = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_tag);
+#last;
+    my $out_tag = map_tag($in_tag);
+    $out_sth->execute(
+        @{$out_tag}{qw( id name )}
+    );
+  }
+}
+
 
 ###############################################################################
 
@@ -403,4 +439,10 @@ print "\n";
 
 print "migrating categories: ";
 migrate_categories;
+print "\n";
+
+#exit;
+
+print "migrating tags: ";
+migrate_tags;
 print "\n";

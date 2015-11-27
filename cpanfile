@@ -3,6 +3,7 @@ requires 'CPAN::Meta::Check';
 requires 'Test::Warnings';
 requires 'Dancer2'                   => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
+requires 'DBIx::Class::TimeStamp';
 requires 'DateTime';
 requires 'Digest::Bcrypt';
 requires 'Data::Entropy::Algorithms';

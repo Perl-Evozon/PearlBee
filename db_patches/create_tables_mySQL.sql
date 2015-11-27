@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
   `username` varchar(200) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `salt` varchar(48) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255) NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `blog_owners` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`user_id`,`blog_id`),
-  CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `blog_owner_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog owners.';
 

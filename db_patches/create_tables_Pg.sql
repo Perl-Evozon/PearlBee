@@ -32,9 +32,10 @@ CREATE TABLE "user" (
   name varchar(255) NULL,
   username varchar(200) NOT NULL UNIQUE,
   password varchar(128) NOT NULL,
+  salt varchar(48) NOT NULL,
   preferred_language varchar(50) NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  email varchar(255) NOT NULL UNIQUE,
+  email varchar(255), -- weakening
   company varchar(255) DEFAULT NULL,
   telephone varchar(12) DEFAULT NULL,
   role varchar(255) NOT NULL REFERENCES role (name) DEFAULT 'author',
@@ -63,6 +64,9 @@ CREATE TABLE acl (
 );
 
 
+--
+-- The blogs
+--
 CREATE TABLE blog (
   id serial UNIQUE,
   name varchar(512) NOT NULL,

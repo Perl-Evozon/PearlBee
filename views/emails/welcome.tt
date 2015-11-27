@@ -43,7 +43,7 @@
 
 	 <div class="page-title">
 	     <div class="container">
-	        <h2>Welcome <small>[% first_name %]</small></h2>
+	        <h2>Welcome <small>[% name %]</small></h2>
 	        <hr />
 	     </div>  
 	  </div>

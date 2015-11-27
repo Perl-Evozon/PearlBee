@@ -38,6 +38,7 @@ hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
   session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
   session multiuser => resultset('Setting')->first->multiuser;
+  if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }
 };
 
 =head

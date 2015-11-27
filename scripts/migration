@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use DBI;
+use String::Dirify qw( dirify );
 use Try::Tiny;
 
 $|++;
@@ -195,10 +196,11 @@ sub migrate_blogs {
 
 sub map_post {
   my $post = shift;
+  my $dirified = dirify( $post->{entry_title} );
   return {
     id           => $post->{entry_id},
     title        => $post->{entry_title},
-    #slug varchar(255) NOT NULL,
+    slug         => $dirified,
     description  => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
     content      => $post->{entry_text},
@@ -244,7 +246,7 @@ sub map_post {
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_entry ORDER BY entry_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO post(id,title,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?)'
+    'INSERT INTO post(id,title,slug,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -255,7 +257,7 @@ sub migrate_posts {
 #last;
     my $out_post = map_post($in_post);
     $out_sth->execute(
-        @{$out_post}{qw( id title description content created_date status user_id )}
+        @{$out_post}{qw( id title slug description content created_date status user_id )}
     );
   }
 }
@@ -346,10 +348,11 @@ sub synthesize_blog_owners {
 
 sub map_category {
   my $category = shift;
+  my $dirified = dirify( $category->{category_label} );
   return {
     id => $category->{category_id},
     name => $category->{category_label},
-    slug => $category->{category_id},
+    slug => $dirified,
     user_id => $category->{category_created_by},
   };
 }
@@ -379,9 +382,11 @@ sub migrate_categories {
 
 sub map_tag {
   my $tag = shift;
+  my $dirified = dirify( $tag->{tag_label} );
   return {
     id => $tag->{tag_id},
     name => $tag->{tag_label},
+    slug => $dirified,
   };
 }
 #$mt_tag = {
@@ -390,7 +395,7 @@ sub map_tag {
 sub migrate_tags {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_tag ORDER BY tag_id');
   my $out_sth = $out_dbh->prepare(
-    'INSERT INTO tag(id,name) VALUES(?,?)'
+    'INSERT INTO tag(id,name,slug) VALUES(?,?,?)'
   );
   $in_sth->execute();
 
@@ -401,7 +406,7 @@ sub migrate_tags {
 #last;
     my $out_tag = map_tag($in_tag);
     $out_sth->execute(
-        @{$out_tag}{qw( id name )}
+        @{$out_tag}{qw( id name slug )}
     );
   }
 }

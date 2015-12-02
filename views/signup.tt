@@ -10,7 +10,6 @@
          <h2><i class="icon-user color"></i> Sign-up <small> as an author </small></h2>
          <hr />
       </div>
-      <!-- Page title -->
       
       [% INCLUDE components/alerts.tt %]
       

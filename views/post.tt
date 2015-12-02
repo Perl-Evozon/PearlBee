@@ -17,12 +17,12 @@
                                 <i class="icon-calendar"></i> [% post.created_date %]
                             </div>
                             <div class="block_elements">
-                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %][% settings.static && '.html' %]">[% post.user.username %]</a>
                             </div>
 
                             [% FOREACH category in post.post_categories %]
                                 <div class="block_elements">
-                                    <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                                    <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %][% settings.static && '.html' %]">[% category.category.name %]</a>
                                 </div>
                             [% END %]
 
@@ -47,7 +47,9 @@
                     </div>
                     
                     <!-- Comment posting -->
+                    [% IF ! settings.static %]
                     [% INCLUDE comment_form.tt %]
+                    [% END %]
                 
                     <!-- Comment section -->
                     [% INCLUDE list_comments.tt %]

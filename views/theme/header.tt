@@ -39,12 +39,14 @@
                         <div class="navbar" role="banner">
                             <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                                 <ul class="nav navbar-nav">
+                        [% IF ! settings.static %]
                                     <li>
                                         <a href="[% session.app_url %]/sign-up"> Sign Up</a>
                                     </li>
                                     <li>
                                         <a href="[% session.app_url %]/admin"> Login</a>
                                     </li>
+                        [% END %]
                                 </ul>
                             </nav>
                         </div>

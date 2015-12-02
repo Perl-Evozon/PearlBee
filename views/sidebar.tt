@@ -16,14 +16,14 @@
       <div class="tab-pane fade in active" id="recent">
         <ul class="simple-list">
           [% FOREACH post in recent %]
-            <li><a href="[% session.app_url %]/post/[% post.slug %]">[% post.title %]</a></li>
+            <li><a href="[% session.app_url %]/post/[% post.slug %][% settings.static && '.html' %]">[% post.title %]</a></li>
           [% END %] 
         </ul>
     </div>
     <div class="tab-pane fade" id="popular">
       <ul class="simple-list">
           [% FOREACH post in popular %]
-            <li><a href="[% session.app_url %]/post/[% post.slug %]">[% post.title %]</a></li>
+            <li><a href="[% session.app_url %]/post/[% post.slug %][% settings.static && '.html' %]">[% post.title %]</a></li>
           [% END %] 
        </ul>
     </div>
@@ -32,7 +32,7 @@
     <h4 class="widget-head">Tags</h4>
     <ul id="tag-list" class="cf">
       [% FOREACH tag in tags %]
-        <li><a href="[% session.app_url %]/posts/tag/[% tag.slug %]" class="btn btn-info">[% tag.name %]</a></li>
+        <li><a href="[% session.app_url %]/posts/tag/[% tag.slug %][% settings.static && '.html' %]me %]</a></li>
       [% END %]        
     </ul>
   </div>    

@@ -15,7 +15,7 @@
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                        <i class="icon-user"></i> <a href="/posts/user/[% comment.uid.username %]" >[% comment.uid.username %]</a>
+                        <i class="icon-user"></i> <a href="/posts/user/[% comment.uid.username %][% settings.static && '.html' %]" >[% comment.uid.username %]</a>
                     </div>
                 [% END %]
                 
@@ -31,7 +31,9 @@
                 <!-- The Reply comment FORM -->
                 <a class="comment_reply" id="reply_comment_[% comment.id %]">Reply</a>
                 <div class='reply_comment_div' id="reply_comment_[% comment.id %]_div" div_set="[% fields.in_reply_to %]" field_fullname="[% fields.fullname %]" field_email="[% fields.email %]" field_website="[% fields.website %]" field_comment="[% fields.comment %]">
+                    [% IF ! settings.static %]
                     [% INCLUDE comment_form.tt %]
+                    [% END %]
                 </div>
                 
                 <!-- The Reply comments for this comment -->
@@ -48,7 +50,7 @@
                                 </div>
                             [% ELSE %]
                                 <div class="comment-author comment-author-registered">
-                                    <i class="icon-user"></i> <a href="/posts/user/[% reply.uid.username %]" >[% reply.uid.username %]</a>
+                                    <i class="icon-user"></i> <a href="/posts/user/[% reply.uid.username %][% settings.static && '.html' %]" >[% reply.uid.username %]</a>
                                 </div>
                             [% END %]
                             

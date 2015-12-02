@@ -3,7 +3,7 @@
 # all the settings in this file will be loaded at Dancer's startup.
 
 # Your application's name
-appname: "PearlBee"
+appname: "Blogs.Perl.Org"
 
 # The default layout to use for your application (located in
 # views/layouts/main.tt)
@@ -33,19 +33,23 @@ engines:
       end_tag:   '%]'
   session:
     YAML:
-      session_dir: "/tmp/pearlbee"
+      session_dir: "/tmp/blogs_perl_org"
 
 plugins:
       DBIC:
         default:
-          dsn: dbi:mysql:PearlBee
+          dsn: dbi:mysql:BlogsPerlOrg
           schema_class: PearlBee::Model::Schema
           user: root
-          pass: mysqlpassword
+          password: mysqlpassword
           options:
             RaiseError: 1
             PrintError: 1
             mysql_enable_utf8: 1
+      feed:
+        title: 'blogs.perl.org'
+        format: 'Atom'
+        max_posts: 10
 
 # Constants
 captcha_folder :  'public/captcha/'
@@ -57,7 +61,7 @@ app_url:          'http://localhost:5000'
 email_templates:  'views/emails/'
 
 # Specifics
-email_signature:       'The PearlBee Team'
+email_signature:       'The Blogs.Perl.Org Team'
 default_email_sender:  'no-reply@pearlbee.com'
-welcome_email_subject: 'Welcome to PearlBee!'
+welcome_email_subject: 'Welcome to Blogs.Perl.Org!'
 posts_on_page:         5

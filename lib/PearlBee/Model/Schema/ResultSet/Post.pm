@@ -24,7 +24,7 @@ sub can_create {
   my $user_id       = $params->{user_id};
   my $status        = $params->{status};
   my $cover         = $params->{cover};
-  my $dt            = $params->{dt};
+  my $dt            = $params->{created_date};
 
   my $post = $self->create({
       title        => $title,

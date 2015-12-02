@@ -35,13 +35,6 @@ __PACKAGE__->table("settings");
   default_value: 1
   is_nullable: 0
 
-=head2 blog_path
-
-  data_type: 'varchar'
-  default_value: '/'
-  is_nullable: 0
-  size: 255
-
 =head2 theme_folder
 
   data_type: 'varchar'
@@ -72,8 +65,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "social_media",
   { data_type => "tinyint", default_value => 1, is_nullable => 0 },
-  "blog_path",
-  { data_type => "varchar", default_value => "/", is_nullable => 0, size => 255 },
   "theme_folder",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "blog_name",

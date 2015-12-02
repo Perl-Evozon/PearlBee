@@ -1,0 +1,11 @@
+ <div class="register-done">
+   <div class="container">
+     <div class="row"> 
+       <div class="col-sm-6 col-sm-offset-3 text-center"> 
+         <h1>Congratulations!</h1> 
+         <h4>Your account has been verified.</h4>   
+         <button type="button" class="btn btn-start">Start blogging</button>
+       </div> 
+     </div> 
+   </div>    
+</div>

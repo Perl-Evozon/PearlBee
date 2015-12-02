@@ -1,0 +1,11 @@
+ <div class="register-success">
+   <div class="container">
+     <div class="row"> 
+       <div class="col-sm-6 col-sm-offset-3 text-center"> 
+         <h1 class="text-success">Success!</h1> 
+         <h4>Please access the link sent to your email in order to confirm your account.</h4> 
+        
+       </div> 
+     </div> 
+   </div>    
+</div>

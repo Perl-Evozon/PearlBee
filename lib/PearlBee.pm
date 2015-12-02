@@ -510,6 +510,30 @@ get '/posts/tag/:slug/page/:page' => sub {
     };
 };
 
+get '/register' => sub {
+   
+  template 'register';
+
+};
+
+get '/register_success' => sub {
+   
+  template 'register_success';
+
+};
+
+get '/register_done' => sub {
+   
+  template 'register_done';
+
+};
+
+get '/password_recovery' => sub {
+
+  template 'password_recovery';
+
+};
+
 get '/sign-up' => sub {
 
   new_captcha_code();

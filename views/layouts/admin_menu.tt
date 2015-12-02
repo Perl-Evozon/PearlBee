@@ -12,18 +12,18 @@
                  </a>
                  <!-- Sub menu -->
                  <ul>
-                    <li><a href="[% session.app_url %]/[% role %]/posts">All</a></li>
-                    <li><a href="[% session.app_url %]/[% role %]/posts/add">Create post</a></li>
+                    <li><a href="[% config.app_url %]/[% role %]/posts">All</a></li>
+                    <li><a href="[% config.app_url %]/[% role %]/posts/add">Create post</a></li>
                 </ul>
             </li>
 
-            <li><a href="[% session.app_url %]/[% role %]/comments"><i class="icon-comment"></i> Comments</a></li>
+            <li><a href="[% config.app_url %]/[% role %]/comments"><i class="icon-comment"></i> Comments</a></li>
 
             [% IF (session.user.is_admin) %]
 
-                <li><a href="[% session.app_url %]/admin/categories"><i class="icon-list"></i> Categories</a></li>
+                <li><a href="[% config.app_url %]/admin/categories"><i class="icon-list"></i> Categories</a></li>
             
-                <li><a href="[% session.app_url %]/admin/tags"><i class="icon-tag"></i> Tags</a></li>                
+                <li><a href="[% config.app_url %]/admin/tags"><i class="icon-tag"></i> Tags</a></li>                
             
                 <li class="has_submenu">
                      <a href="#">
@@ -32,8 +32,8 @@
                      </a>
                      <!-- Sub menu -->
                      <ul>
-                        <li><a href="[% session.app_url %]/admin/users">All</a></li>
-                        <li><a href="[% session.app_url %]/admin/users/add">Create user</a></li>
+                        <li><a href="[% config.app_url %]/admin/users">All</a></li>
+                        <li><a href="[% config.app_url %]/admin/users/add">Create user</a></li>
                     </ul>
                 </li>
 
@@ -45,8 +45,8 @@
                     </a>
                     <!-- Sub menu -->
                     <ul>
-                       <li><a href="[% session.app_url %]/admin/settings">General</a></li>
-                       <li><a href="[% session.app_url %]/admin/settings/import">Import</a></li>
+                       <li><a href="[% config.app_url %]/admin/settings">General</a></li>
+                       <li><a href="[% config.app_url %]/admin/settings/import">Import</a></li>
                     </ul>
                 </li>            
             [% END %]        

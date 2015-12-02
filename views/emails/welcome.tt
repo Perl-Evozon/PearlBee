@@ -7,20 +7,20 @@
 
 	<!-- Styles -->
 	<!-- Bootstrap CSS -->
-	<link href="[% app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
+	<link href="[% config.app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Animate css -->
-	<link href="/[% app_url %]/blog/css/animate.min.css" rel="stylesheet">
+	<link href="/[% config.app_url %]/blog/css/animate.min.css" rel="stylesheet">
 	<!-- Dropdown menu -->
-	<link href="[% app_url %]/blog/css/ddlevelsmenu-base.css" rel="stylesheet">
-	<link href="[% app_url %]/blog/css/ddlevelsmenu-topbar.css" rel="stylesheet">
+	<link href="[% config.app_url %]/blog/css/ddlevelsmenu-base.css" rel="stylesheet">
+	<link href="[% config.app_url %]/blog/css/ddlevelsmenu-topbar.css" rel="stylesheet">
 	<!-- Countdown -->
-	<link href="[% app_url %]/blog/css/jquery.countdown.css" rel="stylesheet">
+	<link href="[% config.app_url %]/blog/css/jquery.countdown.css" rel="stylesheet">
 	<!-- prettyPhoto -->
-	<link href="[% app_url %]/blog/css/prettyPhoto.css" rel="stylesheet">      
+	<link href="[% config.app_url %]/blog/css/prettyPhoto.css" rel="stylesheet">      
 	<!-- Font awesome CSS -->
-	<link href="[% app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">     
+	<link href="[% config.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">     
 	<!-- Custom CSS -->
-	<link href="[% app_url %]/blog/css/style.css" rel="stylesheet">
+	<link href="[% config.app_url %]/blog/css/style.css" rel="stylesheet">
   </head>
 
   <body>
@@ -31,7 +31,7 @@
 	          <div class="col-md-3 col-sm-3">
 	            <!-- Logo -->
 	            <div class="logo">
-	               <h1><a href="[% app_url %]">[% blog_name %]</a></h1>
+	               <h1><a href="[% config.app_url %]">[% blog_name %]</a></h1>
 	            </div>
 	          </div>
 	          <div class="col-md-9 col-sm-9">
@@ -52,7 +52,7 @@
         <div class="container">
           	<div class="row">
   
-			    The admin of <a href="[% app_url %]"> [% blog_name %] </a> [% allowed ? 'accepted you' : 'added you' %] as an <b> [% role %]</b> to the blog.
+			    The admin of <a href="[% config.app_url %]"> [% blog_name %] </a> [% allowed ? 'accepted you' : 'added you' %] as an <b> [% role %]</b> to the blog.
 			    <br />         
 				Here is your login information:
 				<br />
@@ -69,7 +69,7 @@
 				<br />
 				<i> [% signature %] </i>
 				<br />
-				<a href="[% app_url %]"> [% app_url %] </a>
+				<a href="[% config.app_url %]"> [% config.app_url %] </a>
 			</div>
 		</div>
 	</div>

@@ -3,7 +3,7 @@
       <h4> Categories </h4>
       <ul class="simple-list">
       [% FOREACH category in categories %]
-        <li><a href="[% app_url %]/posts/category/[% category.slug %]"> [% category.name %] </a></li>
+        <li><a href="[% config.app_url %]/posts/category/[% category.slug %]"> [% category.name %] </a></li>
       [% END %]
       </ul>
     </div>
@@ -16,14 +16,14 @@
         <div class="tab-pane fade in active" id="recent">
           <ul class="simple-list">
             [% FOREACH recent_post in recent %]
-              <li><a href="[% app_url %]/post/[% recent_post.slug %]">[% recent_post.title %]</a></li>
+              <li><a href="[% config.app_url %]/post/[% recent_post.slug %]">[% recent_post.title %]</a></li>
             [% END %]
           </ul>
         </div>
         <div class="tab-pane fade" id="popular">
           <ul class="simple-list">
               [% FOREACH popular_post in popular %]
-                <li><a href="[% app_url %]/post/[% popular_post.slug %]">[% popular_post.title %]</a></li>
+                <li><a href="[% config.app_url %]/post/[% popular_post.slug %]">[% popular_post.title %]</a></li>
               [% END %]
            </ul>
         </div>
@@ -33,7 +33,7 @@
         <h4 class="widget-head">Tags</h4>
         <ul id="tag-list" class="cf">
           [% FOREACH tag in post.post_tags %]
-           <li><a class="btn btn-info" href="[% app_url %]/posts/tag/[% tag.tag.slug %]">[% tag.tag.name %]</a></li>
+           <li><a class="btn btn-info" href="[% config.app_url %]/posts/tag/[% tag.tag.slug %]">[% tag.tag.name %]</a></li>
           [% END %]
         </ul>
       </div>

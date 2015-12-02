@@ -1,0 +1,58 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use DBI;
+use Try::Tiny;
+
+$|++;
+
+my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
+my $out_file = 'asset-files.txt';
+
+my $in_dbh = DBI->connect($in_dsn,'root');
+
+#$mt_asset = {
+#          'asset_modified_by' => undef,
+#          'asset_file_path' => '%r/$_35.JPG',
+#          'asset_description' => undef,
+#          'asset_parent' => undef,
+#          'asset_blog_id' => '2165',
+#          'asset_file_ext' => 'jpg',
+#          'asset_class' => 'image',
+#          'asset_created_on' => '2014-05-16 22:02:37',
+#          'asset_created_by' => '2563',
+#          'asset_id' => '1810',
+#          'asset_modified_on' => '2014-05-16 22:02:37',
+#          'asset_url' => '%r/%24_35.JPG',
+#          'asset_file_name' => '$_35.JPG',
+#          'asset_mime_type' => 'image/jpeg',
+#          'asset_label' => '$_35.JPG'
+#        };
+
+sub migrate_assets {
+  my $filename = shift;
+  my $in_sth = $in_dbh->prepare(
+    'SELECT * FROM mt_asset ORDER BY asset_file_path'
+  );
+  $in_sth->execute();
+
+  open my $fh, '>', $filename or die $!;
+  my $count = 0;
+  while ( my $in_asset = $in_sth->fetchrow_hashref  ) {
+    print '.' if $count++ % 100 == 0;
+    my $path = $in_asset->{asset_file_path};
+    $path =~ s/^\%s//;
+    print $fh "$path\n";
+#use Data::Dumper; print Dumper($in_asset);
+#last;
+  }
+  close $fh;
+}
+
+###############################################################################
+
+print "migrating assets: ";
+migrate_assets($out_file);
+print "\n";

@@ -1,7 +1,11 @@
 <div class="blog">
+ 
+  <div class="register sign-up">
+ 
   <div class="container">
 
-      <!-- Page title -->
+
+<!--
       <div class="page-title">
          <h2><i class="icon-user color"></i> Sign-up <small> as an author </small></h2>
          <hr />
@@ -56,6 +60,56 @@
             </div>
          </div>
       </div>
+-->
 
+  [% INCLUDE components/alerts.tt %]
+       <div class="row"> 
+       <div class="col-sm-6 col-sm-offset-3 text-center"> 
+         <h3>Welcome back!</h3>
+         <h4>Please enter your credentials:</h4>
+         <p class="change_error">(or register using the social links below)</p> 
+        <div class="register-wrapper"> 
+          <form id="register_form">
+            <div class="form-group">              
+              <input type="text" class="form-control" id="usernameSingin" placeholder="Username" required>
+            </div>
+            <div class="form-group">              
+              <input type="password" class="form-control" id="passwordSignin" placeholder="Password" required>
+            </div>
+
+            
+            <div class="checkbox ">
+              <label>
+                <a href="[% config.app_url %]/password_recovery">Forgot your password?</a>
+              </label>
+            </div>
+            <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
+          </form>          
+          <div class="social_register">
+            <p>You can register using the following accounts:</p>
+            <div class="separator"></div>
+          <div class="row">
+            <div class="col-sm-12">                                                    
+              <div class="social">
+                <a href="#" class="github"><i class="icon-github"></i></a> 
+                <a href="#" class="facebook"><i class="icon-facebook"></i></a>
+                <a href="#" class="google-plus"><i class="icon-google-plus"></i></a>
+                <a href="#" class="twitter"><i class="icon-twitter"></i></a>                 
+                <a href="#" class="linkedin"><i class="icon-linkedin"></i></a>                
+              </div>                           
+             </div>
+            </div>
+          </div>          
+        </div> 
+       </div> 
+     </div> 
+  
+  
+  
+  
+  
    </div>
+   
+	</div>  
+   
 </div>

@@ -10,12 +10,13 @@ This is the base structure of the blog -->
 
   <body>
    
-    [% INCLUDE theme/header.tt %]
+  [% INCLUDE theme/header.tt %]
   
-    [% content %]
+  [% content %]
   
+  [% IF request.uri != '/register_success' and request.uri != '/register' and request.uri != '/register_done' and request.uri != '/sign-up' and request.uri != '/password_recovery' %] 
     [% INCLUDE theme/footer.tt %]  
-   
+   [% END %]
     [% INCLUDE theme/scripts.tt %]
 
   </body>

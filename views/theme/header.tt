@@ -1,19 +1,17 @@
 <div class="header">
     <div class="container">
-            <div class="col-md-3 col-sm-3">
+      <div class="row">
+            <div class="col-sm-2 pull-left">
                 <!-- Logo -->
-                <div class="logo">
-                    <h1><a href="[% session.app_url %]"> [% session.blog_name %]</a></h1>
-                </div>
+				<img src="/blog/img/logo.png">
             </div>
 
-            <div class="col-md-9 col-sm-9"> 
-                <!-- Dropdown NavBar -->
-                <div class="navis">
-                </div>
+            <div class="col-sm-2 col-sm-offset-8 pull-right"> 
+				<label>Search</label>
+				<span class="icon-search" aria-hidden="true"></span>
             </div>
               
-            [% IF session.multiuser %]
+<!--            [% IF session.multiuser %]
                 <div class="register_links">
                     [% IF session.user.username %]
                         <div class="col-md-6 pull-right">
@@ -21,14 +19,14 @@
                                 <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                                   <ul class="nav navbar-nav">
                                     <li>
-                                        <a href="[% session.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
+                                        <a href="[% config.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
                                     </li>
                                     <li class="dropdown my_account"> 
                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
                                       <ul class="dropdown-menu animated fadeInUp">
-                                        <li><a href="[% session.app_url %]/[% session.user.role %]/posts">My posts</a></li>
-                                        <li><a href="[% session.app_url %]/profile">My profile</a></li>
-                                        <li><a href="[% session.app_url %]/logout">Logout</a></li>
+                                        <li><a href="[% config.app_url %]/[% session.user.role %]/posts">My posts</a></li>
+                                        <li><a href="[% config.app_url %]/profile">My profile</a></li>
+                                        <li><a href="[% config.app_url %]/logout">Logout</a></li>
                                       </ul> 
                                     </li> 
                                   </ul> 
@@ -40,10 +38,10 @@
                             <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                                 <ul class="nav navbar-nav">
                                     <li>
-                                        <a href="[% session.app_url %]/sign-up"> Sign Up</a>
+                                        <a href="[% config.app_url %]/sign-up"> Sign Up</a>
                                     </li>
                                     <li>
-                                        <a href="[% session.app_url %]/admin"> Login</a>
+                                        <a href="[% config.app_url %]/admin"> Login</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -56,13 +54,13 @@
                         <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                           <ul class="nav navbar-nav">
                             <li>
-                                <a href="[% session.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
+                                <a href="[% config.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
                             </li>
                             <li class="dropdown my_account"> 
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
                               <ul class="dropdown-menu animated fadeInUp">
-                                <li><a href="[% session.app_url %]/profile">Profile</a></li>
-                                <li><a href="[% session.app_url %]/logout">Logout</a></li>
+                                <li><a href="[% config.app_url %]/profile">Profile</a></li>
+                                <li><a href="[% config.app_url %]/logout">Logout</a></li>
                               </ul> 
                             </li> 
                           </ul> 
@@ -70,5 +68,7 @@
                     </div>
                 </div>
             [% END %]
-    </div>
+-->
+        </div>
+      </div>
 </div>

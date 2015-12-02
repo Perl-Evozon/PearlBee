@@ -1,4 +1,25 @@
-<div class="blog">
+ <div class="blog">
+
+<div class="blog-start show">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
+				<h1>There is more than one way to blog it.</h1>
+				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
+				<div class="buttons-wrapper">
+					<button type="button" class="btn btn-signin">Sign in</button>
+					<button type="button" class="btn btn-register">Register</button>
+				</div>
+				<div class="close-overlay">
+					<span class="icon-close" id="close_overlay"><p>close and go to listings</p></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-bottom">
+	</div>
+</div>
+ 
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -41,7 +62,7 @@
                     
                     [% FOREACH category in post.post_categories %]
                       <div class="block_elements">
-                        <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                        <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
                       </div>
                     [% END %]
 
@@ -64,7 +85,7 @@
                  </div>
                  
                  <!-- Read more -->
-                 <a href="[% session.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>
+                 <a href="[% config.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>
               </div>
             [% END %]
             [% IF posts.first %]

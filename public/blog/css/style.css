@@ -18,11 +18,15 @@ body{
 }
 
 h1,h2,h3,h4{
-   font-family: 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
+   font-family: 'Montserrat', 'Open Sans', sans-serif; /* could be 'Open Sans Condensed' but it is not utf8 friendly */
 }
 
 h5,h6{
    font-family: 'Open Sans', sans-serif;
+}
+
+.btn {
+	font-family: 'Montserrat', 'Open Sans', sans-serif;
 }
 
 p{
@@ -79,8 +83,11 @@ strong{
 
 /* Basic CSS ends */
 
+.header .container {
+  line-height: 80px;
+}
 .container{
-   width:980px;
+   width:980px;   
 }
 
 .color{
@@ -171,7 +178,7 @@ strong{
    line-height:40px;
    text-decoration:none;
    text-align:center;
-   color:#fff;
+   color:#353535;
    -webkit-transition: background 2s ease;
    -moz-transition: background 2s ease;
    -o-transition: background 2s ease;
@@ -181,23 +188,23 @@ strong{
    margin-right:5px;
 }
 .social a.facebook i{
-	background:#1e78ae;
+	background:#999;
 }
 
 .social a.twitter i{
-	background:#1ba1e2;
+	background:#999;
 }
 
 .social a.google-plus i{
-	background:#f22d0c;
+	background:#999;
 }
 
-.social a.pinterest i{
-	background:#dd1617;
+.social a.github i{
+	background:#999;
 }
 
 .social a.linkedin i{
-	background:#2d93cf;
+	background:#999;
 }
 
 .social a:hover i{
@@ -320,11 +327,16 @@ strong{
 /* Logo & Navigation */
 
 .header{
-   height:70px;
-   background:#16cbe6;
-   border-top:4px solid #0fa6bc;
-   border-bottom:1px solid #0fa6bc;
-   margin-bottom: 30px;
+	height:80px;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+	background: #ffffff;
+    border-bottom: 3px solid #3BBEDC;
+}
+
+.header label {
+  margin: 0;
 }
 
 .header .logo h1{
@@ -1091,6 +1103,12 @@ strong{
 
 /* Blog */
 
+.blog {
+	position: absolute;
+	width: 100%;
+	margin-top: 80px;
+}
+
 .blog /* .entry */ h2{
    font-size:30px;
    line-height:35px;
@@ -1165,6 +1183,87 @@ strong{
 
 .blog .post-foot .social{
 	margin-top: 0px;
+}
+
+.active-overlay {
+	overflow: hidden;
+}
+
+.blog-start {
+	z-index: 12;
+	background: url("../img/camila-blue.jpg") center center no-repeat;
+	width: 100%;
+	position: absolute;
+	background-size: cover;
+	height: 26%;
+	top: 0;
+}
+
+.blog-start .container {
+	height: 100%;
+}
+
+.blog-start .container-bottom {
+	height: 100%;
+	background: #152F4A;
+	opacity:0.6;
+}
+
+.blog-start-wrapper {
+	margin-top: 13em;
+	color: #333333;
+}
+
+.blog-start-wrapper h1 {
+	font-size: 55px;
+	margin-top: 10px;
+	letter-spacing: 1px
+}
+
+.blog-start-wrapper h4 {
+	margin: 37px auto;
+	font-size: 17px;
+	width: 70%;
+	line-height: 1.2em;
+	letter-spacing: 1px;
+}
+
+.buttons-wrapper {
+	margin-top: 4em;
+	margin-bottom: 14em;
+}
+
+.buttons-wrapper button {
+	padding: 15px 46px;
+    font-weight: bold;
+	margin: 0 15px;
+}
+
+.buttons-wrapper .btn-signin {
+	color: #000000;
+	background-color: #ffffff;
+}
+
+.buttons-wrapper .btn-register {
+	color: #43C8E7;
+	background-color: #333333;
+}
+
+.blog-start .close-overlay {
+	width: 170px;
+	margin: 0 auto;
+}
+
+.blog-start #close_overlay {
+	cursor: pointer;
+}
+
+.blog-start .icon-close {
+	background: url("../img/x.png") center center no-repeat;
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	background-position-x: inherit; 
 }
 
 .sidebar{
@@ -1979,6 +2078,12 @@ footer .copy{
 /* Responsive CSS */
 
 /* Mobile phones */
+@media (max-width: 381px){
+	.buttons-wrapper {
+		margin-bottom: 11em;
+	}
+}
+
 @media (max-width: 480px){
    .carousel .carousel-caption{
       bottom:5px !important;
@@ -2009,7 +2114,13 @@ footer .copy{
 	
 	.countdown_section{
 		font-size:10px !important;
-	}   
+	}
+	
+	/* START Home-page-overlay*/
+	.blog-start-wrapper {
+		margin-top: 6em;
+	}
+	/*END Home-page-overlay*/
 }
 
 /* Tablets */
@@ -2035,10 +2146,12 @@ footer .copy{
       line-height:0;
       text-align:right;
    }  
+/*
    .header{
       height:auto;
       padding:15px 0px;
    }  
+*/
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -2083,6 +2196,13 @@ footer .copy{
    .navbar-toggle {
       margin-right:0px !important;
    }
+	
+	/* START Home-page-overlay*/
+	.blog-start {
+		height: 20% !important;
+	}
+	/*END Home-page-overlay*/
+
 }
 
 /* Desktop */
@@ -2103,6 +2223,12 @@ footer .copy{
    .catchy .report{
       margin:20px 0px 0px 0px; 
    }
+	
+	/* START Home-page-overlay*/
+	.blog-start {
+		height: 22%;
+	}	
+	/*END Home-page-overlay*/
 }
 #tag-list {
    list-style: none;
@@ -2419,10 +2545,12 @@ a:focus {
    .container{
       width:100%;
    }
+/*
    .header{
       height:auto;
       padding:15px 0px;
    }  
+*/
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -2435,3 +2563,147 @@ a:focus {
       margin-right:0px !important;
    }
 }
+
+.separator {
+  height: 1px;  
+  margin: 20px auto;
+  background-color: #444;
+  }
+
+/*style Register.tt*/
+.register {
+  position: absolute;
+  top: 80px;
+  width: 100%;  
+  background: url("../img/camila-gri.jpg") center center no-repeat;
+  background-size: cover; 
+}
+
+.register .container {
+  margin: 50px auto;
+}
+
+.register .container h3 {
+  margin-bottom: 0;
+}
+
+.register .register-wrapper {
+  margin-top: 30px;
+}
+
+.register .register-wrapper .form-group {
+  margin-bottom: 10px;
+}
+
+.register .submitRegister {
+  width: 100%;
+  height: 50px;  
+  padding: 10px;    
+  border: 0;
+  border-radius: 5px;
+  background: #333;
+  color: #3BBEDC;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.register .form-group .form-control {
+  height: 50px;
+  padding: 6px 20px;
+}
+
+.register .form-group .form-control.error:focus {
+    border-color: red;
+}
+
+.register .error {
+  color: red;
+}
+
+.register .captcha {
+  height: 110px;
+  border-radius: 5px;
+  margin-top: 25px;
+  background: url("../img/captcha.png") center center no-repeat;
+  background-size: cover;
+}
+
+.register .checkbox  {  
+  width: 70%;
+  margin: 20px auto;
+}
+
+.register .checkbox label {
+  display: inline-block;
+}
+
+.register .checkbox input {
+  height: 14px;
+  width: 14px;
+} 
+.register .social_register{
+  margin-top: 35px;
+}
+.register .separator {
+  width: 50%;
+}
+.register .social_register a i {
+  border-radius: 15px;
+}
+
+.register-success, .register-done {
+  position: absolute;
+  top: 80px;
+  width: 100%; 
+  height: calc(100% - 80px);
+  padding-top: 80px;
+  background: url("../img/camila-gri.jpg") center center no-repeat;
+  background-size: cover; 
+}
+
+.register-success h1, .register-done h1 {
+  margin-bottom: 40px;
+  font-size: 50px;
+}
+
+.register-success .text-success {  
+  color: #79A301;
+}
+
+.register-done .btn-start {
+  padding: 15px 46px;  
+  margin: 40px;
+  color: #000000;
+  background-color: #ffffff;
+  font-weight: bold;
+}
+
+/*END style Register.tt*/
+
+/*START Sing in form*/
+.sign-up {
+	top:inherit;
+	background: url('../img/camila-gri.jpg') center center no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.register .submit-recovery {
+  width: 50%;
+  height: 50px;  
+  padding: 10px;    
+  border: 0;
+  border-radius: 5px;
+  background: #333;
+  color: #3BBEDC;
+  font-weight: 700;
+  font-size: 16px;
+  float: right;
+}
+
+.sign-up .pass_recov {
+	margin-top: 15em;
+}
+/*END Sing in form*/
+

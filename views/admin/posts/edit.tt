@@ -7,7 +7,7 @@
                <!-- Page title -->
                
                   [% SET role = ( session.user.is_admin ) ? "admin" : "author" %]
-                  <form class="form-horizontal" method="post" enctype="multipart/form-data" action="[% session.app_url %]/[% role %]/posts/update/[% post.id %]">
+                  <form class="form-horizontal" method="post" enctype="multipart/form-data" action="[% config.app_url %]/[% role %]/posts/update/[% post.id %]">
                     <div class="row">
                        
                        <div class="col-md-8">

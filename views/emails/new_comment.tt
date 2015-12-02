@@ -65,7 +65,7 @@
 				<br />
 				<i>[% signature %]</i>
 				<br />
-				<a href="[% app_url %]"> [% app_url %] </a>
+				<a href="[% config.app_url %]"> [% config.app_url %] </a>
 			</div>
 		</div>
 	</div>

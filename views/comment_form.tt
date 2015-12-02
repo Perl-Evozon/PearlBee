@@ -3,7 +3,7 @@
         <h5>Comment</h5>
     </div>
     
-    <form [% (!session.user.id ? 'class="comment_form"' : '') %] role="form" action="[% session.app_url %]/comment/add" method="post">
+    <form [% (!session.user.id ? 'class="comment_form"' : '') %] role="form" action="[% config.app_url %]/comment/add" method="post">
         
         [% IF session.user.username %]
             

@@ -6,10 +6,11 @@
 			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
 				<h1>There is more than one way to blog it.</h1>
 				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
-				<div class="buttons-wrapper">
-					<button type="button" class="btn btn-signin">Sign in</button>
-					<button type="button" class="btn btn-register">Register</button>
-				</div>
+                                <div class="buttons-wrapper">
+                                        <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin">Sign in</button></a>
+                                        <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register">Register</button></a>
+                                </div>
+
 				<div class="close-overlay">
 					<span class="icon-close" id="close_overlay"><p>close and go to listings</p></span>
 				</div>

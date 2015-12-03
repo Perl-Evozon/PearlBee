@@ -31,10 +31,13 @@ my $in_dbh = DBI->connect($in_dsn,'root');
 #          'asset_label' => '$_35.JPG'
 #        };
 
+my $MT_PATH = '/MT-4.38-en/mt-static';
+my $per_user = '/users';
+
 sub migrate_assets {
   my $filename = shift;
   my $in_sth = $in_dbh->prepare(
-    'SELECT * FROM mt_asset ORDER BY asset_file_path'
+    'SELECT asset_file_path,author_basename FROM mt_asset join mt_author on mt_asset.asset_created_by = mt_author.author_id ORDER BY asset_file_path'
   );
   $in_sth->execute();
 
@@ -42,9 +45,10 @@ sub migrate_assets {
   my $count = 0;
   while ( my $in_asset = $in_sth->fetchrow_hashref  ) {
     print '.' if $count++ % 100 == 0;
-    my $path = $in_asset->{asset_file_path};
-    $path =~ s/^\%s//;
-    print $fh "$path\n";
+#use Data::Dumper; print Dumper($in_asset);
+    $in_asset->{asset_file_path} =~ s{^\%s}{$MT_PATH};
+    $in_asset->{asset_file_path} =~ s{^\%r}{$per_user/$in_asset->{author_basename}};
+    print $fh "$in_asset->{asset_file_path}\n";
 #use Data::Dumper; print Dumper($in_asset);
 #last;
   }

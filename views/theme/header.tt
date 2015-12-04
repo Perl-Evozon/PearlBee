@@ -1,74 +1,21 @@
 <div class="header">
     <div class="container">
       <div class="row">
-            <div class="col-sm-2 pull-left">
+            <div class="pull-left">
                 <!-- Logo -->
-				<img src="/blog/img/logo.png">
+				<img src="/blog/img/blog-logo.png">
             </div>
 
-            <div class="col-sm-2 col-sm-offset-8 pull-right"> 
-				<label>Search</label>
-				<span class="icon-search" aria-hidden="true"></span>
+            <div class="pull-right">
+            	<div class="search header-icon">
+					<label class="search-label">Search</label>
+					<span class="search-icon icon" aria-hidden="true"></span>
+           		</div>
+           		<div class="user header-icon hidden" style="display:inline-block">
+           			<span class="icon-user icon icon-toggle"></span>
+           		</div>
             </div>
               
-<!--            [% IF session.multiuser %]
-                <div class="register_links">
-                    [% IF session.user.username %]
-                        <div class="col-md-6 pull-right">
-                            <div class="navbar" role="banner">
-                                <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                                  <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="[% config.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
-                                    </li>
-                                    <li class="dropdown my_account"> 
-                                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
-                                      <ul class="dropdown-menu animated fadeInUp">
-                                        <li><a href="[% config.app_url %]/[% session.user.role %]/posts">My posts</a></li>
-                                        <li><a href="[% config.app_url %]/profile">My profile</a></li>
-                                        <li><a href="[% config.app_url %]/logout">Logout</a></li>
-                                      </ul> 
-                                    </li> 
-                                  </ul> 
-                                </nav>
-                            </div>
-                         </div>
-                    [% ELSE %]
-                        <div class="navbar" role="banner">
-                            <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                                <ul class="nav navbar-nav">
-                                    <li>
-                                        <a href="[% config.app_url %]/sign-up"> Sign Up</a>
-                                    </li>
-                                    <li>
-                                        <a href="[% config.app_url %]/admin"> Login</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    [% END%]
-                </div>
-            [% ELSIF session.user.username %]
-                <div class="col-md-6 pull-right">
-                    <div class="navbar" role="banner">
-                        <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
-                          <ul class="nav navbar-nav">
-                            <li>
-                                <a href="[% config.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
-                            </li>
-                            <li class="dropdown my_account"> 
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
-                              <ul class="dropdown-menu animated fadeInUp">
-                                <li><a href="[% config.app_url %]/profile">Profile</a></li>
-                                <li><a href="[% config.app_url %]/logout">Logout</a></li>
-                              </ul> 
-                            </li> 
-                          </ul> 
-                        </nav>
-                    </div>
-                </div>
-            [% END %]
--->
         </div>
       </div>
 </div>

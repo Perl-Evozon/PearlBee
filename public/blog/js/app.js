@@ -37,17 +37,7 @@ $(document).ready(function() {
             $( "#" + reply_comm ).show();
         }
     });
-	
-//	Blog start overlay
-	if ($(".blog-start").hasClass("show")) {
-		$("body").addClass("active-overlay");
-	}
-	
-	$("#close_overlay").on('click', function() {
-		$(".blog-start").slideToggle( "slow" );
-		$(".blog-start").removeClass("show");
-		$("body").removeClass("active-overlay");
-	});
+
 
 //    Register
   $("#confirmPasswordRegister").keyup(function() {
@@ -129,11 +119,43 @@ $(document).ready(function() {
       }
     });
 
+	
+//	Blog start overlay
+	if ($(".blog-start").hasClass("show")) {
+		$("body").addClass("active-overlay");
+	}
+	
+	$("#close_overlay").on('click', function() {
+		$(".blog-start").slideToggle( "slow" );
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+	});
+	
+//	$('.blog-start').css('min-height',$(window).height() * 0.3);
+//	$(window).resize(function(){
+//	  $('.blog-start').css('min-height',$(window).height() * 0.3);
+//	});
 
 //	Sign up
 	$('.sign-up').css('min-height',$(window).height()-80);
 	$(window).resize(function(){
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
-  
+	
+//	Header
+	if ($(window).width() <= 800){
+		$("body").removeClass("active-overlay");
+		$(".search-label").addClass("hidden");
+		$(".user").removeClass("hidden");
+		$(".blog-start").addClass("hidden");
+		$(".user").click(function(){
+			$(".blog-start").toggleClass("hidden");
+			$("body").toggleClass("active-overlay");
+		});
+	}
+	else {
+		$(".user").addClass("hidden");
+		$(".blog-start").removeClass("hidden");
+	}
+	
 });

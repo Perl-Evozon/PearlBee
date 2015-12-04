@@ -12,7 +12,8 @@
                                 </div>
 
 				<div class="close-overlay">
-					<span class="icon-close" id="close_overlay"><p>close and go to listings</p></span>
+					<span class="icon-close" id="close_overlay"></span>
+					<span class="close-overlay-text">close and go to listings</span>
 				</div>
 			</div>
 		</div>

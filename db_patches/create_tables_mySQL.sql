@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `preferred_language` varchar(50) DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255), -- Weakening
+  `avatar_path` varchar(255) DEFAULT NULL,
   `company` varchar(255) DEFAULT NULL,
   `telephone` varchar(12) DEFAULT NULL,
   `role` varchar(255) CHARACTER SET ucs2 NOT NULL DEFAULT 'author',
@@ -107,6 +108,20 @@ CREATE TABLE IF NOT EXISTS `post` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Post table.';
+
+
+CREATE TABLE IF NOT EXISTS `asset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `blog_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `file_ext` varchar(20) NOT NULL,
+  `file_name` varchar(20) NOT NULL,
+  `file_path` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+
+  CONSTRAINT `asset_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`),
+  CONSTRAINT `asset_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Asset table.';
 
 
 CREATE TABLE IF NOT EXISTS `post_category` (

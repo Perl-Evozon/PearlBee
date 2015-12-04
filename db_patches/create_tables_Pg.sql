@@ -36,6 +36,7 @@ CREATE TABLE "user" (
   preferred_language varchar(50) NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255), -- weakening
+  avatar_path varchar(255) DEFAULT NULL,
   company varchar(255) DEFAULT NULL,
   telephone varchar(12) DEFAULT NULL,
   role varchar(255) NOT NULL REFERENCES role (name) DEFAULT 'author',
@@ -117,6 +118,16 @@ CREATE TABLE post (
   status post_status DEFAULT 'draft',
   user_id integer NOT NULL REFERENCES "user" (id),
   PRIMARY KEY (id)
+);
+
+
+CREATE TABLE asset (
+  id serial NOT NULL,
+  blog_id integer NOT NULL REFERENCES blog (id),
+  user_id integer NOT NULL REFERENCES "user" (id),
+  file_ext varchar(20) NOT NULL,
+  file_name varchar(20) NOT NULL,
+  file_path varchar(20) NOT NULL
 );
 
 

@@ -8,10 +8,22 @@ use Try::Tiny;
 
 $|++;
 
+my $MT_PATH = '/MT-4.38-en/mt-static';
+my $per_user = '/users';
+
 my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
 my $out_file = 'asset-files.txt';
 
 my $in_dbh = DBI->connect($in_dsn,'root');
+
+sub munge_asset_file_path {
+  my $in_asset = shift;
+  $in_asset->{asset_file_path} =~ s{^\%s}{$MT_PATH};
+  $in_asset->{asset_file_path} =~
+    s{^\%r}{$per_user/$in_asset->{author_basename}};
+}
+
+###############################################################################
 
 #$mt_asset = {
 #          'asset_modified_by' => undef,
@@ -31,9 +43,6 @@ my $in_dbh = DBI->connect($in_dsn,'root');
 #          'asset_label' => '$_35.JPG'
 #        };
 
-my $MT_PATH = '/MT-4.38-en/mt-static';
-my $per_user = '/users';
-
 sub migrate_assets {
   my $filename = shift;
   my $in_sth = $in_dbh->prepare(
@@ -45,9 +54,8 @@ sub migrate_assets {
   my $count = 0;
   while ( my $in_asset = $in_sth->fetchrow_hashref  ) {
     print '.' if $count++ % 100 == 0;
+    munge_asset_file_path($in_asset);
 #use Data::Dumper; print Dumper($in_asset);
-    $in_asset->{asset_file_path} =~ s{^\%s}{$MT_PATH};
-    $in_asset->{asset_file_path} =~ s{^\%r}{$per_user/$in_asset->{author_basename}};
     print $fh "$in_asset->{asset_file_path}\n";
 #use Data::Dumper; print Dumper($in_asset);
 #last;
@@ -60,3 +68,5 @@ sub migrate_assets {
 print "migrating assets: ";
 migrate_assets($out_file);
 print "\n";
+
+# exit;

@@ -9,6 +9,9 @@ use Try::Tiny;
 
 $|++;
 
+my $MT_PATH = '/MT-4.38-en/mt-static';
+my $per_user = '/users';
+
 my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
 #my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
 my $out_dsn = 'dbi:mysql:dbname=BlogsPerlOrg';
@@ -16,6 +19,15 @@ my $out_dsn = 'dbi:mysql:dbname=BlogsPerlOrg';
 my $in_dbh = DBI->connect($in_dsn,'root');
 #my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
 my $out_dbh = DBI->connect($out_dsn,'root','');
+
+sub munge_asset_file_path {
+  my $in_asset = shift;
+  $in_asset->{asset_file_path} =~ s{^\%s}{$MT_PATH};
+  $in_asset->{asset_file_path} =~
+    s{^\%r}{$per_user/$in_asset->{author_basename}};
+}
+
+###############################################################################
 
 sub map_user {
   my $user = shift;
@@ -83,6 +95,37 @@ try {
 }
 catch {
   die "Failed to insert user '$in_user->{name}: $_ $!\n";
+};
+  }
+}
+
+###############################################################################
+
+sub create_avatars {
+  my $in_sth = $in_dbh->prepare(<<EOF);
+SELECT author_id,
+       author_basename,
+       asset_file_path
+  FROM mt_asset
+  JOIN mt_author
+    ON author_userpic_asset_id = asset_id
+EOF
+  my $out_sth = $out_dbh->prepare(
+    'UPDATE `user` SET avatar_path = ? WHERE id = ?'
+  );
+  $in_sth->execute();
+
+  my $count = 0;
+  while ( my $in_asset = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+    munge_asset_file_path($in_asset);
+#use Data::Dumper; print Dumper($in_user);
+#last;
+try {
+    $out_sth->execute( $in_asset->{asset_file_path}, $in_asset->{author_id} );
+}
+catch {
+  die "Failed to update user '$in_asset->{author_id}: $_ $!\n";
 };
   }
 }
@@ -414,8 +457,51 @@ sub migrate_tags {
 
 ###############################################################################
 
+sub map_asset {
+  my $asset = shift;
+  return {
+    id => $asset->{asset_id},
+    blog_id => $asset->{asset_blog_id},
+    user_id => $asset->{asset_created_by},
+    file_ext => $asset->{asset_file_ext},
+    file_name => $asset->{asset_file_name},
+    file_path => $asset->{asset_file_path},
+  };
+}
+#$mt_asset = {
+#};
+
+sub migrate_assets {
+  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_asset ORDER BY asset_id');
+  my $out_sth = $out_dbh->prepare(
+    'INSERT INTO asset(id,blog_id,user_id,file_ext,file_name,file_path) VALUES(?,?,?,?,?,?)'
+  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_asset = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+    next if $in_asset->{asset_blog_id} == 0; # XXX Avatar assets are skipped.
+#use Data::Dumper; print Dumper($in_asset);
+#last;
+    my $out_asset = map_asset($in_asset);
+    $out_sth->execute(
+        @{$out_asset}{qw( id blog_id user_id file_ext file_name file_path )}
+    );
+  }
+}
+
+
+###############################################################################
+
 print "migrating users: ";
 migrate_users;
+print "\n";
+
+#exit;
+
+print "creating user avatars: ";
+create_avatars;
 print "\n";
 
 #exit;
@@ -423,6 +509,8 @@ print "\n";
 print "migrating blogs: ";
 migrate_blogs;
 print "\n";
+
+#exit;
 
 print "synthesizing blog owners: ";
 synthesize_blog_owners;
@@ -450,4 +538,10 @@ print "\n";
 
 print "migrating tags: ";
 migrate_tags;
+print "\n";
+
+#exit;
+
+print "migrating assets: ";
+migrate_assets;
 print "\n";

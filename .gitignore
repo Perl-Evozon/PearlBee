@@ -1,10 +1,13 @@
 .build
+PearlBee-*
 tags
-Makefile
 blib
 cover_db
 pm_to_blib
+Makefile
+Makefile.PL
 Makefile.old
+MANIFEST
 *~
 MYMETA.json
 MYMETA.yml

@@ -20,7 +20,7 @@ __PACKAGE__->result_source_instance->view_definition(
         post AS P
         ON
           P.id = C.post_id
-      INNER JOIN user AS U
+      INNER JOIN users AS U
         ON
           P.user_id = U.id
     WHERE

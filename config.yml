@@ -36,16 +36,15 @@ engines:
       session_dir: "/tmp/pearlbee"
 
 plugins:
-      DBIC:
+    DBIC:
         default:
-          dsn: dbi:mysql:PearlBee
+          dsn: dbi:Pg:dbname=pearlbee
           schema_class: PearlBee::Model::Schema
-          user: root
-          pass: mysqlpassword
+          user: pearlbee_user
+          password: password
           options:
             RaiseError: 1
             PrintError: 1
-            mysql_enable_utf8: 1
 
 # Constants
 captcha_folder :  'public/captcha/'

@@ -43,8 +43,7 @@ sub map_user {
 #    telephone => # XXX not present in MT data
     role               => $user->{author_is_superuser} ? 'admin' : 'author',
 #    activation_key => undef, # XXX not present in MT data
-#    status => 
-#    salt =>
+    status             => $user->{author_status} == 1 ? 'activated' : 'deactivated',
   };
 }
 
@@ -78,7 +77,7 @@ sub migrate_users {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_author ORDER BY author_id');
   my $out_sth = $out_dbh->prepare(
     #'INSERT INTO "user"(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
-    'INSERT INTO `user`(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
+    'INSERT INTO `user`(id,name,username,password,status,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -90,7 +89,7 @@ sub migrate_users {
     my $out_user = map_user($in_user);
 try {
     $out_sth->execute(
-        @{$out_user}{qw( id name username password preferred_language register_date email role )}
+        @{$out_user}{qw( id name username password status preferred_language register_date email role )}
     );
 }
 catch {

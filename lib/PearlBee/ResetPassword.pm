@@ -45,7 +45,7 @@ any ['post', 'get'] => '/set-password' => sub {
 
                 # passwords must be typed in twice and they were the same
                 if ( $params->{'password'} eq $params->{'rep_password'} ) {
-                    my $password = generate_hash( $params->{'password'}, $al->salt );
+                    my $password = crypt( $params->{'password'}, $al->salt );
                     
                     if ( $al->update( {password => $password->{hash}, activation_key => ''} ) ) {
                         my $user_obj->{is_admin} = $al->is_admin;

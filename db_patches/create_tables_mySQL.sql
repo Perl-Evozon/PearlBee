@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
   `username` varchar(200) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `salt` varchar(48) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255), -- Weakening

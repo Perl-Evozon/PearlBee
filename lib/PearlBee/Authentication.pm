@@ -35,13 +35,13 @@ post '/login' => sub {
       ]
     })->first;
   
-  my $password_hash = generate_hash($password) if $user;#, $user->salt) if $user;
+  my $password_hash = crypt( $password, $user->password );
   if($user && $user->password eq $password_hash->{hash}) {
     
     my $user_obj->{is_admin} = $user->is_admin;
     $user_obj->{role}        = $user->role;
     $user_obj->{id}          = $user->id;
-	$user_obj->{username}    = $user->username;
+    $user_obj->{username}    = $user->username;
 
     session user => $user_obj;
     session user_id => $user->id;

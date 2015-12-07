@@ -32,7 +32,6 @@ CREATE TABLE "user" (
   name varchar(255) NULL,
   username varchar(200) NOT NULL UNIQUE,
   password varchar(128) NOT NULL,
-  salt varchar(48) NOT NULL,
   preferred_language varchar(50) NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255), -- weakening

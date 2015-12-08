@@ -45,11 +45,12 @@ get '/search/posts/:query' => sub {
         for (my $i = 0; $i < $elastic_results->{hits}{total}; $i++) {
             my $rs = resultset('Post')->find({ id => $elastic_results->{hits}{hits}[$i]{_id}});
             push (@results, {
-                id          => $rs->id,
-                title       => $rs->title,
-                slug        => $rs->slug,
-                description => $rs->description,
-                content     => $rs->content
+                id            => $rs->id,
+                title         => $rs->title,
+                slug          => $rs->slug,
+                description   => $rs->description,
+                content       => $rs->content,
+                created_date  => $rs->created_date
             });
         }
     } catch {

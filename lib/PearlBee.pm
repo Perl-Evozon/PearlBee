@@ -46,6 +46,20 @@ hook 'before' => sub {
 
 =head
 
+Blog assets - XXX this should be managed by nginx or something.
+
+=cut
+
+set public_dir => path(config->{user_assets});
+
+get '/users/*' => sub {
+    my ( $file ) = splat;
+
+    send_file $file;
+};
+
+=head
+
 Home page
 
 =cut
@@ -367,6 +381,13 @@ get '/posts/user/:username' => sub {
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
+
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);

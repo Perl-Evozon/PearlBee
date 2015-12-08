@@ -66,6 +66,10 @@ images_path:      '/uploads/images'
 app_url:          'http://localhost:5000'
 email_templates:  'views/emails/'
 
+# Images from MovableType
+movable_type_url: 'http://blogs.perl.org'
+user_assets:      '/root'
+
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'
 default_email_sender:  'no-reply@pearlbee.com'

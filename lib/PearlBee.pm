@@ -3,6 +3,7 @@ package PearlBee;
 
 use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::reCAPTCHA;
 
 # Other used modules
 use DateTime;
@@ -133,8 +134,6 @@ get '/post/:slug' => sub {
   my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  new_captcha_code();
-
   # Grab the approved comments for this post and the corresponding reply comments
   my @comments;
   @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
@@ -157,6 +156,7 @@ get '/post/:slug' => sub {
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
+      recaptcha  => recaptcha_display(),
     };
 };
 
@@ -196,7 +196,9 @@ post '/comment/add' => sub {
     warning     => 'The secret code is incorrect'
   };
 
-  if ( check_captcha_code($secret) ) {
+  my $response = param('g-recaptcha-response');
+  my $result = recaptcha_verify($response);
+  if ( $result->{success} ) {
     # The user entered the correct secret code
     eval {
 
@@ -256,8 +258,7 @@ post '/comment/add' => sub {
     }
   }
   $template_params->{comments} = \@comments;
-
-  new_captcha_code();
+  $template_params->{recaptcha} = recaptcha_display();
 
   template 'post', $template_params;
 
@@ -537,9 +538,9 @@ get '/password_recovery' => sub {
 
 get '/sign-up' => sub {
 
-  new_captcha_code();
-
-  template 'signup', {};
+  template 'signup', {
+    recaptcha => recaptcha_display()
+  };
 };
 
 post '/sign-up' => sub {
@@ -553,7 +554,9 @@ post '/sign-up' => sub {
     name            => $params->{'name'},
   };
 
-  if ( check_captcha_code($params->{'secret'}) ) {
+  my $response = $params->{'g-recaptcha-response'};
+  my $result = recaptcha_verify($response);
+  if ( $result->{success} ) {
     # The user entered the correct secrete code
     eval {
 
@@ -621,44 +624,12 @@ post '/sign-up' => sub {
 
   if ($err) {
     $template_params->{warning} = $err if $err;
-
-    new_captcha_code();
+    $template_params->{recaptcha} = recaptcha_display();
 
     template 'signup', $template_params;
   } else {
     template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
   }
 };
-
-sub new_captcha_code {
-
-  my $code = PearlBee::Helpers::Captcha::generate();
-
-  session secret => $code;
-  session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
-  push @{ session('secrets') }, $code;
-
-  return $code;
-}
-
-sub check_captcha_code {
-  my $code = shift;
-
-  my $ok = 0;
-  my $sess = session();
-
-  if ($sess->{data}->{secrets}) {
-    foreach my $secret (@{$sess->{data}->{secrets}}) {
-      my $result= $PearlBee::Helpers::Captcha::captcha->check_code($code, $secret);
-      if ( $result == 1 ) {
-        $ok = 1;
-        session secrets => [];
-        last;
-      }
-    }
-  }
-
-  return $ok;
-}
 
 1;

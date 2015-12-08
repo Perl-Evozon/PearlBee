@@ -50,9 +50,15 @@ plugins:
         title: 'blogs.perl.org'
         format: 'Atom'
         max_posts: 10
+      reCAPTCHA:
+        site_key: 'XXX'
+        secret: 'XXX'
+        options:
+          theme: 'light'
+          type: 'image'
+          size: 'normal'
 
 # Constants
-captcha_folder :  'public/captcha/'
 covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'

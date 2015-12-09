@@ -155,8 +155,15 @@ any '/admin/users/deactivate/:id' => sub {
 
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
+  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
 
-  eval { $user->deactivate(); };
+  if ( $user->is_admin and
+       $admin_user_count <= 1 ) {
+      error "Could not deactivate the only active user";
+  }
+  else {
+      eval { $user->deactivate(); };
+  }
 
   redirect session('app_url') . '/admin/users';
 };
@@ -171,8 +178,15 @@ any '/admin/users/suspend/:id' => sub {
 
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
+  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
 
-  eval { $user->suspend(); };
+  if ( $user->is_admin and
+       $admin_user_count <= 1 ) {
+      error "Could not suspend the only active user";
+  }
+  else {
+      eval { $user->suspend(); };
+  }
 
   redirect session('app_url') . '/admin/users';
 };

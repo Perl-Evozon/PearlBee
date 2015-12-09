@@ -1,9 +1,12 @@
 <div class="mainy">
    <!-- Page title -->
     <div class="page-title">
-       <h2><i class="icon-user color"></i> Users <small>a list of all registerd users</small></h2>
+       <h2><i class="icon-user color"></i> Users <small>a list of all registered users</small></h2>
        <hr />
     </div>
+
+    [% INCLUDE components/alerts.tt %]
+
     <div class="col-md-12">         
             
 	    <div class="awidget">
@@ -17,8 +20,8 @@
 	        <div class="awidget-body">          
 
 	        	<a href="/admin/users/page/1"> 	All </a>([% all %]) | 
-	        	<a href="/admin/users/deactivated/page/1"> Inactive </a>([% deactivated %]) | 
-	        	<a href="/admin/users/activated/page/1"> Active </a>([% activated %]) |
+	        	<a href="/admin/users/deactivated/page/1"> Inactive </a>([% inactive %]) | 
+	        	<a href="/admin/users/activated/page/1"> Active </a>([% active %]) |
 				[% IF session.multiuser %]
 				  <a href="/admin/users/suspended/page/1"> Suspended </a>([% suspended %]) |
 				  <a href="/admin/users/pending/page/1"> Pending </a>([% pending %])
@@ -32,7 +35,7 @@
 							<th> Username 		</th>
 							<th> Full name 		</th>
 							<th> Email 			</th>
-							<th> Registerd Date </th>
+							<th> Registered Date </th>
 							<th> Role 			</th>
 						</tr>
 					</thead>
@@ -51,7 +54,7 @@
 									   <span class="label label-warning"> Pending </span>&nbsp;&nbsp;|
    									   <a href="/admin/users/allow/[% user.id %]"> Allow </a>
 									[% ELSE %]
-									   [% IF (user.status == 'deactivated') %]
+									   [% IF (user.status == 'inactive') %]
 										   <span class="label label-warning"> Deactivated </span>
 									   [% ELSE %]
 										   <a href="/admin/users/deactivate/[% user.id %]" > Deactivate </a>
@@ -59,7 +62,7 @@
    
 									   |
    
-									   [% IF (user.status == 'activated') %]
+									   [% IF (user.status == 'active') %]
 										   <span class="label label-success"> Activated </span>
 									   [% ELSE %]
 										   <a href="/admin/users/activate/[% user.id %]"> Activate </a>
@@ -68,9 +71,9 @@
 									   |
    
 									   [% IF (user.status == 'suspended') %]
-										   <span class="label label-danger"> Supended </span>
+										   <span class="label label-danger"> Suspended </span>
 									   [% ELSE %]
-										   <a href="/admin/users/suspend/[% user.id %]"> Supend </a>
+										   <a href="/admin/users/suspend/[% user.id %]"> Suspend </a>
 									   [% END %]
 									[% END %]
 									

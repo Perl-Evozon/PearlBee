@@ -14,6 +14,9 @@ layout: "main"
 # about unicode within your app when this setting is set (recommended).
 charset: "UTF-8"
 
+# This should be users if you are using postgres, otherwise leave it
+# at user for MySQL
+user_table: users
 
 # template engine
 # simple: default and very basic template engine
@@ -37,14 +40,19 @@ engines:
 
 plugins:
     DBIC:
+        # Toggle comments when switching between postgres and mysql
         default:
-          dsn: dbi:Pg:dbname=pearlbee
           schema_class: PearlBee::Model::Schema
+          #dsn: dbi:mysql:PearlBee
+          #user: root
+          #pass: mysqlpassword
+          dsn: dbi:Pg:dbname=pearlbee
           user: pearlbee_user
           password: password
           options:
             RaiseError: 1
             PrintError: 1
+            #mysql_enable_utf8: 1
 
 # Constants
 captcha_folder :  'public/captcha/'

@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
     role user_roles NOT NULL DEFAULT 'author',
     activation_key varchar(100) DEFAULT NULL,
     status user_status NOT NULL DEFAULT 'deactivated',
-    salt char(24) NOT NULL,
+    salt char(30) NOT NULL,
     UNIQUE ( username ),
     UNIQUE ( email )
 );
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS settings (
 create or replace function bool_add (bigint, boolean)
     returns bigint as
 $body$
-    select $1 + case when true then 1 else 0 end;
+    select $1 + case $2 when true then 1 else 0 end;
 $body$ language sql;
 
 create aggregate sum(boolean) (
@@ -140,3 +140,4 @@ INSERT INTO category VALUES (1,'Uncategorized','uncategorized',1);
 
 INSERT INTO settings VALUES ('Europe/Bucharest',1,'','/','PearlBee',1,0);
 
+ALTER SEQUENCE users_id_seq RESTART WITH 2;

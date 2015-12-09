@@ -17,8 +17,8 @@ CREATE TABLE role (
 
 
 CREATE TYPE active_state AS ENUM (
-  'deactivated',
-  'activated',
+  'inactive',
+  'active',
   'suspended',
   'pending'
 );
@@ -40,7 +40,7 @@ CREATE TABLE "user" (
   telephone varchar(12) DEFAULT NULL,
   role varchar(255) NOT NULL REFERENCES role (name) DEFAULT 'author',
   activation_key varchar(100) DEFAULT NULL,
-  status active_state NOT NULL DEFAULT 'deactivated'
+  status active_state NOT NULL DEFAULT 'inactive'
 );
 
 
@@ -73,7 +73,7 @@ CREATE TABLE blog (
   description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
-  status active_state NOT NULL DEFAULT 'deactivated'
+  status active_state NOT NULL DEFAULT 'inactive'
 );
 
 
@@ -81,7 +81,7 @@ CREATE TABLE blog_owners (
   user_id integer NOT NULL REFERENCES "user" (id),
   blog_id integer NOT NULL REFERENCES blog (id),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  status active_state NOT NULL DEFAULT 'deactivated',
+  status active_state NOT NULL DEFAULT 'inactive',
   PRIMARY KEY (user_id,blog_id)
 );
 

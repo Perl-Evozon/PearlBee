@@ -38,7 +38,7 @@ get '/admin/users/page/:page' => sub {
   
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
+  my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   
   if (! session('multiuser')) {
     # do not count 'pending' users
@@ -62,8 +62,8 @@ get '/admin/users/page/:page' => sub {
     {
       users         => \@users,
       all           => $all, 
-      activated     => $activated,
-      deactivated   => $deactivated,
+      active        => $active,
+      inactive      => $inactive,
       suspended     => $suspended,
       pending       => $pending,
       page          => $page,
@@ -90,7 +90,7 @@ get '/admin/users/:status/page/:page' => sub {
   my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
+  my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   my $status_count                                = $count->get_status_count($status);
   
   if (! session('multiuser')) {
@@ -114,8 +114,8 @@ get '/admin/users/:status/page/:page' => sub {
     {
       users         => \@users,
       all           => $all, 
-      activated     => $activated,
-      deactivated   => $deactivated,
+      active        => $active,
+      inactive      => $inactive,
       suspended     => $suspended,
       pending       => $pending,
       page          => $page,

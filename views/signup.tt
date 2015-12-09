@@ -67,12 +67,12 @@
          <h4>Please enter your credentials:</h4>
          <p class="change_error">(or register using the social links below)</p> 
         <div class="register-wrapper"> 
-          <form id="register_form">
+          <form id="register_form" action="/login" method="post">
             <div class="form-group">              
-              <input type="text" class="form-control" id="usernameSingin" placeholder="Username" required>
+              <input type="text" class="form-control" id="usernameSingin" placeholder="Username" name="username" required>
             </div>
             <div class="form-group">              
-              <input type="password" class="form-control" id="passwordSignin" placeholder="Password" required>
+              <input type="password" class="form-control" id="passwordSignin" placeholder="Password" name="password" required>
             </div>
 
             

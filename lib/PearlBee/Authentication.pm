@@ -30,13 +30,17 @@ post '/login' => sub {
   my $user = resultset("User")->search({
       username => $username,
       -or => [
-      	status => 'activated',
-      	status => 'deactivated'
+      	status => 'active',
+      	status => 'inactive'
       ]
     })->first;
   
+  unless ( $user ) {
+    template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
+  }
+
   my $password_hash = crypt( $password, $user->password );
-  if($user && $user->password eq $password_hash->{hash}) {
+  if($user && $user->password eq $password_hash) {
     
     my $user_obj->{is_admin} = $user->is_admin;
     $user_obj->{role}        = $user->role;

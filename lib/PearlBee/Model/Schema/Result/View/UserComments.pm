@@ -6,12 +6,15 @@ use strict;
 use warnings;
 use base qw/DBIx::Class::Core/;
 
+use Dancer2;
+my $user_table = config->{ user_table };
+
 __PACKAGE__->table_class('DBIx::Class::ResultSource::View');
 __PACKAGE__->table('comment');
 __PACKAGE__->result_source_instance->is_virtual(1);
 
 __PACKAGE__->result_source_instance->view_definition(
-    q[
+   qq[
       SELECT
         C.content AS content, C.id AS id, C.uid AS uid, C.reply_to AS reply_to, C.comment_date AS comment_date, C.email AS email, C.status as status, C.fullname AS fullname, P.title AS post_title, P.id AS post_id
     FROM
@@ -20,7 +23,7 @@ __PACKAGE__->result_source_instance->view_definition(
         post AS P
         ON
           P.id = C.post_id
-      INNER JOIN users AS U
+      INNER JOIN $user_table AS U
         ON
           P.user_id = U.id
     WHERE

@@ -39,6 +39,13 @@ $(document).ready(function() {
     });
 
 
+//    Truncate Post content
+
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
+
 //    Register
   $("#confirmPasswordRegister").keyup(function() {
     if( $(this).val() !== $("#passwordRegister").val() ){
@@ -141,6 +148,15 @@ $(document).ready(function() {
 	$(window).resize(function(){
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
+
+  
+});
+
+$(window).resize(function(){
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
 	
 //	Header
 	if ($(window).width() <= 800){
@@ -158,4 +174,5 @@ $(document).ready(function() {
 		$(".blog-start").removeClass("hidden");
 	}
 	
+
 });

@@ -37,8 +37,7 @@
             <br />
             <br />
             <div class="cf">
-                <img src="/captcha/image/[% session.secret %].png" />
-                <input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/>
+                [% recaptcha %]
             </div>
             <br />
             <input type="hidden" value="[% post.id %]" name="id" />

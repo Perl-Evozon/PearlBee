@@ -22,7 +22,7 @@ hook 'before' => sub {
 
   # Check if the user is activated
   if ( $request !~ /\/dashboard/ && $user) {
-    redirect session('app_url') . '/dashboard'  if ( $user->status eq 'deactivated' );
+    redirect session('app_url') . '/dashboard'  if ( $user->status eq 'inactive' );
   }
 
   # Restrict access to non-admin users

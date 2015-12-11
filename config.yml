@@ -50,15 +50,25 @@ plugins:
         title: 'blogs.perl.org'
         format: 'Atom'
         max_posts: 10
+      reCAPTCHA:
+        site_key: 'XXX'
+        secret: 'XXX'
+        options:
+          theme: 'light'
+          type: 'image'
+          size: 'normal'
 
 # Constants
-captcha_folder :  'public/captcha/'
 covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
 app_url:          'http://172.22.120.232:5000'
 email_templates:  'views/emails/'
+
+# Images from MovableType
+movable_type_url: 'http://blogs.perl.org'
+user_assets:      '/root'
 
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'

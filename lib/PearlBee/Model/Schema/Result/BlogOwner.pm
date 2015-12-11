@@ -57,8 +57,8 @@ __PACKAGE__->table("blog_owners");
 =head2 status
 
   data_type: 'enum'
-  default_value: 'deactivated'
-  extra: {list => ["deactivated","activated","suspended","pending"]}
+  default_value: 'inactive'
+  extra: {list => ["inactive","active","suspended","pending"]}
   is_nullable: 0
 
 =cut
@@ -78,8 +78,8 @@ __PACKAGE__->add_columns(
   "status",
   {
     data_type => "enum",
-    default_value => "deactivated",
-    extra => { list => ["deactivated", "activated", "suspended", "pending"] },
+    default_value => "inactive",
+    extra => { list => ["inactive", "active", "suspended", "pending"] },
     is_nullable => 0,
   },
 );

@@ -9,16 +9,17 @@ requires 'Digest::Bcrypt';
 requires 'Data::Entropy::Algorithms';
 requires 'Dancer2::Plugin::REST';
 requires 'Dancer2::Plugin::Feed';
+requires 'Dancer2::Plugin::reCAPTCHA';
 requires 'Data::GUID';
 requires 'String::Dirify';
 requires 'String::Random';
 requires 'String::Util';
 requires 'Data::Pageset';
+requires 'Search::Elasticsearch';
 
 requires 'Email::Template';
 requires 'Moose';
 requires 'XML::Simple';
-requires 'Authen::Captcha';
 
 requires 'Gravatar::URL';
 requires 'HTML::Strip';

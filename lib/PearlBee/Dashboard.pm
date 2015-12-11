@@ -27,7 +27,7 @@ any '/dashboard' => sub {
   my $user = session('user');
      $user = resultset('User')->find( $user->{id} );
 
-  if ( $user->status eq 'deactivated' ) {
+  if ( $user->status eq 'inactive' ) {
 
     if ( params->{password1} ) {
       my $password1 = params->{password1};
@@ -37,10 +37,10 @@ any '/dashboard' => sub {
         template 'admin/index', { user => $user, warning => 'The passwords don\'t match!' }, { layout => 'admin' };
       }
       else {
-	      my $password_hash = generate_hash($password1);
+        my $password_hash = generate_hash($password1);
         $user->update({
           password => $password_hash->{hash},
-          status   => 'activated'
+          status   => 'active'
         });
 
         template 'admin/index', { user => $user }, { layout => 'admin' };

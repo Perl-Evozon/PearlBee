@@ -17,8 +17,8 @@ CREATE TABLE role (
 
 
 CREATE TYPE active_state AS ENUM (
-  'deactivated',
-  'activated',
+  'inactive',
+  'active',
   'suspended',
   'pending'
 );
@@ -32,15 +32,15 @@ CREATE TABLE "user" (
   name varchar(255) NULL,
   username varchar(200) NOT NULL UNIQUE,
   password varchar(128) NOT NULL,
-  salt varchar(48) NOT NULL,
   preferred_language varchar(50) NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255), -- weakening
+  avatar_path varchar(255) DEFAULT NULL,
   company varchar(255) DEFAULT NULL,
   telephone varchar(12) DEFAULT NULL,
   role varchar(255) NOT NULL REFERENCES role (name) DEFAULT 'author',
   activation_key varchar(100) DEFAULT NULL,
-  status active_state NOT NULL DEFAULT 'deactivated'
+  status active_state NOT NULL DEFAULT 'inactive'
 );
 
 
@@ -73,7 +73,7 @@ CREATE TABLE blog (
   description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
-  status active_state NOT NULL DEFAULT 'deactivated'
+  status active_state NOT NULL DEFAULT 'inactive'
 );
 
 
@@ -81,7 +81,7 @@ CREATE TABLE blog_owners (
   user_id integer NOT NULL REFERENCES "user" (id),
   blog_id integer NOT NULL REFERENCES blog (id),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  status active_state NOT NULL DEFAULT 'deactivated',
+  status active_state NOT NULL DEFAULT 'inactive',
   PRIMARY KEY (user_id,blog_id)
 );
 
@@ -117,6 +117,16 @@ CREATE TABLE post (
   status post_status DEFAULT 'draft',
   user_id integer NOT NULL REFERENCES "user" (id),
   PRIMARY KEY (id)
+);
+
+
+CREATE TABLE asset (
+  id serial NOT NULL,
+  blog_id integer NOT NULL REFERENCES blog (id),
+  user_id integer NOT NULL REFERENCES "user" (id),
+  file_ext varchar(20) NOT NULL,
+  file_name varchar(20) NOT NULL,
+  file_path varchar(20) NOT NULL
 );
 
 

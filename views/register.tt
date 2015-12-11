@@ -22,12 +22,12 @@
               <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="Password Confirmation" >
             </div>
             <div class="captcha">              
-              
+               [% recaptcha %]
             </div>
             
             <div class="checkbox ">
               <label>
-                <input type="checkbox" id="confirmTerms"> I agree the terms and conditions
+                <input type="checkbox" id="confirmTerms">I agree to the terms and conditions
               </label>
             </div>
             <button type="submit" class="submitRegister" id="submitRegister">Submit</button>

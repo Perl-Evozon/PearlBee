@@ -88,8 +88,8 @@ __PACKAGE__->table("user");
 =head2 status
 
   data_type: 'enum'
-  default_value: 'deactivated'
-  extra: {list => ["deactivated","activated","suspended","pending"]}
+  default_value: 'inactive'
+  extra: {list => ["inactive","active","suspended","pending"]}
   is_nullable: 0
 
 =cut
@@ -128,8 +128,8 @@ __PACKAGE__->add_columns(
   "status",
   {
     data_type => "enum",
-    default_value => "deactivated",
-    extra => { list => ["deactivated", "activated", "suspended", "pending"] },
+    default_value => "inactive",
+    extra => { list => ["inactive", "active", "suspended", "pending"] },
     is_nullable => 0,
   },
 );
@@ -262,7 +262,7 @@ Check if the user is active
 sub is_active {
   my ($self) = shift;
 
-  return 1 if ( $self->role eq 'activated' );
+  return 1 if ( $self->role eq 'active' );
 
   return 0;
 }
@@ -276,7 +276,7 @@ Check if the user is deactived
 sub is_deactive {
   my ($self) = shift;
 
-  return 1 if ( $self->role eq 'deactivated' );
+  return 1 if ( $self->role eq 'inactive' );
 
   return 0;
 }
@@ -290,13 +290,13 @@ Status changes
 sub deactivate {
   my $self = shift;
 
-  $self->update({ status => 'deactivated' });
+  $self->update({ status => 'inactive' });
 }
 
 sub activate {
   my $self = shift;
 
-  $self->update({ status => 'activated' });
+  $self->update({ status => 'active' });
 }
 
 sub suspend {
@@ -312,7 +312,7 @@ sub allow {
   
   # welcome the user in an email
 
-  $self->update({ status => 'deactivated' });
+  $self->update({ status => 'inactive' });
 }
 
 1;

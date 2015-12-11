@@ -5,9 +5,9 @@ use warnings;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::reCAPTCHA;
 
 use PearlBee::Helpers::Util;
-use PearlBee::Helpers::Captcha;
 
 use PearlBee::Password;
 
@@ -45,7 +45,7 @@ any ['post', 'get'] => '/set-password' => sub {
 
                 # passwords must be typed in twice and they were the same
                 if ( $params->{'password'} eq $params->{'rep_password'} ) {
-                    my $password = generate_hash( $params->{'password'}, $al->salt );
+                    my $password = crypt( $params->{'password'}, $al->salt );
                     
                     if ( $al->update( {password => $password->{hash}, activation_key => ''} ) ) {
                         my $user_obj->{is_admin} = $al->is_admin;
@@ -77,14 +77,12 @@ any ['post', 'get'] => '/set-password' => sub {
 any ['get', 'post'] => '/forgot-password' => sub {
     my $params = params;
 
-    new_captcha_code();
-
     #it was a post request
     if ( $params->{email} ) {
 
-        my $secret = $params->{secret};
-
-        if ( check_captcha_code($secret) ) {
+        my $secret = param('g-recaptcha-response');
+        my $result = recaptcha_verify($secret);
+        if ( $result->{success} ) {
 
             my $user = resultset('User')->search( {email => $params->{email}} )->first;
 
@@ -132,50 +130,22 @@ any ['get', 'post'] => '/forgot-password' => sub {
             # captcha incorrect
             else {
                 session error => 'Incorrect captcha';
-                template 'forgot-password', {show_input => 1}, {layout => 'admin'};
+                template 'forgot-password', {
+                    show_input => 1,
+                    recaptcha => recaptcha_display(),
+                }, {layout => 'admin'};
             }
         }
     }
 
     # it was a get request
     else {
-        template 'forgot-password', {show_input => 1}, {layout => 'admin'};
+        template 'forgot-password', {
+            show_input => 1,
+            recaptcha => recaptcha_display(),
+        }, {layout => 'admin'};
     }
 
 };
-
-sub new_captcha_code {
-
-    my $code = PearlBee::Helpers::Captcha::generate();
-
-    session secret  => $code;
-    session secrets => []
-        unless session('secrets')
-        ;    # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
-    push @{session('secrets')}, $code;
-
-    return $code;
-}
-
-sub check_captcha_code {
-    my $code = shift;
-
-    my $ok   = 0;
-    my $sess = session();
-
-    if ( $sess->{data}->{secrets} ) {
-        foreach my $secret ( @{$sess->{data}->{secrets}} ) {
-            my $result = $PearlBee::Helpers::Captcha::captcha->check_code( $code, $secret );
-            if ( $result == 1 ) {
-                $ok = 1;
-                session secrets => [];
-                last;
-            }
-        }
-    }
-
-    return $ok;
-}
-
 
 true;

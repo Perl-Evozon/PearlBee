@@ -22,90 +22,96 @@
  
   <div class="container">
     <div class="row">
-      <div class="col-md-8">
-        [% IF posts_for_user %]
-          <div class="filtered_posts">
-            <h2> <i class="icon-user"></i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
-          </div>
-        [% END %]
-        [% IF posts_for_category %]
-          <div class="filtered_posts">
-            <h2> <i class="icon-list"></i> <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
-          </div>
-        [% END %]
-        [% IF posts_for_tag %]
-          <div class="filtered_posts">
-            <h2> <i class="icon-tag"></i> <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
-          </div>
-        [% END %]
-         <div class="posts">
-            [% IF posts.first %]
-              <!-- Pagination -->
-              <div class="clearfix"></div>
-              [% INCLUDE index_pagination.tt %]     
-              <div class="clearfix"></div>
-              <!-- Each posts should be enclosed inside "entry" class" -->
-              <!-- Post one -->
-            [% END %]
-            [% FOREACH post in posts %]
-              <div class="entry">
-                 <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
-                 
-                 <!-- Meta details -->
-                 <div class="meta">
-                    <div class="block_elements">
-                      <i class="icon-calendar"></i> [% post.created_date %]
-                    </div>
-                    <div class="block_elements">
-                      <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
-                    </div>
-                    
-                    [% FOREACH category in post.post_categories %]
-                      <div class="block_elements">
-                        <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
-                      </div>
-                    [% END %]
-
-                    [% SET nr_of_comments = post.nr_of_comments %]
-                    <div class="block_elements">
-                      <i class="icon-comment"></i> <a href="/post/[% post.slug %]#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %]</a></span>
-                    </div>
-                 </div>
-                 
-                 <!-- Post cover -->
-                 [% INCLUDE cover.tt %]
-                 
-                 <!-- Post content -->
-                 <div class="post_preview">
-                  <div class="post_preview_wrapper">
-                    <p>
-                      [% post.content %]
-                    </p>
-                  </div>
-                 </div>
-                 
-                 <!-- Read more -->
-                 <a href="[% config.app_url %]/post/[% post.slug %]" class="btn btn-info">Read More...</a>
+      <div class="content clearfix">
+        <div class="col-md-12">
+          [% IF posts_for_user %]
+            <div class="filtered_posts">
+              <h2> <i class="icon-user"></i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
+            </div>
+          [% END %]
+          [% IF posts_for_category %]
+            <div class="filtered_posts">
+              <h2> <i class="icon-list"></i> <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
+            </div>
+          [% END %]
+          [% IF posts_for_tag %]
+            <div class="filtered_posts">
+              <h2> <i class="icon-tag"></i> <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
+            </div>
+          [% END %]
+           <div class="posts listings">
+              <div class="col-xs-2">
               </div>
-            [% END %]
-            [% IF posts.first %]
-              <!-- Pagination -->
-              <div class="clearfix"></div>
-              [% INCLUDE index_pagination.tt %]     
-              <div class="clearfix"></div>
-              <!-- Each posts should be enclosed inside "entry" class" -->
-              <!-- Post one -->
-            [% ELSE %]
-                <br />
-                <h5>No posts found.</h5>
-            [% END %]
-         </div>
-      </div>                        
-      <div class="col-md-4">
+              <div class="col-xs-10 no-padding">
+                <h2 class="page-heading">Latest posts</h2>
+              </div>
+              [% FOREACH post in posts %]
+        
+                <div class="entry clearfix">
+                  <div class="col-xs-2">
+                  </div>
+                    <div class="text-listing-entries col-xs-10">
+                        <div class="bubble">
+                            <img class="user-image" src="/blog/img/picture-user.jpg">
+                        </div>
+                         <div class="info-entry">
+                           <div class="user">
+                             <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                           </div>
+                           <div class="date">
+                             [% post.created_date %]
+                           </div>
+                           [% FOREACH category in post.post_categories %]
+                              <div class="block_elements">
+                                <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                              </div>
+                            [% END %]
+                         </div>
+                         <div class="post-heading">
+                           <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
+                         </div>
 
-        <!-- Sidebar 2 -->
-        [% INCLUDE sidebar.tt %]
-
+                         <!-- Post cover -->
+                         [% INCLUDE cover.tt %]
+                         
+                         <!-- Post content -->
+                         <div class="post_preview truncate">
+                          <div class="post_preview_wrapper">
+                            <p>
+                              [% post.content %]
+                            </p>
+                          </div>
+                         </div>
+                   
+                     <!-- Read more -->
+                      [% SET nr_of_comments = post.nr_of_comments %]
+                        <div class="block_elements comments-listings">
+                          <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
+                        </div>
+                     <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                  </div>
+                </div>
+              [% END %]
+              <div class="loading-posts">
+                   <div class="col-xs-2">
+                   </div>
+                   <div class="view-more col-xs-10">
+                       <div class="bubble">
+                           <button id="more-posts" class="btn btn-primary btn-xs" type="button">more</button>
+                       </div>
+                   </div>
+              </div>
+              [% IF posts.first %]
+                <!-- Pagination -->
+          
+                <!-- Each posts should be enclosed inside "entry" class" -->
+                <!-- Post one -->
+              [% ELSE %]
+                  <br />
+                  <h5>No posts found.</h5>
+              [% END %]
+           </div>
+        </div>
       </div>
     </div>
   </div>

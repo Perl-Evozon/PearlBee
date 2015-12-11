@@ -49,6 +49,13 @@ $(document).ready(function() {
 		$("body").removeClass("active-overlay");
 	});
 
+//    Truncate Post content
+
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
+
 //    Register
   $("#confirmPasswordRegister").keyup(function() {
     if( $(this).val() !== $("#passwordRegister").val() ){
@@ -136,4 +143,10 @@ $(document).ready(function() {
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
   
+});
+
+$(window).resize(function(){
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
 });

@@ -11,8 +11,8 @@
                                         <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register">Register</button></a>
                                 </div>
 
-				<div class="close-overlay">
-					<span class="icon-close" id="close_overlay"></span>
+				<div class="close-overlay" id="close_overlay">
+					<span class="icon-close"></span>
 					<span class="close-overlay-text">close and go to listings</span>
 				</div>
 			</div>
@@ -21,9 +21,7 @@
 	<div class="container-bottom">
 	</div>
 </div>
-  <div class="container">
-      [% INCLUDE components/alerts.tt %]
-   </div>
+
   <div class="container">
     <div class="row">
       <div class="col-md-8">

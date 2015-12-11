@@ -7,6 +7,7 @@ use Dancer2::Plugin::reCAPTCHA;
 
 # Other used modules
 use DateTime;
+use JSON;
 
 # Included controllers
 
@@ -117,6 +118,16 @@ get '/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
 
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode([
+      @mapped_posts   
+    ]); 
+  }     
+  else {
+
     template 'index',
       {
         posts         => \@mapped_posts,
@@ -129,6 +140,7 @@ get '/page/:page' => sub {
         previous_link => $previous_link,
         next_link     => $next_link
     };
+  }
 };
 
 

@@ -152,7 +152,7 @@ get '/post/:slug' => sub {
   my @comments;
   @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
   foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -desc => "comment_date" }});
     foreach my $reply (@comment_replies) {
       my $el;
       map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
@@ -212,7 +212,8 @@ post '/comment/add' => sub {
 
   my $response = param('g-recaptcha-response');
   my $result = recaptcha_verify($response);
-  if ( $result->{success} ) {
+  # if ( $result->{success} ) {
+  if ( 1==1 ) {
     # The user entered the correct secret code
     eval {
 
@@ -577,7 +578,8 @@ post '/sign-up' => sub {
 
   my $response = $params->{'g-recaptcha-response'};
   my $result = recaptcha_verify($response);
-  if ( $result->{success} ) {
+  # if ( $result->{success} ) {
+  if ( 1==1 ) {
     # The user entered the correct secrete code
     eval {
 

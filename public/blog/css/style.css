@@ -1189,9 +1189,9 @@ strong{
 
 .blog .entry{
    
-   margin-bottom:25px;
-   padding-bottom:15px;
-   border-bottom:1px solid #eee;
+   /*margin-bottom:25px;*/
+   /*padding-bottom:15px;*/
+   /*border-bottom:1px solid #eee;*/
    font-size: 13px;
    line-height: 27px;
 }
@@ -1219,7 +1219,7 @@ strong{
 	width: 100%;
 	position: absolute;
 	background-size: cover;
-	height: 80vh;
+	height: 37%;
 	top: 0;
 }
 
@@ -2941,3 +2941,295 @@ a:focus {
 }
 /*END Sing in form*/
 
+/* listings fumy */
+
+.blog {
+   background: url('../img/backblog.jpg');
+   background-repeat: repeat;
+/*    -webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+ */
+  position: relative;
+  margin-top: 0px; 
+}
+
+.blog .content {
+   margin-top: 80px;
+
+}
+
+.blog .page-heading {
+   margin-bottom: 35px;
+   margin-top: 95px;
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 24px;
+   color: rgba(255, 255, 255, 0.1);
+   text-transform: uppercase;
+   font-weight: bold;
+}
+
+.blog .posts.listings .entry {
+    font-size: 18px;
+}
+
+.posts.listings .post_preview {
+    line-height: inherit;
+    color: #ffffff;
+}
+
+.posts.listings .info-entry .user {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+   color: #43c8e7;
+}
+
+.posts.listings .info-entry .date {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+   color: #8a8a8d;
+}
+
+.posts.listings .comments-listings {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+   color: #8a8a8d;
+   font-weight: bold;
+   text-transform: uppercase;
+}
+
+
+.posts.listings .post-heading h2 a {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 24px;
+   color: #ffffff;
+   font-weight: bold;
+   text-transform: uppercase;
+}
+
+.posts.listings .post-heading h2 {
+   margin-top: 10px;
+   margin-bottom: 15px;
+}
+
+.posts.listings .post_preview p {
+   line-height: inherit;
+}
+
+.posts.listings .entry .post_preview {
+   height: 85px;
+}
+
+.blog .posts.listings .read-more {
+   float: right;
+   font-size: 12px;
+   color: #ffffff;
+}
+
+.blog .no-padding{
+   padding: 0;
+}
+
+.blog .view-more {
+   height: 50px;
+}
+/* End Listings Home */
+
+/*MIHA listing Page*/
+
+    .text-listing-entries{
+        position: relative;
+    }
+    .text-listing-entries::before, .loading-posts .view-more::before{
+        background: #152e4a none repeat scroll 0 0;
+        bottom: 0;
+        content: "";
+        left: -110px;
+        margin-left: -10px;
+        position: absolute;
+        top: -1px;
+        width: 6px;
+        z-index: 1;
+    }
+    .entry .bubble img{
+        border-radius: 50%;
+        height: 70px;
+        width: 70px;
+        z-index: 2;
+        position: absolute;
+        left: -150px;
+    }
+    .text-listing-entries{
+        padding-bottom: 15px;
+        padding-left: 0;
+        border-bottom: 1px solid rgba(242, 245, 238, 0.1);
+    }
+    .info-entry{
+        padding-top: 30px;
+    }
+
+    .loading-posts {
+      margin-bottom: 190px;
+    }
+
+    /*button MORE*/
+    .loading-posts #more-posts{
+        background: #152e4a none repeat scroll 0 0;
+        border: medium none;
+        color: #39b3d7;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        left: -160px;
+        padding: 15px 25px;
+        position: absolute;
+        text-transform: uppercase;
+        top: 50px;
+        z-index: 2147483647;
+    }
+    .loading-posts #more-posts:hover{
+        color: #152e4a;
+        background: #39b3d7;
+    }
+    /*/button MORE*/
+    /*media for tablet&mobile*/
+    @media all and (max-width: 800px) {
+        .entry .bubble img{
+            left: -120px;
+        }
+        .text-listing-entries::before, .loading-posts .view-more::before{
+                left: -80px;
+        }
+        .loading-posts #more-posts{
+            left: -130px;
+        }
+    }
+    @media all and (max-width: 768px) {
+        .entry .bubble img{
+            left: -120px;
+        }
+        .text-listing-entries::before{
+            left: -80px;
+        }
+        .posts.listings .post-heading h2 a {
+            font-size: 18px;
+        }
+        .posts.listings .info-entry .user,
+        .posts.listings .info-entry .date,
+        .posts.listings .comments-listings {
+            font-size: 14px;
+        }
+        .loading-posts #more-posts{
+            left: -120px;
+            padding: 8px 16px;
+        }
+    }
+
+    @media all and (max-width: 660px){
+        .entry .bubble img{
+            left: -80px;
+            width: 50px;
+            height: 50px;
+        }
+        .text-listing-entries::before{
+            left: -50px;
+        }
+        .loading-posts #more-posts{
+            left: -90px;
+        }
+    }
+    @media all and (max-width: 480px){
+        .posts.listings .info-entry .user,
+        .posts.listings .info-entry .date,
+        .posts.listings .comments-listings {
+            font-size: 14px;
+        }
+        .entry .bubble img{
+            display: none;
+        }
+        .text-listing-entries::before{
+            left: -10%;
+        }
+        .loading-posts #more-posts{
+            left: -77px;
+        }
+    }
+    @media all and (max-width: 360px){
+        .loading-posts #more-posts{
+            left: -65px;
+        }
+    }
+
+    /*media for tablet&mobile*/
+
+/*/Miha listing Page*/
+
+/ PROGRESS LOADER /
+    @-webkit-keyframes bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    }
+    @keyframes bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+    }
+
+    .progressloader {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 45px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 9999;
+        background-color: transparent;
+    }
+
+    .progressloader .spinner {
+        height: 100%;
+        position: absolute;
+        margin: -9px 0 0 -27px;
+        top: 50%;
+        left: 50%;
+    }
+    .progressloader .spinner div {
+        -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+        -moz-animation: bouncedelay 1.4s infinite ease-in-out;
+        animation: bouncedelay 1.4s infinite ease-in-out;
+        -webkit-animation-fill-mode: both;
+        -moz-animation-fill-mode: both;
+        animation-fill-mode: both;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+        display: inline-block;
+        height: 18px;
+        width: 18px;
+        background-color: #152E4A;
+    }
+    .progressloader .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        -moz-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+    .progressloader .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        -moz-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }

@@ -27,7 +27,6 @@
                             [% END %]
 
                             [% SET nr_of_comments = post.nr_of_comments %]
-                            comments::: [% post.nr_of_comments %]
                             <div class="block_elements">
                                 <i class="icon-comment"></i>
                                 <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] comments [% END %]</a>

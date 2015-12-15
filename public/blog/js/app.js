@@ -126,18 +126,50 @@ $(document).ready(function() {
       }
     });
 
-	
+    function getCookie(c_name) {
+		if (document.cookie.length>0) {
+			 c_start=document.cookie.indexOf(c_name + "=");
+			 if (c_start!=-1) {
+        		c_start=c_start + c_name.length+1 ;
+        		c_end=document.cookie.indexOf(";",c_start);
+        		if (c_end==-1) c_end=document.cookie.length
+        				return unescape(document.cookie.substring(c_start,c_end));
+            }          
+        }
+		return ""
+    }
+
 //	Blog start overlay
-	if ($(".blog-start").hasClass("show")) {
-		$("body").addClass("active-overlay");
-	}
-	
+    if ( getCookie('first_visit') != 1) {
+    	if ($(".blog-start").hasClass("show") ) {
+            console.log('>>>>>>' + getCookie('first_visit'));
+    		$("body").addClass("active-overlay");
+    	}
+    } else {
+        $(".blog-start").removeClass("show");
+        $(".blog-start").addClass("hide");
+        $("body").removeClass("active-overlay");
+    }
+    
 	$("#close_overlay").on('click', function() {
 		$(".blog-start").slideToggle( "slow" );
 		$(".blog-start").removeClass("show");
 		$("body").removeClass("active-overlay");
+        document.cookie='first_visit' + "=" + 1;
 	});
-	
+    $("#signin").on('click', function() {
+        $(".blog-start").slideToggle( "slow" );
+        $(".blog-start").removeClass("show");
+        $("body").removeClass("active-overlay");
+        document.cookie='first_visit' + "=" + 1;
+    });
+    $("#register").on('click', function() {
+        $(".blog-start").slideToggle( "slow" );
+        $(".blog-start").removeClass("show");
+        $("body").removeClass("active-overlay");
+        document.cookie='first_visit' + "=" + 1;
+    });
+    
 //	$('.blog-start').css('min-height',$(window).height() * 0.3);
 //	$(window).resize(function(){
 //	  $('.blog-start').css('min-height',$(window).height() * 0.3);

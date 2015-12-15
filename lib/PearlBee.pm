@@ -53,8 +53,15 @@ Blog assets - XXX this should be managed by nginx or something.
 =cut
 
 set public_dir => path(config->{user_assets});
+set avatar_dir => path(config->{user_avatars});
 
 get '/users/*' => sub {
+    my ( $file ) = splat;
+
+    send_file $file;
+};
+
+get '/avatars/*' => sub {
     my ( $file ) = splat;
 
     send_file $file;
@@ -81,14 +88,6 @@ get '/' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
   
-  #check if there is a first visit cookie set; if there is don't display the overlay with the new way to blog about it.
-  my $first_visit = 0;
-  
-  if ( cookie "first_visit") {
-      $first_visit = 1;
-  } else {
-      cookie first_visit => 1;
-  }
     template 'index',
       {
         posts         => \@mapped_posts,
@@ -99,8 +98,7 @@ get '/' => sub {
         page          => 1,
         total_pages   => $total_pages,
         previous_link => $previous_link,
-        next_link     => $next_link,
-        first_visit   => $first_visit,
+        next_link     => $next_link
     };
 };
 
@@ -112,7 +110,7 @@ Home page
 
 get '/page/:page' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $page        = route_parameters->{'page'};
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -547,7 +545,9 @@ get '/posts/tag/:slug/page/:page' => sub {
 
 get '/register' => sub {
    
-  template 'register';
+  template 'register', {
+      recaptcha  => recaptcha_display(),
+  };
 
 };
 

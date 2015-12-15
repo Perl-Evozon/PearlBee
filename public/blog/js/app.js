@@ -243,6 +243,10 @@ $('#more-posts').click(function() {
                 newItem.insertBefore($(".loading-posts"));
             }
 
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+
             $('.progressloader').hide();
             button.attr("data-page-number", pageNumber);
         });

@@ -32,7 +32,8 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
 
 our $VERSION = '0.1';
-
+use Data::Dumper;
+  
 =head
 
 Prepare the blog path
@@ -166,21 +167,9 @@ get '/post/:slug' => sub {
   my $settings   = resultset('Setting')->first;
   my @tags       = resultset('View::PublishedTags')->all();
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # Grab the approved comments for this post and the corresponding reply comments
-  my @comments;
-  @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
-  foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -desc => "comment_date" }});
-    foreach my $reply (@comment_replies) {
-      my $el;
-      map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
-      $el->{uid}->{username} = $reply->uid->username if $reply->uid;
-      push(@{$comment->{comment_replies}}, $el);
-    }
-  }
+  my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
 
   template 'post',
     {

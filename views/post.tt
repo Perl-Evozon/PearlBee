@@ -2,9 +2,9 @@
 <div class="blog">
     <div class="container">
         <div class="row">
-        
+
             [% INCLUDE components/alerts.tt %]
-            
+            <br><br><br><br><br>
             <div class="col-md-8">
                 <h2>[% post.title %]</h2>
                 <div class="posts">
@@ -27,9 +27,10 @@
                             [% END %]
 
                             [% SET nr_of_comments = post.nr_of_comments %]
+                            comments::: [% post.nr_of_comments %]
                             <div class="block_elements">
                                 <i class="icon-comment"></i>
-                                <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] Comments [% END %]</a>
+                                <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] comments [% END %]</a>
                             </div
                         </div>
 
@@ -45,10 +46,10 @@
                             [% INCLUDE social_media_buttons.tt %]
                         [% END %]
                     </div>
-                    
+
                     <!-- Comment posting -->
                     [% INCLUDE comment_form.tt %]
-                
+
                     <!-- Comment section -->
                     [% INCLUDE list_comments.tt %]
                 </div>

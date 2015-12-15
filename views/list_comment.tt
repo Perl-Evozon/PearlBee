@@ -1,5 +1,5 @@
 <div class="comments">
-  <div class="title"><h5>[% nr_of_comments %] Comments</h5></div>
+  <div class="title"><h5>[% nr_of_comments %] CommentsXX</h5></div>
   <ul class="comment-list">
     [% FOREACH comment in comments %]
       <li class="comment">

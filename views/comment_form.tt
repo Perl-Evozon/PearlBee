@@ -1,40 +1,10 @@
 <div class="respond">
-    <div class="title">
-        <h5>Comment</h5>
-    </div>
-    
+
     <form [% (!session.user.id ? 'class="comment_form"' : '') %] role="form" action="[% config.app_url %]/comment/add" method="post">
-        
-        [% IF session.user.username %]
-            
-            <div class="form-group">
-                Comment as <b><i class="icon-user"></i> <a href="/posts/user/[% session.user.username %]">[% session.user.username %]</a></b>
-                <input type="hidden" name="comment_as" email" value="[% session.user.id %]" />
-            </div>
-        
-        [% ELSE %]
-        
-            <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" class="form-control" name="fullname" id="name" placeholder="Enter Name" value="[% fields.in_reply_to ? '' : fields.fullname %]" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="Enter email (you could use your Gravatar email)" value="[% fields.in_reply_to ? '' : fields.email %]" required />
-            </div>
-    
-            <div class="form-group">
-                <label for="website">Website</label>
-                <input type="text" class="form-control" name="website" id="website" placeholder="Enter your website" value="[% fields.in_reply_to ? '' : fields.website %]" />
-            </div>
-        
-        [% END %]
 
         <div class="form-group">
-            <label for="comment">Comment</label>
-            <textarea class="form-control" rows="3" name="comment" required>[% fields.in_reply_to ? '' : fields.comment %]</textarea>
-            <br />
+            <p>Leave your comment:</p>
+            <textarea class="form-control" rows="3" name="comment" required>[% fields.comment %]</textarea>
             <br />
             <div class="cf">
                 [% recaptcha %]
@@ -44,6 +14,5 @@
         </div>
 
         <button type="submit" class="btn btn-info">Submit</button>
-        <button type="reset" class="btn btn-default">Reset</button>
     </form>
 </div>

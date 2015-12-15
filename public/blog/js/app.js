@@ -39,6 +39,13 @@ $(document).ready(function() {
     });
 
 
+//    Truncate Post content
+
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
+
 //    Register
   $("#confirmPasswordRegister").keyup(function() {
     if( $(this).val() !== $("#passwordRegister").val() ){
@@ -142,6 +149,14 @@ $(document).ready(function() {
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
 
+});
+
+$(window).resize(function(){
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
+	
 //	Header
 	if ($(window).width() <= 800){
 		$("body").removeClass("active-overlay");
@@ -158,17 +173,45 @@ $(document).ready(function() {
 		$(".blog-start").removeClass("hidden");
 	}
 	
-    //button MORE - for listing page
-    $('#more-posts').click(function() {
-        var button = $(this),
-            pageNumber =  +(button.attr("data-page-number")) + 1;
 
-         $('.progressloader').show();
-        $.ajax({
-            // Assuming an endpoint here that responds to GETs with a response.
-            url: '/page/' + pageNumber + '?format=JSON',
-            type: 'GET'
-        })
+	if ($(window).width() >= 801){
+		$("#close_overlay").click(function(){
+			$(".user").removeClass("hidden");
+		});
+		if( $(".blog-start").hasClass("show")) {
+			$(".user").addClass("hidden");
+		} else {
+			$(".user").removeClass("hidden");
+		}
+//		$(".user").click(function(){
+//			$(".blog-start").toggleClass("hidden");
+//			$("body").toggleClass("active-overlay");
+//		});
+	}
+	
+	$(".input-group, .links-group:first").on('click',function(event){
+		event.stopPropagation();
+	});
+	
+});
+
+//Back to top at refresh
+$(window).on('beforeunload', function() {
+    $(window).scrollTop(0);
+});
+
+
+//button MORE - for listing page
+$('#more-posts').click(function() {
+    var button = $(this),
+        pageNumber =  +(button.attr("data-page-number")) + 1;
+
+    $('.progressloader').show();
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/page/' + pageNumber + '?format=JSON',
+        type: 'GET'
+    })
         .done(function(data) {
             var posts = JSON.parse(data);
 
@@ -203,5 +246,4 @@ $(document).ready(function() {
             $('.progressloader').hide();
             button.attr("data-page-number", pageNumber);
         });
-    });
 });

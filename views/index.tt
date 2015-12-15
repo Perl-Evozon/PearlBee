@@ -1,5 +1,5 @@
  <div class="blog">
-[% IF first_visit == 0 %]
+
     <div class="blog-start show">
     	<div class="container">
     		<div class="row">
@@ -7,13 +7,13 @@
     				<h1>There is more than one way to blog it.</h1>
     				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
                                     <div class="buttons-wrapper">
-                                            <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin">Sign in</button></a>
-                                            <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register">Register</button></a>
+                                            <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
+                                            <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
                                     </div>
 
     				<div class="close-overlay" id="close_overlay">
     					<span class="icon-close"></span>
-    					<span class="close-overlay-text">close and go to listings</span>
+    					<span class="close-overlay-text ">close and go to listings</span>
     				</div>
     			</div>
     		</div>
@@ -21,7 +21,6 @@
     	<div class="container-bottom">
     	</div>
     </div>
-[% END %]
 
   <div class="container">
     <div class="row">

@@ -39,6 +39,13 @@ $(document).ready(function() {
     });
 
 
+//    Truncate Post content
+
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
+
 //    Register
   $("#confirmPasswordRegister").keyup(function() {
     if( $(this).val() !== $("#passwordRegister").val() ){
@@ -141,6 +148,15 @@ $(document).ready(function() {
 	$(window).resize(function(){
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
+
+  
+});
+
+$(window).resize(function(){
+  $(".truncate").dotdotdot({
+    ellipsis  : '... ',
+  });
+
 	
 //	Header
 	if ($(window).width() <= 800){
@@ -152,10 +168,33 @@ $(document).ready(function() {
 			$(".blog-start").toggleClass("hidden");
 			$("body").toggleClass("active-overlay");
 		});
-	}
-	else {
+	} else {
 		$(".user").addClass("hidden");
 		$(".blog-start").removeClass("hidden");
 	}
 	
+	if ($(window).width() >= 801){
+		$("#close_overlay").click(function(){
+			$(".user").removeClass("hidden");
+		});
+		if( $(".blog-start").hasClass("show")) {
+			$(".user").addClass("hidden");
+		} else {
+			$(".user").removeClass("hidden");
+		}
+//		$(".user").click(function(){
+//			$(".blog-start").toggleClass("hidden");
+//			$("body").toggleClass("active-overlay");
+//		});
+	}
+	
+	$(".input-group, .links-group:first").on('click',function(event){
+		event.stopPropagation();
+	});
+	
+});
+
+//Back to top at refresh
+$(window).on('beforeunload', function() {
+    $(window).scrollTop(0);
 });

@@ -13,8 +13,8 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT
-      	SUM( status = 'deactivated' ) AS deactivated,
-      	SUM( status = 'activated') AS activated,
+      	SUM( status = 'inactive' ) AS inactive,
+      	SUM( status = 'active') AS active,
       	SUM( status = 'suspended' ) AS suspended,
         SUM( status = 'pending' ) AS pending,
       	COUNT(*) AS total
@@ -24,9 +24,9 @@ __PACKAGE__->result_source_instance->view_definition(
 );
 
 __PACKAGE__->add_columns(
-  "deactivated",
+  "inactive",
   { data_type => "integer", is_nullable => 0 },
-  "activated",
+  "active",
   { data_type => "integer", is_nullable => 0 },
   "suspended",
   { data_type => "integer", is_nullable => 0 },
@@ -39,13 +39,13 @@ __PACKAGE__->add_columns(
 sub get_all_status_counts {
   my $self = shift;
 
-  return ( $self->total, $self->activated, $self->deactivated, $self->suspended, $self->pending );
+  return ( $self->total, $self->active, $self->inactive, $self->suspended, $self->pending );
 }
 
 sub get_status_count {
   my ($self, $status) = @_;
 
-  return ( $status eq 'activated' ) ? $self->activated : ( $status eq 'deactivated' ) ? $self->deactivated : ( $status eq 'suspended' ) ? $self->suspended : $self->pending;
+  return ( $status eq 'active' ) ? $self->active : ( $status eq 'inactive' ) ? $self->inactive : ( $status eq 'suspended' ) ? $self->suspended : $self->pending;
 }
 
 1;

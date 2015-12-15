@@ -38,7 +38,7 @@ get '/admin/users/page/:page' => sub {
   
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
+  my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   
   if (! session('multiuser')) {
     # do not count 'pending' users
@@ -62,8 +62,8 @@ get '/admin/users/page/:page' => sub {
     {
       users         => \@users,
       all           => $all, 
-      activated     => $activated,
-      deactivated   => $deactivated,
+      active        => $active,
+      inactive      => $inactive,
       suspended     => $suspended,
       pending       => $pending,
       page          => $page,
@@ -90,7 +90,7 @@ get '/admin/users/:status/page/:page' => sub {
   my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
+  my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   my $status_count                                = $count->get_status_count($status);
   
   if (! session('multiuser')) {
@@ -114,8 +114,8 @@ get '/admin/users/:status/page/:page' => sub {
     {
       users         => \@users,
       all           => $all, 
-      activated     => $activated,
-      deactivated   => $deactivated,
+      active        => $active,
+      inactive      => $inactive,
       suspended     => $suspended,
       pending       => $pending,
       page          => $page,
@@ -155,8 +155,15 @@ any '/admin/users/deactivate/:id' => sub {
 
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
+  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
 
-  eval { $user->deactivate(); };
+  if ( $user->is_admin and
+       $admin_user_count <= 1 ) {
+      error "Could not deactivate the only active user";
+  }
+  else {
+      eval { $user->deactivate(); };
+  }
 
   redirect session('app_url') . '/admin/users';
 };
@@ -171,8 +178,15 @@ any '/admin/users/suspend/:id' => sub {
 
   my $user_id = params->{id};
   my $user   = resultset('User')->find( $user_id );
+  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
 
-  eval { $user->suspend(); };
+  if ( $user->is_admin and
+       $admin_user_count <= 1 ) {
+      error "Could not suspend the only active user";
+  }
+  else {
+      eval { $user->suspend(); };
+  }
 
   redirect session('app_url') . '/admin/users';
 };

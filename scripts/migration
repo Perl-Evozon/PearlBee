@@ -43,7 +43,7 @@ sub map_user {
 #    telephone => # XXX not present in MT data
     role               => $user->{author_is_superuser} ? 'admin' : 'author',
 #    activation_key => undef, # XXX not present in MT data
-    status             => $user->{author_status} == 1 ? 'activated' : 'deactivated',
+    status             => $user->{author_status} == 1 ? 'active' : 'inactive',
   };
 }
 
@@ -381,7 +381,7 @@ sub synthesize_blog_owners {
   for my $blog_id ( sort keys %blog_owner ) {
     for my $user_id ( @{ $blog_owner{$blog_id} } ) {
       print '.' if $count++ % 100 == 0;
-      $out_sth->execute( $user_id, $blog_id, 'activated' );
+      $out_sth->execute( $user_id, $blog_id, 'active' );
     }
   }
 }

@@ -7,6 +7,7 @@ use Dancer2::Plugin::reCAPTCHA;
 
 # Other used modules
 use DateTime;
+use JSON;
 
 # Included controllers
 
@@ -78,7 +79,15 @@ get '/' => sub {
 
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
-
+  
+  #check if there is a first visit cookie set; if there is don't display the overlay with the new way to blog about it.
+  my $first_visit = 0;
+  
+  if ( cookie "first_visit") {
+      $first_visit = 1;
+  } else {
+      cookie first_visit => 1;
+  }
     template 'index',
       {
         posts         => \@mapped_posts,
@@ -89,7 +98,8 @@ get '/' => sub {
         page          => 1,
         total_pages   => $total_pages,
         previous_link => $previous_link,
-        next_link     => $next_link
+        next_link     => $next_link,
+        first_visit   => $first_visit,
     };
 };
 
@@ -117,6 +127,16 @@ get '/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
 
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode([
+      @mapped_posts   
+    ]); 
+  }     
+  else {
+
     template 'index',
       {
         posts         => \@mapped_posts,
@@ -129,6 +149,7 @@ get '/page/:page' => sub {
         previous_link => $previous_link,
         next_link     => $next_link
     };
+  }
 };
 
 
@@ -212,8 +233,9 @@ post '/comment/add' => sub {
 
   my $response = param('g-recaptcha-response');
   my $result = recaptcha_verify($response);
-  # if ( $result->{success} ) {
-  if ( 1==1 ) {
+
+  if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
+
     # The user entered the correct secret code
     eval {
 
@@ -578,8 +600,9 @@ post '/sign-up' => sub {
 
   my $response = $params->{'g-recaptcha-response'};
   my $result = recaptcha_verify($response);
-  # if ( $result->{success} ) {
-  if ( 1==1 ) {
+
+
+  if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secrete code
     eval {
 

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
   `username` varchar(200) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(128) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255), -- Weakening
@@ -65,7 +65,8 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `description` varchar(512) CHARACTER SET ucs2,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,
-  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
+  `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
+  -- `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog information.';
 
@@ -74,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `blog_owners` (
   `user_id` int(11) NOT NULL,
   `blog_id` int(11) NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
+  `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
+  -- `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`user_id`,`blog_id`),
   CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `blog_owner_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)

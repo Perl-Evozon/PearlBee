@@ -554,7 +554,9 @@ get '/posts/tag/:slug/page/:page' => sub {
 
 get '/register' => sub {
    
-  template 'register';
+  template 'register', {
+      recaptcha  => recaptcha_display(),
+  };
 
 };
 

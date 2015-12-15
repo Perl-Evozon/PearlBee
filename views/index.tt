@@ -10,7 +10,6 @@
                                             <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin">Sign in</button></a>
                                             <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register">Register</button></a>
                                     </div>
-
     				<div class="close-overlay" id="close_overlay">
     					<span class="icon-close"></span>
     					<span class="close-overlay-text">close and go to listings</span>
@@ -100,7 +99,15 @@
                    </div>
                    <div class="view-more col-xs-10">
                        <div class="bubble">
-                           <button id="more-posts" class="btn btn-primary btn-xs" type="button">more</button>
+                           <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs" type="button">more</button>
+                       </div>
+                       <div style="display: none" class="progressloader">
+                           <div class="spinner">
+                               <div class="bounce1"></div>
+                               <div class="bounce2"></div>
+                               <div class="bounce3"></div>
+                           </div>
+
                        </div>
                    </div>
               </div>

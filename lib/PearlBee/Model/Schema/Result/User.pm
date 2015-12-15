@@ -60,6 +60,12 @@ __PACKAGE__->table("user");
   is_nullable: 0
   size: 255
 
+=head2 avatar_path
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
 =head2 company
 
   data_type: 'varchar'
@@ -112,6 +118,8 @@ __PACKAGE__->add_columns(
   },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "avatar_path",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "company",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "telephone",

@@ -52,8 +52,15 @@ Blog assets - XXX this should be managed by nginx or something.
 =cut
 
 set public_dir => path(config->{user_assets});
+set avatar_dir => path(config->{user_avatars});
 
 get '/users/*' => sub {
+    my ( $file ) = splat;
+
+    send_file $file;
+};
+
+get '/avatars/*' => sub {
     my ( $file ) = splat;
 
     send_file $file;

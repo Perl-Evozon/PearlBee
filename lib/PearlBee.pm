@@ -52,8 +52,15 @@ Blog assets - XXX this should be managed by nginx or something.
 =cut
 
 set public_dir => path(config->{user_assets});
+set avatar_dir => path(config->{user_avatars});
 
 get '/users/*' => sub {
+    my ( $file ) = splat;
+
+    send_file $file;
+};
+
+get '/avatars/*' => sub {
     my ( $file ) = splat;
 
     send_file $file;
@@ -102,7 +109,7 @@ Home page
 
 get '/page/:page' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $page        = route_parameters->{'page'};
   my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
@@ -547,7 +554,9 @@ get '/posts/tag/:slug/page/:page' => sub {
 
 get '/register' => sub {
    
-  template 'register';
+  template 'register', {
+      recaptcha  => recaptcha_display(),
+  };
 
 };
 

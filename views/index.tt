@@ -10,7 +10,6 @@
                                             <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
                                             <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
                                     </div>
-
     				<div class="close-overlay" id="close_overlay">
     					<span class="icon-close"></span>
     					<span class="close-overlay-text ">close and go to listings</span>
@@ -54,7 +53,7 @@
                   </div>
                     <div class="text-listing-entries col-xs-10">
                         <div class="bubble">
-                            <img class="user-image" src="/blog/img/picture-user.jpg">
+                            <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
                         </div>
                          <div class="info-entry">
                            <div class="user">
@@ -99,7 +98,15 @@
                    </div>
                    <div class="view-more col-xs-10">
                        <div class="bubble">
-                           <button id="more-posts" class="btn btn-primary btn-xs" type="button">more</button>
+                           <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs" type="button">more</button>
+                       </div>
+                       <div style="display: none" class="progressloader">
+                           <div class="spinner">
+                               <div class="bounce1"></div>
+                               <div class="bounce2"></div>
+                               <div class="bounce3"></div>
+                           </div>
+
                        </div>
                    </div>
               </div>

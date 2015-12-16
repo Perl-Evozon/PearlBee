@@ -10,6 +10,8 @@ package PearlBee::Admin::Comment;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
+use PearlBee::Dancer2::Plugin::Admin;
+
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
 get '/admin/comments' => sub { redirect session('app_url') . '/admin/comments/page/1' };

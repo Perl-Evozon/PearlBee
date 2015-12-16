@@ -101,6 +101,13 @@ get '/' => sub {
     };
 };
 
+get '/search/:query' => sub {
+  my $searchquery = route_parameters->{'query'};
+  template 'searchresults', {
+    searchquery => $searchquery
+  }
+};
+
 =head
 
 Home page

@@ -5,11 +5,11 @@
 
                         <div class="col-md-8 col-sm-8">
                            <div class="fwidget flinks">
-							  <a href="#"><h5>feedback</h5></a>
-							  <a href="https://www.perl.org/"><h5>perl.org</h5></a>
-							  <a href="#"><h5>pearlnews.org</h5></a>
-							  <a href="http://www.pm.org/"><h5>pm.org</h5></a>
-							  <p id="copywrite_desktop">2015 blogs.perl.org. All rights reserved</p>
+				  <a href="#"><h5>feedback</h5></a>
+				  <a href="https://www.perl.org/"><h5>perl.org</h5></a>
+				  <a href="#"><h5>perlnews.org</h5></a>
+				  <a href="http://www.pm.org/"><h5>pm.org</h5></a>
+				  <p id="copywrite_desktop">2015 blogs.perl.org. All rights reserved</p>
                            </div>
                        </div>
 
@@ -17,7 +17,7 @@
                          <div class="fwidget">
                            <p id="powered_by">Powered by</p>
                            <div class="footer-logo"></div>
-						   <p id="copywrite_mobile">2015 blogs.perl.org. All rights reserved</p>
+				   <p id="copywrite_mobile">2015 blogs.perl.org. All rights reserved</p>
                          </div>
                        </div>
 

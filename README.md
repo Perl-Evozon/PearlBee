@@ -7,6 +7,8 @@ An open source blogging platform written in Perl. <a href="http://pearlbee.org/"
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
 <ul>
+<li>On Ubuntu, before installing, run: sudo apt-get install libssl-dev libxml2 libxml2-dev libxml-libxml-perl libexpat1-dev libexpat1-dev libmysqld libmysqld-dev</li>
+
 <li>XML::Simple ( needs libxml : 'yum install libxml2', 'yum install libxml2-devel')</li>
 <li>Crypt::RandPasswd</li>
 <li>Dancer2</li>
@@ -27,7 +29,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Digest::Bcrypt</li>
 <li>Digest::MD5</li>
 <li>Digest::SHA1</li>
-<li>Email::Template</li>
+<li>Email::Template (use --notest if fails)</li>
 <li>Search::Elasticsearch</li>
 <li>HTML::Strip</li>
 <li>Gravatar::URL</li>

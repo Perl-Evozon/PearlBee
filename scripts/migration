@@ -9,8 +9,8 @@ use Try::Tiny;
 
 $|++;
 
-my $MT_PATH = '/MT-4.38-en/mt-static';
-my $per_user = '/users';
+my $AVATAR_PATH = '/avatars';
+my $PER_USER_PATH = '/users';
 
 my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
 #my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
@@ -22,9 +22,9 @@ my $out_dbh = DBI->connect($out_dsn,'root','');
 
 sub munge_asset_file_path {
   my $in_asset = shift;
-  $in_asset->{asset_file_path} =~ s{^\%s}{$MT_PATH};
+  $in_asset->{asset_file_path} =~ s{^\%s}{$AVATAR_PATH};
   $in_asset->{asset_file_path} =~
-    s{^\%r}{$per_user/$in_asset->{author_basename}};
+    s{^\%r}{$PER_USER_PATH/$in_asset->{author_basename}};
 }
 
 ###############################################################################

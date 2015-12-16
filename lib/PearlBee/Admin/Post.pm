@@ -11,6 +11,9 @@ package PearlBee::Admin::Post;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
+use PearlBee::Dancer2::Plugin::Admin;
+
+
 use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 

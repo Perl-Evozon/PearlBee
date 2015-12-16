@@ -1,15 +1,18 @@
-<div class="respond">
-
-    <form [% (!session.user.id ? 'class="comment_form"' : '') %] role="form" action="[% config.app_url %]/comment/add" method="post">
-
-        <div class="form-group">
-            <p>Leave your comment:</p>
-
-            <textarea class="form-control" rows="3" name="comment" required>[% fields.comment %]</textarea>
-
-            <input type="hidden" value="[% post.id %]" name="id" />
-        </div>
-
-        <button type="submit" class="btn btn-info">Submit</button>
-    </form>
-</div>
+[% IF session.user.id %]
+	<div class="respond">
+			<form id="reply_post_comment_form" class="comment_form" role="form">
+		        <div class="form-group">
+		            <p>Leave your comment:</p>
+		            <textarea class="form-control" rows="3" name="comment" required>
+		            	[% fields.comment %]
+		            </textarea>
+		            <input type="hidden" value="[% post.id %]" name="id" />
+		        </div>
+		        <button id="reply_post_comment_button" type="button" class="btn btn-info">Submit</button>
+		    </form>
+	</div>
+[% ELSE %]
+    <div>
+    	<p>Please <a href="/sign-up">sign in</a> to leave a comment</p>
+    </div>
+[% END %]

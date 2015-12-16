@@ -8,6 +8,7 @@ use Dancer2::Plugin::reCAPTCHA;
 # Other used modules
 use DateTime;
 use JSON;
+use Text::Markdown qw( markdown );
 
 # Included controllers
 
@@ -174,7 +175,10 @@ get '/post/:slug' => sub {
     my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
     foreach my $reply (@comment_replies) {
       my $el;
-      map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
+      map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content', 'type');
+      if ( $el->{type} eq 'Markdown' ) {
+        $el->{content} = markdown($el->{content});
+      }
       $el->{uid}->{username} = $reply->uid->username if $reply->uid;
       push(@{$comment->{comment_replies}}, $el);
     }
@@ -275,7 +279,7 @@ post '/comment/add' => sub {
     }
   }
   else {
-    # The secret code inncorrect
+    # The secret code incorrect
     # Repopulate the fields with the data
 
     $template_params->{fields} = $parameters;
@@ -287,6 +291,9 @@ post '/comment/add' => sub {
       my $el;
       map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
       $el->{uid}->{username} = $reply->uid->username if $reply->uid;
+      if ( $el->{type} eq 'Markdown' ) {
+        $el->{content} = markdown($el->{content});
+      }
       push(@{$comment->{comment_replies}}, $el);
     }
   }

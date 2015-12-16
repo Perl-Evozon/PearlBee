@@ -36,6 +36,7 @@ WriteMakefile(
         'String::Random'             => 0,
         'String::Util'               => 0,
         'Data::Pageset'              => 0,
+        'Text::Markdown'             => 0,
 
         'Email::Template'            => 0,
         'Moose'                      => 0,

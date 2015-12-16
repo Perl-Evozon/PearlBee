@@ -4,12 +4,9 @@
 
         <div class="form-group">
             <p>Leave your comment:</p>
+
             <textarea class="form-control" rows="3" name="comment" required>[% fields.comment %]</textarea>
-            <br />
-            <div class="cf">
-                [% recaptcha %]
-            </div>
-            <br />
+
             <input type="hidden" value="[% post.id %]" name="id" />
         </div>
 

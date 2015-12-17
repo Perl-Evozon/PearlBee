@@ -9,7 +9,7 @@ our @EXPORT	= qw/generate $captcha/;
 
 our $captcha = Authen::Captcha->new(
   data_folder => config->{captcha_folder},
-  output_folder => config->{captcha_folder} .'/image',
+  output_folder => ( config->{captcha_folder} || '/' ) .'/image',
 );
 
 =head

@@ -1501,12 +1501,10 @@ strong{
 }
 
 .respond{
-   border:1px solid #eee;
-   border-radius:10px;
+   border: none;
    margin:20px 0px;
    padding:20px;
-   background:#fff;
-   border-top: 1px solid #eee;
+   background-color: transparent;
 }
 
 .respond h5{
@@ -1519,10 +1517,6 @@ strong{
 }
 
 .respond .comment_form .form-group input,
-.respond .comment_form .form-group textarea {
-   float: right;
-   width: 75%;
-}
 
 .respond .comment_form .form-group .cf .form-control.small{
    float: none;
@@ -1543,10 +1537,13 @@ strong{
 }
 
 .respond .form-group textarea {
-   float: right;
-   width: 75%;
+   max-width: 100%;
 }
 
+.respond .form-group p {
+   font-size: 15px;
+   color: white;
+}
 
 .fb_iframe_widget span {
    vertical-align: inherit !important;

@@ -424,10 +424,10 @@ sub migrate_categories {
 
 sub map_tag {
   my $tag = shift;
-  my $dirified = dirify( $tag->{tag_label} );
+  my $dirified = dirify( $tag->{tag_name} );
   return {
     id => $tag->{tag_id},
-    name => $tag->{tag_label},
+    name => $tag->{tag_name},
     slug => $dirified,
   };
 }

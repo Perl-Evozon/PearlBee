@@ -65,6 +65,12 @@ __PACKAGE__->table("post");
   default_value: current_timestamp
   is_nullable: 0
 
+=head2 type
+
+  data_type: 'enum'
+  default_value: 'HTML'
+  is_nullable: 0
+
 =head2 status
 
   data_type: 'enum'
@@ -100,6 +106,8 @@ __PACKAGE__->add_columns(
     default_value => \"current_timestamp",
     is_nullable => 0,
   },
+  "type",
+  { data_type => "enum", is_nullable => 0 },
   "status",
   {
     data_type => "enum",

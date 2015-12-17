@@ -34,6 +34,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>HTML::Strip</li>
 <li>Gravatar::URL</li>
 <li>MIME::Base64</li>
+<li>Text::Markdown</li>
 <li>Moose</li>
 <li>Plack</li>
 <li>String::Dirify</li>

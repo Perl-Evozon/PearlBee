@@ -23,6 +23,7 @@ requires 'XML::Simple';
 
 requires 'Gravatar::URL';
 requires 'HTML::Strip';
+requires 'Text::Markdown';
 
 requires 'DBD::mysql';
 

@@ -8,6 +8,7 @@ use Dancer2::Plugin::reCAPTCHA;
 # Other used modules
 use DateTime;
 use JSON qw//;
+use Text::Markdown qw( markdown );
 
 # Included controllers
 
@@ -169,6 +170,28 @@ get '/post/:slug' => sub {
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
 
+
+  # #############################################################
+  # Jeff, I commented your code regarding the Markdown conversion, because I moved the logic into get_approved_comments_by_post_id function.
+  # We won't have a hierarchical system anyomre, so no need to get comments by reply_to
+  # #############################################################
+
+  # # Grab the approved comments for this post and the corresponding reply comments
+  # my @comments;
+  # @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
+  # foreach my $comment (@comments) {
+  #   my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+  #   foreach my $reply (@comment_replies) {
+  #     my $el;
+  #     map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content', 'type');
+  #     if ( $el->{type} eq 'Markdown' ) {
+  #       $el->{content} = markdown($el->{content});
+  #     }
+  #     $el->{uid}->{username} = $reply->uid->username if $reply->uid;
+  #     push(@{$comment->{comment_replies}}, $el);
+  #   }
+  # }
+
   template 'post',
     {
       post       => $post,
@@ -257,7 +280,6 @@ post '/comments' => sub {
 
   content_type 'application/json';
   return to_json(\%result);
-
 };
 
 =head

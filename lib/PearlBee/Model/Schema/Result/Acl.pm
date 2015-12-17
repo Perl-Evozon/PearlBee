@@ -95,20 +95,20 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::UserRole>
+Related object: L<PearlBee::Model::Schema::Result::Role>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "name",
-  "PearlBee::Model::Schema::Result::UserRole",
+  "PearlBee::Model::Schema::Result::Role",
   { name => "name" },
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-23 12:42:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gBNFMM6wm8RFntxBZ9Su+g
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ic8Ui67nye68YPlWBJ5hoA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -47,7 +47,13 @@ __PACKAGE__->table("blog");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 255
+  size: 512
+
+=head2 description
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 512
 
 =head2 created_date
 
@@ -70,13 +76,39 @@ __PACKAGE__->table("blog");
   extra: {list => ["inactive","active","suspended","pending"]}
   is_nullable: 0
 
+=head2 commenting_allowed
+
+  data_type: 'integer'
+  default_value: 1
+  is_nullable: 0
+
+=head2 moderating_enabled
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 0
+
+=head2 email_author_at_new_comments
+
+  data_type: 'integer'
+  default_value: 1
+  is_nullable: 0
+
+=head2 email_others_at_new_comments
+
+  data_type: 'integer'
+  default_value: 1
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "name",
-  { data_type => "varchar", is_nullable => 0, size => 255 },
+  { data_type => "varchar", is_nullable => 0, size => 512 },
+  "description",
+  { data_type => "varchar", is_nullable => 1, size => 512 },
   "created_date",
   {
     data_type => "timestamp",
@@ -98,6 +130,14 @@ __PACKAGE__->add_columns(
     extra => { list => ["inactive", "active", "suspended", "pending"] },
     is_nullable => 0,
   },
+  "commenting_allowed",
+  { data_type => "integer", default_value => 1, is_nullable => 0 },
+  "moderating_enabled",
+  { data_type => "integer", default_value => 0, is_nullable => 0 },
+  "email_author_at_new_comments",
+  { data_type => "integer", default_value => 1, is_nullable => 0 },
+  "email_others_at_new_comments",
+  { data_type => "integer", default_value => 1, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -112,23 +152,41 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 UNIQUE CONSTRAINTS
+=head1 RELATIONS
 
-=head2 C<name>
+=head2 assets
 
-=over 4
+Type: has_many
 
-=item * L</name>
-
-=back
+Related object: L<PearlBee::Model::Schema::Result::Asset>
 
 =cut
 
-__PACKAGE__->add_unique_constraint("name", ["name"]);
+__PACKAGE__->has_many(
+  "assets",
+  "PearlBee::Model::Schema::Result::Asset",
+  { "foreign.blog_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 blog_owners
+
+Type: has_many
+
+Related object: L<PearlBee::Model::Schema::Result::BlogOwner>
+
+=cut
+
+__PACKAGE__->has_many(
+  "blog_owners",
+  "PearlBee::Model::Schema::Result::BlogOwner",
+  { "foreign.blog_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-23 12:42:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+4GfXXhfi8fjp4nRVfcIag
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YIykI00XPssdxzPzPinC9g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

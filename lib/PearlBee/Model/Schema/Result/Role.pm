@@ -29,11 +29,11 @@ use base 'DBIx::Class::Core';
 
 __PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp");
 
-=head1 TABLE: C<user_role>
+=head1 TABLE: C<role>
 
 =cut
 
-__PACKAGE__->table("user_role");
+__PACKAGE__->table("role");
 
 =head1 ACCESSORS
 
@@ -105,8 +105,8 @@ Composing rels: L</acls> -> ability
 __PACKAGE__->many_to_many("abilities", "acls", "ability");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-23 12:42:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:68yjJUXRDrURWEiW+N3drg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TuimgzTqNBSVcTP5zAE9Yg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -3,7 +3,7 @@ use strict;
 use Dancer2::Plugin;
 #use PearlBee;
 use Dancer2::Plugin::DBIC;
-
+use Data::Dumper;
 on_plugin_import {
     my $dsl = shift;
     #$dsl->prefix('/admin');  
@@ -14,14 +14,13 @@ on_plugin_import {
                 $dsl->set( layout => 'admin' );
                 my $context = shift;
 
-                my $user = $context->session->{'user'};
-                $user = resultset('User')->find( $user->{id} ) if ($user);
+                my $user = $context->session->{'data'}->{'user'};
+
+                $user = $dsl->resultset('User')->find( $user->{id} ) if ($user);
                 my $request = $context->request->path_info;
-                my $app_url = $context->session->{'app_url'};
+                my $app_url = $context->config->{'app_url'};
                 # Check if the user is logged in
                 if ( !$user && $request =~ /admin/ ) {
-
-                    #$context->session->{'app_url'} = $context->request->path_info;
                     my $redir = $dsl->redirect( $app_url . '/admin' );
                     return $redir;
                 }

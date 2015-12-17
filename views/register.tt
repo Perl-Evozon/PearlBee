@@ -3,7 +3,9 @@
      <div class="row"> 
        <div class="col-sm-6 col-sm-offset-3 text-center"> 
          <h3>Please enter the following:</h3> 
+<!--
          <p class="change_error">(or register using the social links below)</p> 
+-->
         <div class="register-wrapper"> 
           <form id="register_form" action="/sign-up" method="post">
             <div class="form-group">              
@@ -25,11 +27,13 @@
                [% recaptcha %]
             </div>
             
+<!--
             <div class="checkbox ">
               <label>
                 <input type="checkbox" id="confirmTerms">I agree to the terms and conditions
               </label>
             </div>
+-->
             <button type="submit" class="submitRegister" id="submitRegister">Submit</button>
           </form>          
           <div class="social_register">

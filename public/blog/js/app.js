@@ -2,6 +2,14 @@
 
 $(document).ready(function() {
 
+    $("#header_onion_logo").on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location = window.location.protocol + "//" + window.location.host + "/";
+    }).on('mouseover', function (e) {
+        $("#header_onion_logo").css('cursor','pointer');
+    });
+
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
         $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,'')); 

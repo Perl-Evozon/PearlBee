@@ -90,8 +90,8 @@ Composing rels: L</acls> -> name
 __PACKAGE__->many_to_many("names", "acls", "name");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-23 12:42:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2PvPRk5xCx4b5RkCJXTa7Q
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TaldVecCMFD6s0o1JtAEZQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

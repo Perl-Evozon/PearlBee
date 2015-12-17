@@ -222,15 +222,27 @@ post '/comments' => sub {
     #       post_url         => config->{app_url} . '/post/' . $post->slug,
     #       app_url          => config->{app_url}
     #     },
-    # }) or error "Could not send the email.";
+    # }) or {
+    #     $result{email_sent} = 0;
+    # };
 
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $result{message} = 'Your comment has been submited. Thank you!';
       $result{success} = 1;
+      $result{approved} = 0;
+      $result{email_sent} = 1;
     } else {
       $result{message} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
-      $result{success} = 0;
+      $result{success} = 1;
+      $result{approved} = 1;
+      $result{email_sent} = 1;
     }
+  };
+  if (@_) {
+      $result{message} = 'An error occured while submitting your comment. We\'re already on it!';
+      $result{success} = 0;
+      $result{approved} = 0;
+      $result{email_sent} = 0;
   };
 
   # foreach my $comment (@comments) {

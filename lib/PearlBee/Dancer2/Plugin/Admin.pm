@@ -3,7 +3,7 @@ use strict;
 use Dancer2::Plugin;
 #use PearlBee;
 use Dancer2::Plugin::DBIC;
-use Data::Dumper;
+
 on_plugin_import {
     my $dsl = shift;
     #$dsl->prefix('/admin');  

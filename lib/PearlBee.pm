@@ -200,8 +200,7 @@ get '/post/:slug' => sub {
       categories => \@categories,
       comments   => \@comments,
       setting    => $settings,
-      tags       => \@tags,
-      recaptcha  => recaptcha_display(),
+      tags       => \@tags
     };
 };
 

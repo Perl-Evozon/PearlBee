@@ -1,6 +1,10 @@
 <div class="comments" id="comments">
     <div class="title">
-        <h5>[% nr_of_comments %] [% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %]</h5>
+        <h5>[% nr_of_comments %] [% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %]
+            <a target="_blank" href="/feed/post/[% post.slug %]">
+                <i class="icon-rss"></i>
+            </a>
+        </h5>
     </div>
     <ul class="comment-list">
         [% FOREACH comment in comments %]

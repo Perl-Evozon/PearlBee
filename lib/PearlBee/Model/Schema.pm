@@ -1,4 +1,3 @@
-use utf8;
 package PearlBee::Model::Schema;
 
 # Created by DBIx::Class::Schema::Loader
@@ -17,9 +16,5 @@ __PACKAGE__->load_namespaces;
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-BEGIN {
-	$ENV{DBIC_TRACE} = 1
-}
 
 1;

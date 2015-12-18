@@ -69,3 +69,12 @@ $(document).ready(function() {
 	});
 	
 });
+
+
+$(document).ready(function() {
+
+	$.getJSON('/api/categories.json', function(categories_list) {
+		$("#categories").select2({tags: categories_list});
+	});
+	
+});

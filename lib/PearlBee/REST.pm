@@ -26,4 +26,23 @@ get '/api/tags.:format' => sub {
    }
 };
 
+=head
+
+Get an array with all categories
+
+=cut
+get '/api/categories.:format' => sub {
+  
+	my $user = session('user');
+
+    if ($user) {
+	  my @categories = resultset('Category')->all;
+	  my @list;
+
+	  push @list, $_->name foreach(@categories);
+	  
+	  return \@list;
+   }
+};
+
 1;

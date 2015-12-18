@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::User;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::User - User information.
+PearlBee::Model::Schema::Result::User - User table.
 
 =cut
 
@@ -14,20 +14,6 @@ use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
-
-=head1 COMPONENTS LOADED
-
-=over 4
-
-=item * L<DBIx::Class::InflateColumn::DateTime>
-
-=item * L<DBIx::Class::TimeStamp>
-
-=back
-
-=cut
-
-__PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp");
 
 =head1 TABLE: C<user>
 
@@ -59,13 +45,7 @@ __PACKAGE__->table("user");
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 128
-
-=head2 preferred_language
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 50
+  size: 100
 
 =head2 register_date
 
@@ -77,7 +57,7 @@ __PACKAGE__->table("user");
 =head2 email
 
   data_type: 'varchar'
-  is_nullable: 1
+  is_nullable: 0
   size: 255
 
 =head2 avatar_path
@@ -100,11 +80,10 @@ __PACKAGE__->table("user");
 
 =head2 role
 
-  data_type: 'varchar'
+  data_type: 'enum'
   default_value: 'author'
-  is_foreign_key: 1
+  extra: {list => ["author","admin"]}
   is_nullable: 0
-  size: 255
 
 =head2 activation_key
 
@@ -115,7 +94,8 @@ __PACKAGE__->table("user");
 =head2 status
 
   data_type: 'enum'
-  extra: {list => ["active","inactive","suspended"]}
+  default_value: 'inactive'
+  extra: {list => ["inactive","active","suspended","pending"]}
   is_nullable: 0
 
 =cut
@@ -128,9 +108,7 @@ __PACKAGE__->add_columns(
   "username",
   { data_type => "varchar", is_nullable => 0, size => 200 },
   "password",
-  { data_type => "varchar", is_nullable => 0, size => 128 },
-  "preferred_language",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
+  { data_type => "varchar", is_nullable => 0, size => 100 },
   "register_date",
   {
     data_type => "timestamp",
@@ -139,7 +117,7 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "email",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  { data_type => "varchar", is_nullable => 0, size => 255 },
   "avatar_path",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "company",
@@ -148,18 +126,18 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 12 },
   "role",
   {
-    data_type => "varchar",
+    data_type => "enum",
     default_value => "author",
-    is_foreign_key => 1,
+    extra => { list => ["author", "admin"] },
     is_nullable => 0,
-    size => 255,
   },
   "activation_key",
   { data_type => "varchar", is_nullable => 1, size => 100 },
   "status",
   {
     data_type => "enum",
-    extra => { list => ["active", "inactive", "suspended"] },
+    default_value => "inactive",
+    extra => { list => ["inactive", "active", "suspended", "pending"] },
     is_nullable => 0,
   },
 );
@@ -203,36 +181,6 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 =head1 RELATIONS
-
-=head2 assets
-
-Type: has_many
-
-Related object: L<PearlBee::Model::Schema::Result::Asset>
-
-=cut
-
-__PACKAGE__->has_many(
-  "assets",
-  "PearlBee::Model::Schema::Result::Asset",
-  { "foreign.user_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 blog_owners
-
-Type: has_many
-
-Related object: L<PearlBee::Model::Schema::Result::BlogOwner>
-
-=cut
-
-__PACKAGE__->has_many(
-  "blog_owners",
-  "PearlBee::Model::Schema::Result::BlogOwner",
-  { "foreign.user_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 categories
 
@@ -279,24 +227,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 role
 
-Type: belongs_to
-
-Related object: L<PearlBee::Model::Schema::Result::Role>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "role",
-  "PearlBee::Model::Schema::Result::Role",
-  { name => "role" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lKZ9twVeHAcvYJunXb+fNw
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-12 11:32:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K9HSB67oau0IzWdJILumFg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
@@ -305,14 +238,6 @@ __PACKAGE__->belongs_to(
 Check if the user has administration authority
 
 =cut
-
-__PACKAGE__->belongs_to(
-  "role",
-  "PearlBee::Model::Schema::Result::Role",
-  { name => "role" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
-);
-
 
 sub is_admin {
   my ($self) = shift;

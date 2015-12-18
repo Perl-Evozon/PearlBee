@@ -40,13 +40,11 @@ __PACKAGE__->table("blog_owners");
 =head2 user_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
 =head2 blog_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
 =head2 created_date
@@ -67,9 +65,9 @@ __PACKAGE__->table("blog_owners");
 
 __PACKAGE__->add_columns(
   "user_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "blog_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "created_date",
   {
     data_type => "timestamp",
@@ -100,41 +98,9 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("user_id", "blog_id");
 
-=head1 RELATIONS
 
-=head2 blog
-
-Type: belongs_to
-
-Related object: L<PearlBee::Model::Schema::Result::Blog>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "blog",
-  "PearlBee::Model::Schema::Result::Blog",
-  { id => "blog_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
-);
-
-=head2 user
-
-Type: belongs_to
-
-Related object: L<PearlBee::Model::Schema::Result::User>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "user",
-  "PearlBee::Model::Schema::Result::User",
-  { id => "user_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Y5I5gw8JaqHNb5Ns+Dn03A
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-11-23 12:42:58
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DVbLOOt1XlToZB7+hBeLDQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

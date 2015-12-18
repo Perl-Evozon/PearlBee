@@ -15,20 +15,6 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
-
-=over 4
-
-=item * L<DBIx::Class::InflateColumn::DateTime>
-
-=item * L<DBIx::Class::TimeStamp>
-
-=back
-
-=cut
-
-__PACKAGE__->load_components("InflateColumn::DateTime", "TimeStamp");
-
 =head1 TABLE: C<comment>
 
 =cut
@@ -83,8 +69,7 @@ __PACKAGE__->table("comment");
 
   data_type: 'enum'
   default_value: 'HTML'
-  extra: {list => ["HTML","Markdown"]}
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 status
 
@@ -133,12 +118,7 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
   "type",
-  {
-    data_type => "enum",
-    default_value => "HTML",
-    extra => { list => ["HTML", "Markdown"] },
-    is_nullable => 1,
-  },
+  { data_type => "enum", is_nullable => 0 },
   "status",
   {
     data_type => "enum",
@@ -204,8 +184,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-12-17 13:13:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:W5ODcLd/IUMLfO96cRgALQ
+# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-12 11:32:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kXOgl6BN015P4v3rssxB+g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

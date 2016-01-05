@@ -38,9 +38,15 @@ WriteMakefile(
         'Data::Pageset'              => 0,
         'Text::Markdown'             => 0,
 
-        'Email::Template'            => 0,
-        'Moose'                      => 0,
-        'XML::Simple'                => 0,
+        'IO::All'                             => 0,
+        'MIME::Lite'                          => 0,
+        'MIME::Lite::TT'                      => 0,
+        'Email::MIME'                         => 0,
+        'Email::Sender::Simple'               => 0,
+        'Email::Sender::Transport::SMTP::TLS' => 0,
+        'Email::Template'                     => 0,
+        'Moose'                               => 0,
+        'XML::Simple'                         => 0,
 
         'Search::Elasticsearch'      => 0,
 

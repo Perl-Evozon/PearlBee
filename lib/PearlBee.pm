@@ -9,6 +9,7 @@ use Dancer2::Plugin::reCAPTCHA;
 use DateTime;
 use JSON qw//;
 use Text::Markdown qw( markdown );
+use Try::Tiny;
 
 # Included controllers
 
@@ -28,6 +29,7 @@ use PearlBee::Admin;
 use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
+use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
@@ -212,6 +214,7 @@ Add a comment method
 
 post '/comments' => sub {
 
+  my $username    = route_parameters->{'username'};
   my $parameters  = body_parameters;
   my $post_id     = $parameters->{'id'};
   my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
@@ -220,9 +223,10 @@ post '/comments' => sub {
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
+  my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
   my %result;
 
-  eval {
+  try {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
     my $comment = resultset('Comment')->can_create( $parameters, $user );
@@ -230,23 +234,24 @@ post '/comments' => sub {
     # Notify the author that a new comment was submited
     my $author = $post->user;
 
-    # Email::Template->send( config->{email_templates} . 'new_comment.tt',
-    # {
-    #     From    => config->{default_email_sender},
-    #     To      => $author->email,
-    #     Subject => 'A new comment was submitted to your post',
-
-    #     tt_vars => {
-    #       fullname         => 'get fullname from signed-in commenter',
-    #       title            => $post->title,
-    #       comment          => $parameters->{'comment'},
-    #       signature        => config->{email_signature},
-    #       post_url         => config->{app_url} . '/post/' . $post->slug,
-    #       app_url          => config->{app_url}
-    #     },
-    # }) or {
-    #     $result{email_sent} = 0;
-    # };
+    if ($blog and $blog->email_notification) {
+      Helpers::Email::send_email_complete(
+        { from            => config->{default_email_sender},
+          to              => $author->email,
+          subject         => 'A new comment was submitted to your post',
+          template        => 'new_comment.tt',
+          template_params =>
+          { name      => $username,
+            fullname  => 'get fullname from signed-in commenter',
+            title     => $post->title,
+            comment   => $parameters->{'comment'},
+            signature => config->{email_signature},
+            post_url  => config->{app_url} . '/post/' . $post->slug,
+            app_url   => config->{app_url}
+          }
+        }
+      );
+    }
 
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $result{message} = 'Your comment has been submited. Thank you!';
@@ -259,9 +264,9 @@ post '/comments' => sub {
       $result{approved} = 1;
       $result{email_sent} = 1;
     }
-  };
-  if (@_) {
-      $result{message} = 'An error occured while submitting your comment. We\'re already on it!';
+  }
+  catch {
+      $result{message} = q{An error occurred while submitting your comment. We're already on it!};
       $result{success} = 0;
       $result{approved} = 0;
       $result{email_sent} = 0;

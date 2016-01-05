@@ -73,7 +73,8 @@ CREATE TABLE blog (
   description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
-  status active_state NOT NULL DEFAULT 'inactive'
+  status active_state NOT NULL DEFAULT 'inactive',
+  email_notification integer NOT NULL DEFAULT '0', -- Because mySQL lacks bool type
 );
 
 

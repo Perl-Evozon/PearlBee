@@ -29,6 +29,12 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Digest::Bcrypt</li>
 <li>Digest::MD5</li>
 <li>Digest::SHA1</li>
+<li>IO::All</li>
+<li>MIME::Lite</li>
+<li>MIME::Lite::TT</li>
+<li>Email::MIME</li>
+<li>Email::Sender::Simple</li>
+<li>Email::Sender::Transport::SMTP::TLS</li>
 <li>Email::Template (use --notest if fails)</li>
 <li>Search::Elasticsearch</li>
 <li>HTML::Strip</li>

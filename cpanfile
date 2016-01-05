@@ -17,6 +17,12 @@ requires 'String::Util';
 requires 'Data::Pageset';
 requires 'Search::Elasticsearch';
 
+requires 'IO::All';
+requires 'MIME::Lite';
+requires 'MIME::Lite::TT';
+requires 'Email::MIME';
+requires 'Email::Sender::Simple';
+requires 'Email::Sender::Transport::SMTP::TLS';
 requires 'Email::Template';
 requires 'Moose';
 requires 'XML::Simple';

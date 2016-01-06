@@ -47,6 +47,7 @@ $(document).ready(function() {
     });
 
 
+
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         e.preventDefault();
@@ -62,6 +63,7 @@ $(document).ready(function() {
             console.log( "Data Saved: ", msg );
         });
     });
+
 
 
 //    Truncate Post content
@@ -257,6 +259,28 @@ $(window).on('beforeunload', function() {
     $(window).scrollTop(0);
 });
 
+//If No Posts
+if ($(".no-posts").length > 0){
+  $(".view-more").addClass("cut");
+  } else {
+  $(".view-more").removeClass("cut");
+}
+
+//Close search
+$("#close_search").on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location = window.location.protocol + "//" + window.location.host + "/";
+});
+
+//Tabs label align and tabs min-height
+$( ".tabs label" ).first().css( "margin-left", "10px" );
+
+$('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+$(window).resize(function(){
+    $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+});
+
 
 //button MORE - for listing page
 $('#more-posts').click(function() {
@@ -264,6 +288,7 @@ $('#more-posts').click(function() {
         pageNumber =  +(button.attr("data-page-number")) + 1;
 
     $('.progressloader').show();
+
     $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
         url: '/page/' + pageNumber + '?format=JSON',
@@ -306,5 +331,9 @@ $('#more-posts').click(function() {
 
             $('.progressloader').hide();
             button.attr("data-page-number", pageNumber);
+
+          $(".truncate").dotdotdot({
+            ellipsis  : '... ',
+          });
         });
 });

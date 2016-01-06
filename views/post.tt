@@ -1,24 +1,41 @@
 <!-- Page content -->
-<div class="blog">
+<div class="blog-post">
     <div class="container">
         <div class="row">
 
             [% INCLUDE components/alerts.tt %]
             <br><br><br><br><br>
-            <div class="col-md-8">
-                <h2>[% post.title %]</h2>
+            <div class="col-md-12 individual-post">
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-10">
                 <div class="posts">
                     <!-- Each posts should be enclosed inside "entry" class" -->
                     <!-- Post one -->
-                    <div class="entry">
+                    <div class="entry clearfix">
                         <!-- Meta details -->
                         <div class="meta">
+                            <div class="bubble">
+                                <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                            </div>
+                             <div class="info-entry">
+                               <div class="user">
+                                 <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                               </div>
+                               <div class="date">
+                                 [% post.created_date %]
+                               </div>
+                               <div class="post-heading">
+                                    <h2>[% post.title %]</h2>
+                               </div>
+
+<!-- 
                             <div class="block_elements">
                                 <i class="icon-calendar"></i> [% post.created_date %]
                             </div>
                             <div class="block_elements">
                                 <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
-                            </div>
+                            </div> -->
 
                             [% FOREACH category in post.post_categories %]
                                 <div class="block_elements">
@@ -26,37 +43,63 @@
                                 </div>
                             [% END %]
 
-                            [% SET nr_of_comments = post.nr_of_comments %]
-                            <div class="block_elements">
-                                <i class="icon-comment"></i>
-                                <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] comments [% END %]</a>
-                            </div
                         </div>
-
                         <!-- Thumbnail -->
                         [% INCLUDE cover.tt %]
-
+                        
                         <!-- Para -->
                         <p>
                            [% post.content %]
                         </p>
 
-                        [% IF (setting.social_media == '1') %]
-                            [% INCLUDE social_media_buttons.tt %]
-                        [% END %]
-                    </div>
+<!--                         [% IF (setting.social_media == '1') %]
+    [% INCLUDE social_media_buttons.tt %]
+[% END %] -->
 
+<!--                         [% SET nr_of_comments = post.nr_of_comments %]
+    <div class="block_elements">
+        <i class="icon-comment"></i>
+        <a href="#comments">[% nr_of_comments %] [% IF (nr_of_comments == 1) %] comment [% ELSE %] comments [% END %]</a>
+    </div> -->
+
+                                <div class="individual-post-tags">
+                                    <div class="label-tags">
+                                    <h4>Tags:</h4>
+                                    </div>
+                                    <div class="tags">
+                                       <a class="linear-tag" href="/posts/tag/perlgithub">perlgithub</a>
+                                       <a class="linear-tag" href="/posts/tag/perlgithub">perlgithub</a>
+                                       <a class="linear-tag" href="/posts/tag/perlgithub">perlgithub</a>
+                                    </div>
+                              </div>
+
+                              <ul class="pager-post clearfix">
+                                    <li class="previous-post pull-left"><a href="#">previous post</a></li>
+                                    <li class="next-post pull-right"><a href="[% config.app_url %][% next_link %]">next post</a></li>
+                              </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-comment">
+    <div class="container">
+        <div class="row">
                     <!-- Comment posting -->
                     [% INCLUDE comment_form.tt %]
 
                     <!-- Comment section -->
                     [% INCLUDE list_comments.tt %]
-                </div>
-            </div>
+<!--   
+      start sidebar
+      <aside class="col-md-4">
+          [% INCLUDE post_sidebar.tt %]
+      </aside> -->
         </div>
-        <!-- start sidebar -->
-        <aside class="col-md-4">
-            [% INCLUDE post_sidebar.tt %]
-        </aside>
     </div>
 </div>

@@ -1,0 +1,162 @@
+
+<div class="search-page">
+  <div class="container-fluid">
+    <div class="background-bar"></div>
+      <div class="tabs">
+         <div class="container">
+            <div class="row search-top">
+                 
+                <div class="tabs-head clearfix">
+                <div class="close-search" id="close_search">
+                    <i class="icon-remove"></i>
+                </div>
+                 <h2><span>[% searchquery %]</span> search results</h2>
+                 </div>
+                
+                 <!-- Radio button and lable for #tab-content1 -->
+                 <input type="radio" name="tabs" id="tab1" checked >
+                 <label for="tab1">
+                     <span>posts</span>
+                 </label>
+               
+                 <!-- Radio button and lable for #tab-content2 -->
+                 <input type="radio" name="tabs" id="tab2">
+                 <label for="tab2">
+                     <span>people</span>
+                 </label>
+               
+                 <!-- Radio button and lable for #tab-content3 -->
+                 <input type="radio" name="tabs" id="tab3">
+                 <label for="tab3">
+                     <span>tags</span>
+                 </label>
+
+             <div id="tab-content1" class="tab-content">
+                <div class="posts listings">
+                  <div class="col-xs-2">
+                  </div>
+                  <div class="col-xs-10 no-padding">
+                    
+                  </div>
+                  [% FOREACH post in posts %]
+            
+                    <div class="entry clearfix">
+                      <div class="col-xs-2">
+                      </div>
+                        <div class="text-listing-entries col-xs-10">
+                            <div class="bubble">
+                                <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                            </div>
+                             <div class="info-entry">
+                               <div class="user">
+                                 <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                               </div>
+                               <div class="date">
+                                 [% post.created_date %]
+                               </div>
+                               [% FOREACH category in post.post_categories %]
+                                  <div class="block_elements">
+                                    <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                                  </div>
+                                [% END %]
+                             </div>
+                             <div class="post-heading">
+                               <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
+                             </div>
+
+                             <!-- Post cover -->
+                             [% INCLUDE cover.tt %]
+                             
+                             <!-- Post content -->
+                             <div class="post_preview truncate">
+                              <div class="post_preview_wrapper">
+                                <p>
+                                  [% post.content %]
+                                </p>
+                              </div>
+                             </div>
+                       
+                         <!-- Read more -->
+                          [% SET nr_of_comments = post.nr_of_comments %]
+                            <div class="block_elements comments-listings">
+                              <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
+                            </div>
+                         <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                      </div>
+                    </div>
+                  [% END %]
+                  <div class="loading-posts">
+                       <div class="col-xs-2">
+                       </div>
+                       <div class="view-more col-xs-10">
+                           <div class="bubble">
+                               <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs" type="button">more</button>
+                           </div>
+                           <div style="display: none" class="progressloader">
+                               <div class="spinner">
+                                   <div class="bounce1"></div>
+                                   <div class="bounce2"></div>
+                                   <div class="bounce3"></div>
+                               </div>
+
+                           </div>
+                       </div>
+                  </div>
+                  [% IF posts.first %]
+                    <!-- Pagination -->
+              
+                    <!-- Each posts should be enclosed inside "entry" class" -->
+                    <!-- Post one -->
+
+                  [% ELSE %]
+                      <br />
+                      <h5 class="no-posts">We're sorry, no results <br />were found for your <br />search criteria</h5>
+                  [% END %]
+               </div>
+                  
+             </div> <!-- #tab-content1 -->
+             <div id="tab-content2" class="tab-content"><!-- #tab-content2 -->
+
+                <div class="people clearfix">
+                    <div class="col-xs-2">
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="bubble">
+                            <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                        </div>
+                         <div class="info-entry col-md-5">
+                           <div class="user">
+                             <a href="/posts/user/[% post.user.username %]">Otto Szilagyi</a>
+                           </div>
+                           <div class="date">
+                             [% post.created_date %]
+                           </div>
+                        </div>
+                        <div class="properties col-md-7">
+                            <ul>
+                              <li><span>###</span> blog</li>
+                              <li>/</li>
+                              <li><span>###</span> entries</li>
+                              <li>/</li>
+                              <li><span>####</span> comments</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+             </div>
+
+             <div id="tab-content3" class="tab-content"><!-- #tab-content3 -->
+                <ul id="tag-list" class="cf">
+                  <li><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub</a></li>
+                  <li><a class="btn btn-tag" href="/posts/tag/perlgithub">git</a></li>
+                  <li><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub dancer</a></li>
+                </ul>
+             </div>
+
+
+           </div>
+         </div>
+      </div>
+    </div>
+</div>

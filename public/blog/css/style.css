@@ -3661,6 +3661,17 @@ background-size: cover;
 
 /*individual posts page fumy */
 
+.individual-post .meta .bubble img {
+   border-radius: 50%;
+   height: 70px;
+   width: 70px;
+   z-index: 2;
+   position: absolute;
+   left: -120px;
+   background: #ffffff;
+}
+
+
 .individual-post .info-entry .user {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 18px;
@@ -3691,16 +3702,13 @@ background-size: cover;
    color: #ffffff;
 }
 
-.individual-post .meta .bubble img {
-   background: #ffffff;
-}
-
 .blog-post {
    background-color: #07001b;
 }
 
 .blog-comment {
    background-color: #dadada;
+   padding-bottom: 60px;
 }
 
 .individual-post-tags {
@@ -3747,6 +3755,101 @@ background-size: cover;
    padding-left: 0;
    margin-bottom: 25px;
 }
+
+.blog-comment .title h5 {
+   color: #333333;
+   font-size: 18px;
+   text-transform: uppercase;
+   font-weight: bold;
+   margin: 30px 0 0;
+   padding-bottom: 25px;
+   border-bottom: 2px solid #c9c9c9;
+}
+
+.blog-comment .title i {
+   padding-left: 10px;
+}
+
+.blog-comment .sign-to-leave-comment {
+   margin-top: 30px;
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+   color: #999999;
+}
+
+.comments .comment-list .bubble img {
+   border-radius: 50%;
+   height: 70px;
+   width: 70px;
+   z-index: 2;
+   position: absolute;
+   top:28px;
+   left: -120px;
+   background: #ffffff;
+}
+
+.comments .comment-list {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+}
+
+.comments .comment-list .comment-author {
+   margin-top: 40px;
+}
+
+.comments .comment-list .comment-author b {
+   color: #333333;
+}
+
+.comment .cmeta {
+   font-size: 18px;
+   color: #a5a5a5;
+}
+
+.comments .comment p {
+   margin-top: 15px;
+   font-size: 18px;
+}
+
+.comments .comment {
+   margin: 0;
+}
+
+.comments .comment .cmeta {
+   font-style: normal;
+}
+
+@media all and (max-width: 660px) {
+   .comments .comment-list .bubble img,
+   .individual-post .meta .bubble img {
+      left: -80px;
+      width: 50px;
+      height: 50px;
+   }
+}
+
+@media all and (max-width: 480px) {
+   .comments .comment-list .bubble img {
+      display: none;
+   }
+}
+
+@media all and (max-width: 429px) {
+   .individual-post .pager-post li {
+      font-size: 14px;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

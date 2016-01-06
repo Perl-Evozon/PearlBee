@@ -90,6 +90,14 @@
 <div class="blog-comment">
     <div class="container">
         <div class="row">
+              <div class="title">
+                  <h5>[% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])
+                      <a target="_blank" href="/feed/post/[% post.slug %]">
+                          <i class="icon-rss"></i>
+                      </a>
+                  </h5>
+              </div>
+
                     <!-- Comment posting -->
                     [% INCLUDE comment_form.tt %]
 

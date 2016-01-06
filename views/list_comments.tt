@@ -1,18 +1,14 @@
 <div class="comments" id="comments">
-    <div class="title">
-        <h5>[% nr_of_comments %] [% IF (nr_of_comments == 1) %] Comment [% ELSE %] Comments [% END %]
-            <a target="_blank" href="/feed/post/[% post.slug %]">
-                <i class="icon-rss"></i>
-            </a>
-        </h5>
-    </div>
+
     <ul class="comment-list">
         [% FOREACH comment in comments %]
             <li class="comment" id="comment_[% comment.id %]">
-                <a class="pull-left" href="#">
-                    <img class="avatar" src="[% comment.avatar %]" class="img-responsive" />
-                </a>
-                
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-10 content-comment">
+                    <div class="bubble">
+                        <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                    </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
                         <b>[% comment.fullname %]</b>
@@ -24,7 +20,7 @@
                 [% END %]
                 
                 <div class="cmeta">
-                    Commented on [% comment.comment_date %]
+                    [% comment.comment_date %]
                 </div>
                 <p>
                     [% comment.content %]
@@ -45,7 +41,7 @@
                             <a class="pull-left" href="#">
                                 <img class="avatar" src="[% reply.avatar %]" class="img-responsive" />
                             </a>
-                            
+
                             [% IF reply.fullname %]
                                 <div class="comment-author">
                                     <b>[% reply.fullname %]</b>
@@ -67,7 +63,7 @@
                         </li>
                     [% END %]
                 </ul>
-                
+                </div>
             </li>
         [% END %]
     </ul>

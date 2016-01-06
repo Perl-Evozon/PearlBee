@@ -10,7 +10,7 @@
 		    </form>
 	</div>
 [% ELSE %]
-    <div>
+    <div class="sign-to-leave-comment">
     	<p>Please <a href="/sign-up">sign in</a> to leave a comment</p>
     </div>
 [% END %]

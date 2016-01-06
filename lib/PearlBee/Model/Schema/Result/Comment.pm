@@ -14,6 +14,9 @@ use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
+use DateTime;
+use DateTime::Format::MySQL;
+use Date::Period::Human;
 
 =head1 TABLE: C<comment>
 
@@ -230,6 +233,26 @@ sub is_authorized {
   $authorized    = 1 if ( !$user->is_admin && $self->post->user_id == $user->id );
 
   return $authorized;
+}
+
+sub comment_date_DT {
+
+        my ($self) = @_;
+        return DateTime::Format::MySQL->parse_datetime( $self->comment_date );
+}
+
+sub comment_date_human {
+
+        my ($self) = @_;
+        if ( DateTime->compare(
+                $self->comment_date_DT,
+                DateTime->today ) == 1 ) {
+                my $dph = Date::Period::Human->new({ lang => 'en' });
+                return $dph->human_readable( $self->comment_date );
+        }
+        else {
+                return $self->comment_date;
+        }
 }
 
 1;

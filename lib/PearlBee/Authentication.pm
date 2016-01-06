@@ -19,7 +19,7 @@ get '/admin' => sub {
 
 =head
 
-login metehod
+login method
 
 =cut
 
@@ -50,7 +50,7 @@ post '/login' => sub {
     session user => $user_obj;
     session user_id => $user->id;
 	
-    redirect('/dashboard');
+    redirect('/');
   }
   else {
     template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };

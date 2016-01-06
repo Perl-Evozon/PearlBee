@@ -8,7 +8,9 @@ Email: andrei.cacio@evozon.com
 package PearlBee::Admin::Category;
 
 use Dancer2;
+
 use Dancer2::Plugin::DBIC;
+use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Util qw(string_to_slug);
 

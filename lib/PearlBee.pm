@@ -7,7 +7,9 @@ use Dancer2::Plugin::reCAPTCHA;
 
 # Other used modules
 use DateTime;
-use JSON;
+use JSON qw//;
+use Text::Markdown qw( markdown );
+use Try::Tiny;
 
 # Included controllers
 
@@ -27,12 +29,14 @@ use PearlBee::Admin;
 use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
+use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
 
 our $VERSION = '0.1';
-
+use Data::Dumper;
+  
 =head
 
 Prepare the blog path
@@ -172,21 +176,31 @@ get '/post/:slug' => sub {
   my $settings   = resultset('Setting')->first;
   my @tags       = resultset('View::PublishedTags')->all();
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
 
-  # Grab the approved comments for this post and the corresponding reply comments
-  my @comments;
-  @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
-  foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
-    foreach my $reply (@comment_replies) {
-      my $el;
-      map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
-      $el->{uid}->{username} = $reply->uid->username if $reply->uid;
-      push(@{$comment->{comment_replies}}, $el);
-    }
-  }
+
+  # #############################################################
+  # Jeff, I commented your code regarding the Markdown conversion, because I moved the logic into get_approved_comments_by_post_id function.
+  # We won't have a hierarchical system anyomre, so no need to get comments by reply_to
+  # #############################################################
+
+  # # Grab the approved comments for this post and the corresponding reply comments
+  # my @comments;
+  # @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
+  # foreach my $comment (@comments) {
+  #   my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+  #   foreach my $reply (@comment_replies) {
+  #     my $el;
+  #     map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content', 'type');
+  #     if ( $el->{type} eq 'Markdown' ) {
+  #       $el->{content} = markdown($el->{content});
+  #     }
+  #     $el->{uid}->{username} = $reply->uid->username if $reply->uid;
+  #     push(@{$comment->{comment_replies}}, $el);
+  #   }
+  # }
 
   template 'post',
     {
@@ -196,8 +210,7 @@ get '/post/:slug' => sub {
       categories => \@categories,
       comments   => \@comments,
       setting    => $settings,
-      tags       => \@tags,
-      recaptcha  => recaptcha_display(),
+      tags       => \@tags
     };
 };
 
@@ -207,102 +220,78 @@ Add a comment method
 
 =cut
 
-post '/comment/add' => sub {
+post '/comments' => sub {
 
+  my $username    = route_parameters->{'username'};
   my $parameters  = body_parameters;
-  my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = $parameters->{'secret'};
-  my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
+  my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
+  my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
+  my %result;
 
-  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
-  if ($parameters->{'reply_to'}) {
-    my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
-    if ($comm) {
-      $parameters->{'reply_to_content'} = $comm->content;
-      $parameters->{'reply_to_user'} = $comm->fullname;
+  try {
+    # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
+
+    my $comment = resultset('Comment')->can_create( $parameters, $user );
+
+    # Notify the author that a new comment was submited
+    my $author = $post->user;
+
+    if ($blog and $blog->email_notification) {
+      Helpers::Email::send_email_complete(
+        { from            => config->{default_email_sender},
+          to              => $author->email,
+          subject         => 'A new comment was submitted to your post',
+          template        => 'new_comment.tt',
+          template_params =>
+          { name      => $username,
+            fullname  => 'get fullname from signed-in commenter',
+            title     => $post->title,
+            comment   => $parameters->{'comment'},
+            signature => config->{email_signature},
+            post_url  => config->{app_url} . '/post/' . $post->slug,
+            app_url   => config->{app_url}
+          }
+        }
+      );
     }
-  }
-
-  my $template_params = {
-    post        => $post,
-    categories  => \@categories,
-    popular     => \@popular,
-    recent      => \@recent,
-    warning     => 'The secret code is incorrect'
-  };
-
-  my $response = param('g-recaptcha-response');
-  my $result = recaptcha_verify($response);
-  if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
-    # The user entered the correct secret code
-    eval {
-
-      # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
-
-      my $comment = resultset('Comment')->can_create( $parameters, $user );
-
-      # Notify the author that a new comment was submited
-      my $author = $post->user;
-
-      Email::Template->send( config->{email_templates} . 'new_comment.tt',
-      {
-          From    => config->{default_email_sender},
-          To      => $author->email,
-          Subject => ($parameters->{'reply_to'} ? 'A comment reply was submitted to your post' : 'A new comment was submitted to your post'),
-
-          tt_vars => {
-            fullname         => $fullname,
-            title            => $post->title,
-            comment          => $parameters->{'comment'},
-            signature        => config->{email_signature},
-            post_url         => config->{app_url} . '/post/' . $post->slug,
-            app_url          => config->{app_url},
-            reply_to_content => $parameters->{'reply_to_content'} || '',
-            reply_to_user    => $parameters->{'reply_to_user'}    || '',
-          },
-      }) or error "Could not send the email";
-    };
-    error $@ if ( $@ );
-
-    # Grab the approved comments for this post
-    @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
-
-    delete $template_params->{warning};
-    delete $template_params->{in_reply_to};
 
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
-      $template_params->{success} = 'Your comment has been submited. Thank you!';
+      $result{message} = 'Your comment has been submited. Thank you!';
+      $result{success} = 1;
+      $result{approved} = 0;
+      $result{email_sent} = 1;
     } else {
-      $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
+      $result{message} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
+      $result{success} = 1;
+      $result{approved} = 1;
+      $result{email_sent} = 1;
     }
   }
-  else {
-    # The secret code inncorrect
-    # Repopulate the fields with the data
+  catch {
+      $result{message} = q{An error occurred while submitting your comment. We're already on it!};
+      $result{success} = 0;
+      $result{approved} = 0;
+      $result{email_sent} = 0;
+  };
 
-    $template_params->{fields} = $parameters;
-  }
+  # foreach my $comment (@comments) {
+  #   my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+  #   foreach my $reply (@comment_replies) {
+  #     my $el;
+  #     map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
+  #     $el->{uid}->{username} = $reply->uid->username if $reply->uid;
+  #     push(@{$comment->{comment_replies}}, $el);
+  #   }
+  # }
 
-  foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
-    foreach my $reply (@comment_replies) {
-      my $el;
-      map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
-      $el->{uid}->{username} = $reply->uid->username if $reply->uid;
-      push(@{$comment->{comment_replies}}, $el);
-    }
-  }
-  $template_params->{comments} = \@comments;
-  $template_params->{recaptcha} = recaptcha_display();
-
-  template 'post', $template_params;
-
+  content_type 'application/json';
+  return to_json(\%result);
 };
 
 =head
@@ -606,6 +595,8 @@ post '/sign-up' => sub {
 
   my $response = $params->{'g-recaptcha-response'};
   my $result = recaptcha_verify($response);
+
+
   if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secrete code
     eval {

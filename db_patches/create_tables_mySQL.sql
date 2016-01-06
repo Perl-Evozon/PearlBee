@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,
   `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
+  `email_notification` tinyint(1) NOT NULL DEFAULT '0',
   -- `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog information.';

@@ -19,7 +19,7 @@ get '/author/comments/page/:page' => sub {
   my $page         = params->{page} || 1;
   my $user         = session('user');
   $user            = resultset('User')->find( $user->{id} );
-  my @comments     = resultset('View::UserComments')->search({}, { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
+  my @comments     = resultset('View::UserComments')->search({}, { bind => [ $user->id ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count        = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
@@ -66,7 +66,7 @@ get '/author/comments/:status/page/:page' => sub {
   my $status      = params->{status};
   my $user        = session('user');
   $user           = resultset('User')->find( $user->{id} );
-  my @comments    = resultset('View::UserComments')->search({ status => $status },  { bind => [ $user->id ], order_by => "comment_date DESC", rows => $nr_of_rows, page => $page });
+  my @comments    = resultset('View::UserComments')->search({ status => $status },  { bind => [ $user->id ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;

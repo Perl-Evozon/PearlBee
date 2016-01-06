@@ -26,7 +26,7 @@ sub can_create {
   	my $gravatar = gravatar_url(email => $email);
 
   	# Set the proper timezone
-	my $dt       = DateTime->now;          
+	my $dt       = DateTime->now;
 	my $settings = $schema->resultset('Setting')->first;
 	my $dtf 	 = $schema->storage->datetime_parser;
 	$dt->set_time_zone( $settings->timezone );
@@ -54,6 +54,34 @@ sub can_create {
     });
 
     return $comment;
+}
+
+
+sub get_approved_comments_by_post_id {
+	my ($self, $post_id) = @_;
+
+    my @comments = $self->search({
+    	post_id => $post_id,
+    	status => 'approved',
+    }, {
+		order_by => {
+			-desc => "comment_date"
+		}
+	});
+
+    foreach my $comment (@comments) {
+    	my @comment_replies = $self->search({
+    		reply_to => $comment->id,
+    		status => 'approved'
+    	}, {
+    		order_by => {
+    			-desc => "comment_date"
+    		}
+    	});
+    };
+
+    return @comments;
+
 }
 
 1;

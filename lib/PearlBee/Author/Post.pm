@@ -28,7 +28,7 @@ get '/author/posts/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page};
   my $user        = session('user');
-  my @posts       = resultset('Post')->search({ user_id => $user->{id} }, { order_by => 'created_date DESC', rows => $nr_of_rows, page => $page });
+  my @posts       = resultset('Post')->search({ user_id => $user->{id} }, { order_by => \'created_date DESC', rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
 
   my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
@@ -72,7 +72,7 @@ get '/author/posts/:status/page/:page' => sub {
   my $page        = params->{page};
   my $status      = params->{status};
   my $user        = session('user');
-  my @posts       = resultset('Post')->search({ user_id => $user->{id}, status => $status }, { order_by => 'created_date DESC' });
+  my @posts       = resultset('Post')->search({ user_id => $user->{id}, status => $status }, { order_by => \'created_date DESC' });
   my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
 
   my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
@@ -205,7 +205,7 @@ any '/author/posts/add' => sub {
         $post = resultset('Post')->can_create($params);
 
         # Insert the categories selected with the new post
-        resultset('PostCategory')->connect_categories( params->{category}, $post->id );
+        resultset('PostCategory')->connect_categories( params->{categories}, $post->id, $user->{id} );
 
         # Connect and update the tags table
         resultset('PostTag')->connect_tags( params->{tags}, $post->id );
@@ -250,17 +250,19 @@ get '/author/posts/edit/:slug' => sub {
   my $joined_tags = join( ', ', @tag_names );
 
   # Prepare the categories
-  my @categories;
-  push( @categories, $_->category ) foreach (@post_categories);
+  my @category_names;
+  push( @category_names, $_->tag->name ) foreach (@post_categories);
+  my $joined_categories = join( ', ', @category_names );
+
 
   # Array of post categories id for populating the checkboxes
   my @categories_ids;
-  push( @categories_ids, $_->id ) foreach (@categories);
+ # push( @categories_ids, $_->id ) foreach (@categories);
 
   my $params = {
       post           => $post,
       tags           => $joined_tags,
-      categories     => \@categories,
+      categories     => $joined_categories,
       all_categories => \@all_categories,
       ids            => \@categories_ids
     };
@@ -312,6 +314,8 @@ post '/author/posts/update/:id' => sub {
           $ext = lc($ext);
           $cover->copy_to( config->{covers_folder} . $crypted_filename . $ext );
       }
+      
+      my $user              = session('user');
 
       my $status = params->{status};
       $post->update(
@@ -325,7 +329,7 @@ post '/author/posts/update/:id' => sub {
       );
 
       # Reconnect the categories with the new one and delete the old ones
-        resultset('PostCategory')->connect_categories( params->{category}, $post->id );
+        resultset('PostCategory')->connect_categories( params->{category}, $post->id, $user->{id} );
 
         # Reconnect and update the selected tags
         resultset('PostTag')->connect_tags( params->{tags}, $post->id );

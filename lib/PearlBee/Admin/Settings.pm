@@ -9,6 +9,7 @@ package PearlBee::Admin::Settings;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Util qw/generate_crypted_filename/;
 use PearlBee::Helpers::Import;

@@ -110,6 +110,7 @@
                        </div>
                    </div>
               </div>
+
               [% IF posts.first %]
                 <!-- Pagination -->
           
@@ -117,7 +118,7 @@
                 <!-- Post one -->
               [% ELSE %]
                   <br />
-                  <h5>No posts found.</h5>
+                  <h5 class="no-posts">No posts found.</h5>
               [% END %]
            </div>
         </div>

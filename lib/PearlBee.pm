@@ -173,6 +173,7 @@ get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
+  my @post_tags  = $post->tag_objects;
   my $settings   = resultset('Setting')->first;
   my @tags       = resultset('View::PublishedTags')->all();
   my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
@@ -210,7 +211,7 @@ get '/post/:slug' => sub {
       categories => \@categories,
       comments   => \@comments,
       setting    => $settings,
-      tags       => \@tags
+      tags       => \@post_tags,
     };
 };
 

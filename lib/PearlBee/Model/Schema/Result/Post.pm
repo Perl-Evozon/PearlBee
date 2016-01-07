@@ -296,4 +296,20 @@ sub is_authorized {
   return $authorized;
 }
 
+=haed
+
+Return the tag
+
+Check if the user has enough authorization for modifying
+
+=cut
+
+sub tag_objects {
+  my ($self) = @_;
+  my $schema = $self->result_source->schema;
+  return map {
+    $schema->resultset('Tag')->find({ id => $_->tag_id })
+  } $schema->resultset('PostTag')->search({ post_id => $self->id });
+}
+
 1;

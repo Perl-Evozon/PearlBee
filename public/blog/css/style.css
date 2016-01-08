@@ -3405,6 +3405,7 @@ background-size: cover;
 }
 
 .search-page #close_search {
+   z-index: 101;
    cursor: pointer;
    position: absolute;
    top: 35px;
@@ -3657,6 +3658,15 @@ background-size: cover;
 
 /* end people */
 
+.search-page .input-search {
+   position: absolute;
+   width: 100%;
+   z-index: 100;
+   background-color: #dadada;
+}
+
+
+
 /*end search page fumy */
 
 /*individual posts page fumy */
@@ -3819,6 +3829,14 @@ background-size: cover;
    font-style: normal;
 }
 
+.blog-comment .respond {
+   padding: 0;
+}
+
+.blog-comment .respond .form-group .comment_form p {
+   color: #333333;
+}
+
 @media all and (max-width: 660px) {
    .comments .comment-list .bubble img,
    .individual-post .meta .bubble img {
@@ -3839,43 +3857,6 @@ background-size: cover;
       font-size: 14px;
    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*end individual posts page fumy */

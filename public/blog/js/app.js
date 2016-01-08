@@ -47,7 +47,6 @@ $(document).ready(function() {
     });
 
 
-
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         e.preventDefault();
@@ -138,9 +137,8 @@ $(document).ready(function() {
       }
 
       if (errors === 0) {
-        return true;
+        return true
       }
-
       return false;
     }
 
@@ -273,7 +271,14 @@ $("#close_search").on('click', function (e) {
     window.location = window.location.protocol + "//" + window.location.host + "/";
 });
 
-//Tabs label align and tabs min-height
+//click on search
+//$(".header-icon").on('click', function (e) {
+//    e.preventDefault();
+//    e.stopPropagation();
+//    window.location = window.location.protocol + "//" + window.location.host + "/search/user-posts"; 
+//});
+
+//Tabs label align, tabs & search min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
 $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
@@ -281,6 +286,18 @@ $(window).resize(function(){
     $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
 });
 
+//$('.input-search').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".header").outerHeight(true));
+//$(window).resize(function(){
+//    $('.input-search').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".header").outerHeight(true));
+//});
+
+
+//$('#search').keypress(function (e) {
+//      var key = e.which;
+//      if(key == 13) {
+//      $(".search-top").removeClass("hidden");
+//    }
+//});
 
 //button MORE - for listing page
 $('#more-posts').click(function() {

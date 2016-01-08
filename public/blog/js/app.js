@@ -264,7 +264,7 @@ $(window).resize(function(){
 		event.stopPropagation();
 	});
 
-
+});
 
 //Back to top at refresh
 $(window).on('beforeunload', function() {

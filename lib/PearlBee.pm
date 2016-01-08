@@ -10,6 +10,7 @@ use DateTime;
 use JSON qw//;
 use Text::Markdown qw( markdown );
 use Try::Tiny;
+use Digest::SHA;
 
 # Included controllers
 
@@ -612,12 +613,13 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
-      if ($u) {
+      my $existing_users = resultset('User')->search( { email => $params->{'email'} } )->count;
+
+      if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
-        if ($u) {
+        $existing_users = resultset('User')->search( { username => $params->{'username'} } )->count;
+        if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
 
@@ -629,11 +631,18 @@ post '/sign-up' => sub {
             my $settings = resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
 
-            my ($password, $pass_hash) = create_password();#, $salt) = create_password();
+            # Match encryption from MT
+            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+
+            my $crypt_sha  = '$6$' .
+                             $salt .
+                             '$' .
+                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
             resultset('User')->create({
               username        => $params->{username},
-              password        => $pass_hash,
+              password        => $crypt_sha,
               email           => $params->{'email'},
               name            => $params->{'name'},
               register_date   => join (' ', $dt->ymd, $dt->hms),

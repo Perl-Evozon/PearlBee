@@ -337,3 +337,18 @@ $('#more-posts').click(function() {
           });
         });
 });
+
+//button MORE - for listing page
+$('#search-test').click(function() {
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/search/user-posts/ron.savage',
+        type: 'GET'
+    })
+        .done(function (data) {
+            var posts = JSON.parse(data);
+            console.log(posts);
+        });
+
+});

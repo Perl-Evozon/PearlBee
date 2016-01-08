@@ -580,6 +580,12 @@ get '/password_recovery' => sub {
 
 };
 
+get '/profile' => sub {
+
+  template 'profile';
+
+};
+
 get '/sign-up' => sub {
 
   template 'signup', {

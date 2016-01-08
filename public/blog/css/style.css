@@ -387,6 +387,9 @@ strong{
 
 .header .btn-group .dropdown-login {
 	min-width: 261px;
+	top: 95%;
+	right: 20px;
+	left: inherit;
 }
 
 .dropdown-login .input-login {
@@ -2106,6 +2109,10 @@ footer{
    padding:35px 0px 10px 0px;
 }
 
+footer .container {
+	margin: 0 auto !important;
+}
+
 footer a{
    color:#eee;
    text-decoration:none;
@@ -2198,6 +2205,7 @@ footer .copy{
 	width: 135px;
 	height: 28px;
 	background-size: 140px;
+	float: right;
 }
 
 footer .f-logo {
@@ -2206,7 +2214,7 @@ footer .f-logo {
 
 footer .fwidget #powered_by {
 	width: 82px;
-	margin-left: 55px;
+	margin-left: 215px;
 	font-weight: bold;
 }
 
@@ -2263,9 +2271,37 @@ footer .fwidget #powered_by {
 	}
 	footer .fwidget .footer-logo {
 		margin: 0 auto 30px auto;
+		float: initial;
 	}
 	footer .fwidget #powered_by {
 		margin: 0 auto;
+	}
+		
+/*	responsive for myprofile*/
+	.myprofile.register .container {
+		margin: 30px auto;
+	}
+	.myprofile-head .write-post {
+		margin-top: 5px;
+	}
+	.credentials label {
+		display: inherit !important;
+	}
+	.credentials .col-sm-2 {
+		text-align: center;
+	}
+	.credentials .col-sm-10 .input-group {
+		margin-left: 40px;
+	}
+	.credentials .buttons-group {
+		width: 80% !important;
+		margin-left: 40px
+	}
+	.credentials .buttons-group label {
+		width: 100px;
+	}
+	.credentials .buttons-group button {
+		width: 58px !important;
 	}
 }
 
@@ -3043,7 +3079,7 @@ a:focus {
 
 /*START Sing in form*/
 .sign-up {
-	top:inherit;
+/*	top:inherit;*/
 	background: url('../img/camila-gri.jpg') center center no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -3067,6 +3103,80 @@ a:focus {
 	margin-top: 15em;
 }
 /*END Sing in form*/
+
+/*START My profile page*/
+.myprofile-head .write-post {
+	width: 100%;
+	height: 50px;  
+	padding: 10px;
+	font-size: 16px;
+}
+.myprofile-head .write-post:hover {
+	color: #0fa6bc;
+}
+.myprofile-head {
+	height: 50px;
+	margin-bottom: 60px;
+}
+.myprofile-head .col-sm-5{
+	margin-top: 10px;
+}
+.myprofile-head h1 {
+	display: inline;
+}
+.myprofile-head h5 {
+	display: inline;
+	margin-left: 10px;
+}
+.credentials .bubble img{
+	border-radius: 50%;
+	height: 120px;
+	width: 120px;
+	z-index: 2;
+	border: 5px solid #444;
+}
+.credentials h2 {
+	margin: 0 0 30px 30px;
+}
+.credentials .input-group {
+	margin: 10px 0 0 70px;
+	width: 100%;
+}
+.credentials label {
+	display: table-cell;
+	padding-right: 20px;
+	width: 200px;
+	vertical-align: middle;
+	font-size: 20px;
+	font-weight: normal;
+}
+.credentials .form-control {
+	height: 50px;
+	width: 80%;
+	padding: 6px 20px;
+	display: table-cell;
+}
+.credentials textarea.form-control {
+	height: initial;
+	resize: vertical;
+}
+.credentials .buttons-group {
+	width: 85%;
+	margin-right: 50px;
+	margin-bottom: 50px;
+}
+.credentials .buttons-group .light-button {
+	width: 15%;
+	min-width: 58px;
+}
+.credentials .buttons-group .dark-button {
+	width: 15%;
+	min-width: 58px;
+}
+.credentials .confirmNewPassword.error:focus {
+	border-color: red;
+}
+/*END My profile page*/
 
 /* listings fumy */
 

@@ -152,6 +152,18 @@ $(document).ready(function() {
       return false;
       }
     });
+	
+//	My profile password confirmation 
+	
+  $("#confirmNewPassword").keyup(function() {
+    if( $(this).val() !== $("#newPassword").val() ){
+        $("#confirmNewPassword").addClass('error');
+    } else {
+        $("#confirmNewPassword").removeClass('error');
+    }
+  });
+	
+	
 
     function getCookie(c_name) {
 		if (document.cookie.length>0) {
@@ -208,13 +220,13 @@ $(document).ready(function() {
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
 
-});
+
 
 $(window).resize(function(){
   $(".truncate").dotdotdot({
     ellipsis  : '... ',
   });
-
+});
 
 //	Header
 	if ($(window).width() <= 800){
@@ -252,7 +264,7 @@ $(window).resize(function(){
 		event.stopPropagation();
 	});
 
-});
+
 
 //Back to top at refresh
 $(window).on('beforeunload', function() {

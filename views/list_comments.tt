@@ -20,7 +20,7 @@
                 [% END %]
                 
                 <div class="cmeta">
-                    [% comment.comment_date %]
+                    Commented on [% comment.comment_date %]
                 </div>
                 <p>
                     [% comment.content %]

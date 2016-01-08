@@ -18,7 +18,7 @@
 						<div class="dropdown-menu dropdown-login">
 							<div class="input-group input-login">
 								<input type="text" class="form-control dropdown_input" placeholder="Email or username" aria-describedby="basic-addon1">
-								<input type="text" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1">
+								<input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1">
 							</div>
 							<div class="links-group">
 								<a href="http://172.22.120.254:5001/password_recovery" class="login-links pull-right">Forgotten Password?</a>
@@ -29,6 +29,19 @@
 								<button type="submit" class="dark-button btn-xs pull-right" id="submitRegister">Sign In</button>
 							</div>
 						</div>
+<!--
+						<div class="dropdown-menu dropdown-login">
+							<div class="links-group header-menu-links">
+								<a href="http://172.22.120.254:5001/profile" class="pull-right">Profile</a>
+							</div>
+							<div class="links-group header-menu-links">
+								<a href="#" class="pull-right">Publications</a>
+							</div>
+							<div class="links-group">
+								<a href="#" class="pull-right">Log Out</a>
+							</div>
+						</div>
+-->
 					</div>
 				</div>
             </div>

@@ -91,7 +91,6 @@ $(document).ready(function() {
       var name = $("#displayNameRegister").val();
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
-      var terms = $("#confirmTerms").is(":checked");
       var errors = 0;
 
 //      Email validation
@@ -128,11 +127,6 @@ $(document).ready(function() {
       else if (confirmPassword !== password) { //      Confirm password validation
         $('.change_error').text("Confirm password doesn't mach with password").css('color' , 'red');
         $('#confirmPasswordRegister').css('border-color' , 'red');
-        errors++;
-
-      }
-      else if (!terms) { //      Checkbox validation
-        $('.change_error').text("Terms and conditions checkbox is necesary").css('color' , 'red');
         errors++;
 
       }

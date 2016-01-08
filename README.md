@@ -18,6 +18,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Data::GUID</li>
 <li>Data::Entropy::Algorithms</li>
 <li>Data::Pageset</li>
+<li>Date::Period::Human</li>
 <li>DateTime::Format::Strptime</li>
 <li>DateTime</li>
 <li>DateTime::TimeZone</li>

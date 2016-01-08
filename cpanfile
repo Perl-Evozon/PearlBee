@@ -5,6 +5,7 @@ requires 'Dancer2'                   => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'DBIx::Class::TimeStamp';
 requires 'DateTime';
+requires 'Date::Period::Human';
 requires 'Digest::Bcrypt';
 requires 'Data::Entropy::Algorithms';
 requires 'Dancer2::Plugin::REST';

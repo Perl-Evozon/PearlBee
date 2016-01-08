@@ -171,11 +171,14 @@ View post method
 
 get '/post/:slug' => sub {
 
-  my $slug       = route_parameters->{'slug'};
-  my $post       = resultset('Post')->find({ slug => $slug });
-  my $settings   = resultset('Setting')->first;
-  my @tags       = resultset('View::PublishedTags')->all();
-  my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my $slug          = route_parameters->{'slug'};
+  my $post          = resultset('Post')->find({ slug => $slug });
+  my $next_post     = $post->next_post;
+  my $previous_post = $post->previous_post;
+  my @post_tags     = $post->tag_objects;
+  my $settings      = resultset('Setting')->first;
+  my @tags          = resultset('View::PublishedTags')->all();
+  my @categories    = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
@@ -204,13 +207,15 @@ get '/post/:slug' => sub {
 
   template 'post',
     {
-      post       => $post,
-      recent     => \@recent,
-      popular    => \@popular,
-      categories => \@categories,
-      comments   => \@comments,
-      setting    => $settings,
-      tags       => \@tags
+      post          => $post,
+      next_post     => $next_post,
+      previous_post => $previous_post,
+      recent        => \@recent,
+      popular       => \@popular,
+      categories    => \@categories,
+      comments      => \@comments,
+      setting       => $settings,
+      tags          => \@post_tags,
     };
 };
 

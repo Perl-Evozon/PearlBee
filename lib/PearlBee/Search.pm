@@ -9,9 +9,33 @@ Search controller
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use PearlBee::Model::Schema;
+use PearlBee::Helpers::Util qw(map_posts);
 use Search::Elasticsearch;
 use Try::Tiny;
 use Data::Dumper;
+
+=head
+
+Search user posts.
+
+=cut
+
+get '/search/user-posts/:query' => sub {
+    my $search_query = route_parameters->{'query'};
+    my $user         = resultset('User')->find({username => $search_query});
+    my @posts        = resultset('Post')->search(
+                        { status => 'published', user_id => $user->id },
+                        { order_by => { -desc => "created_date" } }
+    );
+
+    # extract demo posts info
+    my @mapped_posts = map_posts(@posts);
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    return $json->encode({ posts => [ @mapped_posts ] });
+};
+
 
 =head
 

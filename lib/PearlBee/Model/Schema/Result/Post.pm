@@ -296,4 +296,60 @@ sub is_authorized {
   return $authorized;
 }
 
+=haed
+
+Return the tag
+
+Check if the user has enough authorization for modifying
+
+=cut
+
+sub tag_objects {
+  my ($self) = @_;
+  my $schema = $self->result_source->schema;
+  return map {
+    $schema->resultset('Tag')->find({ id => $_->tag_id })
+  } $schema->resultset('PostTag')->search({ post_id => $self->id });
+}
+
+=head
+
+Return the next post by this user in ID sequence, if any.
+
+=cut
+
+sub next_post {
+  my ($self) = @_;
+  my $schema = $self->result_source->schema;
+  my @post = $schema->resultset('Post')->search(
+    { user_id => $self->user_id,
+      id => { '>' => $self->id }
+    },
+    { rows => 1,
+      order_by => { -asc => 'id' }
+    }
+  );
+  return $post[0] || undef;
+}
+
+=head
+
+Return the previous post by this user in ID sequence, if any.
+
+=cut
+
+sub previous_post {
+  my ($self) = @_;
+  my $schema = $self->result_source->schema;
+  my @post = $schema->resultset('Post')->search(
+    { user_id => $self->user_id,
+      id => { '<' => $self->id }
+    },
+    { rows => 1,
+      order_by => { -desc => 'id' }
+    }
+  );
+  return $post[0] || undef;
+}
+
 1;

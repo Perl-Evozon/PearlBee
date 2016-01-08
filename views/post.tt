@@ -74,8 +74,13 @@
                               </div>
 
                               <ul class="pager-post clearfix">
-                                    <li class="previous-post pull-left"><a href="#">previous post</a></li>
-                                    <li class="next-post pull-right"><a href="[% config.app_url %][% next_link %]">next post</a></li>
+                                [% IF previous_post.slug %]
+                                    <li class="previous-post pull-left"><a href="/post/[% previous_post.slug %]">previous post</a></li>
+				[% END %]
+				[% IF next_post.slug %]
+                                    <li class="next-post pull-right"><a href="/post/[% next_post.slug %]">next post</a></li>
+				[% END %]
+
                               </ul>
 
                             </div>

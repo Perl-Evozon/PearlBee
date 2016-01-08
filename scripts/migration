@@ -12,9 +12,9 @@ $|++;
 my $AVATAR_PATH = '/avatars';
 my $PER_USER_PATH = '/users';
 
-my $in_dsn = 'dbi:mysql:database=blogs-perl-org';
+my $in_dsn = 'dbi:mysql:database=mt_blogs_perl_org';
 #my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
-my $out_dsn = 'dbi:mysql:dbname=BlogsPerlOrg';
+my $out_dsn = 'dbi:mysql:dbname=blogs_perl_org_migrate_test';
 
 my $in_dbh = DBI->connect($in_dsn,'root');
 #my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
@@ -285,6 +285,8 @@ sub map_post {
 #  'entry_text' => 'Introducing <a href="http://blogs.perl.org/">blogs.perl.org</a>. I\'m so happy!<br />'
 #};
 
+my %post_user;
+
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_entry ORDER BY entry_id');
   my $out_sth = $out_dbh->prepare(
@@ -298,6 +300,7 @@ sub migrate_posts {
 #use Data::Dumper; print Dumper($in_post);
 #last;
     my $out_post = map_post($in_post);
+    $post_user{ $out_post->{id} } = $out_post->{user_id};
     $out_sth->execute(
         @{$out_post}{qw( id title slug description content created_date status user_id )}
     );
@@ -422,6 +425,39 @@ sub migrate_categories {
 
 ###############################################################################
 
+sub synthesize_post_tags {
+  my $in_sth = $in_dbh->prepare(
+    'SELECT objecttag_id, objecttag_tag_id
+       FROM mt_objecttag
+   ORDER BY objecttag_id');
+  my %post_tag;
+  my $count = 0;
+
+  $in_sth->execute;
+  while ( my $in_category = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_category);
+#last;
+#objecttag_tag_id
+#objecttag_id
+    push @{ $post_tag{$in_category->{objecttag_id} } },
+      $in_category->{objecttag_tag_id};
+  }
+
+  my $out_sth = $out_dbh->prepare(
+    'insert into post_tag(tag_id,post_id) values(?,?)');
+
+  $count = 0;
+  for my $post_id ( keys %post_tag ) {
+    for my $tag_id ( @{ $post_tag{$post_id} } ) {
+      print '.' if $count++ % 100 == 0;
+      $out_sth->execute($post_id,$tag_id);
+    }
+  }
+}
+
+###############################################################################
+
 sub map_tag {
   my $tag = shift;
   my $dirified = dirify( $tag->{tag_name} );
@@ -537,6 +573,12 @@ print "\n";
 
 print "migrating tags: ";
 migrate_tags;
+print "\n";
+
+#exit;
+
+print "synthesizing post tags ";
+synthesize_post_tags;
 print "\n";
 
 #exit;

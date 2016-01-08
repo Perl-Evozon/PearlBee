@@ -3022,8 +3022,6 @@ a:focus {
   height: 110px;
   border-radius: 5px;
   margin-top: 25px;
-  background: url("../img/captcha.png") center center no-repeat;
-  background-size: cover;
 }
 
 .register .checkbox  {  

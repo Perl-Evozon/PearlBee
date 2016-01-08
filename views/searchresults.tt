@@ -12,7 +12,7 @@
                 </div>
                  <h2><span>[% searchquery %]</span> search results</h2>
                  </div>
-                
+                <button id="search-test">Search test</button>
                  <!-- Radio button and lable for #tab-content1 -->
                  <input type="radio" name="tabs" id="tab1" checked >
                  <label for="tab1">
@@ -38,8 +38,49 @@
                   <div class="col-xs-10 no-padding">
                     
                   </div>
+                    <div class="entry clearfix hidden">
+                        <div class="col-xs-2">
+                        </div>
+                        <div class="text-listing-entries col-xs-10">
+                            <div class="bubble">
+                                <img class="user-image">
+                            </div>
+                            <div class="info-entry">
+                                <div class="user">
+                                    <a href="/posts/user/[% post.user.username %]"></a>
+                                </div>
+                                <div class="date">
+                                </div>
+                                [% FOREACH category in post.post_categories %]
+                                <div class="block_elements">
+                                    <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]"></a>
+                                </div>
+                                [% END %]
+                            </div>
+                            <div class="post-heading">
+                                <h2><a href="/post/[% post.slug %]"></a></h2>
+                            </div>
+
+                            <!-- Post cover -->
+                            [% INCLUDE cover.tt %]
+
+                            <!-- Post content -->
+                            <div class="post_preview truncate">
+                                <div class="post_preview_wrapper">
+                                    <p>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Read more -->
+                            <div class="block_elements comments-listings">
+                                <a href="/post/[% post.slug %]#comments"> </a>
+                            </div>
+                            <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                        </div>
+                    </div>
                   [% FOREACH post in posts %]
-            
+
                     <div class="entry clearfix">
                       <div class="col-xs-2">
                       </div>

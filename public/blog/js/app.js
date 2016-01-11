@@ -130,11 +130,11 @@ $(document).ready(function() {
         errors++;
 
       }
-      else if (!terms) { //      Checkbox validation
-        $('.change_error').text("Terms and conditions checkbox is necesary").css('color' , 'red');
-        errors++;
+//      else if (!terms) { //      Checkbox validation
+//        $('.change_error').text("Terms and conditions checkbox is necesary").css('color' , 'red');
+//        errors++;
 
-      }
+//      }
 
       if (errors === 0) {
         return true

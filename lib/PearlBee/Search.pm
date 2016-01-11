@@ -16,6 +16,33 @@ use Data::Dumper;
 
 =head
 
+Search user info.
+
+=cut
+
+get '/search/user-info/:query' => sub {
+    my $search_query = route_parameters->{'query'};
+    my $user         = resultset('User')->find({username => $search_query});
+
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    return $json->encode({ info => {
+        id => $user->id,
+        name => $user->name,
+        username => $user->username,
+        register_date => $user->register_date,
+        email => $user->email,
+        avatar_path => $user->avatar_path,
+        company => $user->company,
+        telephone => $user->telephone,
+        role => $user->role,
+        status => $user->status,
+    }});
+};
+
+=head
+
 Search user posts.
 
 =cut

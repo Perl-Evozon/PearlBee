@@ -90,7 +90,6 @@ $(document).ready(function() {
       var name = $("#displayNameRegister").val();
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
-      var terms = $("#confirmTerms").is(":checked");
       var errors = 0;
 
 //      Email validation
@@ -130,11 +129,6 @@ $(document).ready(function() {
         errors++;
 
       }
-//      else if (!terms) { //      Checkbox validation
-//        $('.change_error').text("Terms and conditions checkbox is necesary").css('color' , 'red');
-//        errors++;
-
-//      }
 
       if (errors === 0) {
         return true
@@ -150,6 +144,18 @@ $(document).ready(function() {
       return false;
       }
     });
+	
+//	My profile password confirmation 
+	
+  $("#confirmNewPassword").keyup(function() {
+    if( $(this).val() !== $("#newPassword").val() ){
+        $("#confirmNewPassword").addClass('error');
+    } else {
+        $("#confirmNewPassword").removeClass('error');
+    }
+  });
+	
+	
 
     function getCookie(c_name) {
 		if (document.cookie.length>0) {
@@ -206,13 +212,13 @@ $(document).ready(function() {
 	  $('.sign-up').css('min-height',$(window).height()-80);
 	});
 
-});
+
 
 $(window).resize(function(){
   $(".truncate").dotdotdot({
     ellipsis  : '... ',
   });
-
+});
 
 //	Header
 	if ($(window).width() <= 800){

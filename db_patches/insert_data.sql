@@ -27,7 +27,7 @@ INSERT INTO acl VALUES('admin',   'create user'),
 -- Administrator users are created during the import
 --
 
--- INSERT INTO "user" VALUES (1,'Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated');
+-- INSERT INTO "user" VALUES (1,'Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'active');
 	
 -- INSERT INTO category VALUES (1,'Uncategorized','uncategorized',1);
 

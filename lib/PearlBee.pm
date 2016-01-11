@@ -34,6 +34,7 @@ use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
+use PearlBee::Password;
 
 our $VERSION = '0.1';
 use Data::Dumper;
@@ -651,7 +652,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
@@ -666,6 +667,23 @@ post '/sign-up' => sub {
                 signature        => config->{email_signature},
                 blog_name        => session('blog_name'),
                 app_url          => session('app_url'),
+              }
+            }) or error "Could not send new_user email";
+
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+            Email::Template->send( config->{email_templates} .
+                                   'activation_email.tt',
+            {
+              From     => config->{default_email_sender},
+              To       => $params->{'email'},
+              Subject  => 'Welcome to Blogs.Perl.Org',
+
+              tt_vars  => {
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                mail_body => "/activation?token=$token",
               }
             }) or error "Could not send the email";
 

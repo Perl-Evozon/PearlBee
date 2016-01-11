@@ -35,6 +35,12 @@ engines:
     YAML:
       session_dir: "/tmp/blogs_perl_org"
 
+mail_server:
+    user: 'jobs@builtinperl.com'
+    password:
+    host: 'mail.evozon.com'
+    port: 587
+
 plugins:
       DBIC:
         default:

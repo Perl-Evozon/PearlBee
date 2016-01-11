@@ -15,17 +15,16 @@ sub generate_hash {
 	return -1 if @_ < 1 || @_ > 2;
 	
 	my $password = shift;
-#	my $salt = decode_base64(shift);
 	my $hashref = {};
-#	$salt = rand_bits(128) unless $salt;
 
 	my $bcrypt = Digest->new('Bcrypt');
 	$bcrypt->cost(12);
-#	$bcrypt->salt($salt);
+    my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+    my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+	$bcrypt->salt($salt);
 	$bcrypt->add($password);
 
 	$hashref->{hash} = $bcrypt->hexdigest;
-#	$hashref->{salt} = encode_base64($salt);
 	
 	return $hashref;
 }

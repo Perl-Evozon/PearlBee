@@ -82,3 +82,5 @@ email_signature:       'The Blogs.Perl.Org Team'
 default_email_sender:  'no-reply@pearlbee.com'
 welcome_email_subject: 'Welcome to Blogs.Perl.Org!'
 posts_on_page:         5
+search:
+  user_posts: 10

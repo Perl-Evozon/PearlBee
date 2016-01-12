@@ -52,7 +52,8 @@ get '/search/user-posts/:query' => sub {
     my $user         = resultset('User')->find({username => $search_query});
     my @posts        = resultset('Post')->search(
                         { status => 'published', user_id => $user->id },
-                        { order_by => { -desc => "created_date" } }
+                        { order_by => { -desc => "created_date" },
+                          rows => config->{'search'}{'user_posts'} || 10 }
     );
 
     # extract demo posts info

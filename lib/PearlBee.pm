@@ -229,15 +229,16 @@ Add a comment method
 
 post '/comments' => sub {
 
-  my $username    = route_parameters->{'username'};
+  my $user        = session('user');
+  my $username    = $user->username;
+
   my $parameters  = body_parameters;
-  my $post_id     = $parameters->{'id'};
+  my $post_id = route_parameters->{slug};
   my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
-  my $post        = resultset('Post')->find( $post_id );
+  my $post        = resultset('Post')->find({ slug => $post_id });
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $user        = session('user');
   my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
   my %result;
 
@@ -246,7 +247,7 @@ post '/comments' => sub {
 
     my $comment = resultset('Comment')->can_create( $parameters, $user );
 
-    # Notify the author that a new comment was submited
+    # Notify the author that a new comment was submitted
     my $author = $post->user;
 
     if ($blog and $blog->email_notification) {

@@ -63,6 +63,36 @@ get '/search/user-posts/:query' => sub {
     return $json->encode({ posts => [ @mapped_posts ] });
 };
 
+=head
+
+Search user tags.
+
+=cut
+
+sub map_tags {
+    my ($self) = @_;
+    return {
+        id => $self->id,
+        name => $self->name,
+        slug => $self->slug,
+    }
+}
+
+get '/search/user-tags/:query' => sub {
+    my $search_query = route_parameters->{'query'};
+    my $user         = resultset('User')->find({username => $search_query});
+    my @posts        = resultset('Post')->search(
+                        { status => 'published', user_id => $user->id },
+                        { order_by => { -desc => "created_date" } }
+    );
+    my @tags = map { map_tags( $_ ) } map { $_->tag_objects } @posts;
+
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    return $json->encode({ tags => \@tags });
+};
+
 
 =head
 

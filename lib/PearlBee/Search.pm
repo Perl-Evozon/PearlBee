@@ -27,19 +27,35 @@ get '/search/user-info/:query' => sub {
     my $json = JSON->new;
     $json->allow_blessed(1);
     $json->convert_blessed(1);
-    return $json->encode({ info => {
-        id => $user->id,
-        name => $user->name,
-        username => $user->username,
-        register_date => $user->register_date,
-        email => $user->email,
-        avatar_path => $user->avatar_path,
-        company => $user->company,
-        telephone => $user->telephone,
-        role => $user->role,
-        status => $user->status,
-    }});
+    if ( $user and $user->id ) {
+        my $blog_count    = resultset('BlogOwner')->count({user_id => $user->id});
+        my $post_count    = resultset('Post')->count({user_id => $user->id});
+        my $comment_count = resultset('Comment')->count({uid => $user->id});
+
+        return $json->encode(
+          { info =>
+            { id            => $user->id,
+              name          => $user->name,
+              username      => $user->username,
+              register_date => $user->register_date,
+              email         => $user->email,
+              avatar_path   => $user->avatar_path,
+              company       => $user->company,
+              telephone     => $user->telephone,
+              role          => $user->role,
+              status        => $user->status,
+
+              counts =>
+              { blog    => $blog_count,
+                post    => $post_count,
+                comment => $comment_count,
+              } } } );
+    }
+    else {
+        return $json->encode({ info => {} });
+    }
 };
+
 
 =head
 

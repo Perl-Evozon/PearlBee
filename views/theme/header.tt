@@ -22,8 +22,8 @@
 								<input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1" name="password">
 							</div>
 							<div class="links-group">
-								<a href="http://172.22.120.254:5001/password_recovery" class="login-links pull-right">Forgotten Password?</a>
-								<a href="http://172.22.120.254:5001/register" class="login-links pull-left">Don't have an account? Register</a>
+								<a href="/password_recovery" class="login-links pull-right">Forgotten Password?</a>
+								<a href="/register" class="login-links pull-left">Don't have an account? Register</a>
 							</div>
 							<div class="links-group buttons-group">
 								<button type="submit" class="light-button btn-xs pull-left" id="submitRegister">Close</button>
@@ -33,7 +33,7 @@
 <!--
 						<div class="dropdown-menu dropdown-login">
 							<div class="links-group header-menu-links">
-								<a href="http://172.22.120.254:5001/profile" class="pull-right">Profile</a>
+								<a href="/profile" class="pull-right">Profile</a>
 							</div>
 							<div class="links-group header-menu-links">
 								<a href="#" class="pull-right">Publications</a>

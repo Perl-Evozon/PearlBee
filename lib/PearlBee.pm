@@ -10,6 +10,7 @@ use DateTime;
 use JSON qw//;
 use Text::Markdown qw( markdown );
 use Try::Tiny;
+use Digest::SHA;
 
 # Included controllers
 
@@ -33,6 +34,7 @@ use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
+use PearlBee::Password;
 
 our $VERSION = '0.1';
 use Data::Dumper;
@@ -227,15 +229,16 @@ Add a comment method
 
 post '/comments' => sub {
 
-  my $username    = route_parameters->{'username'};
+  my $user        = session('user');
+  my $username    = $user->username;
+
   my $parameters  = body_parameters;
-  my $post_id     = $parameters->{'id'};
+  my $post_id = route_parameters->{slug};
   my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
-  my $post        = resultset('Post')->find( $post_id );
+  my $post        = resultset('Post')->find({ slug => $post_id });
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $user        = session('user');
   my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
   my %result;
 
@@ -244,7 +247,7 @@ post '/comments' => sub {
 
     my $comment = resultset('Comment')->can_create( $parameters, $user );
 
-    # Notify the author that a new comment was submited
+    # Notify the author that a new comment was submitted
     my $author = $post->user;
 
     if ($blog and $blog->email_notification) {
@@ -580,6 +583,12 @@ get '/password_recovery' => sub {
 
 };
 
+get '/profile' => sub {
+
+  template 'profile';
+
+};
+
 get '/sign-up' => sub {
 
   template 'signup', {
@@ -606,12 +615,13 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
-      if ($u) {
+      my $existing_users = resultset('User')->search( { email => $params->{'email'} } )->count;
+
+      if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
-        if ($u) {
+        $existing_users = resultset('User')->search( { username => $params->{'username'} } )->count;
+        if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
 
@@ -623,11 +633,18 @@ post '/sign-up' => sub {
             my $settings = resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
 
-            my ($password, $pass_hash) = create_password();#, $salt) = create_password();
+            # Match encryption from MT
+            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+
+            my $crypt_sha  = '$6$' .
+                             $salt .
+                             '$' .
+                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
             resultset('User')->create({
               username        => $params->{username},
-              password        => $pass_hash,
+              password        => $crypt_sha,
               email           => $params->{'email'},
               name            => $params->{'name'},
               register_date   => join (' ', $dt->ymd, $dt->hms),
@@ -636,7 +653,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
@@ -651,6 +668,23 @@ post '/sign-up' => sub {
                 signature        => config->{email_signature},
                 blog_name        => session('blog_name'),
                 app_url          => session('app_url'),
+              }
+            }) or error "Could not send new_user email";
+
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+            Email::Template->send( config->{email_templates} .
+                                   'activation_email.tt',
+            {
+              From     => config->{default_email_sender},
+              To       => $params->{'email'},
+              Subject  => 'Welcome to Blogs.Perl.Org',
+
+              tt_vars  => {
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                mail_body => "/activation?token=$token",
               }
             }) or error "Could not send the email";
 

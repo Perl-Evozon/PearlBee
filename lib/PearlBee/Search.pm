@@ -16,6 +16,33 @@ use Data::Dumper;
 
 =head
 
+Search user info.
+
+=cut
+
+get '/search/user-info/:query' => sub {
+    my $search_query = route_parameters->{'query'};
+    my $user         = resultset('User')->find({username => $search_query});
+
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    return $json->encode({ info => {
+        id => $user->id,
+        name => $user->name,
+        username => $user->username,
+        register_date => $user->register_date,
+        email => $user->email,
+        avatar_path => $user->avatar_path,
+        company => $user->company,
+        telephone => $user->telephone,
+        role => $user->role,
+        status => $user->status,
+    }});
+};
+
+=head
+
 Search user posts.
 
 =cut
@@ -25,7 +52,8 @@ get '/search/user-posts/:query' => sub {
     my $user         = resultset('User')->find({username => $search_query});
     my @posts        = resultset('Post')->search(
                         { status => 'published', user_id => $user->id },
-                        { order_by => { -desc => "created_date" } }
+                        { order_by => { -desc => "created_date" },
+                          rows => config->{'search'}{'user_posts'} || 10 }
     );
 
     # extract demo posts info
@@ -34,6 +62,36 @@ get '/search/user-posts/:query' => sub {
     $json->allow_blessed(1);
     $json->convert_blessed(1);
     return $json->encode({ posts => [ @mapped_posts ] });
+};
+
+=head
+
+Search user tags.
+
+=cut
+
+sub map_tags {
+    my ($self) = @_;
+    return {
+        id => $self->id,
+        name => $self->name,
+        slug => $self->slug,
+    }
+}
+
+get '/search/user-tags/:query' => sub {
+    my $search_query = route_parameters->{'query'};
+    my $user         = resultset('User')->find({username => $search_query});
+    my @posts        = resultset('Post')->search(
+                        { status => 'published', user_id => $user->id },
+                        { order_by => { -desc => "created_date" } }
+    );
+    my @tags = map { map_tags( $_ ) } map { $_->tag_objects } @posts;
+
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    return $json->encode({ tags => \@tags });
 };
 
 

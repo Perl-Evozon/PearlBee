@@ -1,0 +1,81 @@
+<div class="blog">
+ 
+	<div class="myprofile register sign-up">
+ 
+		<div class="container">
+
+			<div class="row"> 
+
+				<div class="myprofile-head">
+					<div class="col-sm-6">
+						<h1>My profile</h1>
+						<h5>Edit your profile</h5>
+					</div>
+					<div class="col-sm-3 col-sm-offset-3 links-group">
+						<button class="write-post dark-button">Write a post</button>
+					</div>
+				</div>
+				
+				<div class="credentials">
+					<div class="col-sm-2">
+						<div class="bubble">
+                            <img class="user-image" src="http://www.gamesindustry.biz/img/base/default-user.png" data-pin-nopin="true">
+                        </div>
+						<h4>Change picture</h4>
+					</div>
+					<div class="col-sm-10">
+					
+						<form action="" method="get">
+							<h2>Personal Information</h2>
+							<div class="input-group">
+								<label>Email</label>
+								<input type="text" class="form-control" placeholder="user.email@evo.com">
+							</div>
+							<div class="input-group">
+								<label>Username</label>
+								<input type="text" class="form-control" placeholder="username">
+							</div>
+							<div class="input-group">
+								<label>Display Name</label>
+								<input type="text" class="form-control" placeholder="Name + Surname">
+							</div>
+							<div class="input-group">
+								<label>About</label>
+								<textarea rows="4" class="form-control" placeholder="ex: I blog about Perl"></textarea>
+							</div>
+							<div class="input-group links-group buttons-group">
+								<label></label>
+								<button type="reset" value="Reset" class="light-button btn-xs pull-left" id="">Cancel</button>
+								<button type="submit" class="dark-button btn-xs pull-right" id="">Save</button>
+							</div>
+						</form>
+						
+						<form action="" method="get" id="changePasswordFrom">
+							<h2>Password</h2>
+							<div class="input-group">
+								<label>Old Password</label>
+								<input type="password" class="form-control" placeholder="Old Password">
+							</div>
+							<div class="input-group">
+								<label>New Password</label>
+								<input type="password" class="form-control" id="newPassword" placeholder="New Password">
+							</div>
+							<div class="input-group">
+								<label>Confirm Password</label>
+								<input type="password" class="form-control confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password">
+							</div>
+							<div class="input-group links-group buttons-group">
+								<label></label>
+								<button type="reset" value="Reset" class="light-button btn-xs pull-left" id="">Cancel</button>
+								<button type="submit" class="dark-button btn-xs pull-right" id="">Save</button>
+							</div>
+						</form>
+						
+					</div>
+
+			</div> 
+
+		</div>
+   
+	</div>  
+   

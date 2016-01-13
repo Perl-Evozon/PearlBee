@@ -19,6 +19,13 @@ use lib realpath("$FindBin::Bin/../lib");
 
 sub send_email {
     my ( $template, $from, $to, $subject, $body ) = @_;
+    my $transport = Email::Sender::Transport::SMTP::TLS->new(
+        {   host     => config->{mail_server}->{host},
+            port     => config->{mail_server}->{port},
+            username => config->{mail_server}->{user},
+            password => config->{mail_server}->{password},
+        }
+    );
 
     my $appdir =
         realpath("$FindBin::Bin/..") .
@@ -61,6 +68,14 @@ my $email_params = {
 
 sub send_email_complete {
     my ( $params ) = @_;
+    my $transport = Email::Sender::Transport::SMTP::TLS->new(
+        {   host     => config->{mail_server}->{host},
+            port     => config->{mail_server}->{port},
+            username => config->{mail_server}->{user},
+            password => config->{mail_server}->{password},
+        }
+    );
+
     my $template =
         realpath("$FindBin::Bin/..") .
         '/' .
@@ -77,15 +92,6 @@ sub send_email_complete {
             my $email_template = MIME::Lite::TT->new(
                 Template   => $template,
                 TmplParams => $params->{template_params},
-            );
-
-            #here we set the information necessary to send mails from the smtp server
-            my $transport = Email::Sender::Transport::SMTP::TLS->new(
-                {   host     => config->{mail_server}->{host},
-                    port     => config->{mail_server}->{port},
-                    username => config->{mail_server}->{user},
-                    password => config->{mail_server}->{password},
-                }
             );
 
             # our email will have 2 parts: an html body and an attachment

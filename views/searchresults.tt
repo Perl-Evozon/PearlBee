@@ -12,7 +12,10 @@
                 </div>
                  <h2><span>[% searchquery %]</span> search results</h2>
                  </div>
-                <button id="search-test">Search test</button>
+
+                <!-- test for search button/input-->
+                <input type="text" name="search_term"/>
+
                  <!-- Radio button and lable for #tab-content1 -->
                  <input type="radio" name="tabs" id="tab1" checked >
                  <label for="tab1">
@@ -190,8 +193,10 @@
              <div id="tab-content3" class="tab-content"><!-- #tab-content3 -->
                 <ul id="tag-list" class="cf">
                   <li><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub</a></li>
-                  <li><a class="btn btn-tag" href="/posts/tag/perlgithub">git</a></li>
-                  <li><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub dancer</a></li>
+
+                    [% FOREACH category in tags.tags_categories %]
+                    <li><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub</a></li>
+                    [% END %]
                 </ul>
              </div>
 

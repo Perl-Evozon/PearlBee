@@ -296,7 +296,7 @@ sub is_authorized {
   return $authorized;
 }
 
-=haed
+=head
 
 Return the tag
 

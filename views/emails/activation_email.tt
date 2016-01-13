@@ -1,0 +1,12 @@
+<html>
+
+<body>
+<p>Hello, [% name %] ('[% username %]')</p>
+<p>Welcome to blogs.perl.org! We're thrilled you've decided to create an account with us and contribute to the growth of Perl and the Perl community!</p>
+<p>You are now able to activate your blogs.perl.org account, and set your account's password by following this link: <a href="[% config.app_url %][% mail_body %]" style="text-decoration:none;color:#0b4499" target="_blank">[% config.app_url %][% mail_body %]</a></p>
+<p>This link is only valid for one week, so make sure you activate your account as soon as possible.
+Once you've activated your account, you will be able to create posts and comment on other users' posts.</p>
+<p>Thank you,<br>
+The <a href="http://blogs.perl.org" style="text-decoration:none;color:#0b4499">blogs.perl.org</a> Team</p>
+</body>
+</html>

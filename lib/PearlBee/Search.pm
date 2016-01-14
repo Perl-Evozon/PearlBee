@@ -120,7 +120,7 @@ Search posts via ElasticSearch
 
 get '/search/posts/:query' => sub {
     my $search_query = route_parameters->{'query'};
-    my @results = search_posts($search_query);
+    my @results = PearlBee::Helpers::ElasticSearch::search_posts($search_query);
     my $json = JSON->new;
     $json->allow_blessed(1);
     $json->convert_blessed(1);

@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `asset` (
   `blog_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `file_ext` varchar(20) NOT NULL,
-  `file_name` varchar(20) NOT NULL,
-  `file_path` varchar(20) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
 
   CONSTRAINT `asset_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`),
@@ -135,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `post_category` (
 
 CREATE TABLE IF NOT EXISTS `tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
-  `slug` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Tag table.';
 

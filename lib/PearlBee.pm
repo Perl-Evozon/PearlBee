@@ -33,7 +33,6 @@ use PearlBee::Author::Comment;
 use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
-use PearlBee::Helpers::Captcha;
 use PearlBee::Password;
 
 our $VERSION = '0.1';

@@ -4,9 +4,16 @@ use strict;
 use warnings;
 
 use Dancer2;
-use Search::ElasticSearch;
+use Dancer2::Plugin::DBIC;
+use PearlBee::Model::Schema;
+use Search::Elasticsearch;
 
 use Data::Dumper;
+
+require Exporter;
+our @ISA 	= qw(Exporter);
+our @EXPORT_OK 	= qw/search_posts search_comments/;
+
 
 =item index_comment( $comment )
 
@@ -15,8 +22,8 @@ Index a Post object
 =cut
 
 sub index_post {
-    my ($comment) = @_;
-    reurn unless $post->status eq 'published';
+    my ($post) = @_;
+    return unless $post->status eq 'published';
     my $e = Search::ElasticSearch->new;
 
     try {
@@ -32,7 +39,7 @@ sub index_post {
         );
     }
     catch {
-        info 'ElasticSearch index of comment ID ' . $comment->id . " failed: $_";
+        info 'ElasticSearch index of comment ID ' . $post->id . " failed: $_";
     };
 }
 
@@ -44,7 +51,7 @@ Index a Comment object
 
 sub index_comment {
     my ($comment) = @_;
-    reurn unless $comment->status eq 'approved';
+    return unless $comment->status eq 'approved';
     my $e = Search::ElasticSearch->new;
 
     try {
@@ -74,39 +81,31 @@ sub search_posts {
     my ($text) = @_;
     my $es = Search::Elasticsearch->new;
 
-    my $error;
-    my $elastic_results;
-    my @results;
-
-    try {
-        $elastic_results = $es->search(
-            index => 'posts',
-            body => {
-                query => {
-                    match_phrase_prefix => {
-                        title => $text
-                    }
+    my $elastic_results = $es->search(
+        index => 'posts',
+        body => {
+            query => {
+                match_phrase_prefix => {
+                    title => $text
                 }
             }
-        );
-
-        # Iterate through elastic result hits, search DB for them and push them in results
-        for my $i (0 .. $elastic_results->{hits}{total} - 1) {
-            my $rs = resultset('Post')->find({ id => $elastic_results->{hits}{hits}[$i]{_id}});
-            push (@results, {
-                id            => $rs->id,
-                title         => $rs->title,
-                slug          => $rs->slug,
-                description   => $rs->description,
-                content       => $rs->content,
-                created_date  => $rs->created_date
-            });
         }
-    } catch {
-        $error = "Error in search: $_";
-    };
+    );
 
-    return $results;
+    my @results;
+    for my $result ( @{ $elastic_results->{hits}{hits} } ) {
+        my $rs = resultset('Post')->find({ id => $result->{_id} });
+        push @results, {
+            id            => $rs->id,
+            title         => $rs->title,
+            slug          => $rs->slug,
+            description   => $rs->description,
+            content       => $rs->content,
+            created_date  => $rs->created_date
+        };
+    }
+
+    return @results;
 }
 
 =item search_comments( $text )
@@ -119,39 +118,36 @@ sub search_comments {
     my ($text) = @_;
     my $es = Search::Elasticsearch->new;
 
-    my $error;
-    my $elastic_results;
-    my @results;
-
-    try {
-        $elastic_results = $es->search(
-            index => 'comments',
-            body => {
-                query => {
-                    match_phrase_prefix => {
-                        title => $text
-                    }
+    my $elastic_results = $es->search(
+        index => 'comments',
+        body => {
+            query => {
+                match_phrase_prefix => {
+                    title => $text
                 }
             }
-        );
-
-        # Iterate through elastic result hits, search DB for them and push them in results
-        for my $i (0 .. $elastic_results->{hits}{total} - 1) {
-            my $rs = resultset('Post')->find({ id => $elastic_results->{hits}{hits}[$i]{_id}});
-            push (@results, {
-                id            => $rs->id,
-                title         => $rs->title,
-                slug          => $rs->slug,
-                description   => $rs->description,
-                content       => $rs->content,
-                created_date  => $rs->created_date
-            });
         }
-    } catch {
-        $error = "Error in search: $_";
-    };
+    );
 
-    return $results;
+    my @results;
+    for my $result ( @{ $elastic_results->{hits}{hits} } ) {
+        my $rs = resultset('Post')->find({ id => $result->{_id} });
+        next unless $rs->status eq 'approved';
+        push @results, {
+            id            => $rs->id,
+            content       => $rs->content,
+            fullname      => $rs->fullname,
+            email         => $rs->email,
+            website       => $rs->website,
+            avatar        => $rs->avatar,
+            comment_date  => $rs->comment_date,
+            type          => $rs->type,
+            post_id       => $rs->post_id,
+            uid           => $rs->uid,
+        };
+    }
+
+    return @results;
 }
 
 =item /search/tags:query
@@ -184,11 +180,11 @@ get '/search/tags/:query' => sub {
         # Iterate through elastic result hits, search DB for them and push them in results
         for (my $i = 0; $i < $elastic_results->{hits}{total}; $i++) {
             my $rs = resultset('Tag')->find({ id => $elastic_results->{hits}{hits}[$i]{_id}});
-            push (@results, {
+            push @results, {
                 id     => $rs->id,
                 name   => $rs->name,
                 slug   => $rs->slug
-            });
+            };
         }
     } catch {
         $error = "Error in search: \n $_";

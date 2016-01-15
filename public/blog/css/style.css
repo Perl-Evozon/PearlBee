@@ -2107,6 +2107,8 @@ footer{
    font-size:14px;
    line-height:25px;
    padding:35px 0px 10px 0px;
+    position: relative;
+    z-index: 11;
 }
 
 footer .container {
@@ -2672,8 +2674,14 @@ footer .fwidget #powered_by {
    column-width: 636px;
    -webkit-column-width: 636px; /* Chrome, Safari, Opera */
    -moz-column-width: 636px; /* Firefox */
+    line-height: inherit;
+    font-size: 18px;
 }
-
+    .text-listing-entries a.read-more{
+        float: right;
+        color: #ffffff;
+        font-size: 12px;
+    }
 .post_preview p {
    line-height: 2.5;
    text-align: justify;
@@ -3517,6 +3525,7 @@ background-size: cover;
    position: absolute;
    top: 35px;
    right: 35px;
+    z-index: 11;
 }
 
 .tabs .loading-posts {
@@ -3615,11 +3624,17 @@ background-size: cover;
     display: block;
 }
 
-.search-page .tabs .posts.listings h5 {
+.search-page .tabs .posts.listings h5,
+.no-posts {
    font-family: 'Open Sans', sans-serif;
    font-size: 36px;
    color: #ffffff;
 }
+    .no-posts2, .no-posts3 {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 36px;
+        color: #ffffff;
+    }
 
 .search-page .row.search-top {
    margin-top: 80px;
@@ -3705,7 +3720,7 @@ background-size: cover;
 }
 
 .people {
-   padding: 35px 0;
+   padding: 25px 0;
 }
 
 .cut {
@@ -3762,6 +3777,9 @@ background-size: cover;
     border: 1px solid transparent;
     color: #16cbe6;
 }
+    .user-info-entry{
+         margin: 25px 0;
+     }
 
 /* end people */
 
@@ -3948,45 +3966,28 @@ background-size: cover;
    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*end individual posts page fumy */
 
+/*search page input*/
+    .search-input{
+        background: #dadada;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+    }
+    .search-input input{
+        background: #dadada none repeat scroll 0 0;
+        border: medium none;
+        color: #999999;
+        font-size: 18px;
+        margin-top: 125px;
+        padding: 10px;
+    }
+
+.search-page #tab-content3 ul {
+        padding-top: 25px;
+    }
+/*/search pegae input*/
 
 

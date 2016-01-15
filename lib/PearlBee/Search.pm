@@ -28,7 +28,7 @@ sub map_user {
     my $comment_count = resultset('Comment')->count({uid => $user->id});
 
     return
-      { id            => $user->id,
+      { #id            => $user->id, # We shouldn't be exposing this.
         name          => $user->name,
         username      => $user->username,
         register_date => $user->register_date,
@@ -90,7 +90,7 @@ Search user tags.
 sub map_tags {
     my ($self) = @_;
     return {
-        id => $self->id,
+        #id => $self->id, # We shouldn't be exposing this.
         name => $self->name,
         slug => $self->slug,
     }
@@ -118,9 +118,11 @@ Search posts via ElasticSearch
 
 =cut
 
-get '/search/posts/:query' => sub {
+get '/search/posts/:query/:page' => sub {
     my $search_query = route_parameters->{'query'};
-    my @results = PearlBee::Helpers::ElasticSearch::search_posts($search_query);
+    my $page = route_parameters->{'page'};
+    my @results =
+        PearlBee::Helpers::ElasticSearch::search_posts($search_query,$page);
     my $json = JSON->new;
     $json->allow_blessed(1);
     $json->convert_blessed(1);

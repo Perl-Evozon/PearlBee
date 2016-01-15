@@ -71,18 +71,21 @@ sub index_comment {
     };
 }
 
-=item search_posts( $text )
+=item search_posts( $text, $page )
 
 Search for posts by fulltext
 
 =cut
 
 sub search_posts {
-    my ($text) = @_;
+    my ($text,$page) = @_;
+    my $page_size = config->{search}{user_posts} || 10;
     my $es = Search::Elasticsearch->new;
 
+    my $start = $page * $page_size;
     my $elastic_results = $es->search(
         index => 'posts',
+        params => { from => $start, size => $page_size },
         body => {
             query => {
                 match_phrase_prefix => {
@@ -95,13 +98,16 @@ sub search_posts {
     my @results;
     for my $result ( @{ $elastic_results->{hits}{hits} } ) {
         my $rs = resultset('Post')->find({ id => $result->{_id} });
+        next unless $rs and $rs->id;
         push @results, {
-            id            => $rs->id,
-            title         => $rs->title,
-            slug          => $rs->slug,
-            description   => $rs->description,
-            content       => $rs->content,
-            created_date  => $rs->created_date
+            #id            => $rs->id, # We shouldn't expose this.
+            title          => $rs->title,
+            slug           => $rs->slug,
+            description    => $rs->description,
+            content        => $rs->content,
+            created_date   => $rs->created_date,
+            nr_of_comments => $rs->nr_of_comments,
+            username       => $rs->user->username
         };
     }
 

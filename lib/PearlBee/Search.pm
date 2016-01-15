@@ -28,7 +28,7 @@ sub map_user {
     my $comment_count = resultset('Comment')->count({uid => $user->id});
 
     return
-      { id            => $user->id,
+      { #id            => $user->id, # We shouldn't be exposing this.
         name          => $user->name,
         username      => $user->username,
         register_date => $user->register_date,
@@ -90,7 +90,7 @@ Search user tags.
 sub map_tags {
     my ($self) = @_;
     return {
-        id => $self->id,
+        #id => $self->id, # We shouldn't be exposing this.
         name => $self->name,
         slug => $self->slug,
     }

@@ -96,12 +96,14 @@ sub search_posts {
     for my $result ( @{ $elastic_results->{hits}{hits} } ) {
         my $rs = resultset('Post')->find({ id => $result->{_id} });
         push @results, {
-            id            => $rs->id,
-            title         => $rs->title,
-            slug          => $rs->slug,
-            description   => $rs->description,
-            content       => $rs->content,
-            created_date  => $rs->created_date
+            #id            => $rs->id, # We shouldn't expose this.
+            title          => $rs->title,
+            slug           => $rs->slug,
+            description    => $rs->description,
+            content        => $rs->content,
+            created_date   => $rs->created_date,
+            nr_of_comments => $rs->nr_of_comments,
+            username       => $rs->user->username
         };
     }
 

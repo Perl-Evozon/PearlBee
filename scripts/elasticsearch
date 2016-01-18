@@ -9,7 +9,7 @@ use Try::Tiny;
 
 $|++;
 
-my $in_dsn = 'dbi:mysql:database=blogs_perl_org';
+my $in_dsn = 'dbi:mysql:database=BlogsPerlOrg';
 my $e = Search::Elasticsearch->new;
 
 my $in_dbh = DBI->connect($in_dsn,'root');

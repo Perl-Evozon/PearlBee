@@ -3317,7 +3317,7 @@ background-size: cover;
     }
 
     /*button MORE*/
-    .loading-posts #more-posts{
+    .loading-posts .more-posts{
         background: #152e4a none repeat scroll 0 0;
         border: medium none;
         color: #39b3d7;
@@ -3330,7 +3330,7 @@ background-size: cover;
         top: 50px;
         z-index: 2147483647;
     }
-    .loading-posts #more-posts:hover{
+    .loading-posts .more-posts:hover{
         color: #152e4a;
         background: #39b3d7;
     }
@@ -3343,7 +3343,7 @@ background-size: cover;
         .text-listing-entries::before, .loading-posts .view-more::before{
                 left: -80px;
         }
-        .loading-posts #more-posts{
+        .loading-posts .more-posts{
             left: -130px;
         }
     }
@@ -3362,7 +3362,7 @@ background-size: cover;
         .posts.listings .comments-listings {
             font-size: 14px;
         }
-        .loading-posts #more-posts{
+        .loading-posts .more-posts{
             left: -120px;
             padding: 8px 16px;
         }
@@ -3377,7 +3377,7 @@ background-size: cover;
         .text-listing-entries::before{
             left: -50px;
         }
-        .loading-posts #more-posts{
+        .loading-posts .more-posts{
             left: -90px;
         }
     }
@@ -3393,12 +3393,12 @@ background-size: cover;
         .text-listing-entries::before{
             left: -10%;
         }
-        .loading-posts #more-posts{
+        .loading-posts .more-posts{
             left: -77px;
         }
     }
     @media all and (max-width: 360px){
-        .loading-posts #more-posts{
+        .loading-posts .more-posts{
             left: -65px;
         }
     }
@@ -3529,7 +3529,11 @@ background-size: cover;
 }
 
 .tabs .loading-posts {
-   margin-bottom: 0;
+   margin-bottom: 115px;
+}
+
+.tabs .view-more {
+    height: 50px;
 }
 
 .tabs input[type=radio] {

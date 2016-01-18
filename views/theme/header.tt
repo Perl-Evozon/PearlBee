@@ -7,10 +7,12 @@
             </div>
 
             <div class="pull-right">
-            	<div class="search header-icon">
-					<label class="search-label">Search</label>
-					<span class="search-icon icon" aria-hidden="true"></span>
-           		</div>
+				<a href="/search">
+					<div class="search header-icon">
+						<label class="search-label">Search</label>
+						<span class="search-icon icon" aria-hidden="true"></span>
+					</div>
+				</a>
            		<div class="btn-group">
 					<form id="register-header" action="/login" method="post">
 					<div class="user header-icon hidden" style="display:inline-block">

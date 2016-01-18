@@ -1,4 +1,4 @@
-// Replace the classes for the google code prettefier to work
+
 
 $(document).ready(function() {
 
@@ -274,12 +274,10 @@ if ($(".no-posts").length > 0){
 
 
 
-//Close search
-$("#close_search").on('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.location = window.location.protocol + "//" + window.location.host + "/";
-});
+    //Close search
+    $("#close_search").on('click', function (e) {
+           window.history.back();
+    });
 
 //Tabs label align and tabs min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
@@ -346,58 +344,68 @@ $('#more-posts').click(function() {
         });
 });
 
-function getUserPosts(searchTerm) {
-    $.ajax({
-        // Assuming an endpoint here that responds to GETs with a response.
-        url: '/search/posts/' + searchTerm,
-        type: 'GET'
-    })
-        .done(function (data) {
-            $('#tab-content1 .entry:not(.hidden)').remove();
+//tab 1 user-posts
+function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
-            var posts = JSON.parse(data).posts;
-            if (posts.length === 0){
-                $('.no-posts').show();
-            } else {
-                $('.no-posts').hide();
-
-                //  textbox with that result.
-                for (var i = 0; i < posts.length; i++) {
-                    var entryItem = $(".entry").get(0),
-                        newItem = $(entryItem).clone(),
-                        commentsText;
-
-                    if (posts[i].nr_of_comments == 1) {
-                        commentsText = "Comment";
-                    } else {
-                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-                    }
-
-                    //newItem.find(".user a").attr("href", "/post/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content);
-                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-                    //newItem.find(".user a").html(posts[i].user.username);
-                    newItem.find(".post-heading h2 a").html(posts[i].title);
-                    newItem.find(".comments-listings a").text(commentsText);
-                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
-                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                    newItem.find(".date").text(posts[i].created_date);
-
-
-                    newItem.insertBefore($(".loading-posts"));
-                    newItem.removeClass('hidden');
-                }
-            }
+    $('.progressloader').show();
+        $.ajax({
+            // Assuming an endpoint here that responds to GETs with a response.
+            url: '/search/posts/' + searchTerm + "/" + pageNumber,
+            type: 'GET'
         })
-        .fail(function() {
-            $('#tab-content1 .entry:not(.hidden)').remove();
-            $('.no-posts').show();
-        }).always(function() {
-            //close search input
-            $(".search-input").addClass("cut");
-        });
-}
+            .done(function (data) {
 
+                if (true === removeExistingPosts) {
+                    $('#tab-content1 .entry:not(.hidden)').remove();
+                }
+
+                var posts = JSON.parse(data).posts;
+                if (posts.length === 0) {
+                    $('.no-posts').show();
+                    $(".view-more").addClass("cut");
+                } else {
+                    $('.no-posts').hide();
+                    $(".view-more").removeClass("cut");
+
+                    //  textbox with that result.
+                    for (var i = 0; i < posts.length; i++) {
+                        var entryItem = $(".entry").get(0),
+                            newItem = $(entryItem).clone(),
+                            commentsText;
+
+                        if (posts[i].nr_of_comments == 1) {
+                            commentsText = "Comment";
+                        } else {
+                            commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                        }
+
+                        //newItem.find(".user a").html(posts[i].user.username);
+                        //newItem.find(".user a").attr("href", "/post/" + posts[i].user.username);
+                        newItem.find(".post_preview_wrapper").html(posts[i].content);
+                        newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                        newItem.find(".post-heading h2 a").html(posts[i].title);
+                        newItem.find(".comments-listings a").text(commentsText);
+                        newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
+                        newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                        newItem.find(".date").text(posts[i].created_date);
+
+
+                        newItem.insertBefore($(".loading-posts"));
+                        newItem.removeClass('hidden');
+                    }
+                }
+                $('#tab-content1 .progressloader').hide();
+                $('#search-more-posts').attr("data-posts-number", pageNumber);
+
+            })
+            .fail(function () {
+                $('#tab-content1 .entry:not(.hidden)').remove();
+                $('.no-posts').show();
+            }).always(function () {
+                //close search input
+                $(".search-input").addClass("cut");
+            });
+}
 //tab 2: user-info;
     function getPeople(searchTerm) {
         $.ajax({
@@ -511,7 +519,7 @@ function getUserPosts(searchTerm) {
         activeTab.attr("data-search-term", searchTerm);
 
         if (activeTabId == 'tab1') {
-            getUserPosts(searchTerm);
+            getUserPosts(searchTerm, 0, true);
         } else if (activeTabId == 'tab2') {
             getPeople(searchTerm);
         } else {
@@ -530,11 +538,21 @@ $('input[name=tabs]').on('change', function () {
         $(this).attr("data-search-term", searchTerm);
 
         if (activeTabId == 'tab1') {
-            getUserPosts(searchTerm);
+            getUserPosts(searchTerm, 0, true);
         } else if (activeTabId == 'tab2') {
             getPeople(searchTerm);
         } else {
             getTags(searchTerm);
         }
     }
+});
+
+//more button - for posts search
+$('#search-more-posts').click(function () {
+    var button = $(this),
+        searchTerm = $('input[name=search_term]').val(),
+        pageNumber = +(button.attr("data-posts-number")) + 1;
+
+    $('#tab-content1 .progressloader').show();
+    getUserPosts(searchTerm, pageNumber, false);
 });

@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="view-more col-xs-10">
                                     <div class="bubble">
-                                        <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs" type="button">more</button>
+                                        <button id="search-more-posts" data-posts-number="0" class="btn btn-primary btn-xs more-posts" type="button">more</button>
                                     </div>
                                     <div style="display: none" class="progressloader">
                                         <div class="spinner">

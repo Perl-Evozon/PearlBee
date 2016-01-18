@@ -230,14 +230,16 @@ Add a comment method
 =cut
 
 post '/comments' => sub {
+  my $post_slug    = body_parameters->get('slug');
+  my $comment_text = body_parameters->get('comment');
+  my $post    = resultset('Post')->find({ slug => $post_slug });
 
   my $user        = session('user');
-  my $username    = $user->username;
+  my $username    = $user->{username};
 
   my $parameters  = body_parameters;
-  my $post_id = route_parameters->{slug};
-  my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
-  my $post        = resultset('Post')->find({ slug => $post_id });
+  $parameters->{id} = $post->id;
+  my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post->id);
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });

@@ -174,16 +174,19 @@ get '/post/:slug' => sub {
 
   my $slug          = route_parameters->{'slug'};
   my $post          = resultset('Post')->find({ slug => $slug });
-  my $next_post     = $post->next_post;
-  my $previous_post = $post->previous_post;
-  my @post_tags     = $post->tag_objects;
   my $settings      = resultset('Setting')->first;
   my @tags          = resultset('View::PublishedTags')->all();
   my @categories    = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
 
+  my ($next_post, $previous_post, @post_tags, @comments);
+  if ( $post and $post->id ) {
+    $next_post     = $post->next_post;
+    $previous_post = $post->previous_post;
+    @post_tags     = $post->tag_objects;
+    @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
+  }
 
   # #############################################################
   # Jeff, I commented your code regarding the Markdown conversion, because I moved the logic into get_approved_comments_by_post_id function.

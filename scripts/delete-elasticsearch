@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Search::Elasticsearch;
+use Try::Tiny;
+
+$|++;
+
+my $e = Search::Elasticsearch->new;
+
+###############################################################################
+
+sub delete_all {
+  try {
+    $e->indices->delete(index => 'posts');
+  }
+  catch {
+    warn "Failed to delete 'posts' index: $_";
+  };
+  try {
+    $e->indices->delete(index => 'comments');
+  }
+  catch {
+    warn "Failed to delete 'comments' index: $_";
+  };
+}
+
+###############################################################################
+
+print "Deleting all indices.";
+delete_all;
+print "\n";

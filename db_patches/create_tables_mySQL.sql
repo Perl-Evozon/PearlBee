@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `telephone` varchar(12) DEFAULT NULL,
   `role` varchar(255) CHARACTER SET ucs2 NOT NULL DEFAULT 'author',
   `activation_key` varchar(100) DEFAULT NULL,
-  `status` enum('active', 'inactive', 'suspended') NOT NULL,
---  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
+  `status` enum('active', 'inactive', 'suspended') NOT NULL default 'inactive',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
@@ -67,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `blog` (
   `edited_date` timestamp,
   `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
   `email_notification` tinyint(1) NOT NULL DEFAULT '0',
-  -- `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog information.';
 
@@ -77,7 +75,6 @@ CREATE TABLE IF NOT EXISTS `blog_owners` (
   `blog_id` int(11) NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
-  -- `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
   PRIMARY KEY (`user_id`,`blog_id`),
   CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `blog_owner_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
@@ -117,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `asset` (
   `blog_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `file_ext` varchar(20) NOT NULL,
-  `file_name` varchar(20) NOT NULL,
-  `file_path` varchar(20) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
 
   CONSTRAINT `asset_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`),
@@ -138,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `post_category` (
 
 CREATE TABLE IF NOT EXISTS `tag` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
-  `slug` varchar(100) CHARACTER SET ucs2 DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Tag table.';
 

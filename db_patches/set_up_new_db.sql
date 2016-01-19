@@ -198,7 +198,7 @@ CREATE TABLE `user` (
   `telephone` varchar(12) DEFAULT NULL,
   `role` enum('author','admin') NOT NULL DEFAULT 'author',
   `activation_key` varchar(100) DEFAULT NULL,
-  `status` enum('deactivated','activated','suspended','pending') NOT NULL DEFAULT 'deactivated',
+  `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
   `salt` char(24) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -214,7 +214,7 @@ LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 /* default username : admin */
 /* default password : password */
-INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'activated','IQbmVFR+SEgTju9y+UzhwA==');
+INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d3768e7c5c151292d3a8c0972','2015-02-18 15:27:54','admin@admin.com',NULL,NULL,'admin',NULL,'active','IQbmVFR+SEgTju9y+UzhwA==');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

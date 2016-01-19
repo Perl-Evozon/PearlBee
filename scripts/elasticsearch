@@ -1,0 +1,90 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use DBI;
+use Search::Elasticsearch;
+use Try::Tiny;
+
+$|++;
+
+my $in_dsn = 'dbi:mysql:database=BlogsPerlOrg';
+my $e = Search::Elasticsearch->new;
+
+my $in_dbh = DBI->connect($in_dsn,'root');
+
+###############################################################################
+
+sub index_posts {
+  my $in_sth = $in_dbh->prepare(<<'EOF');
+  SELECT u.username, p.slug, p.title, p.content, p.created_date
+    FROM post p
+    JOIN `user` u ON p.user_id = u.id
+ORDER BY p.id
+EOF
+
+#  my $out_sth = $out_dbh->prepare(
+#    'INSERT INTO post(id,title,slug,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?,?)'
+#  );
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_post = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_post);
+#last;
+    $e->index(
+      index   => 'posts',
+      type    => 'published_blog_posts',
+      id      => $in_post->{id},
+      body    => {
+          slug    => $in_post->{slug},
+          title   => $in_post->{title},
+          content => $in_post->{content},
+          date    => $in_post->{created_date}
+      }
+    );
+  }
+}
+
+sub index_comments {
+  my $in_sth = $in_dbh->prepare(<<'EOF');
+  SELECT u.username, p.slug, c.email, c.content, c.comment_date
+    FROM comment c
+    JOIN `user` u ON c.uid = u.id
+    JOIN post p ON c.post_id = p.id
+ORDER BY c.id
+EOF
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_comment = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_comment);
+#last;
+    $e->index(
+      index   => 'comments',
+      type    => 'published_comments',
+      id      => $in_comment->{id},
+      body    => {
+          post_slug => $in_comment->{slug},
+          username  => $in_comment->{username},
+          email     => $in_comment->{email},
+          content   => $in_comment->{content},
+          date      => $in_comment->{comment_date},
+          status    => $in_comment->{status}
+      }
+    );
+  }
+}
+
+###############################################################################
+
+print "indexing posts: ";
+index_posts;
+print "\n";
+
+print "indexing comments: ";
+index_comments;
+print "\n";

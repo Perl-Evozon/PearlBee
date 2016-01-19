@@ -35,6 +35,12 @@ engines:
     YAML:
       session_dir: "/tmp/blogs_perl_org"
 
+mail_server:
+    user: 'jobs@builtinperl.com'
+    password:
+    host: 'mail.evozon.com'
+    port: 587
+
 plugins:
       DBIC:
         default:
@@ -76,3 +82,5 @@ email_signature:       'The Blogs.Perl.Org Team'
 default_email_sender:  'no-reply@pearlbee.com'
 welcome_email_subject: 'Welcome to Blogs.Perl.Org!'
 posts_on_page:         5
+search:
+  user_posts: 10

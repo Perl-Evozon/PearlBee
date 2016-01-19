@@ -7,13 +7,16 @@
             </div>
 
             <div class="pull-right">
-            	<div class="search header-icon">
-					<label class="search-label">Search</label>
-					<span class="search-icon icon" aria-hidden="true"></span>
-           		</div>
+				<a href="/search">
+					<div class="search header-icon">
+						<label class="search-label">Search</label>
+						<span class="search-icon icon" aria-hidden="true"></span>
+					</div>
+				</a>
            		<div class="btn-group">
-					<form id="register-header" action="/login" method="post">
 					<div class="user header-icon hidden" style="display:inline-block">
+[% IF session.user %]
+						<form id="register_head" action="" method="post">
 	<!--           			<span class="male-user icon icon-toggle"></span>-->
 						<div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
 						<div class="dropdown-menu dropdown-login">
@@ -22,18 +25,19 @@
 								<input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1" name="password">
 							</div>
 							<div class="links-group">
-								<a href="http://172.22.120.254:5001/password_recovery" class="login-links pull-right">Forgotten Password?</a>
-								<a href="http://172.22.120.254:5001/register" class="login-links pull-left">Don't have an account? Register</a>
+								<a href="/password_recovery" class="login-links pull-right">Forgotten Password?</a>
+								<a href="/register" class="login-links pull-left">Don't have an account? Register</a>
 							</div>
 							<div class="links-group buttons-group">
 								<button type="submit" class="light-button btn-xs pull-left" id="submitRegister">Close</button>
 								<button type="submit" class="dark-button btn-xs pull-right" id="submitRegister">Sign In</button>
 							</div>
 						</div>
-<!--
+						</form>
+[% ELSE %]
 						<div class="dropdown-menu dropdown-login">
 							<div class="links-group header-menu-links">
-								<a href="http://172.22.120.254:5001/profile" class="pull-right">Profile</a>
+								<a href="/profile" class="pull-right">Profile</a>
 							</div>
 							<div class="links-group header-menu-links">
 								<a href="#" class="pull-right">Publications</a>
@@ -42,8 +46,7 @@
 								<a href="#" class="pull-right">Log Out</a>
 							</div>
 						</div>
--->
-						</form>
+[% END # IF session.user %]
 					</div>
 				</div>
             </div>

@@ -33,7 +33,7 @@ use PearlBee::Author::Comment;
 use PearlBee::Helpers::Email qw(send_email_complete);
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
-use PearlBee::Helpers::Captcha;
+use PearlBee::Password;
 
 our $VERSION = '0.1';
 use Data::Dumper;
@@ -106,11 +106,8 @@ get '/' => sub {
     };
 };
 
-get '/search/:query' => sub {
-  my $searchquery = route_parameters->{'query'};
-  template 'searchresults', {
-    searchquery => $searchquery
-  }
+get '/search' => sub {
+  template 'searchresults';
 };
 
 
@@ -174,16 +171,19 @@ get '/post/:slug' => sub {
 
   my $slug          = route_parameters->{'slug'};
   my $post          = resultset('Post')->find({ slug => $slug });
-  my $next_post     = $post->next_post;
-  my $previous_post = $post->previous_post;
-  my @post_tags     = $post->tag_objects;
   my $settings      = resultset('Setting')->first;
   my @tags          = resultset('View::PublishedTags')->all();
   my @categories    = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
 
+  my ($next_post, $previous_post, @post_tags, @comments);
+  if ( $post and $post->id ) {
+    $next_post     = $post->next_post;
+    $previous_post = $post->previous_post;
+    @post_tags     = $post->tag_objects;
+    @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
+  }
 
   # #############################################################
   # Jeff, I commented your code regarding the Markdown conversion, because I moved the logic into get_approved_comments_by_post_id function.
@@ -227,16 +227,19 @@ Add a comment method
 =cut
 
 post '/comments' => sub {
+  my $post_slug    = body_parameters->get('slug');
+  my $comment_text = body_parameters->get('comment');
+  my $post    = resultset('Post')->find({ slug => $post_slug });
 
-  my $username    = route_parameters->{'username'};
+  my $user        = session('user');
+  my $username    = $user->{username};
+
   my $parameters  = body_parameters;
-  my $post_id     = $parameters->{'id'};
-  my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post_id);
-  my $post        = resultset('Post')->find( $post_id );
+  $parameters->{id} = $post->id;
+  my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post->id);
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $user        = session('user');
   my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
   my %result;
 
@@ -245,7 +248,7 @@ post '/comments' => sub {
 
     my $comment = resultset('Comment')->can_create( $parameters, $user );
 
-    # Notify the author that a new comment was submited
+    # Notify the author that a new comment was submitted
     my $author = $post->user;
 
     if ($blog and $blog->email_notification) {
@@ -651,7 +654,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
@@ -666,6 +669,23 @@ post '/sign-up' => sub {
                 signature        => config->{email_signature},
                 blog_name        => session('blog_name'),
                 app_url          => session('app_url'),
+              }
+            }) or error "Could not send new_user email";
+
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+            Email::Template->send( config->{email_templates} .
+                                   'activation_email.tt',
+            {
+              From     => config->{default_email_sender},
+              To       => $params->{'email'},
+              Subject  => 'Welcome to Blogs.Perl.Org',
+
+              tt_vars  => {
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                mail_body => "/activation?token=$token",
               }
             }) or error "Could not send the email";
 

@@ -84,14 +84,6 @@ sub map_posts {
         my $chunk = 600;
         my $post_content = $el->{content};
         
-=aaa
-        $el->{content} = substr($post_content, 0, $chunk);
-        $el->{content} =~ s/([,\s\.])*[^,\s\.]*$/ /is; # make sure we do not split inside of a word
-        $el->{content} =~ s/\W*$//is; # make sure we do not split inside of a word
-        
-        $el->{content} .= ' ...';
-=cut
-        
         # get post author
         $el->{user}->{username} = $post->user->username;
         $el->{user}->{avatar_path} = $post->user->avatar_path;

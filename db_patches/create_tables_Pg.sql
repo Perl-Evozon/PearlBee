@@ -74,7 +74,7 @@ CREATE TABLE blog (
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,
   status active_state NOT NULL DEFAULT 'inactive',
-  email_notification integer NOT NULL DEFAULT '0', -- Because mySQL lacks bool type
+  email_notification integer NOT NULL DEFAULT '0' -- Because mySQL lacks bool type
 );
 
 
@@ -126,8 +126,8 @@ CREATE TABLE asset (
   blog_id integer NOT NULL REFERENCES blog (id),
   user_id integer NOT NULL REFERENCES "user" (id),
   file_ext varchar(20) NOT NULL,
-  file_name varchar(20) NOT NULL,
-  file_path varchar(20) NOT NULL
+  file_name varchar(255) NOT NULL,
+  file_path varchar(255) NOT NULL
 );
 
 
@@ -140,8 +140,8 @@ CREATE TABLE post_category (
 
 CREATE TABLE tag (
   id serial UNIQUE,
-  name varchar(100) DEFAULT NULL,
-  slug varchar(100) DEFAULT NULL
+  name varchar(255) DEFAULT NULL,
+  slug varchar(255) DEFAULT NULL
 );
 
 

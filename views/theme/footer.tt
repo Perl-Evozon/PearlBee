@@ -15,7 +15,9 @@
 
                        <div class="col-md-4 col-sm-4 f-logo">
                          <div class="fwidget">
-                           <p id="powered_by">Powered by</p>
+                          <div class="powered-by">
+                          	<p id="powered_by">Powered by</p>
+                          </div>
                            <div class="footer-logo"></div>
 				   <p id="copywrite_mobile">2015 blogs.perl.org. All rights reserved</p>
                          </div>

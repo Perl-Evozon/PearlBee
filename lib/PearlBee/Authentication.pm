@@ -35,22 +35,23 @@ post '/login' => sub {
       ]
     })->first;
   
-  unless ( $user ) {
-    template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
-  }
+  if ( defined $user ) {
+    my $password_hash = crypt( $password, $user->password );
+    if($user && $user->password eq $password_hash) {
+      
+      my $user_obj->{is_admin} = $user->is_admin;
+      $user_obj->{role}        = $user->role;
+      $user_obj->{id}          = $user->id;
+      $user_obj->{username}    = $user->username;
 
-  my $password_hash = crypt( $password, $user->password );
-  if($user && $user->password eq $password_hash) {
-    
-    my $user_obj->{is_admin} = $user->is_admin;
-    $user_obj->{role}        = $user->role;
-    $user_obj->{id}          = $user->id;
-    $user_obj->{username}    = $user->username;
-
-    session user => $user_obj;
-    session user_id => $user->id;
-	
-    redirect('/');
+      session user => $user_obj;
+      session user_id => $user->id;
+  	
+      redirect('/');
+    }
+    else {
+      template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
+    }
   }
   else {
     template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };

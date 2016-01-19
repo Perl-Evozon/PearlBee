@@ -233,14 +233,17 @@ post '/comments' => sub {
 
   my $user        = session('user');
   my $username    = $user->{username};
+  my $user_id     = $user->{id};
 
   my $parameters  = body_parameters;
   $parameters->{id} = $post->id;
+  $parameters->{uid} = $user_id;
+
   my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post->id);
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $blog        = resultset('BlogOwner')->find({ user_id => $user->{id} });
+  my $blog        = resultset('BlogOwner')->find({ user_id => $user_id });
   my %result;
 
   try {

@@ -235,6 +235,12 @@ sub is_authorized {
   return $authorized;
 }
 
+sub avatar_path {
+
+	my ($self) = @_;
+	return $self->uid->avatar_path;
+}
+
 sub comment_date_DT {
 
         my ($self) = @_;
@@ -246,7 +252,10 @@ sub comment_date_human {
         my ($self) = @_;
         if ( DateTime->compare(
                 $self->comment_date_DT,
-                DateTime->today ) == 1 ) {
+                DateTime->now( time_zone => 'UTC' ) ) == -1 ) {
+#                DateTime->now ) == -1 ) {
+my @today_gmt = (gmtime())[5,4,3,2,1,0];
+                #my $dph = Date::Period::Human->new({ lang => 'en', today_and_now => \@today_gmt });
                 my $dph = Date::Period::Human->new({ lang => 'en' });
                 return $dph->human_readable( $self->comment_date );
         }

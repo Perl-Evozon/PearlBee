@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                        <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                        <img class="user-image" src="[% IF comment.avatar_path %][% comment.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
@@ -20,7 +20,7 @@
                 [% END %]
                 
                 <div class="cmeta">
-                    Commented on [% comment.comment_date %]
+		    Commented on [% comment.comment_date %] ([% comment.comment_date_human %])
                 </div>
                 <p>
                     [% comment.content %]
@@ -39,7 +39,7 @@
                     [% FOREACH reply in comment.comment_replies %]
                         <li class="comment reply_comment">
                             <a class="pull-left" href="#">
-                                <img class="avatar" src="[% reply.avatar %]" class="img-responsive" />
+                                <img class="avatar" src="[% reply.avatar_path %]" class="img-responsive" />
                             </a>
 
                             [% IF reply.fullname %]
@@ -53,7 +53,7 @@
                             [% END %]
                             
                             <div class="cmeta">
-                                Commented on [% reply.comment_date %]
+                                Commented on [% reply.comment_date %] ([% reply.comment_date_human %])
                             </div>
                             <p>
                                 [% reply.content %]

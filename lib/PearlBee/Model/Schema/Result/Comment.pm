@@ -238,7 +238,9 @@ sub is_authorized {
 sub avatar_path {
 
 	my ($self) = @_;
-	return $self->uid->avatar_path;
+        return $self->uid->avatar_path 
+                if $self->uid and $self->uid->avatar_path;
+        return;
 }
 
 sub comment_date_DT {

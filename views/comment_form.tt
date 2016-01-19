@@ -3,8 +3,8 @@
 			<form id="reply_post_comment_form" class="comment_form" role="form">
 		        <div class="form-group">
 		            <p>Leave your comment:</p>
-		            <textarea class="form-control" rows="3" name="comment" required>[% fields.comment %]</textarea>
-		            <input type="hidden" value="[% post.id %]" name="id" />
+		            <textarea class="form-control" rows="3" id="comment" name="comment" required>[% fields.comment %]</textarea>
+		            <input type="hidden" value="[% post.id %]" id="id" name="id" />
 		        </div>
 		        <button id="reply_post_comment_button" type="button" class="btn btn-info">Submit</button>
 		    </form>

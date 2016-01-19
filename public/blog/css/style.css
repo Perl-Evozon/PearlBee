@@ -3215,7 +3215,7 @@ background-size: cover;
 
 .blog .posts.listings .entry {
     font-size: 18px;
-/*     display: table; */
+    clear: both;
 }
 
 .posts.listings .post_preview {
@@ -3381,6 +3381,12 @@ background-size: cover;
         .loading-posts .more-posts{
             left: -90px;
         }
+
+        .loading-posts .view-more::before {
+            left: -50px;
+        }
+
+
     }
     @media all and (max-width: 480px){
         .posts.listings .info-entry .user,
@@ -3395,7 +3401,11 @@ background-size: cover;
             left: -10%;
         }
         .loading-posts .more-posts{
-            left: -77px;
+            left: -69px;
+        }
+
+        .loading-posts .view-more::before {
+         left: -10%;
         }
     }
     @media all and (max-width: 360px){

@@ -48,7 +48,7 @@
               </div>
               [% FOREACH post in posts %]
         
-                <div class="entry">
+                <div class="entry clearfix">
                   <div class="col-xs-2">
                   </div>
                     <div class="text-listing-entries col-xs-10">

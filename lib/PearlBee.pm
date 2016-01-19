@@ -229,7 +229,7 @@ Add a comment method
 post '/comments' => sub {
   my $post_slug    = body_parameters->get('slug');
   my $comment_text = body_parameters->get('comment');
-  my $post    = resultset('Post')->find({ slug => $post_slug });
+  my $post         = resultset('Post')->find({ slug => $post_slug });
 
   my $user        = session('user');
   my $username    = $user->{username};
@@ -270,16 +270,15 @@ post '/comments' => sub {
       );
     }
 
+    my %expurgated_user = %$user;
+    delete $expurgated_user{id};
+    $result{user} = \%expurgated_user;
+    $result{comment_date} = $comment->comment_date;
+    $result{comment_date_human} = $comment->comment_date_human;
+    $result{status} = $comment->status;
+
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
-      $result{message} = 'Your comment has been submited. Thank you!';
-      $result{success} = 1;
-      $result{approved} = 0;
-      $result{email_sent} = 1;
-    } else {
-      $result{message} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
-      $result{success} = 1;
-      $result{approved} = 1;
-      $result{email_sent} = 1;
+      $result{content} = $comment->content;
     }
   }
   catch {

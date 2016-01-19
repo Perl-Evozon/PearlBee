@@ -1,15 +1,17 @@
 [% IF session.user.id %]
 	<div class="respond">
-			<form id="reply_post_comment_form" class="comment_form" role="form" method="post" action="/comments">
-		        <div class="form-group">
-		            <p>Leave your comment:</p>
 
-		            <textarea class="form-control" rows="3" id="comment" name="comment" required>[% fields.comment %]</textarea>
-		            <input type="hidden" value="[% post.id %]" id="id" name="id" />
 
-		        </div>
-		        <button id="reply_post_comment_button" type="button" class="btn btn-info">Submit</button>
-		    </form>
+<form id="reply_post_comment_form" class="comment_form" role="form" method="post" action="/comments">
+    <div class="form-group">
+	<p>Leave your comment:</p>
+        <input type="hidden" name="slug" id="slug" value="[% post.slug %]" />
+        <textarea class="form-control" rows="3" id="comment" name="comment" required>[% fields.comment %]</textarea>
+        <button id="reply_post_comment_button" type="submit" class="btn btn-info">Submit</button>
+    </div>
+</form>
+
+
 	</div>
 [% ELSE %]
     <div class="sign-to-leave-comment">

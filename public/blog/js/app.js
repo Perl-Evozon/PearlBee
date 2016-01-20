@@ -232,8 +232,9 @@ $(document).ready(function() {
       }
 
       if (errors === 0) {
-        return true
+        return true;
       }
+
       return false;
     }
 
@@ -255,57 +256,6 @@ $(document).ready(function() {
         $("#confirmNewPassword").removeClass('error');
     }
   });
-	
-	
-
-    function getCookie(c_name) {
-		if (document.cookie.length>0) {
-			 c_start=document.cookie.indexOf(c_name + "=");
-			 if (c_start!=-1) {
-        		c_start=c_start + c_name.length+1 ;
-        		c_end=document.cookie.indexOf(";",c_start);
-        		if (c_end==-1) c_end=document.cookie.length
-        				return unescape(document.cookie.substring(c_start,c_end));
-            }
-        }
-		return ""
-    }
-
-//	Blog start overlay
-    if ( getCookie('first_visit') != 1) {
-    	if ($(".blog-start").hasClass("show") ) {
-            console.log('>>>>>>' + getCookie('first_visit'));
-    		$("body").addClass("active-overlay");
-    	}
-    } else {
-        $(".blog-start").removeClass("show");
-        $(".blog-start").addClass("hide");
-        $("body").removeClass("active-overlay");
-    }
-
-	$("#close_overlay").on('click', function() {
-		$(".blog-start").slideToggle( "slow" );
-		$(".blog-start").removeClass("show");
-		$("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-	});
-    $("#signin").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#register").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-
-//	$('.blog-start').css('min-height',$(window).height() * 0.3);
-//	$(window).resize(function(){
-//	  $('.blog-start').css('min-height',$(window).height() * 0.3);
-//	});
 
 //	Sign up
 	$('.sign-up').css('min-height',$(window).height()-80);
@@ -320,42 +270,6 @@ $(window).resize(function(){
     ellipsis  : '... ',
   });
 });
-
-//	Header
-	if ($(window).width() <= 800){
-		$("body").removeClass("active-overlay");
-		$(".search-label").addClass("hidden");
-		$(".header .user").removeClass("hidden");
-		$(".blog-start").addClass("hidden");
-		$(".header .user").click(function(){
-			$(".blog-start").toggleClass("hidden");
-			$("body").toggleClass("active-overlay");
-		});
-	}
-	else {
-		$(".header .user").addClass("hidden");
-		$(".blog-start").removeClass("hidden");
-	}
-
-
-	if ($(window).width() >= 801){
-		$("#close_overlay").click(function(){
-			$(".user").removeClass("hidden");
-		});
-		if( $(".blog-start").hasClass("show")) {
-			$(".user").addClass("hidden");
-		} else {
-			$(".user").removeClass("hidden");
-		}
-//		$(".user").click(function(){
-//			$(".blog-start").toggleClass("hidden");
-//			$("body").toggleClass("active-overlay");
-//		});
-	}
-
-	$(".input-group, .links-group:first").on('click',function(event){
-		event.stopPropagation();
-	});
 
 });
 
@@ -378,8 +292,7 @@ if ($(".no-posts").length > 0){
            window.history.back();
     });
 
-
-//Tabs label align, tabs & search min-height
+//Tabs label align and tabs min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
 $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));

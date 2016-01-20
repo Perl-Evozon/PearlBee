@@ -9,7 +9,9 @@ use Try::Tiny;
 
 $|++;
 
-my $in_dsn = 'dbi:mysql:database=BlogsPerlOrg';
+my $database_name = $ARGV[0] || 'BlogsPerlOrg';
+
+my $in_dsn = "dbi:mysql:database=$database_name";
 my $e = Search::Elasticsearch->new;
 
 my $in_dbh = DBI->connect($in_dsn,'root');
@@ -39,11 +41,12 @@ EOF
       type    => 'published_blog_posts',
       id      => $post->{id},
       body    => {
-          id      => $post->{id},
-          slug    => $post->{slug},
-          title   => $post->{title},
-          content => $post->{content},
-          date    => $post->{created_date}
+          id       => $post->{id},
+          username => $post->{username},
+          slug     => $post->{slug},
+          title    => $post->{title},
+          content  => $post->{content},
+          date     => $post->{created_date}
       }
     );
   }

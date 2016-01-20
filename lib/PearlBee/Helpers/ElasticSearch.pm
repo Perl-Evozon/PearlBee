@@ -88,8 +88,12 @@ sub search_posts {
         params => { from => $start, size => $page_size },
         body => {
             query => {
-                match_phrase_prefix => {
-                    title => $text
+		bool => {
+		    should => [
+                        { match => { title => $text } },
+		        { match => { content => $text } },
+		        { match => { username => $text } },
+		    ]
                 }
             }
         }

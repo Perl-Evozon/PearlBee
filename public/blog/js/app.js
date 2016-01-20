@@ -329,7 +329,7 @@ $('#more-posts').click(function() {
                     commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                 }
 
-                newItem.find(".user a").attr("href", "/post/" + posts[i].user.username);
+                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
                 newItem.find(".post_preview_wrapper").html(posts[i].content);
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                 newItem.find(".user a").html(posts[i].user.username);

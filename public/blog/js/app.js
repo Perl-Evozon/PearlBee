@@ -129,20 +129,38 @@ $(document).ready(function() {
     });
 
 
-
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
+        var comment = $("#reply_post_comment_form #comment").val();
+        var slug = $("#reply_post_comment_form #id").val();
+
         e.preventDefault();
         e.stopPropagation();
-        var comment = $("#reply_post_comment_textarea").val();
+
+
         $.ajax({
             method: "POST",
-            url: window.location.protocol + "//" + window.location.host + "/comments",
-            data: { comment: comment }
+            url: "/comments",
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+              slug: slug,
+              comment: comment
+            }
         })
-        .done(function( msg ) {
+        .done(function (data) {
+            //var posts = JSON.parse(data);
+            //for( var i= 0; i < posts.length; i++){
+                var entryItem = $(".comment-list .comment").get(0),
+                    newItem = $(entryItem).clone();
 
-            console.log( "Data Saved: ", msg );
+                newItem.find(".comment-author b").html(data.user.username);
+                newItem.find(".content-comment .cmeta").html(data.comment_date_human);
+                newItem.find(".content-comment p").html(data.content);
+
+               // newItem.insertBefore($(".comment"));
+                  $($(".comment-list").get(0)).prepend(newItem);
+                  newItem.removeClass('hidden');
+            //}
         });
     });
 
@@ -214,9 +232,8 @@ $(document).ready(function() {
       }
 
       if (errors === 0) {
-        return true;
+        return true
       }
-
       return false;
     }
 
@@ -361,7 +378,8 @@ if ($(".no-posts").length > 0){
            window.history.back();
     });
 
-//Tabs label align and tabs min-height
+
+//Tabs label align, tabs & search min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
 $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));

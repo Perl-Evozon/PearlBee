@@ -27,13 +27,13 @@
                [% recaptcha %]
             </div>
             
-<!--
-            <div class="checkbox ">
+
+            <!--             <div class="checkbox ">
               <label>
                 <input type="checkbox" id="confirmTerms">I agree to the terms and conditions
               </label>
-            </div>
--->
+            </div> -->
+
             <button type="submit" class="submitRegister" id="submitRegister">Submit</button>
           </form>          
           <div class="social_register">

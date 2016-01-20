@@ -1292,15 +1292,7 @@ strong{
 }
 
 .blog-start {
-<<<<<<< HEAD
-	z-index: 12;
-	background: url("../img/camila-blue.jpg") center center no-repeat;
-	width: 100%;
-	position: absolute;
-	background-size: cover;
-	height: 37%;
-	top: 0;
-=======
+
    z-index: 12;
    background: url("../img/camila-blue.jpg") center center no-repeat;
    width: 100%;
@@ -1308,7 +1300,6 @@ strong{
    background-size: cover;
    height: 37%;
    top: 0;
->>>>>>> jeff/master
 }
 
 .blog-start .container {

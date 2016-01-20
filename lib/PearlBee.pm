@@ -280,9 +280,9 @@ post '/comments' => sub {
     $result{comment_date_human} = $comment->comment_date_human;
     $result{status} = $comment->status;
 
-    if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
+    #if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $result{content} = $comment->content;
-    }
+    #}
   }
   catch {
       $result{message} = q{An error occurred while submitting your comment. We're already on it!};

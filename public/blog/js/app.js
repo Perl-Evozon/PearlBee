@@ -147,9 +147,20 @@ $(document).ready(function() {
               comment: comment
             }
         })
-        .done(function( msg ) {
+        .done(function (data) {
+            //var posts = JSON.parse(data);
+            //for( var i= 0; i < posts.length; i++){
+                var entryItem = $(".comment-list .comment").get(0),
+                    newItem = $(entryItem).clone();
 
-            console.log( "Data Saved: ", msg );
+                newItem.find(".comment-author b").html(data.user.username);
+                newItem.find(".content-comment .cmeta").html(data.comment_date_human);
+                newItem.find(".content-comment p").html(data.content);
+
+               // newItem.insertBefore($(".comment"));
+                  $($(".comment-list").get(0)).prepend(newItem);
+                  newItem.removeClass('hidden');
+            //}
         });
     });
 

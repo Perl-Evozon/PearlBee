@@ -1296,8 +1296,7 @@ strong{
 	background: url("../img/camila-blue.jpg") center center no-repeat;
 	width: 100%;
 	position: absolute;
-/*	background-size: cover;*/
-	background-color: #43C8E7;
+	background-size: cover;
 	height: 37%;
 	top: 0;
 }
@@ -2215,16 +2214,10 @@ footer .f-logo {
 	margin-top: 5px;
 }
 
-footer .fwidget .powered-by {
-	width: 100%;
-	float: right;
-}
-
 footer .fwidget #powered_by {
-	width: 82px;
-/*	margin-left: 215px;*/
-	font-weight: bold;
-	float: right;
+    width: 82px;
+    font-weight: bold;
+    float: right;
 }
 
 /* Responsive CSS */
@@ -2282,12 +2275,8 @@ footer .fwidget #powered_by {
 		margin: 0 auto 30px auto;
 		float: initial;
 	}
-	footer .fwidget .powered-by {
-		float: initial;
-	}
 	footer .fwidget #powered_by {
 		margin: 0 auto;
-		float: initial;
 	}
 		
 /*	responsive for myprofile*/
@@ -2645,8 +2634,8 @@ footer .fwidget #powered_by {
 }
    #tag-list li {
       float: left;
-      margin-right: 5px;
-      margin-bottom: 5px;
+      /*margin-right: 5px;*/
+      /*margin-bottom: 5px;*/
    }
 .simple-list {
    list-style-type: none;
@@ -3456,6 +3445,16 @@ background-size: cover;
         background-color: transparent;
     }
 
+    /*progressloader-holder*/
+        .progressloader-holder {
+            height: 50px;
+            position: relative;
+        }
+        .progressloader-holder .progressloader {
+            top: 0;
+        }
+    /*/progressloader-holder*/
+
     .progressloader .spinner {
         height: 100%;
         position: absolute;
@@ -3644,11 +3643,13 @@ background-size: cover;
    font-family: 'Open Sans', sans-serif;
    font-size: 36px;
    color: #ffffff;
+    padding: 8%;
 }
     .no-posts2, .no-posts3 {
         font-family: 'Open Sans', sans-serif;
         font-size: 36px;
         color: #ffffff;
+        padding: 8%;
     }
 
 .search-page .row.search-top {
@@ -3784,8 +3785,9 @@ background-size: cover;
 }
 
 .search-page #tag-list li {
-   float: none;
-   margin-bottom: 20px;
+   /*float: none;*/
+   /*margin-bottom: 20px;*/
+    padding: 2%;
 }
 
 .search-page #tag-list li a:hover {
@@ -4003,6 +4005,43 @@ background-size: cover;
 .search-page #tab-content3 ul {
         padding-top: 25px;
     }
-/*/search pegae input*/
+/*/search page input*/
 
+    /*display message for no posts*/
+    #tab-content1 .loading-posts {
+        padding-top: 0;
+    }
+    /*/display message for no posts*/
+
+
+    /*Media query for search result tabs*/
+    @media all and (max-width: 768px) {
+        #tab-content1 .entry .text-listing-entries::before {
+            display: none;
+        }
+
+        #tab-content1 .loading-posts .view-more::before {
+            display: none;
+        }
+
+        #tab-content1 .loading-posts .more-posts {
+            left: -110px;
+        }
+
+        #tab-content2 .people .bubble img {
+            left: 0;
+            width: 50px;
+            height: 50px;
+            top: 0;
+        }
+        #tab-content2 .people .info-entry{
+            padding-left: 10px;
+        }
+    }
+    @media all and (max-width: 360px){
+        #tab-content2 .info-entry{
+            width: 70%;
+        }
+    }
+    /*/Media query for search result tabs*/
 

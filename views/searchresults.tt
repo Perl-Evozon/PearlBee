@@ -47,6 +47,15 @@
                             <div class="col-xs-10 no-padding">
 
                             </div>
+                            <div class="progressloader-holder" hidden>
+                                <div class="progressloader">
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="entry clearfix hidden">
                                 <div class="col-xs-2">
                                 </div>
@@ -160,7 +169,7 @@
 
                             [% ELSE %]
                             <br />
-                            <h5 class="no-posts">We're sorry, no results <br />were found for your <br />search criteria</h5>
+                            <h5 class="no-posts" hidden>We're sorry, no results were found for your <br />search criteria</h5>
                             [% END %]
                         </div>
 
@@ -168,19 +177,28 @@
                     <div id="tab-content2" class="tab-content"><!-- #tab-content2 -->
 
                         <div class="people clearfix">
-                            <div class="col-xs-12 user-info-listing row">
+                            <div class="col-md-12 user-info-listing row">
+                                <div class="progressloader-holder" hidden>
+                                    <div class="progressloader">
+                                        <div class="spinner">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="user-info-entry hidden row">
-                                    <div class="bubble col-md-1">
+                                    <div class="bubble col-xs-1">
                                         <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
                                     </div>
-                                    <div class="info-entry col-md-5">
+                                    <div class="info-entry col-xs-5">
                                         <div class="user">
                                             <a href=""></a>
                                         </div>
                                         <div class="date">
                                         </div>
                                     </div>
-                                    <div class="properties col-md-6">
+                                    <div class="properties col-xs-6">
                                         <ul>
                                             <li class="nr-blog col-md-4"><span>###</span> blog</li>
                                             <li class="nr-entries col-md-4"><span>###</span> entries</li>
@@ -188,17 +206,26 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <h5 class="no-posts2">We're sorry, no results <br />were found for your <br />search criteria</h5>
+                                <h5 class="no-posts2" hidden >We're sorry, no results were found for your <br />search criteria</h5>
                             </div>
                         </div>
 
                     </div>
 
                     <div id="tab-content3" class="tab-content"><!-- #tab-content3 -->
+                        <div class="progressloader-holder" hidden>
+                            <div class="progressloader">
+                                <div class="spinner">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
+                                </div>
+                            </div>
+                        </div>
                         <ul id="tag-list" class="cf">
                             <li class="hidden"><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub</a></li>
                         </ul>
-                        <h5 class="no-posts3">We're sorry, no results <br />were found for your <br />search criteria</h5>
+                        <h5 class="no-posts3" hidden>We're sorry, no results were found for your <br />search criteria</h5>
                     </div>
 
 

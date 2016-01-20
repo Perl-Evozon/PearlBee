@@ -89,6 +89,8 @@ And your blog is now running!
 
 blogs.perl.org uses ElasticSearch for full-text searching of its database. To enable this, please install <a href="https://www.elastic.co/">ElasticSearch</a> and configure it.
 
+On Linux, 'chkconfig --add elasticsearch' will add ElasticSearch on startup.
+
 You will also need to index your existing blog posts, to do that please run scripts/elasticsearch in the blogs-perl-org repository.
 
 <h3>Usage</h3>

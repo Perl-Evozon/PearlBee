@@ -60,27 +60,16 @@ sub can_create {
 
 
 sub get_approved_comments_by_post_id {
-	my ($self, $post_id) = @_;
+    my ($self, $post_id) = @_;
 
-    my @comments = $self->search({
-    	post_id => $post_id,
-    	status => 'approved',
-    }, {
-		order_by => {
-			-desc => "comment_date"
-		}
-	});
-
-    foreach my $comment (@comments) {
-    	my @comment_replies = $self->search({
-    		reply_to => $comment->id,
-    		status => 'approved'
-    	}, {
-    		order_by => {
-    			-desc => "comment_date"
-    		}
-    	});
-    };
+    my @comments = $self->search(
+        { post_id => $post_id,
+      	  status => 'approved',
+        },
+        { order_by =>
+          { -desc => "comment_date" }
+        }
+    );
 
     return @comments;
 

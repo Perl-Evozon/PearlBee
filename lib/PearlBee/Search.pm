@@ -98,12 +98,10 @@ sub map_tags {
 
 get '/search/user-tags/:query' => sub {
     my $search_query = route_parameters->{'query'};
-    my $user         = resultset('User')->find({username => $search_query});
-    my @posts        = resultset('Post')->search(
-                        { status => 'published', user_id => $user->id },
-                        { order_by => { -desc => "created_date" } }
+    my @tags         = resultset('Tag')->search(
+      name => { like => '%' . $search_query . '%' }
     );
-    my @tags = map { map_tags( $_ ) } map { $_->tag_objects } @posts;
+    @tags = map { map_tags( $_ ) } @tags;
 
     my $json = JSON->new;
     $json->allow_blessed(1);

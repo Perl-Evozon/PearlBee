@@ -47,7 +47,7 @@ plugins:
           dsn: dbi:mysql:BlogsPerlOrg
           schema_class: PearlBee::Model::Schema
           user: root
-          password: password
+          password: 
           options:
             RaiseError:        1
             PrintError:        1

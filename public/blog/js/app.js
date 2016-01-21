@@ -2,36 +2,36 @@
 
 $(document).ready(function() {
 
-//	Blog start overlay
+    //  Blog start overlay
     function getCookie(c_name) {
-		if (document.cookie.length>0) {
-			 c_start=document.cookie.indexOf(c_name + "=");
-			 if (c_start!=-1) {
-        		c_start=c_start + c_name.length+1 ;
-        		c_end=document.cookie.indexOf(";",c_start);
-        		if (c_end==-1) c_end=document.cookie.length
-        				return unescape(document.cookie.substring(c_start,c_end));
+        if (document.cookie.length>0) {
+             c_start=document.cookie.indexOf(c_name + "=");
+             if (c_start!=-1) {
+                c_start=c_start + c_name.length+1 ;
+                c_end=document.cookie.indexOf(";",c_start);
+                if (c_end==-1) c_end=document.cookie.length
+                        return unescape(document.cookie.substring(c_start,c_end));
             }
         }
-		return ""
+        return ""
     }
 
     if ( getCookie('first_visit') != 1) {
-    	if ($(".blog-start").hasClass("show") ) {
+        if ($(".blog-start").hasClass("show") ) {
 //            console.log('>>>>>>' + getCookie('first_visit'));
-    		$("body").addClass("active-overlay");
-    	}
+            $("body").addClass("active-overlay");
+        }
     } else {
         $(".blog-start").removeClass("show");
         $(".blog-start").addClass("hide");
         $("body").removeClass("active-overlay");
     }
-	$("#close_overlay").on('click', function() {
-		$(".blog-start").slideToggle( "slow" );
-		$(".blog-start").removeClass("show");
-		$("body").removeClass("active-overlay");
+    $("#close_overlay").on('click', function() {
+        $(".blog-start").slideToggle( "slow" );
+        $(".blog-start").removeClass("show");
+        $("body").removeClass("active-overlay");
         document.cookie='first_visit' + "=" + 1;
-	});
+    });
     $("#signin").on('click', function() {
         $(".blog-start").slideToggle( "slow" );
         $(".blog-start").removeClass("show");
@@ -44,46 +44,42 @@ $(document).ready(function() {
         $("body").removeClass("active-overlay");
         document.cookie='first_visit' + "=" + 1;
     });
-//	END Blog start overlay
-	
-//	Header
-	if ($(window).width() <= 800){
-		$("body").removeClass("active-overlay");
-		$(".search-label").addClass("hidden");
-		$(".header .user").removeClass("hidden");
-		$(".blog-start").addClass("hidden");
-		$(".header .user").click(function(){
-			event.preventDefault();
-			$(".blog-start").toggleClass("hidden");
-			$("body").toggleClass("active-overlay");
-		});
-	}
-	else {
-		$(".header .user").addClass("hidden");
-		$(".blog-start").removeClass("hidden");
-	}
+//  END Blog start overlay
+    
+//  Header
+    if ($(window).width() <= 800){
+        $("body").removeClass("active-overlay");
+        $(".search-label").addClass("hidden");
+        $(".header .user").removeClass("hidden");
+        $(".blog-start").addClass("hidden");
+        $(".header .user").click(function(){
+            event.preventDefault();
+            $(".blog-start").toggleClass("hidden");
+            $("body").toggleClass("active-overlay");
+        });
+    }
+    else {
+        $(".header .user").addClass("hidden");
+        $(".blog-start").removeClass("hidden");
+    }
 
 
-	if ($(window).width() >= 801){
-		$("#close_overlay").click(function(){
-			$(".user").removeClass("hidden");
-		});
-		if( $(".blog-start").hasClass("show")) {
-			$(".user").addClass("hidden");
-		} else {
-			$(".user").removeClass("hidden");
-		}
-//		$(".user").click(function(){
-//			$(".blog-start").toggleClass("hidden");
-//			$("body").toggleClass("active-overlay");
-//		});
-	}
+    if ($(window).width() >= 801){
+        $("#close_overlay").click(function(){
+            $(".user").removeClass("hidden");
+        });
+        if( $(".blog-start").hasClass("show")) {
+            $(".user").addClass("hidden");
+        } else {
+            $(".user").removeClass("hidden");
+        }
+    }
 
-	$(".input-group, .links-group:first").on('click',function(event){
-		event.stopPropagation();
-	});
-//	END Header
-	
+    $(".input-group, .links-group:first").on('click',function(event){
+        event.stopPropagation();
+    });
+//  END Header
+
     $("#header_onion_logo").on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -232,8 +228,9 @@ $(document).ready(function() {
       }
 
       if (errors === 0) {
-        return true
+        return true;
       }
+
       return false;
     }
 
@@ -255,57 +252,6 @@ $(document).ready(function() {
         $("#confirmNewPassword").removeClass('error');
     }
   });
-	
-	
-
-    function getCookie(c_name) {
-		if (document.cookie.length>0) {
-			 c_start=document.cookie.indexOf(c_name + "=");
-			 if (c_start!=-1) {
-        		c_start=c_start + c_name.length+1 ;
-        		c_end=document.cookie.indexOf(";",c_start);
-        		if (c_end==-1) c_end=document.cookie.length
-        				return unescape(document.cookie.substring(c_start,c_end));
-            }
-        }
-		return ""
-    }
-
-//	Blog start overlay
-    if ( getCookie('first_visit') != 1) {
-    	if ($(".blog-start").hasClass("show") ) {
-            console.log('>>>>>>' + getCookie('first_visit'));
-    		$("body").addClass("active-overlay");
-    	}
-    } else {
-        $(".blog-start").removeClass("show");
-        $(".blog-start").addClass("hide");
-        $("body").removeClass("active-overlay");
-    }
-
-	$("#close_overlay").on('click', function() {
-		$(".blog-start").slideToggle( "slow" );
-		$(".blog-start").removeClass("show");
-		$("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-	});
-    $("#signin").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#register").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-
-//	$('.blog-start').css('min-height',$(window).height() * 0.3);
-//	$(window).resize(function(){
-//	  $('.blog-start').css('min-height',$(window).height() * 0.3);
-//	});
 
 //	Sign up
 	$('.sign-up').css('min-height',$(window).height()-80);
@@ -320,42 +266,6 @@ $(window).resize(function(){
     ellipsis  : '... ',
   });
 });
-
-//	Header
-	if ($(window).width() <= 800){
-		$("body").removeClass("active-overlay");
-		$(".search-label").addClass("hidden");
-		$(".header .user").removeClass("hidden");
-		$(".blog-start").addClass("hidden");
-		$(".header .user").click(function(){
-			$(".blog-start").toggleClass("hidden");
-			$("body").toggleClass("active-overlay");
-		});
-	}
-	else {
-		$(".header .user").addClass("hidden");
-		$(".blog-start").removeClass("hidden");
-	}
-
-
-	if ($(window).width() >= 801){
-		$("#close_overlay").click(function(){
-			$(".user").removeClass("hidden");
-		});
-		if( $(".blog-start").hasClass("show")) {
-			$(".user").addClass("hidden");
-		} else {
-			$(".user").removeClass("hidden");
-		}
-//		$(".user").click(function(){
-//			$(".blog-start").toggleClass("hidden");
-//			$("body").toggleClass("active-overlay");
-//		});
-	}
-
-	$(".input-group, .links-group:first").on('click',function(event){
-		event.stopPropagation();
-	});
 
 });
 
@@ -378,8 +288,7 @@ if ($(".no-posts").length > 0){
            window.history.back();
     });
 
-
-//Tabs label align, tabs & search min-height
+//Tabs label align and tabs min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
 $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
@@ -446,8 +355,11 @@ $('#more-posts').click(function() {
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
+        if (true === removeExistingPosts) {
+            $('#tab-content1 .progressloader-holder').show();
+        }
 
-    $('.progressloader').show();
+        $('.progressloader').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
             url: '/search/posts/' + searchTerm + "/" + pageNumber,
@@ -462,6 +374,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 var posts = JSON.parse(data).posts;
                 if (posts.length === 0) {
                     $('.no-posts').show();
+                    //$('.tabs .loading-posts').css('margin-bottom', '0');
                     $(".view-more").addClass("cut");
                 } else {
                     $('.no-posts').hide();
@@ -479,10 +392,11 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                         }
 
-                        //newItem.find(".user a").html(posts[i].username);
-                        //newItem.find(".user a").attr("href", "/posts/user/" + posts[i].username);
+
+                        newItem.find(".user a").html(posts[i].username);
+                        newItem.find(".user a").attr("href", "/post/" + posts[i].username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content);
-                        newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                        newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
                         newItem.find(".comments-listings a").text(commentsText);
                         newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
@@ -501,13 +415,17 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
             .fail(function () {
                 $('#tab-content1 .entry:not(.hidden)').remove();
                 $('.no-posts').show();
-            }).always(function () {
+            })
+            .always(function () {
                 //close search input
                 $(".search-input").addClass("cut");
+                $('#tab-content1 .progressloader-holder').hide();
             });
 }
 //tab 2: user-info;
     function getPeople(searchTerm) {
+
+        $('#tab-content2 .progressloader-holder').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
             url: '/search/user-info/' + searchTerm,
@@ -552,13 +470,16 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
             .fail(function() {
                 $('#tab-content2 .user-info-entry:not(.hidden)').remove();
                 $('.no-posts2').show();
-            }).always(function() {
+            })
+            .always(function() {
                 //close search input
                 $(".search-input").addClass("cut");
+                $('#tab-content2 .progressloader-holder').hide();
             });
     }
 //tab3 : tags
     function getTags(searchTerm) {
+        $('#tab-content3 .progressloader-holder').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
             url: '/search/user-tags/' + searchTerm,
@@ -590,9 +511,11 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
             .fail(function() {
                 $('#tab-content3 #tag-list li:not(.hidden)').remove();
                 $('.no-posts3').show();
-            }).always(function() {
+            })
+            .always(function() {
                 //close search input
                 $(".search-input").addClass("cut");
+                $('#tab-content3 .progressloader-holder').hide();
             });
     }
 
@@ -606,8 +529,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
         if (code !== 13) {
             return false;
         }
-
-
 
         searchTerm = $('input[name=search_term]').val();
         $(".tabs-head h2 span").html(searchTerm);

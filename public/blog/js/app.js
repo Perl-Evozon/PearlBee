@@ -154,7 +154,7 @@ $(document).ready(function() {
                     newItem = $(entryItem).clone();
 
                 newItem.find(".comment-author b").html(data.user.username);
-                newItem.find(".content-comment .cmeta").html(data.comment_date_human);
+                newItem.find(".content-comment .cmeta .hours").html(data.comment_date_human);
                 newItem.find(".content-comment p").html(data.content);
 
                // newItem.insertBefore($(".comment"));
@@ -479,8 +479,8 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                         }
 
-                        //newItem.find(".user a").html(posts[i].user.username);
-                        //newItem.find(".user a").attr("href", "/post/" + posts[i].user.username);
+                        //newItem.find(".user a").html(posts[i].username);
+                        //newItem.find(".user a").attr("href", "/posts/user/" + posts[i].username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content);
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                         newItem.find(".post-heading h2 a").html(posts[i].title);

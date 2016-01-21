@@ -357,12 +357,14 @@ strong{
 }
 
 .header .search-icon {
-   background: url("../img/search.png") center center no-repeat;
-   height: 20px;
-   width: 20px;
+   background: url("../img/search.png") no-repeat;
+   height: 43px;
+   width: 43px;
+   background-position: bottom;
    display: inline-block;
-   background-size: 20px;
+   background-size: 24px;
 }
+
 .header .header-icon {
    display: inline-block;
 }
@@ -4005,6 +4007,14 @@ background-size: cover;
     }
 /*/search pegae input*/
 
+
+/* comment sistem */
+.comments .comment-list .content-comment {
+   margin-bottom: 20px;
+}
+
+
+/* end comment sistem */
 
 
 

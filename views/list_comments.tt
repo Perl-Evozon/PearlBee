@@ -2,7 +2,7 @@
 
     <ul class="comment-list">
 
-        <li class="comment clearfix hidden" id="comment_[% comment.id %]">
+        <li class="comment clearfix hidden " id="comment_[% comment.id %]">
                 <div class="col-xs-2">
                 </div>
                 <div class="col-xs-10 content-comment">
@@ -15,12 +15,12 @@
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                        <i class="icon-user"></i> <a href="/posts/user/[% comment.uid.username %]" >[% comment.uid.username %]</a>
+                         <b>[% comment.uid.username %]</b>
                     </div>
                 [% END %]
                 
                 <div class="cmeta">
-            Commented on [% comment.comment_date %] ([% comment.comment_date_human %])
+             <span class="hours">[% comment.comment_date_human %]</span>
                 </div>
                 <p>
                     [% comment.content %]
@@ -28,45 +28,8 @@
                 <div class="clearfix">
                 </div>
                 
-                <!-- The Reply comment FORM -->
-                <a class="comment_reply" id="reply_comment_[% comment.id %]">Reply</a>
-                <div class='reply_comment_div' id="reply_comment_[% comment.id %]_div" div_set="[% fields.in_reply_to %]" field_fullname="[% fields.fullname %]" field_email="[% fields.email %]" field_website="[% fields.website %]" field_comment="[% fields.comment %]">
-                    [%# INCLUDE comment_form.tt %]
-                </div>
-                
-                <!-- The Reply comments for this comment -->
-                <ul class="comment-list comment-replies-list">
-                    [% FOREACH reply in comment.comment_replies %]
-                        <li class="comment reply_comment">
-                            <a class="pull-left" href="#">
-                                <img class="avatar" src="[% reply.avatar_path %]" class="img-responsive" />
-                            </a>
-
-                            [% IF reply.fullname %]
-                                <div class="comment-author">
-                                    <b>[% reply.fullname %]</b>
-                                </div>
-                            [% ELSE %]
-                                <div class="comment-author comment-author-registered">
-                                    <i class="icon-user"></i> <a href="/posts/user/[% reply.uid.username %]" >[% reply.uid.username %]</a>
-                                </div>
-                            [% END %]
-                            
-                            <div class="cmeta">
-                                Commented on [% reply.comment_date %] ([% reply.comment_date_human %])
-                            </div>
-                            <p>
-                                [% reply.content %]
-                            </p>
-                            <div class="clearfix">
-                            </div>
-                        </li>
-                    [% END %]
-                </ul>
                 </div>
             </li>
-
-
 
         [% FOREACH comment in comments %]
             <li class="comment clearfix" id="comment_[% comment.id %]">
@@ -87,7 +50,7 @@
                 [% END %]
                 
                 <div class="cmeta">
-		    Commented on [% comment.comment_date %] ([% comment.comment_date_human %])
+		     <span class="hours">[% comment.comment_date_human %]</span>
                 </div>
                 <p>
                     [% comment.content %]
@@ -95,41 +58,6 @@
                 <div class="clearfix">
                 </div>
                 
-                <!-- The Reply comment FORM -->
-                <a class="comment_reply" id="reply_comment_[% comment.id %]">Reply</a>
-                <div class='reply_comment_div' id="reply_comment_[% comment.id %]_div" div_set="[% fields.in_reply_to %]" field_fullname="[% fields.fullname %]" field_email="[% fields.email %]" field_website="[% fields.website %]" field_comment="[% fields.comment %]">
-                    [%# INCLUDE comment_form.tt %]
-                </div>
-                
-                <!-- The Reply comments for this comment -->
-                <ul class="comment-list comment-replies-list">
-                    [% FOREACH reply in comment.comment_replies %]
-                        <li class="comment reply_comment">
-                            <a class="pull-left" href="#">
-                                <img class="avatar" src="[% reply.avatar_path %]" class="img-responsive" />
-                            </a>
-
-                            [% IF reply.fullname %]
-                                <div class="comment-author">
-                                    <b>[% reply.fullname %]</b>
-                                </div>
-                            [% ELSE %]
-                                <div class="comment-author comment-author-registered">
-                                    <i class="icon-user"></i> <a href="/posts/user/[% reply.uid.username %]" >[% reply.uid.username %]</a>
-                                </div>
-                            [% END %]
-                            
-                            <div class="cmeta">
-                                Commented on [% reply.comment_date %] ([% reply.comment_date_human %])
-                            </div>
-                            <p>
-                                [% reply.content %]
-                            </p>
-                            <div class="clearfix">
-                            </div>
-                        </li>
-                    [% END %]
-                </ul>
                 </div>
             </li>
         [% END %]

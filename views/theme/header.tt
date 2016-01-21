@@ -9,7 +9,6 @@
             <div class="pull-right">
 				<a href="/search">
 					<div class="search header-icon">
-						<label class="search-label">Search</label>
 						<span class="search-icon icon" aria-hidden="true"></span>
 					</div>
 				</a>

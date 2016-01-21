@@ -2586,7 +2586,7 @@ footer .fwidget #powered_by {
 
 }
 
-@media (max-width: 769px){
+@media (max-width: 767px){
 /*	 footer */
 	footer .flinks {
 		height: 140px;

@@ -14,8 +14,21 @@
 				</a>
            		<div class="btn-group">
 					<div class="user header-icon hidden" style="display:inline-block">
-[% IF session.user %]
-						<form id="register_head" action="" method="post">
+[% IF session.user.id %]
+						<div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+						<div class="dropdown-menu dropdown-login">
+							<div class="links-group header-menu-links">
+								<a href="/profile" class="pull-right">Profile</a>
+							</div>
+							<div class="links-group header-menu-links">
+								<a href="#" class="pull-right">Publications</a>
+							</div>
+							<div class="links-group">
+								<a href="#" class="pull-right">Log Out</a>
+							</div>
+						</div>
+[% ELSE %]
+						<form id="register_head" action="/login" method="post">
 	<!--           			<span class="male-user icon icon-toggle"></span>-->
 						<div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
 						<div class="dropdown-menu dropdown-login">
@@ -33,19 +46,7 @@
 							</div>
 						</div>
 						</form>
-[% ELSE %]
-						<div class="dropdown-menu dropdown-login">
-							<div class="links-group header-menu-links">
-								<a href="/profile" class="pull-right">Profile</a>
-							</div>
-							<div class="links-group header-menu-links">
-								<a href="#" class="pull-right">Publications</a>
-							</div>
-							<div class="links-group">
-								<a href="#" class="pull-right">Log Out</a>
-							</div>
-						</div>
-[% END # IF session.user %]
+[% END # IF session.user.id %]
 					</div>
 				</div>
             </div>

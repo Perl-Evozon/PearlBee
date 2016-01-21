@@ -357,12 +357,14 @@ strong{
 }
 
 .header .search-icon {
-   background: url("../img/search.png") center center no-repeat;
-   height: 20px;
-   width: 20px;
+   background: url("../img/search.png") no-repeat;
+   height: 43px;
+   width: 43px;
+   background-position: bottom;
    display: inline-block;
-   background-size: 20px;
+   background-size: 24px;
 }
+
 .header .header-icon {
    display: inline-block;
 }
@@ -2255,7 +2257,6 @@ footer .fwidget #powered_by {
 }
 
 @media (max-width: 480px) {
-<<<<<<< HEAD
 	footer .flinks {
 		height: 140px;
 	}
@@ -2307,59 +2308,6 @@ footer .fwidget #powered_by {
 	.credentials .buttons-group button {
 		width: 58px !important;
 	}
-=======
-   footer .flinks {
-      height: 140px;
-   }
-   footer .fwidget h5 {
-      text-align: center;
-      width: 100%;
-   }
-   footer .fwidget p {
-      text-align: center;
-      margin: 0 auto;
-   }
-   footer .fwidget #copywrite_mobile {
-   display: inherit;
-   }
-   footer .fwidget #copywrite_desktop {
-   display: none;
-   }
-   footer .fwidget .footer-logo {
-      margin: 0 auto 30px auto;
-      float: initial;
-   }
-   footer .fwidget #powered_by {
-      margin: 0 auto;
-   }
-      
-/* responsive for myprofile*/
-   .myprofile.register .container {
-      margin: 30px auto;
-   }
-   .myprofile-head .write-post {
-      margin-top: 5px;
-   }
-   .credentials label {
-      display: inherit !important;
-   }
-   .credentials .col-sm-2 {
-      text-align: center;
-   }
-   .credentials .col-sm-10 .input-group {
-      margin-left: 40px;
-   }
-   .credentials .buttons-group {
-      width: 80% !important;
-      margin-left: 40px
-   }
-   .credentials .buttons-group label {
-      width: 100px;
-   }
-   .credentials .buttons-group button {
-      width: 58px !important;
-   }
->>>>>>> jeff/master
 }
 
 @media (max-width: 481px) and (orientation: landscape) {
@@ -4080,7 +4028,7 @@ background-size: cover;
     /*/display message for no posts*/
 
 
-<<<<<<< HEAD
+
     /*Media query for search result tabs*/
     @media all and (max-width: 768px) {
         #tab-content1 .entry .text-listing-entries::before {
@@ -4110,8 +4058,13 @@ background-size: cover;
             width: 70%;
         }
     }
-    /*/Media query for search result tabs*/
-=======
 
->>>>>>> jeff/master
+
+/* comment sistem */
+.comments .comment-list .content-comment {
+   margin-bottom: 20px;
+}
+
+
+/* end comment sistem */
 

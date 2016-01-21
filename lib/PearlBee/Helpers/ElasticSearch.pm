@@ -111,7 +111,8 @@ sub search_posts {
             content        => $rs->content,
             created_date   => $rs->created_date,
             nr_of_comments => $rs->nr_of_comments,
-            username       => $rs->user->username
+            username       => $rs->user->username,
+            tags           => $result->{_source}{tags}
         };
     }
 

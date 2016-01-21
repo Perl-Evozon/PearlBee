@@ -296,7 +296,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 var posts = JSON.parse(data).posts;
                 if (posts.length === 0) {
                     $('.no-posts').show();
-                    $('.tabs .loading-posts').css('margin-bottom', '0');
+                    //$('.tabs .loading-posts').css('margin-bottom', '0');
                     $(".view-more").addClass("cut");
                 } else {
                     $('.no-posts').hide();
@@ -314,10 +314,10 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                         }
 
-                        newItem.find(".user a").html(posts[i].user.username);
-                        newItem.find(".user a").attr("href", "/post/" + posts[i].user.username);
+                        newItem.find(".user a").html(posts[i].username);
+                        newItem.find(".user a").attr("href", "/post/" + posts[i].username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content);
-                        newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                        newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
                         newItem.find(".comments-listings a").text(commentsText);
                         newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");

@@ -2,6 +2,7 @@ package PearlBee::Authentication;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use Dancer2::Plugin::reCAPTCHA;
 use PearlBee::Password;
 
 =head
@@ -22,6 +23,122 @@ get '/admin' => sub {
 login method
 
 =cut
+
+post '/register_success' => sub {
+  my $params = body_parameters;
+
+  my $err;
+
+  my $template_params = {
+    username        => $params->{'username'},
+    email           => $params->{'email'},
+    name            => $params->{'name'},
+  };
+
+  my $response = $params->{'g-recaptcha-response'};
+  my $result = recaptcha_verify($response);
+
+
+  if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
+    # The user entered the correct secrete code
+    eval {
+
+      my $existing_users = resultset('User')->search( { email => $params->{'email'} } )->count;
+
+      if ($existing_users > 0) {
+        $err = "An user with this email address already exists.";
+      } else {
+        $existing_users = resultset('User')->search( { username => $params->{'username'} } )->count;
+        if ($existing_users > 0) {
+          $err = "The provided username is already in use.";
+        } else {
+
+          # Create the user
+          if ( $params->{'username'} ) {
+
+            # Set the proper timezone
+            my $dt       = DateTime->now;
+            my $settings = resultset('Setting')->first;
+            $dt->set_time_zone( $settings->timezone );
+
+            # Match encryption from MT
+            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+
+            my $crypt_sha  = '$6$' .
+                             $salt .
+                             '$' .
+                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
+
+            resultset('User')->create({
+              username        => $params->{username},
+              password        => $crypt_sha,
+              email           => $params->{'email'},
+              name            => $params->{'name'},
+              register_date   => join (' ', $dt->ymd, $dt->hms),
+              role            => 'author',
+              status          => 'pending'
+            });
+
+            # Notify the author that a new comment was submited
+            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
+
+            Email::Template->send( config->{email_templates} . 'new_user.tt',
+            {
+              From     => config->{default_email_sender},
+              To       => $first_admin->email,
+              Subject  => 'A new user applied as an author to the blog',
+
+              tt_vars  => {
+                name             => $params->{'name'},
+                username         => $params->{'username'},
+                email            => $params->{'email'},
+                signature        => config->{email_signature},
+                blog_name        => session('blog_name'),
+                app_url          => session('app_url'),
+              }
+            }) or error "Could not send new_user email";
+
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+            Email::Template->send( config->{email_templates} .
+                                   'activation_email.tt',
+            {
+              From     => config->{default_email_sender},
+              To       => $params->{'email'},
+              Subject  => 'Welcome to Blogs.Perl.Org',
+
+              tt_vars  => {
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                mail_body => "/activation?token=$token",
+              }
+            }) or error "Could not send the email";
+
+          } else {
+            $err = 'Please provide a username.';
+          }
+        }
+      }
+    };
+    error $@ if ( $@ );
+  }
+  else {
+    # The secret code inncorrect
+    # Repopulate the fields with the data
+    $err = "Invalid secret code.";
+  }
+
+  if ($err) {
+    $template_params->{warning} = $err if $err;
+    $template_params->{recaptcha} = recaptcha_display();
+
+    template 'signup', $template_params;
+  } else {
+    template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
+  }
+};
 
 post '/login' => sub {
   my $password = params->{password};

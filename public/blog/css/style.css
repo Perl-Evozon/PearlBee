@@ -388,7 +388,7 @@ strong{
 
 .header .header-icon {
    display: inline-block;
-   max-height: 45px;
+   max-height: 82px;
    position: relative;
 }
 
@@ -2240,11 +2240,6 @@ footer .f-logo {
 	margin-top: 5px;
 }
 
-footer .fwidget .powered-by {
-	width: 100%;
-	float: right;
-}
-
 footer .fwidget #powered_by {
     width: 82px;
     font-weight: bold;
@@ -2609,37 +2604,6 @@ footer .fwidget #powered_by {
 
 }
 
-@media (max-width: 767px){
-/*	 footer */
-	footer .flinks {
-		height: 140px;
-	}
-	footer .fwidget h5 {
-		text-align: center;
-		width: 100%;
-	}
-	footer .fwidget p {
-		text-align: center;
-		margin: 0 auto;
-	}
-	footer .fwidget #copywrite_mobile {
-	display: inherit;
-	}
-	footer .fwidget #copywrite_desktop {
-	display: none;
-	}
-	footer .fwidget .footer-logo {
-		margin: 0 auto 30px auto;
-		float: initial;
-	}
-	footer .fwidget .powered-by {
-		float: initial;
-	}
-	footer .fwidget #powered_by {
-		margin: 0 auto;
-		float: initial;
-	}
-}
 /* Desktop */
 
 @media (min-width: 767px) and (max-width: 991px){
@@ -4124,8 +4088,97 @@ background-size: cover;
    margin-bottom: 20px;
 }
 
-
-
-
 /* end comment sistem */
+
+/* toggle switch */
+
+.switch {
+   position: absolute;
+   left: 50%;
+   top: 28px;
+}
+
+.cmn-toggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+.cmn-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+input.cmn-toggle-round-flat + label {
+  padding: 2px;
+  width: 65px;
+  height: 25px;
+  background-color: #dfdfdf;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+
+input.cmn-toggle-round-flat + label:before,
+input.cmn-toggle-round-flat + label:after {
+  display: block;
+  position: absolute;
+  content: "";
+}
+
+input.cmn-toggle-round-flat + label:before {
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  right: 2px;
+  background-color: #dfdfdf;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+
+input.cmn-toggle-round-flat + label:after {
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: 18px;
+  background-color: #41436d;
+  border-radius: 52px;
+  transition: margin 0.4s, background 0.4s;
+}
+
+input.cmn-toggle-round-flat:checked + label {
+  background-color: #dfdfdf;
+}
+
+input.cmn-toggle-round-flat:checked + label:after {
+  margin-left: 38px;
+  background-color: #ffffff;
+}
+
+#only-logo {
+   display: none;
+}
+
+@media all and (max-width: 580px) {
+   .switch {
+      display: none;
+   }
+}
+
+@media all and (max-width: 439px) {
+   #header_onion_logo {
+      display: none;
+   }
+
+   #only-logo {
+      display: block;
+      margin-top: 15px;
+   }
+}
+
+/* end toggle switch */
+
+
 

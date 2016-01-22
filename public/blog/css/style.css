@@ -358,15 +358,38 @@ strong{
 
 .header .search-icon {
    background: url("../img/search.png") no-repeat;
-   height: 43px;
-   width: 43px;
-   background-position: bottom;
+   height: 80px;
+   width: 76px;
+   background-position: center;
    display: inline-block;
    background-size: 24px;
+} 
+
+.header .header-icon.bar:after {
+   position: absolute;
+   top: 0;
+   right: 0;
+   background: #8a8a8d;
+   content: "";
+   width: 1px;
+   height: 78px;
+   display: block;
+} 
+
+.header .right-icon {
+   max-height: 80px;
+   vertical-align: top;
 }
+
+
+ .header .right-icon {
+   max-height: 80px;
+} 
 
 .header .header-icon {
    display: inline-block;
+   max-height: 45px;
+   position: relative;
 }
 
 .header .header-icon .icon {
@@ -377,7 +400,7 @@ strong{
 .header .header-icon .male-user {
    background: url('../img/male-user.png') center center no-repeat;
    width: 25px;
-   height: 25px;
+   height: 80px;
    background-size: 25px;
    display: inline-block;
    margin-right: 20px;
@@ -1548,7 +1571,7 @@ strong{
 
 .respond .form-group p {
    font-size: 15px;
-   color: white;
+   color: #333333
 }
 
 .fb_iframe_widget span {
@@ -4100,6 +4123,8 @@ background-size: cover;
 .comments .comment-list .content-comment {
    margin-bottom: 20px;
 }
+
+
 
 
 /* end comment sistem */

@@ -6,13 +6,13 @@
 				<img id="header_onion_logo" src="/blog/img/blog-logo.png">
             </div>
 
-            <div class="pull-right">
+            <div class="pull-right head-icons">
 				<a href="/search">
-					<div class="search header-icon">
+					<div class="search header-icon bar">
 						<span class="search-icon icon" aria-hidden="true"></span>
 					</div>
 				</a>
-           		<div class="btn-group">
+          <div class="btn-group right-icon">
 					<div class="user header-icon hidden" style="display:inline-block">
 [% IF session.user.id %]
 						<div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>

@@ -46,7 +46,7 @@
 									   <i> [% comment.uid.email %] </i>
 									[% END %]
 									<br />
-									<i>[% comment.comment_date %]</i>
+									<i>[% comment.comment_date_human %]</i>
 								</td>
 
 								<td> 

@@ -7,7 +7,7 @@
             <img class="avatar" src="[% comment.avatar_path %]" class="img-responsive" />
           </a>
           <div class="comment-author"><a href="#">[% comment.username %]</a></div>
-          <div class="cmeta">Commented on [% comment.comment_date %] ([% comment.comment_date_human %])</div>
+          <div class="cmeta">Commented [% comment.comment_date_human %]</div>
           <p> [% comment.content %] </p>
           <div class="clearfix"></div>
       </li>

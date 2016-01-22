@@ -24,13 +24,6 @@ sub can_create {
 	# Grab the gravatar if exists, or a default image if not
 	my $gravatar = gravatar_url(email => $email || '');
 
-  	# Set the proper timezone
-	#
-	my $dt       = DateTime->now;
-	my $settings = $schema->resultset('Setting')->first;
-	my $dtf      = $schema->storage->datetime_parser;
-	$dt->set_time_zone( $settings->timezone );
-
 	# Filter the input data (avoid js injection)
 	#
 	my $hs = HTML::Strip->new();
@@ -52,7 +45,6 @@ sub can_create {
 		status       => $status,
 		uid          => $uid,
 		reply_to     => $params->{reply_to},
-		comment_date => $dtf->format_datetime($dt)
 	});
 
 	return $comment;

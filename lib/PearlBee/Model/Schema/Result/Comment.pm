@@ -100,6 +100,7 @@ __PACKAGE__->table("comment");
 
 =cut
 
+__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
@@ -115,7 +116,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "comment_date",
   {
-    data_type => "timestamp",
+    data_type => 'datetime',
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
     is_nullable => 0,
@@ -243,27 +244,17 @@ sub avatar_path {
 	return;
 }
 
-sub comment_date_DT {
-
-        my ($self) = @_;
-        return DateTime::Format::MySQL->parse_datetime( $self->comment_date );
-}
-
 sub comment_date_human {
 
         my ($self) = @_;
         my $yesterday =
             DateTime->today( time_zone => 'UTC' )->subtract( days => 1 );
-        if ( DateTime->compare( $self->comment_date_DT, $yesterday ) == 1 ) {
+        if ( DateTime->compare( $self->comment_date, $yesterday ) == 1 ) {
                 my $dph = Date::Period::Human->new({ lang => 'en' });
-                my $human = $dph->human_readable( $self->comment_date );
-
-                # XXX Should not do this - localization issue.
-                $human =~ s{ ^in \s+ }{}x;
-                $human .= ' ago';
+                return $dph->human_readable( $self->comment_date );
         }
         else {
-                return $self->comment_date;
+                return $self->comment_date->strftime('%b %d, %Y %l:%m%p');
         }
 }
 

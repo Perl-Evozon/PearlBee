@@ -28,6 +28,7 @@ __PACKAGE__->result_source_instance->view_definition(
   ]
 );
 
+__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
@@ -39,7 +40,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 200 },
   "comment_date",
   {
-    data_type => "timestamp",
+    data_type => 'datetime',
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
     is_nullable => 0,

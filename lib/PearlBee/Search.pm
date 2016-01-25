@@ -34,6 +34,7 @@ sub map_user {
         register_date => $user->register_date,
         email         => $user->email,
         avatar_path   => $user->avatar_path,
+        avatar        => $user->avatar,
         company       => $user->company,
         telephone     => $user->telephone,
         role          => $user->role,

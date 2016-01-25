@@ -7,7 +7,7 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                        <img class="user-image" src="[% IF comment.avatar_path %][% comment.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+			<img class="user-image" src="[% comment.uid.avatar %]">
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                        <img class="user-image" src="[% IF comment.avatar_path %][% comment.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+			            <img class="user-image" src="[% comment.uid.avatar %]">
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">

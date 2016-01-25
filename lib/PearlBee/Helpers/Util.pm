@@ -87,7 +87,7 @@ sub map_posts {
         
         # get post author
         $el->{user}->{username} = $post->user->username;
-        $el->{user}->{avatar_path} = $post->user->avatar_path;
+        $el->{user}->{avatar} = $post->user->avatar;
         $el->{user}->{id} = $post->user->id;
         
         # add post categories

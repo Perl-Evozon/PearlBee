@@ -16,7 +16,7 @@
                         <!-- Meta details -->
                         <div class="meta">
                             <div class="bubble">
-                                <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+				                <img class="user-image" src="[% post.user.avatar %]">
                             </div>
                              <div class="info-entry">
                                <div class="user">

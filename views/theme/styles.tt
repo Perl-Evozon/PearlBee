@@ -21,5 +21,9 @@
 <!-- Custom CSS -->
 <link href="[% config.app_url %]/blog/css/style.css" rel="stylesheet">
 
+[% IF page_title == 'author' %]
+<!-- Custom CSS for author page-->
+<link href="[% config.app_url %]/blog/css/author.css" rel="stylesheet">
+[% END %]
 <!-- Favicon -->
 <link rel="shortcut icon" href="#">

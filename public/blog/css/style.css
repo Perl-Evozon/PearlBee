@@ -3365,7 +3365,8 @@ background-size: cover;
         width: 70px;
         z-index: 2;
         position: absolute;
-        left: -150px;
+        left: -152px;
+        top: -2px;
     }
     .text-listing-entries{
         padding-bottom: 15px;
@@ -3792,7 +3793,6 @@ background-size: cover;
     position: absolute;
     top: -14px;
     left: -15%;
-    background: #ffffff;
 }
 
 .people .info-entry {
@@ -3880,13 +3880,14 @@ background-size: cover;
 
 .individual-post .meta .bubble img {
    border-radius: 50%;
-   height: 70px;
-   width: 70px;
+   height: 120px;
+   width: 120px;
    z-index: 2;
    position: absolute;
-   left: -120px;
-   background: #ffffff;
+   left: -155px;
 }
+
+
 
 
 .individual-post .info-entry .user {
@@ -4034,6 +4035,12 @@ background-size: cover;
 
 .comments .comment .cmeta {
    font-style: normal;
+}
+
+@media all and (max-width: 815px) {
+   .individual-post .meta .bubble img {
+      left: -120px;
+   }
 }
 
 @media all and (max-width: 660px) {

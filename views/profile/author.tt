@@ -1,3 +1,5 @@
+<link href="/blog/css/author.css" rel="stylesheet">
+
 <div class="author-page">
 <!--author-description top-->
     <div class="container-fluid">

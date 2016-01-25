@@ -21,9 +21,5 @@
 <!-- Custom CSS -->
 <link href="[% config.app_url %]/blog/css/style.css" rel="stylesheet">
 
-<!-- Custom CSS for user based on role-->
-[%- IF session.user.role %]
-<link href="/blog/css/[% session.user.role %].css" rel="stylesheet">
-[%- END %]
 <!-- Favicon -->
 <link rel="shortcut icon" href="#">

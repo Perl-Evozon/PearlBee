@@ -19,7 +19,7 @@
 				<div class="credentials">
 					<div class="col-sm-2">
 						<div class="bubble">
-                            <img class="user-image" src="http://www.gamesindustry.biz/img/base/default-user.png" data-pin-nopin="true">
+                            <img class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">
                         </div>
 						<h4>Change picture</h4>
 					</div>

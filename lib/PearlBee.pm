@@ -561,6 +561,54 @@ get '/profile' => sub {
 
 };
 
+get '/profile/author/:username' => sub {
+
+  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $username    = route_parameters->{'username'};
+  my $user         = resultset('User')->find({username => $username});
+  unless ($user) {
+    # we did not identify the user
+  }
+  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
+  my @tags        = resultset('View::PublishedTags')->all();
+  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+
+  # extract demo posts info
+  my @mapped_posts = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
+
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
+
+  # The author profile page contains posts among other things, this should be
+  # trimmed down later.
+  #
+  template 'profile/author',
+    {
+    username       => $username,
+    posts          => \@mapped_posts,
+    recent         => \@recent,
+    popular        => \@popular,
+    tags           => \@tags,
+    page           => 1,
+    categories     => \@categories,
+    total_pages    => $total_pages,
+    next_link      => $next_link,
+    previous_link  => $previous_link,
+    posts_for_user => $username,
+    };
+
+};
+
 get '/sign-up' => sub {
 
   template 'signup', {

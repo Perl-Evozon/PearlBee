@@ -60,7 +60,7 @@
                              <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
                            </div>
                            <div class="date">
-                             [% post.created_date %]
+                             [% post.created_date_human %]
                            </div>
                            [% FOREACH category in post.post_categories %]
                               <div class="block_elements">

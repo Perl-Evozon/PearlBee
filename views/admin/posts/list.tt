@@ -46,7 +46,7 @@
                       <br />
                       <b> [% post.user.name %] </b>
                       <br />
-                      <i> [% post.created_date %] </i>
+                      <i> [% post.created_date_human %] </i>
                     </td>
 
                     <td width="25%"> 

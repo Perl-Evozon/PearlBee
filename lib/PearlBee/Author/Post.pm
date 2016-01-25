@@ -170,11 +170,6 @@ any '/author/posts/add' => sub {
   eval {
       if ( params->{post} ) {
         
-        # Set the proper timezone
-        my $dt       = DateTime->now;          
-        my $settings = resultset('Setting')->first;
-        $dt->set_time_zone( $settings->timezone );
-
         my $user              = session('user');
         my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug} );
         session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
@@ -192,15 +187,13 @@ any '/author/posts/add' => sub {
         }
 
         # Next we can store the post into the database safely
-        my $dtf = schema->storage->datetime_parser;
         my $params = {
-            title        => params->{title},
-            slug         => $slug,
-            content      => params->{post},
-            user_id      => $user->{id},
-            status       => params->{status},
-            cover        => ( $cover_filename ) ? $cover_filename : '',
-            created_date => $dtf->format_datetime($dt),
+            title   => params->{title},
+            slug    => $slug,
+            content => params->{post},
+            user_id => $user->{id},
+            status  => params->{status},
+            cover   => ( $cover_filename ) ? $cover_filename : '',
         };
         $post = resultset('Post')->can_create($params);
 

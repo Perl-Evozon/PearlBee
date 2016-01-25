@@ -35,6 +35,8 @@ sub can_create {
 	my $status = 'pending';
 	$status = 'approved' if ($user && ( $user->is_admin || $user->id == $post->user->id ));
 
+	# Let mySQL default to writing in UTC.
+	#
 	my $comment = $self->create({
 		fullname     => $fullname,
 		content      => $text,

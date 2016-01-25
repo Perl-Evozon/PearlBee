@@ -14,6 +14,9 @@ use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
+use DateTime;
+use DateTime::Format::MySQL;
+use Date::Period::Human;
 
 =head1 TABLE: C<post>
 
@@ -86,6 +89,7 @@ __PACKAGE__->table("post");
 
 =cut
 
+__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
@@ -101,7 +105,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "created_date",
   {
-    data_type => "timestamp",
+    data_type => 'datetime',
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
     is_nullable => 0,
@@ -350,6 +354,20 @@ sub previous_post {
     }
   );
   return $post[0] || undef;
+}
+
+sub created_date_human {
+
+        my ($self) = @_;
+        my $yesterday =
+            DateTime->today( time_zone => 'UTC' )->subtract( days => 1 );
+        if ( DateTime->compare( $self->created_date, $yesterday ) == 1 ) {
+                my $dph = Date::Period::Human->new({ lang => 'en' });
+                return $dph->human_readable( $self->created_date );
+        }
+        else {
+                return $self->created_date->strftime('%b %d, %Y %l:%m%p');
+        }
 }
 
 1;

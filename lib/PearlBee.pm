@@ -605,7 +605,7 @@ get '/profile/author/:username' => sub {
     next_link      => $next_link,
     previous_link  => $previous_link,
     posts_for_user => $username,
-    page_title     => 'author'
+    user           => $user,
     };
 
 };

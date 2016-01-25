@@ -23,7 +23,7 @@
                                  <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
                                </div>
                                <div class="date">
-                                 [% post.created_date %]
+                                 [% post.created_date_human %]
                                </div>
                                <div class="post-heading">
                                     <h2>[% post.title %]</h2>
@@ -31,7 +31,7 @@
 
 <!-- 
                             <div class="block_elements">
-                                <i class="icon-calendar"></i> [% post.created_date %]
+                                <i class="icon-calendar"></i> [% post.created_date_human %]
                             </div>
                             <div class="block_elements">
                                 <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>

@@ -24,15 +24,15 @@ sub can_create {
   my $user_id       = $params->{user_id};
   my $status        = $params->{status};
   my $cover         = $params->{cover};
-  my $dt            = $params->{dt};
 
+  # Let mySQL default to writing in UTC.
+  #
   my $post = $self->create({
       title        => $title,
       slug         => $slug,
       content      => $content,
       user_id      => $user_id,
       status       => $status,
-      created_date => $dt,
       cover        => $cover,
   });
 

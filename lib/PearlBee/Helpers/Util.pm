@@ -79,6 +79,7 @@ sub map_posts {
     foreach my $post (@posts) {
         my $el;
         map {$el->{$_} = eval{$post->$_}} ('title', 'content', 'id', 'slug', 'description', 'cover', 'created_date', 'status', 'user_id', 'nr_of_comments');
+	    $el->{created_date_human} = $post->created_date_human;
         
         # extract a sample from the content (first words)
         my $chunk = 600;

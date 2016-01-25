@@ -430,7 +430,7 @@ strong{
 .dropdown-login .links-group {
    width: 90%;
    margin: 0 auto;
-   line-height: 50px;
+   line-height: 33px;
    position: relative;
    display: table;
    border-collapse: separate;
@@ -442,8 +442,45 @@ strong{
    text-decoration: none;
 }
 
+.dropdown-login.logged_in .links-group a {
+   color: #76737b;
+}
+
 .links-group .login-links:hover { 
    color: #0fa6bc;
+}
+
+.dropdown-login .links-group.write-post {
+   border-top: 1px solid #ebebeb;
+   border-bottom: 1px solid #ebebeb;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   margin-bottom: 24px;
+   background: url('../img/plus.png') no-repeat;
+   background-position: 95% center;
+}
+
+.dropdown-login .links-group.write-post a {
+   width: 100%;
+   color: #16cbe6;
+   text-transform: uppercase;
+   font-weight: bold;
+}
+
+.dropdown-login .links-group.log-out {
+   margin-bottom: 24px;
+}
+
+.header .header-icon .user-logged span {
+   font-size: 14px;
+   color: #07001b;
+}
+
+.header .header-icon .user-logged img {
+   width: 25px;
+   height: 25px;
+   border-radius: 50%;
+   margin-left: 5px;
 }
 
 .links-group .dark-button {

@@ -1,0 +1,80 @@
+.blog {
+   background-color: #ffffff;
+}
+
+.posts.listings .post-heading h2 a {
+    color: #333333;
+}
+
+.posts.listings .post_preview {
+    color: #333333;
+}
+
+.blog-post {
+   background-color: #ffffff;
+}
+
+.individual-post .info-entry .post-heading h2 {
+   color: #333333;
+}
+
+.individual-post .meta {
+   color: #333333;
+}
+
+.individual-post .pager-post li a {
+   color: #999999;
+}
+
+.search-page {
+    background-color: #ffffff;
+}
+
+.search-page .tabs .posts.listings h5, .no-posts {
+   color: #999999;
+}
+
+.no-posts2, .no-posts3 {
+  color: #999999;
+}
+
+.text-listing-entries a.read-more,
+.blog .posts.listings .read-more {
+   color: #333333;
+}
+
+.people .properties ul li {
+   color: #333333;
+}
+
+#tag-list .btn-tag {
+   background-color: #dadada;
+   color: #ffffff;
+}
+
+.text-listing-entries::before, .loading-posts .view-more::before {
+  background: none;
+}
+
+.loading-posts .more-posts {
+  background: #999999 none repeat scroll 0 0;
+  color: #ffffff;
+}
+
+.loading-posts .more-posts:hover{
+    color: #ffffff;
+    background: #6a6868;
+}
+
+.text-listing-entries {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.progressloader .spinner div {
+  background-color: #999999;
+}
+
+.blog .page-heading {
+   color: #333333;
+}
+

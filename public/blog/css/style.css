@@ -14,7 +14,8 @@ body{
    font-size:13px;
    line-height:25px;
    -webkit-font-smoothing: antialiased;
-   background:#fafafa url('../img/main-back.png') repeat;
+   /* background:#fafafa url('../img/main-back.png') repeat; */
+   background: #ffffff;
 }
 
 h1,h2,h3,h4,h5{
@@ -2742,7 +2743,6 @@ footer .fwidget #powered_by {
 }
     .text-listing-entries a.read-more{
         float: right;
-        color: #ffffff;
         font-size: 12px;
     }
 .post_preview p {
@@ -3250,8 +3250,7 @@ a:focus {
 /* listings fumy */
 
 .blog {
-   background: url('../img/backblog.jpg');
-   background-repeat: repeat;
+
 /*    -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
@@ -3271,7 +3270,6 @@ background-size: cover;
    margin-top: 95px;
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 24px;
-   color: rgba(255, 255, 255, 0.1);
    text-transform: uppercase;
    font-weight: bold;
 }
@@ -3283,7 +3281,6 @@ background-size: cover;
 
 .posts.listings .post_preview {
     line-height: inherit;
-    color: #ffffff;
 }
 
 .posts.listings .info-entry .user {
@@ -3310,7 +3307,6 @@ background-size: cover;
 .posts.listings .post-heading h2 a {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 24px;
-   color: #ffffff;
    font-weight: bold;
    text-transform: uppercase;
 }
@@ -3331,7 +3327,6 @@ background-size: cover;
 .blog .posts.listings .read-more {
    float: right;
    font-size: 12px;
-   color: #ffffff;
 }
 
 .blog .no-padding{
@@ -3349,7 +3344,7 @@ background-size: cover;
         position: relative;
     }
     .text-listing-entries::before, .loading-posts .view-more::before{
-        background: #152e4a none repeat scroll 0 0;
+        
         bottom: 0;
         content: "";
         left: -110px;
@@ -3371,7 +3366,6 @@ background-size: cover;
     .text-listing-entries{
         padding-bottom: 15px;
         padding-left: 0;
-        border-bottom: 1px solid rgba(242, 245, 238, 0.1);
     }
     .info-entry{
         padding-top: 30px;
@@ -3382,10 +3376,8 @@ background-size: cover;
     }
 
     /*button MORE*/
-    .loading-posts .more-posts{
-        background: #152e4a none repeat scroll 0 0;
+    .loading-posts .more-posts {
         border: medium none;
-        color: #39b3d7;
         font-family: 'Open Sans', sans-serif;
         font-weight: bold;
         left: -160px;
@@ -3395,10 +3387,7 @@ background-size: cover;
         top: 50px;
         z-index: 2147483647;
     }
-    .loading-posts .more-posts:hover{
-        color: #152e4a;
-        background: #39b3d7;
-    }
+
     /*/button MORE*/
     /*media for tablet&mobile*/
     @media all and (max-width: 800px) {
@@ -3549,7 +3538,6 @@ background-size: cover;
         display: inline-block;
         height: 18px;
         width: 18px;
-        background-color: #152E4A;
     }
     .progressloader .spinner .bounce1 {
         -webkit-animation-delay: -0.32s;
@@ -3564,10 +3552,6 @@ background-size: cover;
 
 /* search page fumy */
 
-.search-page {
-    background: url('../img/backblog.jpg');
-    background-repeat: repeat;
-}
 
 .tabs {
 /*     max-width: 90%; */
@@ -3717,13 +3701,11 @@ background-size: cover;
 .no-posts {
    font-family: 'Open Sans', sans-serif;
    font-size: 36px;
-   color: #ffffff;
     padding: 8%;
 }
     .no-posts2, .no-posts3 {
         font-family: 'Open Sans', sans-serif;
         font-size: 36px;
-        color: #ffffff;
         padding: 8%;
     }
 
@@ -3805,7 +3787,6 @@ background-size: cover;
 .people .properties ul li {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 14px;
-   color: #ffffff;
    padding: 0 13px;
 }
 
@@ -3848,8 +3829,6 @@ background-size: cover;
 /* Tags */
 
 #tag-list .btn-tag {
-   background-color: #ffffff;
-   color: #333333;
    border-radius: 2px;
    padding: 12px 20px;
 }
@@ -3909,7 +3888,6 @@ background-size: cover;
 .individual-post .info-entry .post-heading h2 {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 24px;
-   color: #ffffff;
    font-weight: bold;
    text-transform: uppercase;
 }
@@ -3917,11 +3895,6 @@ background-size: cover;
 .individual-post .meta {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 18px;
-   color: #ffffff;
-}
-
-.blog-post {
-   background-color: #07001b;
 }
 
 .blog-comment {
@@ -3965,7 +3938,6 @@ background-size: cover;
 }
 
 .individual-post .pager-post li a {
-   color: #ffffff;
    font-weight: bold;
 }
 

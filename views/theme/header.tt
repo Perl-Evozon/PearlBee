@@ -6,12 +6,12 @@
 				        <img id="header_onion_logo" src="/blog/img/blog-logo2.png">
                 <img id="only-logo" src="/blog/img/only-logo.png">
             </div>
-
-            <div class="switch">
-              <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
-              <label for="cmn-toggle-4"></label>
-            </div>
-
+            <form id="switch-button" action="" method="post">
+              <div class="switch">
+                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+                <label for="cmn-toggle-4"></label>
+              </div>
+            </form>
             <div class="pull-right head-icons">
       				<a href="/search">
       					<div class="search header-icon bar">

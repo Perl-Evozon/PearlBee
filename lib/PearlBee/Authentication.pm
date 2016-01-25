@@ -156,12 +156,7 @@ post '/login' => sub {
     my $password_hash = crypt( $password, $user->password );
     if($user && $user->password eq $password_hash) {
       
-      my $user_obj->{is_admin} = $user->is_admin;
-      $user_obj->{role}        = $user->role;
-      $user_obj->{id}          = $user->id;
-      $user_obj->{username}    = $user->username;
-
-      session user => $user_obj;
+      session user => $user->as_hashref;
       session user_id => $user->id;
   	
       redirect('/');

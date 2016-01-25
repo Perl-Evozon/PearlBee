@@ -20,38 +20,45 @@
       				</a>
                 <div class="btn-group right-icon">
       					<div class="user header-icon hidden" style="display:inline-block">
-      [% IF session.user %]
-      						<form id="register_head" action="" method="post">
-      	<!--           			<span class="male-user icon icon-toggle"></span>-->
-      						<div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
-      						<div class="dropdown-menu dropdown-login">
-      							<div class="input-group input-login">
-      								<input type="text" class="form-control dropdown_input" placeholder="Email or username" aria-describedby="basic-addon1" name="username">
-      								<input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1" name="password">
-      							</div>
-      							<div class="links-group">
-      								<a href="/password_recovery" class="login-links pull-right">Forgotten Password?</a>
-      								<a href="/register" class="login-links pull-left">Don't have an account? Register</a>
-      							</div>
-      							<div class="links-group buttons-group">
-      								<button type="submit" class="light-button btn-xs pull-left" id="submitRegister">Close</button>
-      								<button type="submit" class="dark-button btn-xs pull-right" id="submitRegister">Sign In</button>
-      							</div>
-      						</div>
-      						</form>
-      [% ELSE %]
-      						<div class="dropdown-menu dropdown-login">
-      							<div class="links-group header-menu-links">
-      								<a href="/profile" class="pull-right">Profile</a>
-      							</div>
-      							<div class="links-group header-menu-links">
-      								<a href="#" class="pull-right">Publications</a>
-      							</div>
-      							<div class="links-group">
-      								<a href="#" class="pull-right">Log Out</a>
-      							</div>
-      						</div>
-      [% END # IF session.user %]
+[% IF session.user.id %]
+            <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="user_name">name</span> <!-- change name with actual user session -->
+              <img class="user-image" src="/blog/img/male-user.png"> <!-- change avatar with actual user session, if no avatar let male-user.png be default-->
+            </div>
+            <div class="dropdown-menu dropdown-login logged_in">
+              <div class="links-group header-menu-links write-post">
+                <a href="#" class="pull-left">Write a post</a>
+              </div>
+              <div class="links-group header-menu-links">
+                <a href="/profile" class="pull-left">Profile</a>
+              </div>
+              <div class="links-group header-menu-links">
+                <a href="#" class="pull-left">Publications</a>
+              </div>
+              <div class="links-group log-out">
+                <a href="#" class="pull-left">Log Out</a>
+              </div>
+            </div>
+[% ELSE %]
+            <form id="register_head" action="/login" method="post">
+  <!--                <span class="male-user icon icon-toggle"></span>-->
+            <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+            <div class="dropdown-menu dropdown-login">
+              <div class="input-group input-login">
+                <input type="text" class="form-control dropdown_input" placeholder="Email or username" aria-describedby="basic-addon1" name="username">
+                <input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1" name="password">
+              </div>
+              <div class="links-group">
+                <a href="/password_recovery" class="login-links pull-right">Forgotten Password?</a>
+                <a href="/register" class="login-links pull-left">Don't have an account? Register</a>
+              </div>
+              <div class="links-group buttons-group">
+                <button type="submit" class="light-button btn-xs pull-left" id="submitRegister">Close</button>
+                <button type="submit" class="dark-button btn-xs pull-right" id="submitRegister">Sign In</button>
+              </div>
+            </div>
+            </form>
+[% END # IF session.user.id %]
       					</div>
       				</div>
             </div>

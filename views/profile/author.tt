@@ -1,1 +1,38 @@
-Profile placeholder
+<div class="author-page">
+<!--author-description top-->
+    <div class="container-fluid">
+        <div class="author-description">
+            <div class="container">
+                <div class="row">
+                    <div class="content clearfix">
+                        <div class="col-md-12">
+                            <div class="description clearfix">
+                                <div class="col-xs-2">
+                                    <div class="bubble">
+                                        <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                                    </div>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div class="author-info">
+                                        <div class="author-name">
+                                            <a href="/posts/user/[% post.user.username %]">[% username %]</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--/author-description top-->
+
+</div>
+
+
+[% FOREACH post in posts %]
+<div class="entry clearfix">
+    [% post.description %]
+</div>
+[% END %]

@@ -4110,7 +4110,7 @@ background-size: cover;
 
 .switch {
    position: absolute;
-   left: 50%;
+   left: 49%;
    top: 28px;
 }
 
@@ -4195,6 +4195,32 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 
 /* end toggle switch */
+
+/* header container */
+
+@media all and (min-width: 768px){
+   .container.header-container {
+       max-width: 750px;
+   }
+}
+
+@media all and (min-width: 992px){
+   .container.header-container {
+       max-width: 970px;
+   }
+}
+
+@media all and (min-width: 1200px){
+   .container.header-container {
+       max-width: 1765px;
+       width: 100%;
+       padding: 0 10%;
+   }
+}
+
+
+/* end header container */
+
 
 
 

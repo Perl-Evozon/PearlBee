@@ -71,6 +71,21 @@ get '/avatars/*' => sub {
     send_file $file;
 };
 
+=item /theme/:name
+
+Set user's theme (assuming they're logged in) to the given name.
+
+=cut
+
+post '/theme/:name' => sub { # Should be PATCH
+  my $session_user = session('user');
+  return unless $session_user;
+  my $user         = resultset('User')->find({id => $session_user->{id}});
+
+#  $user->update({ theme => route_parameters->{name} });
+  warn "Theme: ". body_parameters->get('theme');
+};
+
 =head
 
 Home page

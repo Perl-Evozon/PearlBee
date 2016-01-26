@@ -12,9 +12,10 @@ $|++;
 my $AVATAR_PATH = '/avatars';
 my $PER_USER_PATH = '/users';
 
+my $out_dbname = $ARGV[0] || 'blogs_perl_org';
+
 my $in_dsn = 'dbi:mysql:database=mt_blogs_perl_org';
-#my $out_dsn = 'dbi:Pg:dbname=blogsperlorg';
-my $out_dsn = 'dbi:mysql:dbname=blogs_perl_org_migrate_test';
+my $out_dsn = "dbi:mysql:dbname=$out_dbname";
 
 my $in_dbh = DBI->connect($in_dsn,'root');
 #my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');

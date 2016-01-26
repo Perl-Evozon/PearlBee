@@ -12,6 +12,17 @@ CREATE TABLE IF NOT EXISTS `role` (
 
 
 --
+-- Users can have their type chosen from this list.
+-- The unique constraint on names means the names are effectively their own ID.
+--
+CREATE TABLE IF NOT EXISTS `theme` (
+  `name` varchar(50) CHARACTER SET ucs2 NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='List of available themes.';
+
+
+--
 -- Users now are assigned to a class when they're created.
 --
 CREATE TABLE IF NOT EXISTS `user` (
@@ -20,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(200) NOT NULL,
   `password` varchar(128) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,
+  `theme` varchar(50) CHARACTER SET ucs2 NOT NULL DEFAULT 'dark',
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255), -- Weakening
   `avatar_path` varchar(255) DEFAULT NULL,
@@ -31,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`name`)
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`name`),
+  CONSTRAINT `user_ibfk_2` FOREIGN KEY (`theme`) REFERENCES `theme` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='User information.';
 
 

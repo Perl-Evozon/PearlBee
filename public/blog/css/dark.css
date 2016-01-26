@@ -1,0 +1,81 @@
+.blog {
+   background: url('../img/backblog.jpg');
+   background-repeat: repeat;
+}
+
+.posts.listings .post-heading h2 a {
+    color: #ffffff;
+}
+
+.posts.listings .post_preview {
+    color: #ffffff;
+}
+
+.blog-post {
+   background-color: #07001b;
+}
+
+.individual-post .info-entry .post-heading h2 {
+   color: #ffffff;
+}
+
+.individual-post .meta {
+   color: #ffffff;
+}
+
+.individual-post .pager-post li a {
+   color: #ffffff;
+}
+
+.search-page {
+    background: url('../img/backblog.jpg');
+    background-repeat: repeat;
+}
+
+.search-page .tabs .posts.listings h5, .no-posts {
+   color: #ffffff;
+}
+
+.no-posts2, .no-posts3 {
+  color: #ffffff;
+}
+
+.text-listing-entries a.read-more,
+.blog .posts.listings .read-more {
+   color: #ffffff;
+}
+
+.people .properties ul li {
+   color: #ffffff;
+}
+
+#tag-list .btn-tag {
+   background-color: #ffffff;
+   color: #333333;
+}
+
+.text-listing-entries::before, .loading-posts .view-more::before {
+  background: #152e4a none repeat scroll 0 0;
+}
+
+.loading-posts .more-posts {
+  background: #152e4a none repeat scroll 0 0;
+  color: #39b3d7;
+}
+
+.loading-posts .more-posts:hover{
+    color: #152e4a;
+    background: #39b3d7;
+}
+
+.text-listing-entries {
+  border-bottom: 1px solid rgba(242, 245, 238, 0.1);
+}
+
+.progressloader .spinner div {
+  background-color: #152E4A;
+}
+
+.blog .page-heading {
+   color: rgba(255, 255, 255, 0.1);
+}

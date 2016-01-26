@@ -1,17 +1,17 @@
 <div class="header">
-    <div class="container">
+    <div class="container header-container">
       <div class="row">
             <div class="pull-left">
                 <!-- Logo -->
 				        <img id="header_onion_logo" src="/blog/img/blog-logo2.png">
                 <img id="only-logo" src="/blog/img/only-logo.png">
             </div>
-
-            <div class="switch">
-              <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
-              <label for="cmn-toggle-4"></label>
-            </div>
-
+            <form id="switch-button" action="" method="post">
+              <div class="switch">
+                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+                <label for="cmn-toggle-4"></label>
+              </div>
+            </form>
             <div class="pull-right head-icons">
       				<a href="/search">
       					<div class="search header-icon bar">
@@ -27,7 +27,7 @@
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
               <div class="links-group header-menu-links write-post">
-                <a href="#" class="pull-left">Write a post</a>
+                <a href="/author/posts/add" class="pull-left">Write a post</a>
               </div>
               <div class="links-group header-menu-links">
                 <a href="/profile" class="pull-left">Profile</a>
@@ -36,7 +36,7 @@
                 <a href="#" class="pull-left">Publications</a>
               </div>
               <div class="links-group log-out">
-                <a href="#" class="pull-left">Log Out</a>
+                <a href="/logout" class="pull-left">Log Out</a>
               </div>
             </div>
 [% ELSE %]

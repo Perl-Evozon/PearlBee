@@ -12,6 +12,7 @@ PearlBee::Model::Schema::Result::User - User table.
 
 use strict;
 use warnings;
+use Dancer2; # Pick up the default avatar
 
 use base 'DBIx::Class::Core';
 
@@ -321,6 +322,28 @@ sub allow {
   # welcome the user in an email
 
   $self->update({ status => 'inactive' });
+}
+
+sub avatar {
+  my $self = shift;
+
+  return $self->avatar_path
+    if $self->avatar_path and $self->avatar_path ne '';
+  return config->{default_avatar};
+}
+
+sub as_hashref {
+  my $self = shift;
+  my $user_obj = {
+    is_admin => $self->is_admin,
+    role     => $self->role,
+    id       => $self->id,
+    username => $self->username,
+    avatar   => $self->avatar,
+  };
+
+  return $user_obj;
+
 }
 
 1;

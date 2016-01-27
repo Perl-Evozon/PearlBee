@@ -124,6 +124,13 @@ $(document).ready(function() {
         }
     });
 
+// submit form when toggle changes 
+    $(function(){
+        $('#cmn-toggle-4').on('change',function(){
+            $('#switch-button').submit();
+        });
+    });
+
 
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){

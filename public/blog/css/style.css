@@ -4220,7 +4220,14 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 
 /* end header container */
+/* test for toggle submit */
 
+#switch-button .sub {
+   background-color: transparent;
+   border: none;
+   position: absolute;
+   left: 49%;
+}
 
 
 

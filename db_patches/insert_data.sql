@@ -23,6 +23,9 @@ INSERT INTO acl VALUES('admin',   'create user'),
                       ('author',  'delete post'),
                       ('visitor', 'view post');
 
+INSERT INTO theme VALUES('light'),
+                        ('dark');
+
 --
 -- Administrator users are created during the import
 --

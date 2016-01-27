@@ -61,6 +61,12 @@ __PACKAGE__->table("user");
   is_nullable: 0
   size: 255
 
+=head2 theme
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 50
+
 =head2 avatar_path
 
   data_type: 'varchar'
@@ -119,6 +125,8 @@ __PACKAGE__->add_columns(
   },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "theme",
+  { data_type => "varchar", is_nullable => 0, size => 50 },
   "avatar_path",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "company",
@@ -340,6 +348,7 @@ sub as_hashref {
     id       => $self->id,
     username => $self->username,
     avatar   => $self->avatar,
+    theme    => $self->theme,
   };
 
   return $user_obj;

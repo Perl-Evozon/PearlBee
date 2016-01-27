@@ -124,10 +124,15 @@ $(document).ready(function() {
         }
     });
 
-// submit form when toggle changes 
+// ajax when toggle changes.
     $(function(){
         $('#cmn-toggle-4').on('change',function(){
-            $('#switch-button').submit();
+            $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+                url: "/theme/update",
+                method: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                })
         });
     });
 

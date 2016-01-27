@@ -128,7 +128,6 @@ $(document).ready(function() {
     $(function(){
         $('#cmn-toggle-4').on('change',function() {
             var theme = $('#cmn-toggle-4').is(':checked');
-            console.log(theme);
             $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
                 url: "/theme/update",

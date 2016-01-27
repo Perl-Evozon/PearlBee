@@ -6,7 +6,7 @@
 				        <img id="header_onion_logo" src="/blog/img/blog-logo2.png">
                 <img id="only-logo" src="/blog/img/only-logo.png">
             </div>
-            <form id="switch-button" action="/theme/update" method="put">
+            <form id="switch-button" action="/theme/update" method="post">
               <div class="switch">
                 <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" name="theme">
                 <label for="cmn-toggle-4"></label>
@@ -22,8 +22,8 @@
       					<div class="user header-icon hidden" style="display:inline-block">
 [% IF session.user.id %]
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="user_name">name</span> <!-- change name with actual user session -->
-              <img class="user-image" src="/blog/img/male-user.png"> <!-- change avatar with actual user session, if no avatar let male-user.png be default-->
+              <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
+              <img class="user-image" src="[% session.user.avatar %]">
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
               <div class="links-group header-menu-links write-post">

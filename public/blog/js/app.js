@@ -126,13 +126,18 @@ $(document).ready(function() {
 
 // ajax when toggle changes.
     $(function(){
-        $('#cmn-toggle-4').on('change',function(){
+        $('#cmn-toggle-4').on('change',function() {
+            var theme = $('#cmn-toggle-4').is(':checked');
+            console.log(theme);
             $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
                 url: "/theme/update",
                 method: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                })
+                data: { 
+                  theme: theme
+                }
+            })
         });
     });
 

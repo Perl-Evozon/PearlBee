@@ -109,7 +109,7 @@ sub search_posts {
             slug           => $rs->slug,
             description    => $rs->description,
             content        => $rs->content,
-            created_date   => $rs->created_date,
+            created_date   => $rs->created_date_human,
             nr_of_comments => $rs->nr_of_comments,
             username       => $rs->user->username,
 	        user => { avatar => $rs->user->avatar },

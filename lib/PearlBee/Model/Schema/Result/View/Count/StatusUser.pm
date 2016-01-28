@@ -13,11 +13,11 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT
-      	SUM( status = 'inactive' ) AS inactive,
-      	SUM( status = 'active') AS active,
-      	SUM( status = 'suspended' ) AS suspended,
-        SUM( status = 'pending' ) AS pending,
-      	COUNT(*) AS total
+      	SUM( CASE WHEN status = 'inactive'  THEN 1 ELSE 0 END ) AS inactive,
+      	SUM( CASE WHEN status = 'active'    THEN 1 ELSE 0 END ) AS active,
+      	SUM( CASE WHEN status = 'suspended' THEN 1 ELSE 0 END ) AS suspended,
+        SUM( CASE WHEN status = 'pending'   THEN 1 ELSE 0 END ) AS pending,
+      	COUNT(*)                                                AS total
       FROM
       	user
     ]

@@ -23,9 +23,9 @@ CREATE TYPE active_state AS ENUM (
   'pending'
 );
 
-CREATE TYPE theme AS ENUM (
-  'light',
-  'dark'
+CREATE TABLE theme (
+  name varchar(255) NOT NULL UNIQUE,
+  PRIMARY KEY (name)
 );
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE "user" (
   username varchar(200) NOT NULL UNIQUE,
   password varchar(128) NOT NULL,
   preferred_language varchar(50) NULL,
-  theme_name theme NOT NULL DEFAULT 'dark',
+  theme varchar(255) NOT NULL REFERENCES theme (name) DEFAULT 'dark',
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255), -- weakening
   avatar_path varchar(255) DEFAULT NULL,

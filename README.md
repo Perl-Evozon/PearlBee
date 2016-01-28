@@ -23,6 +23,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>DateTime</li>
 <li>DateTime::TimeZone</li>
 <li>DateTime::Format::MySQL</li>
+<li>DateTime::Format::Pg</li>
 <li>DBI</li>
 <li>DBD::mysql and libmysqlclient-dev </li>
 <li>DBIx::Class</li>

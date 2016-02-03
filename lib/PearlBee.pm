@@ -80,7 +80,7 @@ Set user's theme (assuming they're logged in) to the given name.
 post '/theme/update' => sub { # Should be PATCH
   my $session_user = session('user');
   return unless $session_user->{id};
-  my $theme = body_parameters->get('theme') eq 'false' ? 'light' : 'dark';
+  my $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
   my $user  = resultset('User')->find({id => $session_user->{id}});
 
   $user->update({ theme => $theme });

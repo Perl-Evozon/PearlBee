@@ -354,19 +354,31 @@ get '/posts/category/:slug/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
-  template 'index',
-      {
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode({
         posts              => \@mapped_posts,
-        recent             => \@recent,
-        popular            => \@popular,
         tags               => \@tags,
-        categories         => \@categories,
-        page               => $page,
-        total_pages        => $total_pages,
-        next_link          => $next_link,
-        previous_link      => $previous_link,
-        posts_for_category => $slug
-    };
+        user               => $tags,
+    }); 
+  }     
+  else {
+    template 'index',
+        {
+          posts              => \@mapped_posts,
+          recent             => \@recent,
+          popular            => \@popular,
+          tags               => \@tags,
+          categories         => \@categories,
+          page               => $page,
+          total_pages        => $total_pages,
+          next_link          => $next_link,
+          previous_link      => $previous_link,
+          posts_for_category => $slug
+      };
+  }
 };
 
 =head

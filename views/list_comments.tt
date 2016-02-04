@@ -11,11 +11,11 @@
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
-                        <b>[% comment.fullname %]</b>
+                        <b><a href="/posts/user/[% comment.uid.username %]">[% comment.fullname %]</a></b>
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                         <b>[% comment.uid.username %]</b>
+                         <b><a href="/posts/user/[% comment.uid.username %]">[% comment.uid.username %]</a></b>
                     </div>
                 [% END %]
                 
@@ -41,7 +41,7 @@
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
-                        <b>[% comment.fullname %]</b>
+                        <b><a href="/posts/user/[% comment.uid.username %]">[% comment.fullname %]</a></b>
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">

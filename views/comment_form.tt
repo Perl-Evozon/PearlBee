@@ -4,7 +4,7 @@
                 <div class="form-group">
                     <p>Leave your comment:</p>
                     <textarea class="form-control" rows="3" id="comment" name="comment" required>[% fields.comment %]</textarea>
-                    <input type="hidden" value="[% post.slug %]" id="id" name="id" />
+                    <input type="hidden" value="[% post.slug %]" id="id" name="slug" />
                 </div>
                 <button id="reply_post_comment_button" type="button" class="btn btn-info">Submit</button>
             </form>

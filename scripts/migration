@@ -37,7 +37,7 @@ sub map_user {
     name               => $user->{author_nickname},
     username           => $user->{author_name},
     password           => $user->{author_password},
-    preferred_language => $user->{preferred_language},
+    preferred_language => $user->{author_preferred_language},
     register_date      => $user->{author_created_on},
     email              => $user->{author_email},
 #    company   => # XXX not present in MT data
@@ -45,6 +45,7 @@ sub map_user {
     role               => $user->{author_is_superuser} ? 'admin' : 'author',
 #    activation_key => undef, # XXX not present in MT data
     status             => $user->{author_status} == 1 ? 'active' : 'inactive',
+    biography          => $user->{author_meta_vclob},
   };
 }
 
@@ -75,10 +76,25 @@ sub map_user {
 #        };
 
 sub migrate_users {
-  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_author ORDER BY author_id');
+  my $in_sth = $in_dbh->prepare(<<'EOS');
+   SELECT a.author_id,
+          a.author_nickname,
+          a.author_name,
+          a.author_password,
+          a.author_preferred_language,
+          a.author_created_on,
+          a.author_email,
+          a.author_is_superuser,
+          a.author_status,
+          am.author_meta_vclob
+     FROM mt_author a
+LEFT JOIN mt_author_meta am
+       ON a.author_id = am.author_meta_author_id
+    ORDER BY a.author_id
+EOS
+
   my $out_sth = $out_dbh->prepare(
-    #'INSERT INTO "user"(id,name,username,password,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?)'
-    'INSERT INTO `user`(id,name,username,password,status,preferred_language,register_date,email,role) VALUES(?,?,?,?,?,?,?,?,?)'
+    'INSERT INTO `user`(id,name,username,password,status,preferred_language,register_date,email,role,biography) VALUES(?,?,?,?,?,?,?,?,?,?)'
   );
   $in_sth->execute();
 
@@ -90,7 +106,7 @@ sub migrate_users {
     my $out_user = map_user($in_user);
 try {
     $out_sth->execute(
-        @{$out_user}{qw( id name username password status preferred_language register_date email role )}
+        @{$out_user}{qw( id name username password status preferred_language register_date email role biography )}
     );
 }
 catch {

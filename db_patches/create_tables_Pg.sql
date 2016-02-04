@@ -38,6 +38,7 @@ CREATE TABLE "user" (
   password varchar(128) NOT NULL,
   preferred_language varchar(50) NULL,
   theme varchar(255) NOT NULL REFERENCES theme (name) DEFAULT 'dark',
+  biography text DEFAULT NULL,
   register_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   email varchar(255), -- weakening
   avatar_path varchar(255) DEFAULT NULL,

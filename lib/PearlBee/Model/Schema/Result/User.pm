@@ -67,6 +67,11 @@ __PACKAGE__->table("user");
   is_nullable: 0
   size: 50
 
+=head2 biography
+
+  data_type: 'vclob'
+  is_nullable: 1
+
 =head2 avatar_path
 
   data_type: 'varchar'
@@ -125,6 +130,8 @@ __PACKAGE__->add_columns(
   },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "biography",
+  { data_type => "mediumtext", is_nullable => 0 },
   "theme",
   { data_type => "varchar", is_nullable => 0, size => 50 },
   "avatar_path",
@@ -343,12 +350,13 @@ sub avatar {
 sub as_hashref {
   my $self = shift;
   my $user_obj = {
-    is_admin => $self->is_admin,
-    role     => $self->role,
-    id       => $self->id,
-    username => $self->username,
-    avatar   => $self->avatar,
-    theme    => $self->theme,
+    is_admin  => $self->is_admin,
+    role      => $self->role,
+    id        => $self->id,
+    username  => $self->username,
+    avatar    => $self->avatar,
+    theme     => $self->theme,
+    biography => $self->biography,
   };
 
   return $user_obj;

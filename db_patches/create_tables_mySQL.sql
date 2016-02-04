@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(128) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,
   `theme` varchar(50) CHARACTER SET ucs2 NOT NULL DEFAULT 'dark',
+  `biography` mediumblob DEFAULT NULL,
   `register_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email` varchar(255), -- Weakening
   `avatar_path` varchar(255) DEFAULT NULL,

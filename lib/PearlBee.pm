@@ -456,23 +456,23 @@ get '/posts/user/:username/page/:page' => sub {
     $json->encode({
         posts => \@mapped_posts,
         tags  => \@tags,
-        user  => $user,
+        user  => $user->as_hashref,
     }); 
   }
   else {
     template 'index',
       {
-        posts          => \@mapped_posts,
-        recent         => \@recent,
-        popular        => \@popular,
-        tags           => \@tags,
-        categories     => \@categories,
-        page           => $page,
-        total_pages    => $total_pages,
-        next_link      => $next_link,
-        previous_link  => $previous_link,
-        posts_for_user => $username,
-    };
+      posts          => \@mapped_posts,
+      recent         => \@recent,
+      popular        => \@popular,
+      tags           => \@tags,
+      categories     => \@categories,
+      page           => $page,
+      total_pages    => $total_pages,
+      next_link      => $next_link,
+      previous_link  => $previous_link,
+      posts_for_user => $username,
+      };
   }
 };
 
@@ -590,50 +590,39 @@ get '/profile' => sub {
 
 get '/profile/author/:username' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user         = resultset('User')->find({username => $username});
+  my $user        = resultset('User')->find({username => $username});
   unless ($user) {
-    # we did not identify the user
+    warn "No user found for '$username'\n";
   }
-  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-  my $movable_type_url = config->{movable_type_url};
-  my $app_url = config->{app_url};
-
-  for my $post ( @mapped_posts ) {
-    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  my @blog_owners = resultset('BlogOwner')->search({user_id => $user->id });
+  my @blogs;
+  for my $blog_owner ( @blog_owners ) {
+    push @blogs, map { $_->as_hashref }
+                 resultset('Blog')->find({id => $blog_owner->blog_id });
+  }
+  my @posts = resultset('Post')->search({user_id => $user->id });
+  my @post_tags;
+  for my $post ( @posts ) {
+    push @post_tags, map { $_->as_hashref } $post->tag_objects;
   }
 
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
+  my $template_data = {
+      blogs          => \@blogs,
+      post_tags      => \@post_tags,
+      user           => $user->as_hashref,
+  }; 
 
-  # The author profile page contains posts among other things, this should be
-  # trimmed down later.
-  #
-  template 'profile/author',
-    {
-    username       => $username,
-    posts          => \@mapped_posts,
-    recent         => \@recent,
-    popular        => \@popular,
-    tags           => \@tags,
-    page           => 1,
-    categories     => \@categories,
-    total_pages    => $total_pages,
-    next_link      => $next_link,
-    previous_link  => $previous_link,
-    posts_for_user => $username,
-    user           => $user,
-    };
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }     
+  else {
+    template 'profile/author', $template_data;
+  }
 
 };
 

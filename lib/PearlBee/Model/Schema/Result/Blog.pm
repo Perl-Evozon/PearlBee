@@ -133,3 +133,16 @@ __PACKAGE__->add_unique_constraint("name", ["name"]);
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;
+
+sub as_hashref {
+  my $self = shift;
+  my $blog_as_href = {
+    id           => $self->id,
+    name         => $self->name,
+    created_date => $self->name,
+    edited_date  => $self->edited_date,
+    status       => $self->status,
+  };          
+              
+  return $blog_as_href;
+}             

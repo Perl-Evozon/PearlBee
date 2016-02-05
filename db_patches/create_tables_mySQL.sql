@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `theme` (
 --
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET ucs2 NOT NULL,
+  `name` varchar(255) CHARACTER SET ucs2 NULL,
   `username` varchar(200) NOT NULL,
   `password` varchar(128) NOT NULL,
   `preferred_language` varchar(50) DEFAULT NULL,

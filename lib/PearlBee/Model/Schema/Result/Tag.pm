@@ -99,3 +99,16 @@ __PACKAGE__->many_to_many("posts", "post_tags", "post");
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
 1;
+
+sub as_hashref {
+  my $self = shift;
+  my $tag_hashref = {
+    id   => $self->id,
+    name => $self->name,
+    slug => $self->slug,
+  };          
+              
+  return $tag_hashref;
+              
+}             
+

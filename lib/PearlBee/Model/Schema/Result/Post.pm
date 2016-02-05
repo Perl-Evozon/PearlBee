@@ -370,4 +370,30 @@ sub created_date_human {
         }
 }
 
+sub as_hashref {
+  my $self = shift;
+  my $post_obj = {
+    id           => $self->id,
+    title        => $self->title,
+    slug         => $self->slug,
+    description  => $self->description,
+    cover        => $self->cover,
+    content      => $self->content,
+    created_date => $self->created_date,
+    type         => $self->type,
+    status       => $self->status,
+    user_id      => $self->user_id,
+  };          
+              
+  return $post_obj;
+}             
+
+sub as_hashref_sanitized {
+  my $self = shift;
+  my $post_href = $self->as_hashref;
+  delete $post_href->{id};
+  delete $post_href->{user_id};
+  return $post_href;
+}
+
 1;

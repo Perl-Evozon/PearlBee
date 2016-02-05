@@ -37,4 +37,17 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("id");
 
+sub as_hashref {
+  my $self = shift;
+  my $comment_href = {
+    id      => $self->id,
+    name    => $self->name,
+    slug    => $self->slug,
+    user_id => $self->user_id,
+  };          
+              
+  return $comment_href;
+              
+}             
+
 1;

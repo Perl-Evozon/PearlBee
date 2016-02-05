@@ -90,7 +90,8 @@ sub migrate_users {
      FROM mt_author a
 LEFT JOIN mt_author_meta am
        ON a.author_id = am.author_meta_author_id
-    ORDER BY a.author_id
+ GROUP BY a.author_id
+ ORDER BY a.author_id
 EOS
 
   my $out_sth = $out_dbh->prepare(
@@ -227,12 +228,16 @@ sub map_blog {
 #          'blog_created_on' => '2009-10-07 20:13:17'
 #        };
 
-my %blog_owner;
-
 sub migrate_blogs {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_blog ORDER BY blog_id');
+  my $in_user_sth = $out_dbh->prepare(<<'EOS');
+SELECT id FROM `user` WHERE name = ?
+EOS
   my $out_sth = $out_dbh->prepare(
     'INSERT INTO blog(id,name,description,created_date,edited_date) VALUES(?,?,?,?,?)'
+  );
+  my $out_blog_sth = $out_dbh->prepare(
+    'INSERT INTO blog_owners(blog_id,user_id) VALUES(?,?)'
   );
   $in_sth->execute();
 
@@ -240,14 +245,23 @@ sub migrate_blogs {
   while ( my $in_blog = $in_sth->fetchrow_hashref ) {
     print '.' if $count++ % 100 == 0;
 
-    push @{$blog_owner{$in_blog->{blog_id}}}, $in_blog->{blog_created_by};
-
 #use Data::Dumper; print Dumper($in_blog);
 #last;
     my $out_blog = map_blog($in_blog);
     $out_sth->execute(
         @{$out_blog}{qw( id name description created_date edited_date )}
     );
+    my $in_sth = $in_user_sth->execute($out_blog->{name});
+    my $in_user = $in_user_sth->fetchrow_hashref;
+    if ( $out_blog->{name} eq 'blogs.perl.org' ) {
+warn "Skipping the system 'user' as admins are now handled elsewhere.\n";
+    }
+    elsif ( $in_user ) {
+      $out_blog_sth->execute($out_blog->{id},$in_user->{id});
+    }
+    else {
+warn "Can't find a user with username '$out_blog->{name}' in the database, skipping\n";
+    }
   }
 }
 
@@ -385,24 +399,6 @@ sub migrate_comments {
     $out_sth->execute(
         @{$out_comment}{qw( id content fullname email website comment_date status post_id uid reply_to ) }
     );
-  }
-}
-
-###############################################################################
-
-sub synthesize_blog_owners {
-#    push @{$blog_owner{$in_blog->{blog_id}}, $in_blog->{blog_created_by};
-
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO blog_owners(user_id,blog_id,status) VALUES(?,?,?)'
-  );
-
-  my $count  = 0;
-  for my $blog_id ( sort keys %blog_owner ) {
-    for my $user_id ( @{ $blog_owner{$blog_id} } ) {
-      print '.' if $count++ % 100 == 0;
-      $out_sth->execute( $user_id, $blog_id, 'active' );
-    }
   }
 }
 

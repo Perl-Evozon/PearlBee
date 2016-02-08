@@ -163,4 +163,23 @@ sub safe_cascade_delete {
     $self->delete();
 }
 
+sub as_hashref {
+  my $self = shift;
+  my $category_href = {
+    id      => $self->id,
+    name    => $self->name,
+    slug    => $self->slug,
+    user_id => $self->user_id,
+  };          
+              
+  return $category_href;
+}             
+
+sub as_hashref_sanitized {
+  my $self = shift;
+  my $category_href = $self->as_hashref;
+  delete $category_href->{id};
+  return $category_href;
+}
+
 1;

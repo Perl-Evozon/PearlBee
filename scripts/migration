@@ -3,23 +3,36 @@
 use strict;
 use warnings;
 
+use Encode;
+
 use DBI;
 use String::Dirify qw( dirify );
 use Try::Tiny;
+use Getopt::Long;
+
+my ( $in_driver, $out_driver ) = ( 'mySQL', 'Pg' );
+my ( $in_database, $out_database ) = ( 'mt_blogs_perl_org', 'blogs_perl_org' );
+my ( $in_user, $out_user ) = ( 'root', 'jgoff' );
+my ( $in_password, $out_password ) = ( '', '' );
+GetOptions(
+  'in-driver=s' => \$in_driver,
+  'out-driver=s' => \$out_driver,
+  'in-db=s' => \$in_database,
+  'out-db=s' => \$out_database,
+  'in-user=s' => \$in_user,
+  'out-user=s' => \$out_user,
+);
+
+my $in_dsn = "dbi:$in_driver:database=$in_database";
+my $out_dsn = "dbi:$out_driver:database=$out_database";
+
+my $in_dbh = DBI->connect( $in_dsn, $in_user, $in_passwd );
+my $out_dbh = DBI->connect( $out_dsn, $out_user, $out_passwd );
 
 $|++;
 
 my $AVATAR_PATH = '/avatars';
 my $PER_USER_PATH = '/users';
-
-my $out_dbname = $ARGV[0] || 'blogs_perl_org';
-
-my $in_dsn = 'dbi:mysql:database=mt_blogs_perl_org';
-my $out_dsn = "dbi:mysql:dbname=$out_dbname";
-
-my $in_dbh = DBI->connect($in_dsn,'root');
-#my $out_dbh = DBI->connect($out_dsn,'jeffreygoff','');
-my $out_dbh = DBI->connect($out_dsn,'root','');
 
 sub munge_asset_file_path {
   my $in_asset = shift;
@@ -34,18 +47,18 @@ sub map_user {
   my $user = shift;
   return {
     id                 => $user->{author_id},
-    name               => $user->{author_nickname},
+    name               => decode_utf8($user->{author_nickname}),
     username           => $user->{author_name},
     password           => $user->{author_password},
     preferred_language => $user->{author_preferred_language},
     register_date      => $user->{author_created_on},
-    email              => $user->{author_email},
+    email              => decode_utf8($user->{author_email}),
 #    company   => # XXX not present in MT data
 #    telephone => # XXX not present in MT data
     role               => $user->{author_is_superuser} ? 'admin' : 'author',
 #    activation_key => undef, # XXX not present in MT data
     status             => $user->{author_status} == 1 ? 'active' : 'inactive',
-    biography          => $user->{author_meta_vclob},
+    biography          => decode_utf8($user->{author_meta_vclob}),
   };
 }
 
@@ -76,7 +89,7 @@ sub map_user {
 #        };
 
 sub migrate_users {
-  my $in_sth = $in_dbh->prepare(<<'EOS');
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
    SELECT a.author_id,
           a.author_nickname,
           a.author_name,
@@ -94,9 +107,20 @@ LEFT JOIN mt_author_meta am
  ORDER BY a.author_id
 EOS
 
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO `user`(id,name,username,password,status,preferred_language,register_date,email,role,biography) VALUES(?,?,?,?,?,?,?,?,?,?)'
-  );
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO `user`(id,
+                   name,
+                   username,
+                   password,
+                   status,
+                   preferred_language,
+                   register_date,
+                   email,
+                   role,
+                   biography)
+            VALUES(?,?,?,?,?,?,?,?,?,?)
+EOS
+
   $in_sth->execute();
 
   my $count = 0;
@@ -119,31 +143,33 @@ catch {
 ###############################################################################
 
 sub create_avatars {
-  my $in_sth = $in_dbh->prepare(<<EOF);
+  my $in_sth = $in_dbh->prepare( <<EOS );
 SELECT author_id,
        author_basename,
        asset_file_path
   FROM mt_asset
   JOIN mt_author
     ON author_userpic_asset_id = asset_id
-EOF
-  my $out_sth = $out_dbh->prepare(
-    'UPDATE `user` SET avatar_path = ? WHERE id = ?'
-  );
-  $in_sth->execute();
+EOS
+
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+UPDATE `user` SET avatar_path = ? WHERE id = ?
+EOS
+
+  $in_sth->execute;
 
   my $count = 0;
   while ( my $in_asset = $in_sth->fetchrow_hashref ) {
     print '.' if $count++ % 100 == 0;
-    munge_asset_file_path($in_asset);
+    munge_asset_file_path( $in_asset );
 #use Data::Dumper; print Dumper($in_user);
 #last;
-try {
-    $out_sth->execute( $in_asset->{asset_file_path}, $in_asset->{author_id} );
-}
-catch {
-  die "Failed to update user '$in_asset->{author_id}: $_ $!\n";
-};
+    try {
+      $out_sth->execute( $in_asset->{asset_file_path}, $in_asset->{author_id} );
+    }
+    catch {
+      die "Failed to update user '$in_asset->{author_id}: $_ $!\n";
+    };
   }
 }
 
@@ -153,8 +179,8 @@ sub map_blog {
   my $blog = shift;
   return {
     id           => $blog->{blog_id},
-    name         => $blog->{blog_name},
-    description  => $blog->{blog_description},
+    name         => decode_utf8($blog->{blog_name}),
+    description  => decode_utf8($blog->{blog_description}),
     created_date => $blog->{blog_created_on},
     edited_date  => $blog->{blog_modified_on},
   };
@@ -229,17 +255,20 @@ sub map_blog {
 #        };
 
 sub migrate_blogs {
-  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_blog ORDER BY blog_id');
-  my $in_user_sth = $out_dbh->prepare(<<'EOS');
+  my $in_sth = $in_dbh->prepare( 'SELECT * FROM mt_blog ORDER BY blog_id' );
+  my $in_user_sth = $out_dbh->prepare( <<'EOS' );
 SELECT id FROM `user` WHERE name = ?
 EOS
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO blog(id,name,description,created_date,edited_date) VALUES(?,?,?,?,?)'
-  );
-  my $out_blog_sth = $out_dbh->prepare(
-    'INSERT INTO blog_owners(blog_id,user_id) VALUES(?,?)'
-  );
-  $in_sth->execute();
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO blog(id,name,description,created_date,edited_date)
+          VALUES(?,?,?,?,?)
+EOS
+
+  my $out_blog_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO blog_owners(blog_id,user_id) VALUES(?,?)
+EOS
+
+  $in_sth->execute;
 
   my $count  = 0;
   while ( my $in_blog = $in_sth->fetchrow_hashref ) {
@@ -247,14 +276,14 @@ EOS
 
 #use Data::Dumper; print Dumper($in_blog);
 #last;
-    my $out_blog = map_blog($in_blog);
+    my $out_blog = map_blog( $in_blog );
     $out_sth->execute(
         @{$out_blog}{qw( id name description created_date edited_date )}
     );
     my $in_sth = $in_user_sth->execute($out_blog->{name});
     my $in_user = $in_user_sth->fetchrow_hashref;
     if ( $out_blog->{name} eq 'blogs.perl.org' ) {
-warn "Skipping the system 'user' as admins are now handled elsewhere.\n";
+      warn "Skipping the system 'user' as admins are now handled elsewhere.\n";
     }
     elsif ( $in_user ) {
       $out_blog_sth->execute($out_blog->{id},$in_user->{id});
@@ -272,11 +301,11 @@ sub map_post {
   my $dirified = dirify( $post->{entry_title} );
   return {
     id           => $post->{entry_id},
-    title        => $post->{entry_title},
-    slug         => $dirified,
+    title        => decode_utf8($post->{entry_title}),
+    slug         => decode_utf8($dirified),
     description  => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
-    content      => $post->{entry_text},
+    content      => decode_utf8($post->{entry_text}),
     created_date => $post->{entry_authored_on},
     #type post_format DEFAULT 'HTML',
     #status post_status DEFAULT 'draft',
@@ -319,10 +348,17 @@ sub map_post {
 my %post_user;
 
 sub migrate_posts {
-  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_entry ORDER BY entry_id');
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO post(id,title,slug,description,content,created_date,status,user_id) VALUES(?,?,?,?,?,?,?,?)'
-  );
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+  SELECT id, title, slug, description, contnet, created_date, status, user_id
+    FROM mt_entry
+ORDER BY entry_id
+EOS
+
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO post(id,title,slug,description,content,created_date,status,user_id)
+          VALUES(?,?,?,?,?,?,?,?)
+EOS
+
   $in_sth->execute();
 
   my $count  = 0;
@@ -330,7 +366,7 @@ sub migrate_posts {
     print '.' if $count++ % 100 == 0;
 #use Data::Dumper; print Dumper($in_post);
 #last;
-    my $out_post = map_post($in_post);
+    my $out_post = map_post( $in_post );
     $post_user{ $out_post->{id} } = $out_post->{user_id};
     $out_sth->execute(
         @{$out_post}{qw( id title slug description content created_date status user_id )}
@@ -343,18 +379,18 @@ sub migrate_posts {
 sub map_comment {
   my $comment = shift;
   return {
-    id => $comment->{comment_id},
-    content => $comment->{comment_text},
-    fullname => $comment->{comment_author},
-    email => $comment->{comment_email},
-    website => $comment->{comment_url},
+    id           => $comment->{comment_id},
+    content      => decode_utf8($comment->{comment_text}),
+    fullname     => $comment->{comment_author},
+    email        => $comment->{comment_email},
+    website      => $comment->{comment_url},
 #  avatar varchar(255) DEFAULT NULL,
     comment_date => $comment->{comment_created_on},
 #  type post_format DEFAULT 'HTML', # Remain default
-    status => $comment->{comment_visible} == 1 ? 'approved' : 'pending',
-    post_id => $comment->{comment_entry_id},
-    uid => $comment->{comment_commenter_id},
-    reply_to => $comment->{comment_parent_id}, # XXX Not sure here
+    status       => $comment->{comment_visible} == 1 ? 'approved' : 'pending',
+    post_id      => $comment->{comment_entry_id},
+    uid          => $comment->{comment_commenter_id},
+    reply_to     => $comment->{comment_parent_id}, # XXX Not sure here
   };
 }
 
@@ -408,9 +444,9 @@ sub map_category {
   my $category = shift;
   my $dirified = dirify( $category->{category_label} );
   return {
-    id => $category->{category_id},
-    name => $category->{category_label},
-    slug => $dirified,
+    id      => $category->{category_id},
+    name    => decode_utf8($category->{category_label}),
+    slug    => decode_utf8($dirified),
     user_id => $category->{category_created_by},
   };
 }
@@ -475,9 +511,9 @@ sub map_tag {
   my $tag = shift;
   my $dirified = dirify( $tag->{tag_name} );
   return {
-    id => $tag->{tag_id},
-    name => $tag->{tag_name},
-    slug => $dirified,
+    id   => $tag->{tag_id},
+    name => decode_utf8($tag->{tag_name}),
+    slug => decode_utf8($dirified),
   };
 }
 #$mt_tag = {
@@ -556,12 +592,6 @@ print "\n";
 
 print "migrating blogs: ";
 migrate_blogs;
-print "\n";
-
-#exit;
-
-print "synthesizing blog owners: ";
-synthesize_blog_owners;
 print "\n";
 
 #exit;

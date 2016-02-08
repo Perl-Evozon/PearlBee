@@ -1,9 +1,9 @@
 <link href="/blog/css/author.css" rel="stylesheet">
 
 <div class="author-page">
-<!--author-description top-->
+    <!--author-description top-->
     <div class="container-fluid">
-        <div class="author-description">
+        <div class="author-description blog">
             <div class="container">
                 <div class="row">
                     <div class="content clearfix">
@@ -11,14 +11,24 @@
                             <div class="description clearfix">
                                 <div class="col-xs-2">
                                     <div class="bubble">
-                                        <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                                        <img class="user-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]">
                                     </div>
                                 </div>
                                 <div class="col-xs-10">
                                     <div class="author-info">
                                         <div class="author-name">
-                                            <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                                            <a href="/posts/user/[% user.username %]">[% user.username %]</a>
                                         </div>
+
+                                        <div class="profile-description">
+                                            <p>
+                                                [% post.biography %]
+                                            </p>
+                                        </div>
+                                        <a href="">
+                                            <button id="RSS" class="btn btn-primary btn-xs" type="button">RSS</button>
+                                        </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -27,14 +37,84 @@
                 </div>
             </div>
         </div>
+        <!--/author-description top-->
+
+        <!-- tabs-->
+        <div class="background-bar">
+            <div class="tabs">
+                <div class="container">
+                    <div class="row">
+                        <!-- Radio button and lable for #tab-content1 -->
+                        <input type="radio" name="author-tabs" id="author-tab1" checked data-search-term="">
+                        <label id="blogs" for="author-tab1">
+                            <span>blogs</span>
+                        </label>
+
+                        <!-- Radio button and lable for #tab-content2 -->
+                        <input type="radio" name="author-tabs" id="author-tab2" data-search-term="">
+                        <label id="entries" for="author-tab2">
+                            <span>entries</span>
+                        </label>
+
+                        <!-- Radio button and lable for #tab-content3 -->
+                        <input type="radio" name="author-tabs" id="author-tab3" data-search-term="">
+                        <label id="pages" for="author-tab3">
+                            <span>pages</span>
+                        </label>
+
+                        <div id="author-tab-content1" class="tab-content">
+                            [% FOREACH post in post_tags %]
+                            <div class="info-entry">
+                                <p class="uppercase">[% post.name %]</p>
+                                <ul class="info-blog">
+                                    <li class="information-blog">Information about this blog.</li>
+                                    <li><span>231 entries</span> on the blog</li>
+                                    <li><span>13 authors</span> writing on the blog</li>
+                                    <li>
+                                        <a class="pull-right" href="/post/[% post.slug %]">Go to blog</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            [% END %]
+                            <!--button more for author profile page-->
+                            <div class="loading-posts">
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="view-more col-xs-10">
+                                    <div class="bubble">
+                                        <button id="more-author-posts" data-next-link="[% next_link %]" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                                    </div>
+                                    <div style="display: none" class="progressloader">
+                                        <div class="spinner">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="author-tab-content2" class="tab-content">
+                            <h2>Profile Content Goes Here</h2>
+                            <img src="http://lorempixel.com/400/400/cats/2" alt="Cats"/>
+                        </div>
+                        <div id="author-tab-content3" class="tab-content">
+                            <h2>Messages Content Goes Here</h2>
+                            <img src="http://lorempixel.com/400/400/cats/3" alt="Cats"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /tabs-->
     </div>
-<!--/author-description top-->
-
 </div>
 
 
-[% FOREACH post in posts %]
-<div class="entry clearfix">
-    [% post.description %]
-</div>
-[% END %]
+<!--[% FOREACH post in posts %]-->
+<!--<div class="entry clearfix">-->
+<!--[% post.description %]-->
+<!--</div>-->
+<!--[% END %]-->

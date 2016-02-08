@@ -206,7 +206,7 @@ get '/post/:slug' => sub {
     $next_post     = $post->next_post;
     $previous_post = $post->previous_post;
     @post_tags     = $post->tag_objects;
-    @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
+    @comments      = map { $_->as_hashref } resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
   template 'post',
@@ -246,7 +246,8 @@ post '/comments' => sub {
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $blog        = resultset('BlogOwner')->find({ user_id => $user_id });
+  my $blog_owner  = resultset('BlogOwner')->find({ user_id => $user_id });
+  my $blog        = resultset('Blog')->find({ id => $blog_owner->blog_id });
   my %result;
 
   try {
@@ -558,9 +559,11 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $tag         = resultset('Tag')->find({ slug => $slug });
   my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
+  my @tags        = map { $_->as_hashref_sanitized }
+		    resultset('View::PublishedTags')->all();
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent      = map { $_->as_hashref_sanitized }
+		    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
@@ -570,19 +573,30 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/tag/' . $slug);
 
-  template 'index',
-      {
-        posts         => \@mapped_posts,
-        recent        => \@recent,
-        popular       => \@popular,
-        tags          => \@tags,
-        page          => $page,
-        categories    => \@categories,
-        total_pages   => $total_pages,
-        next_link     => $next_link,
-        previous_link => $previous_link,
-        posts_for_tag => $slug
+  # Extract all posts with the wanted category
+  my $template_data =
+    {
+    posts         => \@mapped_posts,
+    recent        => \@recent,
+    popular       => \@popular,
+    tags          => \@tags,
+    page          => $page,
+    categories    => \@categories,
+    total_pages   => $total_pages,
+    next_link     => $next_link,
+    previous_link => $previous_link,
+    posts_for_tag => $slug
     };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data ); 
+  }
+  else {
+    template 'user', $template_data;
+  }
 };
 
 get '/register' => sub {

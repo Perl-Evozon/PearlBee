@@ -250,4 +250,32 @@ sub comment_date_human {
         }
 }
 
+sub as_hashref {
+  my $self = shift;
+  my $user_obj = {
+    id                 => $self->id,
+    content            => $self->content,
+    fullname           => $self->fullname,
+    email              => $self->email,
+    website            => $self->website,
+    avatar             => $self->avatar,
+    comment_date       => $self->comment_date,
+    comment_date_human => $self->comment_date_human,
+    type               => $self->type,
+    status             => $self->status,
+    post_id            => $self->post_id,
+    uid                => $self->uid,
+    reply_to           => $self->reply_to,
+  };          
+              
+  return $user_obj;
+              
+}             
+
+sub as_hashref_sanitized {
+  my $self = shift;
+  my $user_href = $self->as_hashref;
+  delete $user_href->{id};
+  return $user_href;
+}
 1;

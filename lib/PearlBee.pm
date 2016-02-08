@@ -37,6 +37,15 @@ use PearlBee::Password;
 
 our $VERSION = '0.1';
 use Data::Dumper;
+
+=item Add items such as the copyright info here, globally.
+
+=cut
+
+hook before_template_render => sub {
+  my ( $tokens ) = @_;
+  $tokens->{copyright_year} = '2015-' . ((localtime)[5]+1900);
+};
   
 =head
 

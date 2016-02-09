@@ -33,7 +33,7 @@ engines:
       end_tag:   '%]'
   session:
     YAML:
-      session_dir: "/tmp/blogs_perl_org"
+      session_dir: "sessions"
 
 mail_server:
     user: 'jobs@builtinperl.com'

@@ -93,6 +93,7 @@ post '/theme/update' => sub { # Should be PATCH
   my $user  = resultset('User')->find({id => $session_user->{id}});
 
   $user->update({ theme => $theme });
+  return;
 };
 
 =head

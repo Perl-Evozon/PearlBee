@@ -657,17 +657,19 @@ get '/profile/author/:username' => sub {
   for my $post ( @posts ) {
     push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;
   }
+  for my $blog ( @blogs ) {
+    $blog->{count} = {
+      owners => 1,
+      post   => scalar @posts,
+      tag    => scalar @post_tags,
+    };
+    $blog->{post_tags} = \@post_tags;
+  }
 
   my $template_data = {
-      blogs            => \@blogs,
-      counts => {
-        blog        => scalar @blogs,
-        blog_owners => scalar @blog_owners,
-        post        => scalar @posts,
-        tag         => scalar @post_tags,
-      },
-      post_tags        => \@post_tags,
-      user             => $user->as_hashref_sanitized,
+      blogs      => \@blogs,
+      blog_count => scalar @blogs,
+      user       => $user->as_hashref_sanitized,
   }; 
 
   if ( param('format') ) {

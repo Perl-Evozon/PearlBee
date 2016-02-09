@@ -70,6 +70,13 @@ __PACKAGE__->table("blog");
   extra: {list => ["inactive","active","suspended","pending"]}
   is_nullable: 0
 
+=head2 email_notification
+
+  data_type: 'enum'
+  default_value: 'inactive'
+  extra: {list => ["inactive","active","suspended","pending"]}
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -98,6 +105,8 @@ __PACKAGE__->add_columns(
     extra => { list => ["inactive", "active", "suspended", "pending"] },
     is_nullable => 0,
   },
+  "email_notification",
+  { data_type => "integer", is_auto_increment => 0, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY

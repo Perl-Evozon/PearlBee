@@ -206,7 +206,7 @@ get '/post/:slug' => sub {
     $next_post     = $post->next_post;
     $previous_post = $post->previous_post;
     @post_tags     = $post->tag_objects;
-    @comments   = resultset('Comment')->get_approved_comments_by_post_id($post->id);
+    @comments      = map { $_->as_hashref } resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
   template 'post',
@@ -246,7 +246,8 @@ post '/comments' => sub {
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->get_recent_posts();
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-  my $blog        = resultset('BlogOwner')->find({ user_id => $user_id });
+  my $blog_owner  = resultset('BlogOwner')->find({ user_id => $user_id });
+  my $blog        = resultset('Blog')->find({ id => $blog_owner->blog_id });
   my %result;
 
   try {
@@ -552,37 +553,57 @@ List all posts by selected tag
 
 get '/posts/tag/:slug/page/:page' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = route_parameters->{'page'};
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
   my $tag         = resultset('Tag')->find({ slug => $slug });
   my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = map { $_->as_hashref_sanitized }
+                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = map { $_->as_hashref_sanitized }
+                    resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/tag/' . $slug);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
 
-  template 'index',
+  # Extract all posts with the wanted category
+  my $template_data =
       {
-        posts         => \@mapped_posts,
-        recent        => \@recent,
-        popular       => \@popular,
-        tags          => \@tags,
-        page          => $page,
-        categories    => \@categories,
-        total_pages   => $total_pages,
-        next_link     => $next_link,
-        previous_link => $previous_link,
-        posts_for_tag => $slug
+        posts          => \@mapped_posts,
+        recent         => \@recent,
+        popular        => \@popular,
+        tags           => \@tags,
+        page           => 1,
+        categories     => \@categories,
+        total_pages    => $total_pages,
+        next_link      => $next_link,
+        previous_link  => $previous_link,
+#        posts_for_user => $username,
     };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'index', $template_data;
+  }     
 };
 
 get '/register' => sub {
@@ -636,17 +657,19 @@ get '/profile/author/:username' => sub {
   for my $post ( @posts ) {
     push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;
   }
+  for my $blog ( @blogs ) {
+    $blog->{count} = {
+      owners => 1,
+      post   => scalar @posts,
+      tag    => scalar @post_tags,
+    };
+    $blog->{post_tags} = \@post_tags;
+  }
 
   my $template_data = {
-      blogs            => \@blogs,
-      counts => {
-        blog        => scalar @blogs,
-        blog_owners => scalar @blog_owners,
-        post        => scalar @posts,
-        tag         => scalar @post_tags,
-      },
-      post_tags        => \@post_tags,
-      user             => $user->as_hashref_sanitized,
+      blogs      => \@blogs,
+      blog_count => scalar @blogs,
+      user       => $user->as_hashref_sanitized,
   }; 
 
   if ( param('format') ) {

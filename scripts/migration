@@ -349,7 +349,7 @@ my %post_user;
 
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
-  SELECT id, title, slug, description, contnet, created_date, status, user_id
+  SELECT *
     FROM mt_entry
 ORDER BY entry_id
 EOS

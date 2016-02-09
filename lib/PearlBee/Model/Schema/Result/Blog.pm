@@ -49,6 +49,12 @@ __PACKAGE__->table("blog");
   is_nullable: 0
   size: 255
 
+=head2 description
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 255
+
 =head2 created_date
 
   data_type: 'timestamp'
@@ -83,6 +89,8 @@ __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "name",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
+  "description",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "created_date",
   {
@@ -147,7 +155,8 @@ sub as_hashref {
   my $blog_as_href = {
     id           => $self->id,
     name         => $self->name,
-    created_date => $self->name,
+    description  => $self->description,
+    created_date => $self->created_date,
     edited_date  => $self->edited_date,
     status       => $self->status,
   };          

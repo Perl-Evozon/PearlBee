@@ -311,9 +311,21 @@ Check if the user has enough authorization for modifying
 sub tag_objects {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  return map {
-    $schema->resultset('Tag')->find({ id => $_->tag_id })
-  } $schema->resultset('PostTag')->search({ post_id => $self->id });
+  return map { $schema->resultset('Tag')->find({ id => $_->tag_id }) }
+         $schema->resultset('PostTag')->search({ post_id => $self->id });
+}
+
+=head
+
+Return the category
+
+=cut
+
+sub tag_objects {
+  my ($self) = @_;
+  my $schema = $self->result_source->schema;
+  return map { $schema->resultset('Category')->find({ id => $_->category_id }) }
+         $schema->resultset('PostCategory')->search({ post_id => $self->id });
 }
 
 =head

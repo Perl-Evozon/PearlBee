@@ -358,24 +358,35 @@ List all posts by selected category
 
 get '/posts/category/:slug/page/:page' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $page        = route_parameters->{'page'};
   my $slug        = route_parameters->{'slug'};
   my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
+  my @recent      = map { $_->as_hashref_sanitized }
+                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = map { $_->as_hashref_sanitized }
+                    resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
-  template 'index',
+  # Extract all posts with the wanted category
+  my $template_data =
     {
     posts              => \@mapped_posts,
     recent             => \@recent,
@@ -388,6 +399,17 @@ get '/posts/category/:slug/page/:page' => sub {
     previous_link      => $previous_link,
     posts_for_category => $slug
     };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'index', $template_data;
+  }     
+
 };
 
 =head
@@ -398,7 +420,7 @@ List all posts by selected author
 
 get '/posts/user/:username' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
   my $user         = resultset('User')->find({username => $username});
   unless ($user) {

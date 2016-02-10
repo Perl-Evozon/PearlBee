@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `acl` (
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(512) CHARACTER SET ucs2 NOT NULL,
+  `slug` varchar(512) CHARACTER SET ucs2 NOT NULL,
   `description` varchar(512) CHARACTER SET ucs2,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,

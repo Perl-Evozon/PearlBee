@@ -76,6 +76,7 @@ CREATE TABLE acl (
 CREATE TABLE blog (
   id serial UNIQUE,
   name varchar(512) NOT NULL,
+  slug varchar(512) NOT NULL,
   description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,

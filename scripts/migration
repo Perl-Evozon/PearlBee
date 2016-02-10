@@ -10,7 +10,7 @@ use String::Dirify qw( dirify );
 use Try::Tiny;
 use Getopt::Long;
 
-my ( $in_driver, $out_driver ) = ( 'mySQL', 'Pg' );
+my ( $in_driver, $out_driver ) = ( 'mysql', 'Pg' );
 my ( $in_database, $out_database ) = ( 'mt_blogs_perl_org', 'blogs_perl_org' );
 my ( $in_user, $out_user ) = ( 'root', 'jgoff' );
 my ( $in_password, $out_password ) = ( '', '' );
@@ -177,9 +177,11 @@ EOS
 
 sub map_blog {
   my $blog = shift;
+  my $dirified = dirify( $blog->{blog_name} );
   return {
     id           => $blog->{blog_id},
     name         => decode_utf8($blog->{blog_name}),
+    slug         => decode_utf8($dirified),
     description  => decode_utf8($blog->{blog_description}),
     created_date => $blog->{blog_created_on},
     edited_date  => $blog->{blog_modified_on},
@@ -260,8 +262,8 @@ sub migrate_blogs {
 SELECT id FROM `user` WHERE name = ?
 EOS
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO blog(id,name,description,created_date,edited_date)
-          VALUES(?,?,?,?,?)
+INSERT INTO blog(id,name,slug,description,created_date,edited_date)
+          VALUES(?,?,?,?,?,?)
 EOS
 
   my $out_blog_sth = $out_dbh->prepare( <<'EOS' );
@@ -278,7 +280,7 @@ EOS
 #last;
     my $out_blog = map_blog( $in_blog );
     $out_sth->execute(
-        @{$out_blog}{qw( id name description created_date edited_date )}
+        @{$out_blog}{qw( id name slug description created_date edited_date )}
     );
     my $in_sth = $in_user_sth->execute($out_blog->{name});
     my $in_user = $in_user_sth->fetchrow_hashref;

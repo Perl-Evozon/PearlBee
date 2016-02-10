@@ -578,6 +578,7 @@ get '/posts/tag/:slug/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
+  my $page        = route_parameters->{'page'};
   my $tag         = resultset('Tag')->find({ slug => $slug });
   my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;

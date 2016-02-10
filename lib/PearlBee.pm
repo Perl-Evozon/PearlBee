@@ -579,7 +579,7 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
   my $tag         = resultset('Tag')->find({ slug => $slug });
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
   my @tags        = map { $_->as_hashref_sanitized }
                     map { $_->tag_objects } @posts;
@@ -610,7 +610,7 @@ get '/posts/tag/:slug/page/:page' => sub {
         recent         => \@recent,
         popular        => \@popular,
         tags           => \@tags,
-        page           => 1,
+        page           => $page,
         categories     => \@categories,
         total_pages    => $total_pages,
         next_link      => $next_link,

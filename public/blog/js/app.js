@@ -128,26 +128,35 @@ $(document).ready(function() {
     $(function(){
         $('#cmn-toggle-4').on('change',function() {
             var theme = $('#cmn-toggle-4').is(':checked');
+            console.log("theme:", theme);
+            if (theme === true) {
+              // $("head #theme").attr("href", "light.css");
+                $("#theme").attr("href", "/blog/css/light.css");
+               } else {
+                $("#theme").attr("href", "/blog/css/dark.css");
+               }
             $.ajax({
-        // Assuming an endpoint here that responds to GETs with a response.
+         //Assuming an endpoint here that responds to GETs with a response.
                 url: "/theme/update",
                 method: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                data: { 
+               data: { 
                   theme: theme
                 }
             })
+
         });
     });
+
 
 
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
-        var slug = $("#reply_post_comment_form #id").val();
+        var slug = $("#reply_post_comment_form #slug").val();
 
-        e.preventDefault();
-        e.stopPropagation();
+       // e.preventDefault();
+       // e.stopPropagation();
 
 
         $.ajax({

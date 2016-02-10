@@ -39,15 +39,21 @@ __PACKAGE__->set_primary_key("id");
 
 sub as_hashref {
   my $self = shift;
-  my $comment_href = {
+  my $href = {
     id      => $self->id,
     name    => $self->name,
     slug    => $self->slug,
     user_id => $self->user_id,
   };          
-              
-  return $comment_href;
-              
+
+  return $href;
 }             
+
+sub as_hashref_sanitized {
+  my $self = shift;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  return $href;
+}
 
 1;

@@ -86,16 +86,23 @@ Set user's theme (assuming they're logged in) to the given name.
 
 =cut
 
-post '/theme/update' => sub { # Should be PATCH
+post '/theme/:theme' => sub { # Should be PATCH
   my $session_user = session('user');
+  my $theme = route_parameters('theme');
   return unless $session_user->{id};
-  my $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
+  $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
   my $user  = resultset('User')->find({id => $session_user->{id}});
-
   $user->update({ theme => $theme });
-  return;
+  redirect "/theme";#redirect to get method so as not to loop
 };
 
+get '/theme' => sub{
+  my $session_user = session('user');
+  return config('theme') unless $session_user->{id};
+  my $user  = resultset('User')->find({id => $session_user->{id}});
+  my $theme = $user->theme;
+  return to_json($theme);
+};
 =head
 
 Home page

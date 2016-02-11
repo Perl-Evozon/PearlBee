@@ -129,22 +129,28 @@ $(document).ready(function() {
         $('#cmn-toggle-4').on('change',function() {
             var theme = $('#cmn-toggle-4').is(':checked');
             console.log("theme:", theme);
-            if (theme === true) {
-              // $("head #theme").attr("href", "light.css");
-                $("#theme").attr("href", "/blog/css/light.css");
-               } else {
-                $("#theme").attr("href", "/blog/css/dark.css");
-               }
             $.ajax({
          //Assuming an endpoint here that responds to GETs with a response.
-                url: "/theme/update",
+                url: "/theme" ,
                 method: "POST",
                 contentType: "application/x-www-form-urlencoded",
                data: { 
                   theme: theme
                 }
             })
-
+            .done(function (data) {
+                var themeq = data.toString();
+                //var posts = JSON.parse();
+                //console.log(themeq[]);
+                if (themeq === "light") {
+                    $("#theme").attr("href", "/blog/css/light.css");
+                    $("#cmn-toggle-4").attr('checked', true);
+                    } else {
+                     $("#theme").attr("href", "/blog/css/dark.css"); 
+                     $("#cmn-toggle-4").attr('checked', false);
+                 }
+               
+        });
         });
     });
 

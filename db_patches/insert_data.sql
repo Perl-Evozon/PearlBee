@@ -23,8 +23,15 @@ INSERT INTO acl VALUES('admin',   'create user'),
                       ('author',  'delete post'),
                       ('visitor', 'view post');
 
+
 INSERT INTO theme VALUES('light'),
                         ('dark');
+
+
+INSERT INTO oauth VALUES('LinekdIn'),
+                        ('Facebook'),
+                        ('GitHub'),
+                        ('Twitter');
 
 --
 -- Administrator users are created during the import

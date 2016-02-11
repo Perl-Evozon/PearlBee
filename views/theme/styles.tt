@@ -20,9 +20,12 @@
 <link href="[% config.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="[% config.app_url %]/blog/css/style.css" rel="stylesheet">
-[% IF session.user.id %]
-<link href="/blog/css/[% session.user.theme %].css" rel="stylesheet">
-[% END %]
+<!-- <link id="theme" href="[% config.app_url %]/blog/css/dark.css" rel="stylesheet">
+ -->
+
+ [% IF session.user.id %]
+<link id="theme" href="/blog/css/[% session.user.theme %].css" rel="stylesheet">
+[% END %] 
 
 
 <!-- Favicon -->

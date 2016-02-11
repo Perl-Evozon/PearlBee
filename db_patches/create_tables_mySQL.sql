@@ -23,6 +23,16 @@ CREATE TABLE IF NOT EXISTS `theme` (
 
 
 --
+-- OAuth servers should come from a set of legitimate service names.
+--
+CREATE TABLE oauth (
+  name varchar(255) NOT NULL UNIQUE,
+  PRIMARY KEY (name),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='List of allowable OAuth services.';
+
+
+--
 -- Users now are assigned to a class when they're created.
 --
 CREATE TABLE IF NOT EXISTS `user` (
@@ -47,6 +57,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`name`),
   CONSTRAINT `user_ibfk_2` FOREIGN KEY (`theme`) REFERENCES `theme` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='User information.';
+
+
+--
+-- Users can authenticate themselves via LinkedIn, Facebook &c.
+--
+CREATE TABLE user_oauth (
+  user_id int(11) NOT NULL REFERENCES "user" (id),
+  name varchar(255) NOT NULL REFERENCES oauth (name),
+  service_id varchar(255) NOT NULL,
+  PRIMARY KEY (user_id, name, service_id),
+  CONSTRAINT `user_oath_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
+  CONSTRAINT `user_oath_ibfk_2` FOREIGN KEY (`oauth`) REFERENCES `oauth` (`name`)
+);
 
 
 --
@@ -75,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `acl` (
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(512) CHARACTER SET ucs2 NOT NULL,
+  `slug` varchar(512) CHARACTER SET ucs2 NOT NULL,
   `description` varchar(512) CHARACTER SET ucs2,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edited_date` timestamp,

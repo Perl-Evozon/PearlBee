@@ -48,7 +48,7 @@ post '/register_success' => sub {
       if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $existing_users = resultset('User')->search( { username => $params->{'username'} } )->count;
+        $existing_users = resultset('User')->search( \[ 'lower(username) = ?' => $params->{username} ] )->count;
         if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
@@ -143,14 +143,11 @@ post '/register_success' => sub {
 post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
-  
-  my $user = resultset("User")->search({
-      username => $username,
-      -or => [
-      	status => 'active',
-      	status => 'inactive'
-      ]
-    })->first;
+
+  my $user = resultset("User")->search( \[
+    "lower(username) = ? AND (status = 'active' or status = 'inactive')",
+    $username ]
+  )->first;
   
   if ( defined $user ) {
     my $password_hash = crypt( $password, $user->password );

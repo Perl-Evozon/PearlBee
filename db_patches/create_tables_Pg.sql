@@ -51,6 +51,26 @@ CREATE TABLE "user" (
 
 
 --
+-- OAuth servers should come from a set of legitimate service names.
+--
+CREATE TABLE oauth (
+  name varchar(255) NOT NULL UNIQUE,
+  PRIMARY KEY (name)
+);
+
+
+--
+-- Users can authenticate themselves via LinkedIn, Facebook &c.
+--
+CREATE TABLE user_oauth (
+  user_id integer NOT NULL REFERENCES "user" (id),
+  name varchar(255) NOT NULL REFERENCES oauth (name),
+  service_id varchar(255) NOT NULL,
+  PRIMARY KEY (user_id, name, service_id)
+);
+
+
+--
 -- User types have a set of abilities chosen from this list.
 -- The unique constraint on names means the names are effectively their own ID.
 --
@@ -76,6 +96,7 @@ CREATE TABLE acl (
 CREATE TABLE blog (
   id serial UNIQUE,
   name varchar(512) NOT NULL,
+  slug varchar(512) NOT NULL,
   description varchar(512),
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   edited_date timestamp,

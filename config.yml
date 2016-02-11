@@ -71,6 +71,7 @@ import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
 default_avatar:   '/blog/img/male-user.png'
+theme:            'light'
 
 app_url:          'http://localhost:5000'
 email_templates:  'views/emails/'

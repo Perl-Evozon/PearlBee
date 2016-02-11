@@ -9,13 +9,14 @@ package PearlBee::Author::Post;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
+use Try::Tiny;
 
 use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name string_to_slug/;
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
 use DateTime;
 
-get '/author/posts' => sub { redirect session('app_url') . '/author/posts/page/1'; };
+get '/author/posts' => sub { redirect '/author/posts/page/1'; };
 
 =head
 
@@ -119,7 +120,7 @@ get '/author/posts/publish/:id' => sub {
 
   eval { $post->publish($user); };
 
-  redirect session('app_url') . '/author/posts';
+  redirect '/author/posts';
 };
 
 =head
@@ -136,7 +137,7 @@ get '/author/posts/draft/:id' => sub {
 
   eval { $post->draft($user); };
 
-  redirect session('app_url') . '/author/posts';
+  redirect '/author/posts';
 };
 
 =head
@@ -153,7 +154,7 @@ get '/author/posts/trash/:id' => sub {
 
   eval { $post->trash($user); };
 
-  redirect session('app_url') . '/author/posts';
+  redirect '/author/posts';
 };
 
 =head
@@ -162,61 +163,68 @@ add method
 
 =cut
 
-any '/author/posts/add' => sub {
+post '/author/posts/add' => sub {
 
-  my @categories = resultset('Category')->all();
+  my $user             = session('user');
+  my @categories       = resultset('Category')->all();
+  my ($slug, $changed) = resultset('Post')->check_slug( params->{slug} );
   my $post;
+  my $cover_filename;
 
-  eval {
-      if ( params->{post} ) {
-        
-        my $user              = session('user');
-        my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug} );
-        session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
+  session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
+  try {
+    # Upload the cover image first so we'll have the generated filename
+    # if it exists
+    if ( upload('cover') ) {
+      my $cover        = upload('cover');
+      $cover_filename  = generate_crypted_filename();
+      my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
+      $ext             = lc($ext);
+      $cover_filename .= $ext;
 
-        # Upload the cover image first so we'll have the generated filename ( if exists )
-        my $cover_filename;
-        if ( upload('cover') ) {
-            my $cover        = upload('cover');
-            $cover_filename  = generate_crypted_filename();
-            my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
-            $ext             = lc($ext);
-            $cover_filename .= $ext;
+      $cover->copy_to( config->{covers_folder} . $cover_filename );
+    }
 
-            $cover->copy_to( config->{covers_folder} . $cover_filename );
-        }
+    # Next we can store the post into the database safely
+    my $params = {
+      title   => params->{title},
+      slug    => $slug,
+      content => params->{post},
+      user_id => $user->{id},
+      status  => params->{status},
+      cover   => ( $cover_filename ) ? $cover_filename : '',
+    };
+    $post = resultset('Post')->can_create($params);
 
-        # Next we can store the post into the database safely
-        my $params = {
-            title   => params->{title},
-            slug    => $slug,
-            content => params->{post},
-            user_id => $user->{id},
-            status  => params->{status},
-            cover   => ( $cover_filename ) ? $cover_filename : '',
-        };
-        $post = resultset('Post')->can_create($params);
+    # Insert the categories selected with the new post
+    resultset('PostCategory')->connect_categories( params->{categories}, $post->id, $user->{id} );
 
-        # Insert the categories selected with the new post
-        resultset('PostCategory')->connect_categories( params->{categories}, $post->id, $user->{id} );
-
-        # Connect and update the tags table
-        resultset('PostTag')->connect_tags( params->{tags}, $post->id );
-      }
+    # Connect and update the tags table
+    resultset('PostTag')->connect_tags( params->{tags}, $post->id );
+  }
+  catch {
+    error $_ if ($_);
   };
 
-  error $@ if ($@);
   # If the post was added successfully, store a success message to show on the view
   session success => 'The post was added successfully' if ( !$@ && $post );
 
   # If the user created a new post redirect him to the post created
   if ( $post ) {
-    redirect session('app_url') . '/author/posts/edit/' . $post->slug;
+    redirect '/author/posts/edit/' . $post->slug;
   }
   else {
     template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
   }
+};
 
+get '/author/posts/add' => sub {
+
+  my @categories = resultset('Category')->all();
+
+  template '/admin/posts/add',
+           { categories => \@categories },
+           { layout => 'admin' };
 };
 
 =head
@@ -235,7 +243,7 @@ get '/author/posts/edit/:slug' => sub {
   
   # Check if the author has enough permissions for editing this post
   my $user = session('user');
-  redirect session('app_url') . '/author/posts' if ( !$post->is_authorized( $user ) );
+  redirect '/author/posts' if ( !$post->is_authorized( $user ) );
   
   # Prepare tags for the UI
   my @tag_names;
@@ -244,7 +252,7 @@ get '/author/posts/edit/:slug' => sub {
 
   # Prepare the categories
   my @category_names;
-  push( @category_names, $_->tag->name ) foreach (@post_categories);
+  push( @category_names, $_->category->name ) foreach (@post_categories);
   my $joined_categories = join( ', ', @category_names );
 
 
@@ -333,7 +341,7 @@ post '/author/posts/update/:id' => sub {
 
   session success => 'The post was updated successfully!';
 
-  redirect session('app_url') . '/author/posts/edit/' . $post->slug;
+  redirect '/author/posts/edit/' . $post->slug;
 
 };
 

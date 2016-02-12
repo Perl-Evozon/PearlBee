@@ -480,7 +480,8 @@ sub map_category {
     id      => $category->{category_id},
     name    => decode_utf8($category->{category_label}),
     slug    => decode_utf8($dirified),
-    user_id => $category->{category_created_by},
+    user_id => $category->{category_author_id},
+    blog_id => $category->{category_blog_id},
   };
 }
 #$mt_category = {
@@ -490,6 +491,9 @@ sub migrate_categories {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
   my $out_sth = $out_dbh->prepare(
     'INSERT INTO category(id,name,slug,user_id) VALUES(?,?,?,?)'
+  );
+  my $out_blog_sth = $out_dbh->prepare(
+    'INSERT INTO blog_categories(blog_id,category_id) VALUES(?,?)'
   );
   $in_sth->execute();
 
@@ -501,6 +505,9 @@ sub migrate_categories {
     my $out_category = map_category($in_category);
     $out_sth->execute(
         @{$out_category}{qw( id name slug user_id )}
+    );
+    $out_blog_sth->execute(
+        @{$out_category}{qw( blog_id id )}
     );
   }
 }

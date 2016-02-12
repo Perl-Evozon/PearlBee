@@ -327,60 +327,60 @@ $(window).resize(function(){
 
 
 //button MORE - for listing page
-$('#more-posts').click(function() {
-    var button = $(this),
-        pageNumber =  +(button.attr("data-page-number")) + 1;
-
-    $('.progressloader').show();
-
-    $.ajax({
-        // Assuming an endpoint here that responds to GETs with a response.
-        url: '/page/' + pageNumber + '?format=JSON',
-        type: 'GET'
-    })
-        .done(function(data) {
-            var posts = JSON.parse(data);
-
-            // Once the server responds with the result, update the
-            //  textbox with that result.
-            for( var i= 0; i < posts.length; i++){
-                var entryItem = $(".entry").get(0),
-                    newItem = $(entryItem).clone(),
-                    commentsText;
-
-                if(posts[i].nr_of_comments ==  1){
-                    commentsText = "Comment";
-                } else{
-                    commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-                }
-
-                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                newItem.find(".post_preview_wrapper").html(posts[i].content);
-                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-                newItem.find(".user a").html(posts[i].user.username);
-                newItem.find(".post-heading h2 a").html(posts[i].title);
-                newItem.find(".comments-listings a").text(commentsText);
-                newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-                newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                newItem.find(".date").text(posts[i].created_date);
-
-
-
-                newItem.insertBefore($(".loading-posts"));
-            }
-
-            $(".truncate").dotdotdot({
-                ellipsis  : '... ',
-            });
-
-            $('.progressloader').hide();
-            button.attr("data-page-number", pageNumber);
-
-          $(".truncate").dotdotdot({
-            ellipsis  : '... ',
-          });
-        });
-});
+//$('#more-posts').click(function() {
+//    var button = $(this),
+//        pageNumber =  +(button.attr("data-page-number")) + 1;
+//
+//    $('.progressloader').show();
+//
+//    $.ajax({
+//        // Assuming an endpoint here that responds to GETs with a response.
+//        url: '/page/' + pageNumber + '?format=JSON',
+//        type: 'GET'
+//    })
+//        .done(function(data) {
+//            var posts = JSON.parse(data);
+//
+//            // Once the server responds with the result, update the
+//            //  textbox with that result.
+//            for( var i= 0; i < posts.length; i++){
+//                var entryItem = $(".entry").get(0),
+//                    newItem = $(entryItem).clone(),
+//                    commentsText;
+//
+//                if(posts[i].nr_of_comments ==  1){
+//                    commentsText = "Comment";
+//                } else{
+//                    commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+//                }
+//
+//                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+//                newItem.find(".post_preview_wrapper").html(posts[i].content);
+//                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+//                newItem.find(".user a").html(posts[i].user.username);
+//                newItem.find(".post-heading h2 a").html(posts[i].title);
+//                newItem.find(".comments-listings a").text(commentsText);
+//                newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+//                newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+//                newItem.find(".date").text(posts[i].created_date);
+//
+//
+//
+//                newItem.insertBefore($(".loading-posts"));
+//            }
+//
+//            $(".truncate").dotdotdot({
+//                ellipsis  : '... ',
+//            });
+//
+//            $('.progressloader').hide();
+//            button.attr("data-page-number", pageNumber);
+//
+//          $(".truncate").dotdotdot({
+//            ellipsis  : '... ',
+//          });
+//        });
+//});
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
@@ -606,3 +606,250 @@ $('#search-more-posts').click(function () {
     $('#tab-content1 .progressloader').show();
     getUserPosts(searchTerm, pageNumber, false);
 });
+
+//MORE BUTTON - for USER
+var pageURL = window.location.pathname.split('/');
+var newURL = pageURL[1] + "/" + pageURL[2];
+var userName = "/" + pageURL[3];
+var userURL = "posts/user";
+var tagURL = "posts/tag";
+var categoryURL = "posts/category";
+if (newURL == userURL) {
+	$("#latest_posts").addClass("hidden");
+	//button MORE - for listing page - USER
+	$('#more-posts').click(function() {
+		var button = $(this),
+			pageNumber =  +(button.attr("data-page-number")) + 1,
+			pageURL = window.location.pathname.split('/'),
+			userName = "/" + pageURL[3];
+
+		$('.progressloader').show();
+
+		$.ajax({
+			// Assuming an endpoint here that responds to GETs with a response.
+			url: '/posts/user' + userName + '/page/' + pageNumber + '?format=JSON',
+			type: 'GET'
+		})
+			.done(function(data) {
+				var posts = JSON.parse(data).posts;
+
+				// Once the server responds with the result, update the
+				//  textbox with that result.
+				for( var i= 0; i < posts.length; i++){
+					var entryItem = $(".entry").get(0),
+						newItem = $(entryItem).clone(),
+						commentsText;
+
+					if(posts[i].nr_of_comments ==  1){
+						commentsText = "Comment";
+					} else{
+						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+					}
+
+					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+					newItem.find(".post_preview_wrapper").html(posts[i].content);
+					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+					newItem.find(".user a").html(posts[i].user.username);
+					newItem.find(".post-heading h2 a").html(posts[i].title);
+					newItem.find(".comments-listings a").text(commentsText);
+					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+					newItem.find(".date").text(posts[i].created_date);
+
+					newItem.insertBefore($(".loading-posts"));
+				}
+
+				$(".truncate").dotdotdot({
+					ellipsis  : '... ',
+				});
+
+				$('.progressloader').hide();
+				button.attr("data-page-number", pageNumber);
+
+			  $(".truncate").dotdotdot({
+				ellipsis  : '... ',
+			  });
+			});
+	});
+		
+} else if (newURL == tagURL) {
+	$("#latest_posts").addClass("hidden");
+	//button MORE - for listing page - TAGS
+	$('#more-posts').click(function() {
+		var button = $(this),
+			pageNumber =  +(button.attr("data-page-number")) + 1,
+			pageURL = window.location.pathname.split('/'),
+			tagName = "/" + pageURL[3];
+		
+		$('.progressloader').show();
+
+		$.ajax({
+			// Assuming an endpoint here that responds to GETs with a response.
+			url: '/posts/tag' + tagName + '/page/' + pageNumber + '?format=JSON',
+			type: 'GET'
+		})
+			.done(function(data) {
+				var posts = JSON.parse(data).posts;
+				var nrPage = JSON.parse(data).page;
+				var maxPage = JSON.parse(data).total_pages;
+				if ( nrPage >= maxPage ) {
+					$('#view_more').addClass('hidden');
+					$('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
+				}
+				// Once the server responds with the result, update the
+				//  textbox with that result.
+				for( var i= 0; i < posts.length; i++){
+					var entryItem = $(".entry").get(0),
+						newItem = $(entryItem).clone(),
+						commentsText;
+
+					if(posts[i].nr_of_comments ==  1){
+						commentsText = "Comment";
+					} else{
+						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+					}
+
+					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+					newItem.find(".post_preview_wrapper").html(posts[i].content);
+					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+					newItem.find(".user a").html(posts[i].user.username);
+					newItem.find(".post-heading h2 a").html(posts[i].title);
+					newItem.find(".comments-listings a").text(commentsText);
+					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+					newItem.find(".date").text(posts[i].created_date);
+
+					newItem.insertBefore($(".loading-posts"));
+				}
+
+				$(".truncate").dotdotdot({
+					ellipsis  : '... ',
+				});
+
+				$('.progressloader').hide();
+				button.attr("data-page-number", pageNumber);
+
+			  $(".truncate").dotdotdot({
+				ellipsis  : '... ',
+			  });
+			});
+	});
+	
+} else if (newURL == categoryURL) {
+		$("#latest_posts").addClass("hidden");
+	//button MORE - for listing page - CATEGORY
+	$('#more-posts').click(function() {
+		var button = $(this),
+			pageNumber =  +(button.attr("data-page-number")) + 1,
+			pageURL = window.location.pathname.split('/'),
+			categoryName = "/" + pageURL[3];
+		
+		$('.progressloader').show();
+
+		$.ajax({
+			// Assuming an endpoint here that responds to GETs with a response.
+			url: '/posts/category' + categoryName + '/page/' + pageNumber + '?format=JSON',
+			type: 'GET'
+		})
+			.done(function(data) {
+				var posts = JSON.parse(data).posts;
+				var nrPage = JSON.parse(data).page;
+				var maxPage = JSON.parse(data).total_pages;
+				if ( nrPage >= maxPage ) {
+					$('#view_more').addClass('hidden');
+					$('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
+				}
+				// Once the server responds with the result, update the
+				//  textbox with that result.
+				for( var i= 0; i < posts.length; i++){
+					var entryItem = $(".entry").get(0),
+						newItem = $(entryItem).clone(),
+						commentsText;
+
+					if(posts[i].nr_of_comments ==  1){
+						commentsText = "Comment";
+					} else{
+						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+					}
+
+					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+					newItem.find(".post_preview_wrapper").html(posts[i].content);
+					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+					newItem.find(".user a").html(posts[i].user.username);
+					newItem.find(".post-heading h2 a").html(posts[i].title);
+					newItem.find(".comments-listings a").text(commentsText);
+					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+					newItem.find(".date").text(posts[i].created_date);
+
+					newItem.insertBefore($(".loading-posts"));
+				}
+
+				$(".truncate").dotdotdot({
+					ellipsis  : '... ',
+				});
+
+				$('.progressloader').hide();
+				button.attr("data-page-number", pageNumber);
+
+			  $(".truncate").dotdotdot({
+				ellipsis  : '... ',
+			  });
+			});
+	});
+} else {
+	
+//button MORE - for listing page
+$('#more-posts').click(function() {
+    var button = $(this),
+        pageNumber =  +(button.attr("data-page-number")) + 1;
+
+    $('.progressloader').show();
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/page/' + pageNumber + '?format=JSON',
+        type: 'GET'
+    })
+        .done(function(data) {
+            var posts = JSON.parse(data);
+            // Once the server responds with the result, update the
+            //  textbox with that result.
+            for( var i= 0; i < posts.length; i++){
+                var entryItem = $(".entry").get(0),
+                    newItem = $(entryItem).clone(),
+                    commentsText;
+
+                if(posts[i].nr_of_comments ==  1){
+                    commentsText = "Comment";
+                } else{
+                    commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                }
+
+                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                newItem.find(".post_preview_wrapper").html(posts[i].content);
+                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                newItem.find(".user a").html(posts[i].user.username);
+                newItem.find(".post-heading h2 a").html(posts[i].title);
+                newItem.find(".comments-listings a").text(commentsText);
+                newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+                newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                newItem.find(".date").text(posts[i].created_date);
+
+                newItem.insertBefore($(".loading-posts"));
+            }
+
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+
+            $('.progressloader').hide();
+            button.attr("data-page-number", pageNumber);
+
+          $(".truncate").dotdotdot({
+            ellipsis  : '... ',
+          });
+        });
+});
+	
+}

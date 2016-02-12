@@ -25,26 +25,21 @@
     <div class="row">
       <div class="content clearfix">
         <div class="col-md-12">
-          [% IF posts_for_user %]
-            <div class="filtered_posts">
-              <h2> <i class="icon-user"></i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
-            </div>
-          [% END %]
-          [% IF posts_for_category %]
-            <div class="filtered_posts">
-              <h2> <i class="icon-list"></i> <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
-            </div>
-          [% END %]
-          [% IF posts_for_tag %]
-            <div class="filtered_posts">
-              <h2> <i class="icon-tag"></i> <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
-            </div>
-          [% END %]
+         
            <div class="posts listings">
               <div class="col-xs-2">
               </div>
               <div class="col-xs-10 no-padding">
-                <h2 class="page-heading">Latest posts</h2>
+                <h2 id="latest_posts" class="page-heading">Latest posts</h2>
+                [% IF posts_for_tag %]
+                	<h2 class="page-heading"> Posts tagged as <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
+          		[% END %]
+          		[% IF posts_for_category %]
+              		<h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
+          		[% END %]
+          		[% IF posts_for_user %]
+              		<h2 class="page-heading"> User </i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
+          		[% END %]
               </div>
               [% FOREACH post in posts %]
         
@@ -96,7 +91,7 @@
               <div class="loading-posts">
                    <div class="col-xs-2">
                    </div>
-                   <div class="view-more col-xs-10">
+                   <div id="view_more" class="view-more col-xs-10">
                        <div class="bubble">
                            <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
                        </div>
@@ -109,6 +104,9 @@
 
                        </div>
                    </div>
+                   <div id="display_msg_posts" class="col-xs-10">
+						<h4>No more posts</h4>
+				   </div>
               </div>
 
               [% IF posts.first %]

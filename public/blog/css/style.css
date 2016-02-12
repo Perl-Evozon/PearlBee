@@ -4221,5 +4221,14 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 /* end header container */
 
-
-
+#display_msg_posts {
+    display: none;
+	text-align: center;
+	vertical-align: middle;
+	margin-top: 75px;
+	margin-bottom: 75px;
+	color: #16cbe6;
+}
+#display_msg_posts h4 {
+	font-weight: bold;
+}

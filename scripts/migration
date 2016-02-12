@@ -10,7 +10,7 @@ use String::Dirify qw( dirify );
 use Try::Tiny;
 use Getopt::Long;
 
-my ( $in_driver, $out_driver ) = ( 'mySQL', 'Pg' );
+my ( $in_driver, $out_driver ) = ( 'mysql', 'Pg' );
 my ( $in_database, $out_database ) = ( 'mt_blogs_perl_org', 'blogs_perl_org' );
 my ( $in_user, $out_user ) = ( 'root', 'jgoff' );
 my ( $in_password, $out_password ) = ( '', '' );
@@ -26,13 +26,51 @@ GetOptions(
 my $in_dsn = "dbi:$in_driver:database=$in_database";
 my $out_dsn = "dbi:$out_driver:database=$out_database";
 
-my $in_dbh = DBI->connect( $in_dsn, $in_user, $in_passwd );
-my $out_dbh = DBI->connect( $out_dsn, $out_user, $out_passwd );
+my $in_dbh = DBI->connect( $in_dsn, $in_user, $in_password );
+my $out_dbh = DBI->connect( $out_dsn, $out_user, $out_password );
 
 $|++;
 
 my $AVATAR_PATH = '/avatars';
 my $PER_USER_PATH = '/users';
+
+my %queries = (
+  insert_user => { mySQL => <<'EOS', Pg => <<'EOS' },
+INSERT INTO `user`(id,
+                   name,
+                   username,
+                   password,
+                   status,
+                   preferred_language,
+                   register_date,
+                   email,
+                   role,
+                   biography)
+            VALUES(?,?,?,?,?,?,?,?,?,?)
+EOS
+INSERT INTO "user"(id,
+                   name,
+                   username,
+                   password,
+                   status,
+                   preferred_language,
+                   register_date,
+                   email,
+                   role,
+                   biography)
+            VALUES(?,?,?,?,?,?,?,?,?,?)
+EOS
+  update_user => { mySQL => <<'EOS', Pg => <<'EOS' },
+UPDATE `user` SET avatar_path = ? WHERE id = ?
+EOS
+UPDATE "user" SET avatar_path = ? WHERE id = ?
+EOS
+  select_id => { mySQL => <<'EOS', Pg => <<'EOS' },
+SELECT id FROM `user` WHERE name = ?
+EOS
+SELECT id FROM "user" WHERE name = ?
+EOS
+);
 
 sub munge_asset_file_path {
   my $in_asset = shift;
@@ -107,19 +145,7 @@ LEFT JOIN mt_author_meta am
  ORDER BY a.author_id
 EOS
 
-  my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO `user`(id,
-                   name,
-                   username,
-                   password,
-                   status,
-                   preferred_language,
-                   register_date,
-                   email,
-                   role,
-                   biography)
-            VALUES(?,?,?,?,?,?,?,?,?,?)
-EOS
+  my $out_sth = $out_dbh->prepare( $queries{insert_user}{$out_driver} );
 
   $in_sth->execute();
 
@@ -152,9 +178,7 @@ SELECT author_id,
     ON author_userpic_asset_id = asset_id
 EOS
 
-  my $out_sth = $out_dbh->prepare( <<'EOS' );
-UPDATE `user` SET avatar_path = ? WHERE id = ?
-EOS
+  my $out_sth = $out_dbh->prepare( $queries{update_user}{$out_driver} );
 
   $in_sth->execute;
 
@@ -177,9 +201,11 @@ EOS
 
 sub map_blog {
   my $blog = shift;
+  my $dirified = dirify( $blog->{blog_name} );
   return {
     id           => $blog->{blog_id},
     name         => decode_utf8($blog->{blog_name}),
+    slug         => decode_utf8($dirified),
     description  => decode_utf8($blog->{blog_description}),
     created_date => $blog->{blog_created_on},
     edited_date  => $blog->{blog_modified_on},
@@ -256,16 +282,14 @@ sub map_blog {
 
 sub migrate_blogs {
   my $in_sth = $in_dbh->prepare( 'SELECT * FROM mt_blog ORDER BY blog_id' );
-  my $in_user_sth = $out_dbh->prepare( <<'EOS' );
-SELECT id FROM `user` WHERE name = ?
-EOS
+  my $in_user_sth = $out_dbh->prepare( $queries{select_id}{$out_driver} );
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO blog(id,name,description,created_date,edited_date)
-          VALUES(?,?,?,?,?)
+INSERT INTO blog(id,name,slug,description,created_date,edited_date)
+          VALUES(?,?,?,?,?,?)
 EOS
-
-  my $out_blog_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO blog_owners(blog_id,user_id) VALUES(?,?)
+  my $out_owner_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO blog_owners(blog_id,user_id)
+          VALUES(?,?)
 EOS
 
   $in_sth->execute;
@@ -278,7 +302,7 @@ EOS
 #last;
     my $out_blog = map_blog( $in_blog );
     $out_sth->execute(
-        @{$out_blog}{qw( id name description created_date edited_date )}
+        @{$out_blog}{qw( id name slug description created_date edited_date )}
     );
     my $in_sth = $in_user_sth->execute($out_blog->{name});
     my $in_user = $in_user_sth->fetchrow_hashref;
@@ -286,7 +310,7 @@ EOS
       warn "Skipping the system 'user' as admins are now handled elsewhere.\n";
     }
     elsif ( $in_user ) {
-      $out_blog_sth->execute($out_blog->{id},$in_user->{id});
+      $out_owner_sth->execute($out_blog->{id},$in_user->{id});
     }
     else {
 warn "Can't find a user with username '$out_blog->{name}' in the database, skipping\n";
@@ -349,7 +373,7 @@ my %post_user;
 
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
-  SELECT id, title, slug, description, contnet, created_date, status, user_id
+  SELECT *
     FROM mt_entry
 ORDER BY entry_id
 EOS
@@ -390,7 +414,6 @@ sub map_comment {
     status       => $comment->{comment_visible} == 1 ? 'approved' : 'pending',
     post_id      => $comment->{comment_entry_id},
     uid          => $comment->{comment_commenter_id},
-    reply_to     => $comment->{comment_parent_id}, # XXX Not sure here
   };
 }
 
@@ -420,9 +443,19 @@ sub map_comment {
 
 sub migrate_comments {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_comment ORDER BY comment_id');
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO comment(id,content,fullname,email,website,comment_date,status,post_id,uid,reply_to) VALUES(?,?,?,?,?,?,?,?,?,?)'
-  );
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO comment(id,
+                    content,
+                    fullname,
+                    email,
+                    website,
+                    comment_date,
+                    status,
+                    post_id,
+                    uid,
+                    reply_to)
+            VALUES(?,?,?,?,?,?,?,?,?,?)
+EOS
   $in_sth->execute();
 
   my $count  = 0;
@@ -447,7 +480,8 @@ sub map_category {
     id      => $category->{category_id},
     name    => decode_utf8($category->{category_label}),
     slug    => decode_utf8($dirified),
-    user_id => $category->{category_created_by},
+    user_id => $category->{category_author_id},
+    blog_id => $category->{category_blog_id},
   };
 }
 #$mt_category = {
@@ -457,6 +491,9 @@ sub migrate_categories {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
   my $out_sth = $out_dbh->prepare(
     'INSERT INTO category(id,name,slug,user_id) VALUES(?,?,?,?)'
+  );
+  my $out_blog_sth = $out_dbh->prepare(
+    'INSERT INTO blog_categories(blog_id,category_id) VALUES(?,?)'
   );
   $in_sth->execute();
 
@@ -468,6 +505,9 @@ sub migrate_categories {
     my $out_category = map_category($in_category);
     $out_sth->execute(
         @{$out_category}{qw( id name slug user_id )}
+    );
+    $out_blog_sth->execute(
+        @{$out_category}{qw( blog_id id )}
     );
   }
 }

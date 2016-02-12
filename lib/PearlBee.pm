@@ -86,15 +86,25 @@ Set user's theme (assuming they're logged in) to the given name.
 
 =cut
 
-post '/theme/update' => sub { # Should be PATCH
-  my $session_user = session('user');
-  return unless $session_user->{id};
-  my $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
-  my $user  = resultset('User')->find({id => $session_user->{id}});
 
-  $user->update({ theme => $theme });
+post '/theme' => sub { # Should be PATCH
+ my $session_user = session('user');
+ my $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark'; 
+ if ($session_user){   
+     return unless $session_user->{id}; 
+     #$theme = route_parameters('theme');
+     my $user  = resultset('User')->find({id => $session_user->{id}});
+     $user->update({ theme => $theme });
+     } 
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode([$theme]); 
+    session theme => $theme;
+    content_type 'application/json';
+    return to_json([$theme]);
+    return;
 };
-
 =head
 
 Home page
@@ -422,7 +432,7 @@ get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user         = resultset('User')->find({username => $username});
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     # we did not identify the user
   }
@@ -473,7 +483,7 @@ get '/posts/user/:username/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find({username => $username});
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     # we did not identify the user
   }
@@ -577,8 +587,9 @@ get '/posts/tag/:slug/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
+  my $page        = route_parameters->{'page'};
   my $tag         = resultset('Tag')->find({ slug => $slug });
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
   my @tags        = map { $_->as_hashref_sanitized }
                     map { $_->tag_objects } @posts;
@@ -609,7 +620,7 @@ get '/posts/tag/:slug/page/:page' => sub {
         recent         => \@recent,
         popular        => \@popular,
         tags           => \@tags,
-        page           => 1,
+        page           => $page,
         categories     => \@categories,
         total_pages    => $total_pages,
         next_link      => $next_link,
@@ -664,7 +675,7 @@ get '/profile/author/:username' => sub {
 
   my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find({username => $username});
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     warn "No user found for '$username'\n";
   }

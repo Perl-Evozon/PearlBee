@@ -3684,7 +3684,7 @@ background-size: cover;
 
 .tabs [id^="tab"]:checked + label,
 .tabs [id^="author-tab"]:checked + label {
-    border-bottom: 3px solid #333333;
+    border-bottom: 4px solid #333333;
     color: #333333;
 }
 

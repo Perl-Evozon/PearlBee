@@ -45,7 +45,7 @@ $(document).ready(function() {
         document.cookie='first_visit' + "=" + 1;
     });
 //  END Blog start overlay
-    
+
 //  Header
     if ($(window).width() <= 800){
         $("body").removeClass("active-overlay");
@@ -88,7 +88,7 @@ $(document).ready(function() {
         $("#header_onion_logo").css('cursor','pointer');
     });
 
-    $('pre').each(function(){ 
+    $('pre').each(function(){
         var class_name = $(this).attr('class');
         $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
     });
@@ -133,7 +133,7 @@ $(document).ready(function() {
                 url: "/theme/update",
                 method: "POST",
                 contentType: "application/x-www-form-urlencoded",
-                data: { 
+                data: {
                   theme: theme
                 }
             })
@@ -258,9 +258,9 @@ $(document).ready(function() {
       return false;
       }
     });
-	
-//	My profile password confirmation 
-	
+
+//	My profile password confirmation
+
   $("#confirmNewPassword").keyup(function() {
     if( $(this).val() !== $("#newPassword").val() ){
         $("#confirmNewPassword").addClass('error');
@@ -349,7 +349,7 @@ $('#more-posts').click(function() {
                 newItem.find(".comments-listings a").text(commentsText);
                 newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
                 newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                newItem.find(".date").text(posts[i].created_date);
+                newItem.find(".date").text(posts[i].created_date_human);
 
 
 
@@ -389,12 +389,18 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                 var posts = JSON.parse(data).posts;
                 if (posts.length === 0) {
-                    $('.no-posts').show();
-                    //$('.tabs .loading-posts').css('margin-bottom', '0');
                     $(".view-more").addClass("cut");
+                    if (pageNumber == 0) {
+                        //$('.tabs .loading-posts').css('margin-bottom', '0');
+                        $('.no-posts').show();
+                    }
                 } else {
+                    if(posts.length < 10){
+                        $(".view-more").addClass("cut");
+                    } else{
+                        $(".view-more").removeClass("cut");
+                    }
                     $('.no-posts').hide();
-                    $(".view-more").removeClass("cut");
 
                     //  textbox with that result.
                     for (var i = 0; i < posts.length; i++) {
@@ -592,4 +598,131 @@ $('#search-more-posts').click(function () {
 
     $('#tab-content1 .progressloader').show();
     getUserPosts(searchTerm, pageNumber, false);
+});
+
+
+function getAuthorEntries (button) {
+    var author = $('.author-description .author-name>a').text(),
+        pageNumber =  +(button.attr("data-page-number")) + 1;
+
+    $('.loading-author-entries .progressloader').show();
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/posts/user/' + author + '/page/' + pageNumber + '?format=JSON',
+        type: 'GET'
+    })
+        .done(function(data) {
+            var posts = JSON.parse(data).posts;
+
+            if (posts.length === 0) {
+                button.addClass('hidden');
+                //if (pageNumber == 0) {
+                //    $('.no-posts').show();
+                //}
+            } else {
+                // TODO: daca se schimba in back-end si vin cate 10 odata, schimba aici in 10
+                if (posts.length < 5) {
+                    button.addClass('hidden');
+                } else {
+                    button.removeClass('hidden');
+                }
+                // Once the server responds with the result, update the
+                //  textbox with that result.
+                for (var i = 0; i < posts.length; i++) {
+                    var entryItem = $(".author-entries .entry").get(0),
+                        newItem = $(entryItem).clone(),
+                        commentsText;
+
+                    if (posts[i].nr_of_comments == 1) {
+                        commentsText = "Comment";
+                    } else {
+                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                    }
+
+                    newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".user a").html(posts[i].user.username);
+                    newItem.find(".post-heading h2 a").html(posts[i].title);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug)
+                    newItem.find(".comments-listings a").text(commentsText);
+                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
+                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".date").text(posts[i].created_date_human);
+
+
+                    newItem.removeClass('hidden');
+                    newItem.insertBefore($(".loading-posts"));
+                }
+
+                button.attr("data-page-number", pageNumber);
+            }
+
+
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+        })
+        .always(function(){
+            $('.loading-author-entries .progressloader').hide();
+        })
+}
+//Author profile
+$('#more-author-entries').click(function (){
+    getAuthorEntries($(this));
+});
+
+// Get  author entries when clicking on tab 2
+$('input[name=author-tabs]').on('change', function () {
+    var activeTabId = $(this).attr('id');
+
+    if (activeTabId == 'author-tab2') {
+        if ($('.entry:not(.hidden)').length == 0) {
+            $('#more-author-entries').addClass('hidden');
+            getAuthorEntries($('#more-author-entries'));
+        }
+    }
+
+});
+// Get author entries when the page starts on tab 2
+$(document).ready(function () {
+    if ($('input[name=author-tabs]:checked').attr('id') == 'author-tab2') {
+        $('#more-author-entries').addClass('hidden');
+        getAuthorEntries($('#more-author-entries'));
+    }
+});
+
+//blogs for author profile
+
+$('#more-author-posts').click(function() {
+    var author = $('.author-description .author-name a').text()
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/profile/author/' + author + '?format=JSON', // add /page/number
+        type: 'GET'
+    })
+        .done(function(data){
+            var blogs = JSON.parse(data).blogs,
+                blogsEntry = $('#author-tab-content1 .info-entry').get(0);
+
+            // Once the server responds with the result, update the
+            //  textbox with that result.
+
+            for(var i= 0; i < blogs.length; i++){
+                var newBlogsEntry = $(blogsEntry).clone();
+
+                newBlogsEntry.find('.entry-name').text(blogs[i].name);
+                newBlogsEntry.find('.information-blog').text(blogs[i].description);
+                newBlogsEntry.find('.entries-count').text(blogs[i].count.post);
+                newBlogsEntry.find('.entry-slug').attr('href', '/post/' + blogs[i].slug);
+
+                newBlogsEntry.appendTo($('.author-entries-list'));
+            }
+        })
 });

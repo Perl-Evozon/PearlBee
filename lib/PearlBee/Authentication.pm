@@ -1,5 +1,6 @@
 package PearlBee::Authentication;
 
+use JSON qw//;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::reCAPTCHA;
@@ -139,6 +140,60 @@ post '/register_success' => sub {
     template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
   }
 };
+
+=head1 Add OpenAuth ID to an existing user
+
+=cut
+
+post '/oauth/:username/service/:service/service_id/:service_id' => sub {
+  my $username   = route_parameters->{'username'};
+  my $service    = route_parameters->{'service'};
+  my $service_id = route_parameters->{'service_id'};
+  my $user       = resultset('User')->find(
+    \[ 'lower(username) = ?' => $username ] );
+  error "No username specified to attach a service to"
+    unless $username;
+  error "No service name specified to attach a service to"
+    unless $service;
+  error "No service ID specified to attach a service to"
+    unless $service_id;
+  try {
+    my $user_oauth = resultset("Useroauth")->create(
+      user_id    => $user->{id},
+      service    => $service,
+      service_id => $service_id
+    );
+  }
+  catch {
+    error "Could not assign $service ID";
+  };
+};
+
+=head1 Validate OpenAuth ID for an existing user
+
+=cut
+
+get '/oauth/:service/service_id/:service_id' => sub {
+  my $service    = route_parameters->{'service'};
+  my $service_id = route_parameters->{'service_id'};
+  error "No service name specified to attach a service to"
+    unless $service;
+  error "No service ID specified to attach a service to"
+    unless $service_id;
+
+  my $user;
+  try {
+    my $user_oauth = resultset('UserOAuth')->
+                  find({ service => $service, service_id => $service_id });
+    $user       = resultset('User')->find($user->{id});
+  }
+  catch {
+    return to_json({ username => undef });
+  };
+  
+  return to_json({ username => $user->{username} });
+};
+
 
 post '/login' => sub {
   my $password = params->{password};

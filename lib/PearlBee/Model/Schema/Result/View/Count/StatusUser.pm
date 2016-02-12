@@ -19,7 +19,7 @@ __PACKAGE__->result_source_instance->view_definition(
         SUM( CASE WHEN status = 'pending'   THEN 1 ELSE 0 END ) AS pending,
       	COUNT(*)                                                AS total
       FROM
-      	user
+      	"user"
     ]
 );
 

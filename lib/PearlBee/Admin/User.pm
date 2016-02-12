@@ -59,7 +59,7 @@ get '/admin/users/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/users/list',
+  template 'admin/users/list',
     {
       users         => \@users,
       all           => $all, 
@@ -111,7 +111,7 @@ get '/admin/users/:status/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/users/list',
+  template 'admin/users/list',
     {
       users         => \@users,
       all           => $all, 

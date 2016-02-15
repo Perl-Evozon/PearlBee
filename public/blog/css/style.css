@@ -475,11 +475,12 @@ strong{
 .header .header-icon .user-logged span {
    font-size: 14px;
    color: #07001b;
+   font-family: 'Open Sans', sans-serif;
 }
 
 .header .header-icon .user-logged img {
-   width: 25px;
-   height: 25px;
+   width: 30px;
+   height: 30px;
    border-radius: 50%;
    margin-left: 5px;
 }
@@ -3174,11 +3175,16 @@ a:focus {
 /*END Sing in form*/
 
 /*START My profile page*/
+.myprofile-head .write_post {
+   display: block;
+} 
+
 .myprofile-head .write-post {
    width: 100%;
    height: 50px;  
    padding: 10px;
    font-size: 16px;
+   max-width: 215px;
 }
 .myprofile-head .write-post:hover {
    color: #0fa6bc;
@@ -4225,5 +4231,14 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 /* end header container */
 
-
-
+#display_msg_posts {
+    display: none;
+	text-align: center;
+	vertical-align: middle;
+	margin-top: 75px;
+	margin-bottom: 75px;
+	color: #16cbe6;
+}
+#display_msg_posts h4 {
+	font-weight: bold;
+}

@@ -321,7 +321,7 @@ Return the category
 
 =cut
 
-sub tag_objects {
+sub category_objects {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
   return map { $schema->resultset('Category')->find({ id => $_->category_id }) }

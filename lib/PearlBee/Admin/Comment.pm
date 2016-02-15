@@ -14,7 +14,7 @@ use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-get '/admin/comments' => sub { redirect session('app_url') . '/admin/comments/page/1' };
+get '/admin/comments' => sub { redirect '/admin/comments/page/1' };
 
 =head
 
@@ -42,7 +42,7 @@ get '/admin/comments/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,
@@ -89,7 +89,7 @@ get '/admin/comments/:status/page/:page' => sub {
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,

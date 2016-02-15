@@ -7,13 +7,15 @@
                 <img id="only-logo" src="/blog/img/only-logo.png">
             </div>
             <form id="switch-button" action="/theme" method="post">
-            <div class="switch"> 
-            [% IF session.theme == 'light' %]
+              <div class="switch"> 
+                [% IF session.theme == 'light' %]
                 <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" checked="checked" name="theme">
-            [%ELSE %]
-                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox"  name="theme">  
-            [%END%]  
-              <label for="cmn-toggle-4"></label>
+
+                [%ELSE %]
+                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox"  name="theme" >  
+                [%END%]  
+
+                <label for="cmn-toggle-4"></label>
               </div>
             </form>
             <div class="pull-right head-icons">
@@ -27,7 +29,7 @@
 [% IF session.user.id %]
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
-	        <img class="user-image" src="[% session.user.avatar %]">
+	        <img class="user-image" src="[% session.user.avatar %]"> 
 
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
@@ -38,7 +40,7 @@
                 <a href="/profile" class="pull-left">Profile</a>
               </div>
               <div class="links-group header-menu-links">
-                <a href="#" class="pull-left">Publications</a>
+                <a href="/author/posts" class="pull-left">Publications</a>
               </div>
               <div class="links-group log-out">
                 <a href="/logout" class="pull-left">Log Out</a>

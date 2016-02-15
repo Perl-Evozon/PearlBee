@@ -44,7 +44,7 @@ use Data::Dumper;
 
 hook before_template_render => sub {
   my ( $tokens ) = @_;
-  $tokens->{copyright_year} = '2015-' . ((localtime)[5]+1900);
+  $tokens->{copyright_year} = ((localtime)[5]+1900);
 };
   
 =head

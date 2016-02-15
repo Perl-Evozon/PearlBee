@@ -5,7 +5,7 @@ use Dancer2::Plugin::DBIC;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-get '/author/comments' => sub { redirect session('app_url') . '/author/comments/page/1'; };
+get '/author/comments' => sub { redirect '/author/comments/page/1'; };
 
 =head
 
@@ -35,7 +35,7 @@ get '/author/comments/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,
@@ -83,7 +83,7 @@ get '/author/comments/:status/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,
@@ -115,7 +115,7 @@ get '/author/comments/approve/:id' => sub {
 
   eval { $comment->approve($user); };
 
-  redirect session('app_url') . '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -132,7 +132,7 @@ get '/author/comments/trash/:id' => sub {
 
   eval { $comment->trash($user); };
 
-  redirect session('app_url') . '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -149,7 +149,7 @@ get '/author/comments/spam/:id' => sub {
 
   eval { $comment->spam($user); };
 
-  redirect session('app_url') . '/author/comments';
+  redirect '/author/comments';
 };
 
 =haed
@@ -166,7 +166,7 @@ get '/author/comments/pending/:id' => sub {
 
   eval { $comment->pending($user); };
 
-  redirect session('app_url') . '/author/comments';
+  redirect '/author/comments';
 };
 
 

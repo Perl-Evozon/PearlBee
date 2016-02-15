@@ -55,6 +55,12 @@ __PACKAGE__->table("blog");
   is_nullable: 0
   size: 255
 
+=head2 slug
+
+  data_type: 'varchar'
+  is_nullable: 0
+  size: 255
+
 =head2 created_date
 
   data_type: 'timestamp'
@@ -91,6 +97,8 @@ __PACKAGE__->add_columns(
   "name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "description",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
+  "slug",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "created_date",
   {
@@ -156,6 +164,7 @@ sub as_hashref {
     id           => $self->id,
     name         => $self->name,
     description  => $self->description,
+    slug         => $self->slug,
     created_date => $self->created_date,
     edited_date  => $self->edited_date,
     status       => $self->status,

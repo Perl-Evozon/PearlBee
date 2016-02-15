@@ -432,7 +432,7 @@ get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find( \[ 'lower(username) = ?' => $username ] );
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     # we did not identify the user
   }
@@ -483,7 +483,7 @@ get '/posts/user/:username/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find( \[ 'lower(username) = ?' => $username ] );
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     # we did not identify the user
   }
@@ -675,7 +675,7 @@ get '/profile/author/:username' => sub {
 
   my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find( \[ 'lower(username) = ?' => $username ] );
+  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
   unless ($user) {
     warn "No user found for '$username'\n";
   }

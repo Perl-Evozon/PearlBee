@@ -67,7 +67,7 @@ Search user posts.
 
 get '/search/user-posts/:query' => sub {
     my $search_query = route_parameters->{'query'};
-    my $user         = resultset('User')->find( \[ 'lower(username) = ?' => $search_query ] );
+    my ( $user )     = resultset('User')->search( \[ 'lower(username) = ?' => $search_query ] );
     my @posts        = resultset('Post')->search(
                         { status => 'published', user_id => $user->id },
                         { order_by => { -desc => "created_date" },

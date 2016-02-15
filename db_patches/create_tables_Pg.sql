@@ -121,6 +121,13 @@ CREATE TABLE category (
   user_id integer NOT NULL REFERENCES "user" (id)
 );
 
+
+CREATE TABLE blog_categories (
+  blog_id integer NOT NULL REFERENCES "blog" (id),
+  category_id integer NOT NULL REFERENCES "category" (id)
+);
+
+
 CREATE TYPE post_format AS ENUM (
   'HTML',
   'Markdown'

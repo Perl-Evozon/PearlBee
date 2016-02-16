@@ -445,7 +445,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.find(".comments-listings a").text(commentsText);
                         newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
                         newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                        newItem.find(".date").text(posts[i].created_date);
+                        newItem.find(".date").text(posts[i].created_date_human);
 
 
                         newItem.insertBefore($(".loading-posts"));
@@ -670,7 +670,20 @@ if (newURL == userURL) {
 					newItem.find(".comments-listings a").text(commentsText);
 					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
 					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+					newItem.find(".date").text(posts[i].created_date_human);
+
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
 					newItem.insertBefore($(".loading-posts"));
 				}
@@ -733,7 +746,20 @@ if (newURL == userURL) {
 					newItem.find(".comments-listings a").text(commentsText);
 					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
 					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+					newItem.find(".date").text(posts[i].created_date_human);
+
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
 					newItem.insertBefore($(".loading-posts"));
 				}
@@ -796,8 +822,20 @@ if (newURL == userURL) {
 					newItem.find(".comments-listings a").text(commentsText);
 					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
 					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+					newItem.find(".date").text(posts[i].created_date_human);
 
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 					newItem.insertBefore($(".loading-posts"));
 				}
 
@@ -850,7 +888,20 @@ if (newURL == userURL) {
                     newItem.find(".comments-listings a").text(commentsText);
                     newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
                     newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                    newItem.find(".date").text(posts[i].created_date);
+                    newItem.find(".date").text(posts[i].created_date_human);
+
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
                     newItem.insertBefore($(".loading-posts"));
                 }

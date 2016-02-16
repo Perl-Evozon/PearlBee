@@ -61,6 +61,9 @@
                            <div class="date">
                              [% post.created_date_human %]
                            </div>
+                             <div class="block_elements category-item hidden">
+                                 <i class="icon-list"></i> <a href=""></a>
+                             </div>
                            [% FOREACH category in post.post_categories %]
                               <div class="block_elements">
                                 <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>

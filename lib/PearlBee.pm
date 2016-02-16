@@ -44,7 +44,7 @@ use Data::Dumper;
 
 hook before_template_render => sub {
   my ( $tokens ) = @_;
-  $tokens->{copyright_year} = '2015-' . ((localtime)[5]+1900);
+  $tokens->{copyright_year} = ((localtime)[5]+1900);
 };
   
 =head
@@ -216,7 +216,8 @@ get '/post/:slug' => sub {
     $next_post     = $post->next_post;
     $previous_post = $post->previous_post;
     @post_tags     = $post->tag_objects;
-    @comments      = map { $_->as_hashref } resultset('Comment')->get_approved_comments_by_post_id($post->id);
+    @comments      = map { $_->as_hashref }
+                     resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
   template 'post',
@@ -317,35 +318,41 @@ List all posts by selected category
 
 get '/posts/category/:slug' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
+  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my $page        = 1;
+  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  unless ( @posts ) {
+    error "Could not find posts for slug '$slug'";
+  }
+  my $total_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
   my @tags        = map { $_->as_hashref_sanitized }
                     resultset('View::PublishedTags')->all();
   my @categories  = map { $_->as_hashref_sanitized }
                     resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @recent      = map { $_->as_hashref_sanitized }
+                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = map { $_->as_hashref_sanitized }
+                    resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
 
   # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/category/' . $slug);
+  my $total_pages                 = get_total_pages($total_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
 
   # Extract all posts with the wanted category
   my $template_data = {
-    posts         => \@mapped_posts,
-    recent        => \@recent,
-    popular       => \@popular,
-    tags          => \@tags,
-    page          => 1,
-    categories    => \@categories,
-    total_pages   => $total_pages,
-    next_link     => $next_link,
-    previous_link => $previous_link,
+    posts              => \@mapped_posts,
+    recent             => \@recent,
+    popular            => \@popular,
+    tags               => \@tags,
+    page               => $page,
+    categories         => \@categories,
+    total_pages        => $total_pages,
+    next_link          => $next_link,
+    previous_link      => $previous_link,
     posts_for_category => $slug
   };
 
@@ -432,7 +439,8 @@ get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
+  my ( $user )    =
+    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     # we did not identify the user
   }
@@ -481,19 +489,21 @@ List all posts by selected category
 
 get '/posts/user/:username/page/:page' => sub {
 
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
+  my $page        = route_parameters->{'page'};
+  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
+  my ( $user )    =
+    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     # we did not identify the user
+    error "Could not find posts for user '$username'"
   }
-  my $page        = route_parameters->{'page'};
   my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -502,22 +512,9 @@ get '/posts/user/:username/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/user/' . $username);
 
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode({
-        posts => \@mapped_posts,
-        tags  => \@tags,
-        user  => $user->as_hashref_sanitized,
-    }); 
-  }
-  else {
-    template 'index',
+  my $template_data =
       {
       posts         => \@mapped_posts,
-      recent        => \@recent,
-      popular       => \@popular,
       tags          => \@tags,
       categories    => \@categories,
       page          => $page,
@@ -526,6 +523,14 @@ get '/posts/user/:username/page/:page' => sub {
       previous_link => $previous_link,
       posts_for_user => $username,
       };
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'index', $template_data;
   }
 };
 
@@ -675,7 +680,8 @@ get '/profile/author/:username' => sub {
 
   my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my ( $user )    = resultset('User')->search( \[ 'lower(username) = ?' => $username ] );
+  my ( $user )    =
+    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     warn "No user found for '$username'\n";
   }

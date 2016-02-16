@@ -5,11 +5,12 @@ requires 'Dancer2'                   => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'DBIx::Class::TimeStamp';
 requires 'DateTime';
+requires 'DateTime::Format::Pg';
 requires 'Date::Period::Human';
 requires 'Digest::Bcrypt';
 requires 'Data::Entropy::Algorithms';
 requires 'Dancer2::Plugin::REST';
-requires 'Dancer2::Plugin::Feed';
+requires 'Dancer2::Plugin::Feed', '< 1.160190'; # Later versions change Atom
 requires 'Dancer2::Plugin::reCAPTCHA';
 requires 'Data::GUID';
 requires 'String::Dirify';
@@ -32,7 +33,7 @@ requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Text::Markdown';
 
-requires 'DBD::mysql';
+requires 'DBD::Pg';
 
 # speed up Dancer2
 requires 'Scope::Guard';

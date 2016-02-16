@@ -2279,11 +2279,17 @@ footer .f-logo {
 	margin-top: 5px;
 }
 
+footer .fwidget .powered-by {
+	width: 100%;
+	float: right;
+}
+
 footer .fwidget #powered_by {
     width: 82px;
     font-weight: bold;
     float: right;
 }
+
 
 /* Responsive CSS */
 
@@ -2340,8 +2346,14 @@ footer .fwidget #powered_by {
 		margin: 0 auto 30px auto;
 		float: initial;
 	}
+	footer .fwidget .powered-by {
+		float: initial;
+	}
 	footer .fwidget #powered_by {
 		margin: 0 auto;
+/*		width: 100%;*/
+/*		text-align: center;*/
+		float: initial;
 	}
 		
 /*	responsive for myprofile*/
@@ -2642,6 +2654,38 @@ footer .fwidget #powered_by {
    /*END Home-page-overlay*/
 
 }
+
+@media (max-width: 767px) {
+	footer .flinks {
+		height: 140px;
+	}
+	footer .fwidget h5 {
+		text-align: center;
+		width: 100%;
+	}
+	footer .fwidget p {
+		text-align: center;
+		margin: 0 auto;
+	}
+	footer .fwidget #copywrite_mobile {
+	display: inherit;
+	}
+	footer .fwidget #copywrite_desktop {
+	display: none;
+	}
+	footer .fwidget .footer-logo {
+		margin: 0 auto 30px auto;
+		float: initial;
+	}
+	footer .fwidget .powered-by {
+		float: initial;
+	}
+	footer .fwidget #powered_by {
+		margin: 0 auto;
+		float: initial;
+	}
+}
+
 
 /* Desktop */
 
@@ -3391,7 +3435,7 @@ background-size: cover;
         position: absolute;
         text-transform: uppercase;
         top: 50px;
-        z-index: 2147483647;
+        z-index: 998;
     }
 
     /*/button MORE*/
@@ -3688,8 +3732,9 @@ background-size: cover;
  
 }
 
-.tabs [id^="tab"]:checked + label {
-    border-bottom: 3px solid #333333;
+.tabs [id^="tab"]:checked + label,
+.tabs [id^="author-tab"]:checked + label {
+    border-bottom: 4px solid #333333;
     color: #333333;
 }
 
@@ -3699,7 +3744,10 @@ background-size: cover;
 
 #tab1:checked ~ #tab-content1,
 #tab2:checked ~ #tab-content2,
-#tab3:checked ~ #tab-content3 {
+#tab3:checked ~ #tab-content3,
+#author-tab1:checked ~ #author-tab-content1,
+#author-tab2:checked ~ #author-tab-content2,
+#author-tab3:checked ~ #author-tab-content3 {
     display: block;
 }
 

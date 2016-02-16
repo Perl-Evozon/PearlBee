@@ -616,6 +616,37 @@ sub migrate_assets {
 }
 
 
+sub update_sequences {
+  $out_dbh->do( <<'EOS' );
+select setval('user_id_seq',
+                ( select max( id ) from "user" ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('blog_id_seq',
+                ( select max( id ) from blog ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('post_id_seq',
+                ( select max( id ) from post ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('comment_id_seq',
+                ( select max( id ) from comment ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('category_id_seq',
+                ( select max( id ) from category ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('tag_id_seq',
+                ( select max( id ) from tag ) + 1, true )
+EOS
+  $out_dbh->do( <<'EOS' );
+select setval('asset_id_seq',
+                ( select max( id ) from asset ) + 1, true )
+EOS
+}
+
 ###############################################################################
 
 print "migrating users: ";
@@ -668,4 +699,8 @@ print "\n";
 
 print "migrating assets: ";
 migrate_assets;
+print "\n";
+
+print "Updating sequences: ";
+update_sequences;
 print "\n";

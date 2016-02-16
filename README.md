@@ -1,64 +1,32 @@
-<h2>PearlBee</h2>
+PearlBee
+========
+
 An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
-<h3>Version</h3>
+### Version
 1.0
 
-<h3>Setup</h3>
+Setup
+=====
+
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
-<ul>
-<li>On Ubuntu, before installing, run: sudo apt-get install libssl-dev libxml2 libxml2-dev libxml-libxml-perl libexpat1-dev libexpat1-dev libmysqld libmysqld-dev</li>
+On Ubuntu, before installing, run: sudo apt-get install libssl-dev libxml2 libxml2-dev libxml-libxml-perl libexpat1-dev libexpat1-dev
 
-<li>XML::Simple ( needs libxml : 'yum install libxml2', 'yum install libxml2-devel')</li>
-<li>Crypt::RandPasswd</li>
-<li>Dancer2</li>
-<li>Dancer2::Plugin::DBIC</li>
-<li>Dancer2::Plugin::REST</li>
-<li>Dancer2::Plugin::reCAPTCHA</li>
-<li>Data::GUID</li>
-<li>Data::Entropy::Algorithms</li>
-<li>Data::Pageset</li>
-<li>Date::Period::Human</li>
-<li>DateTime::Format::Strptime</li>
-<li>DateTime</li>
-<li>DateTime::TimeZone</li>
-<li>DateTime::Format::MySQL</li>
-<li>DateTime::Format::Pg</li>
-<li>DBI</li>
-<li>DBD::mysql and libmysqlclient-dev </li>
-<li>DBIx::Class</li>
-<li>Crypt::RandPasswd</li>
-<li>Digest::Bcrypt</li>
-<li>Digest::MD5</li>
-<li>Digest::SHA1</li>
-<li>IO::All</li>
-<li>MIME::Lite</li>
-<li>MIME::Lite::TT</li>
-<li>Email::MIME</li>
-<li>Email::Sender::Simple</li>
-<li>Email::Sender::Transport::SMTP::TLS</li>
-<li>Email::Template (use --notest if fails)</li>
-<li>Search::Elasticsearch</li>
-<li>HTML::Strip</li>
-<li>Gravatar::URL</li>
-<li>MIME::Base64</li>
-<li>Text::Markdown</li>
-<li>Moose</li>
-<li>Plack</li>
-<li>String::Dirify</li>
-<li>String::Util</li>
-<li>String::Random</li>
-<li>Template</li>
-<li>Template::Plugin::HTML::Strip</li>
-<li>Text::Unidecode</li>
-<li>Time::HiRes</li>
+After the appropriate libraries are installed, you can type:
 
-<li>You will need a MySQL/MariaDB server for the blog's database.</li>
-<li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
-</ul>
+```
+sh build.sh
+```
 
-<h4>Installing / Updating perl modules</h4>
-<pre><blockquote>./build.sh</blockquote></pre>
+to install the appropriate Perl libraries.
+
+You will also need:
+
+* PostgreSQL version 8.4.20 or higher
+* ElasticSearch
+* An SMTP database
+
+# Installing / Updating perl modules
 
 or, if cpanm is available (App::cpanminus on CPAN)
 run 
@@ -66,27 +34,44 @@ run
 in the folder where PearlBee was checked out and the Makefile.PL is.
 
 
-<h4>Creating database</h4>
-You'll need to have installed and running either MySQL or MariaDB. Update the file db_patches/create_tables.sql, replacing 'username' and 'password' with the credentials you'd like the PearlBee system to use. Add these same credentials to the user and pass sections in config.yml.
+# Creating the database
 
-At the terminal from the root application directory, run this command:
-<pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/create_tables.sql</blockquote></pre>
+Run the mkpasswd script to generate a password for your admin account:
 
-An alternative way of setting up the db is by running this command:
-<pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/set_up_new_db.sql</blockquote></pre>
+```
+$ scripts/mkpasswd <admin_username> <admin_password>
+```
 
+Paste this information into db_patches/insert_data.sql, and uncomment the INSERTINTO "user" line.
+
+From the PostgreSQL command line:
+
+```
+template1=# create database blogs_perl_org
+template1=# \c blogs_perl_org
+blogs_perl_org=# \i db_patches/create_tables_Pg.sql
+blogs_perl_org=# \i db_patches/insert_data.sql
+blogs_perl_org=# \i db_patches/update_sequences.sql
+```
+
+You should now have a working PostgreSQL database ready to accept posts.
 
 That's it, now from within the root directory run the following command:
 
-<pre><blockquote>plackup -R lib/ bin/app.pl</p></blockquote></pre>
+Starting the server
+===================
+
+```
+plackup bin/app.pl -p 5000
 
 Or:
 
-<pre><blockquote>./scripts/launch-devel</p></blockquote></pre>
+./scripts/launch-devel
+```
 
 And your blog is now running!
 
-<h3>Post-installation</h3>
+### Post-installation
 
 blogs.perl.org uses ElasticSearch for full-text searching of its database. To enable this, please install <a href="https://www.elastic.co/">ElasticSearch</a> and configure it.
 
@@ -94,9 +79,9 @@ On Linux, 'chkconfig --add elasticsearch' will add ElasticSearch on startup.
 
 You will also need to index your existing blog posts, to do that please run scripts/elasticsearch in the blogs-perl-org repository.
 
-<h3>Usage</h3>
+Admin
+=====
 
-<h4>Admin</h4>
 Once you have started your web server.
 Open your browser and go to the url http:://<YOUR_IP>:5000/admin
 Use the default login / password to enter, you should change them before starting using the blog!
@@ -104,11 +89,13 @@ via "My Account -> Profile".
 
 <pre><blockquote>http://127.0.0.1:5000/admin/
 
-user:        admin
-password: password
+user:     $admin_username
+password: $admin_password
 </blockquote></pre>
 
-<h3>PearlBee in news</h3>
+In the News
+===========
+
 <a href="http://perltricks.com/article/69/2014/2/17/Is-PearlBee-Perl-s-next-great-blogging-platform-">Is PearlBee Perl's next great blogging platform?</a> -Perl Tricks
 
 Thank you for using PearlBee!

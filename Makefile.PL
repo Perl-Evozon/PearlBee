@@ -56,8 +56,7 @@ WriteMakefile(
         'Gravatar::URL'              => 0,
         'HTML::Strip'                => 0,
 
-        'DBD::mysql'                 => 0,
-#        'DBD::Pg'                    => 0,
+        'DBD::Pg'                    => 0,
 
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

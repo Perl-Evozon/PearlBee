@@ -1,9 +1,9 @@
 <link href="/blog/css/author.css" rel="stylesheet">
 
 <div class="author-page">
-<!--author-description top-->
+    <!--author-description top-->
     <div class="container-fluid">
-        <div class="author-description">
+        <div class="author-description blog">
             <div class="container">
                 <div class="row">
                     <div class="content clearfix">
@@ -11,14 +11,26 @@
                             <div class="description clearfix">
                                 <div class="col-xs-2">
                                     <div class="bubble">
-                                        <img class="user-image" src="[% IF post.user.avatar_path %][% post.user.avatar_path %][% ELSE %]/blog/img/male-user.png[% END %]">
+                                        <img class="user-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]">
                                     </div>
                                 </div>
                                 <div class="col-xs-10">
                                     <div class="author-info">
                                         <div class="author-name">
-                                            <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                                            <a href="/posts/user/[% user.username %]">[% user.username %]</a>
                                         </div>
+
+                                        <div class="profile-description">
+                                            <p>
+                                                [% user.biography %]
+                                            </p>
+                                        </div>
+                                        <div class="rss-part">
+                                            <a href="" target="_blank">
+                                                <button id="rss" class="btn btn-primary btn-xs" type="button">RSS</button>
+                                            </a>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -27,14 +39,149 @@
                 </div>
             </div>
         </div>
+        <!--/author-description top-->
+
+        <!-- tabs-->
+        <div class="background-bar">
+            <div class="tabs">
+                <div class="container">
+                    <div class="row">
+                        <!-- Radio button and label for #tab-content1 -->
+                        <input type="radio" name="author-tabs" id="author-tab1" checked data-search-term="">
+                        <label id="blogs" for="author-tab1">
+                            <span>blogs</span>
+                        </label>
+
+                        <!-- Radio button and label for #tab-content2 -->
+                        <input type="radio" name="author-tabs" id="author-tab2" data-search-term="">
+                        <label id="entries" for="author-tab2">
+                            <span>entries</span>
+                        </label>
+
+                        <!-- Radio button and label for #tab-content3 -->
+                        <input type="radio" name="author-tabs" id="author-tab3" data-search-term="">
+                        <label id="pages" for="author-tab3">
+                            <span>pages</span>
+                        </label>
+
+                        <div id="author-tab-content1" class="tab-content">
+                            <div class="author-entries-list">
+                                [% FOREACH blog in blogs %]
+                                <div class="info-entry">
+                                    <p class="uppercase entry-name">[% blog.name %]</p>
+                                    <ul class="info-blog">
+                                        <li class="information-blog"> [% blog.description %] </li>
+                                        <li><span class="entries-count"> [% blog.count.post %] entries </span>  on the blog</li>
+                                        <li>
+                                            <a class="pull-right entry-slug" href="/post/[% blog.slug %]">Go to blog</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                [% END %]
+                            </div>
+                            <!--button more for author profile page-->
+
+                            [% IF blogs_count == 10 %]
+                            <!-- remove hidden class when multiple blogs -->
+                            <div class="loading-posts hidden" >
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="view-more col-xs-10">
+                                    <div class="bubble">
+                                        <button id="more-author-posts" data-next-page="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                                    </div>
+                                    <div style="display: none" class="progressloader">
+                                        <div class="spinner">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            [% END %]
+                        </div>
+
+                        <div id="author-tab-content2" class="tab-content">
+                            <div class="author-entries">
+                                <div class="entry clearfix hidden">
+                                    <div class="col-xs-2">
+                                    </div>
+                                    <div class="text-listing-entries col-xs-10">
+                                        <div class="bubble">
+                                            <img class="user-image" src="">
+                                        </div>
+                                        <div class="info-entry">
+                                            <div class="user">
+                                                <a href=""></a>
+                                            </div>
+                                            <div class="date">
+
+                                            </div>
+                                            [% FOREACH category in post.post_categories %]
+                                            <div class="block_elements">
+                                                <i class="icon-list"></i> <a href=""></a>
+                                            </div>
+                                            [% END %]
+                                        </div>
+                                        <div class="post-heading">
+                                            <h2><a href=""></a></h2>
+                                        </div>
+
+                                        <!-- Post cover -->
+                                        [% INCLUDE cover.tt %]
+
+                                        <!-- Post content -->
+                                        <div class="post_preview truncate">
+                                            <div class="post_preview_wrapper">
+                                                <p>
+                                                    [% post.content %]
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Read more -->
+                                        [% SET nr_of_comments = post.nr_of_comments %]
+                                        <div class="block_elements comments-listings">
+                                            <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
+                                        </div>
+                                        <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="loading-posts loading-author-entries">
+                                <div class="col-xs-2">
+                                </div>
+                                <div class="view-more col-xs-10">
+                                    <div class="bubble">
+                                        <button id="more-author-entries" data-page-number="0" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                                    </div>
+                                    <div style="display: none" class="progressloader">
+                                        <div class="spinner">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="author-tab-content3" class="tab-content">
+                            <p>We're sorry, no pages associated with this user have been found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /tabs-->
     </div>
-<!--/author-description top-->
-
 </div>
 
 
-[% FOREACH post in posts %]
-<div class="entry clearfix">
-    [% post.description %]
-</div>
-[% END %]
+<!--[% FOREACH post in posts %]-->
+<!--<div class="entry clearfix">-->
+<!--[% post.description %]-->
+<!--</div>-->
+<!--[% END %]-->

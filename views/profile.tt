@@ -17,7 +17,7 @@
 				</div>
 				
 				<div class="credentials">
-					<div class="col-sm-2">
+					<div class="col-sm-2 profile-pic">
 						<div class="bubble">
                             <img class="user-image" src="[% session.user.avatar" data-pin-nopin="true">
                         </div>

@@ -100,7 +100,7 @@ __PACKAGE__->table("comment");
 
 =cut
 
-__PACKAGE__->load_components(qw/InflateColumn::DateTime/);
+__PACKAGE__->load_components('TimeStamp');
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
@@ -117,6 +117,7 @@ __PACKAGE__->add_columns(
   "comment_date",
   {
     data_type => 'datetime',
+    set_on_create => 1,
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
     is_nullable => 0,

@@ -540,7 +540,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.find("a.btn-tag").attr("href", "/posts/tag/" + tags[i].slug);
                         newItem.find("a.btn-tag").html(tags[i].name);
 
-
                         newItem.appendTo($("#tag-list"));
                         newItem.removeClass('hidden');
                     }

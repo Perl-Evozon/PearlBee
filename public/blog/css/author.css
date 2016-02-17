@@ -1,0 +1,107 @@
+
+
+/*author profile top: description*/
+.author-description .description{
+    padding: 50px 0;
+}
+.author-name a{
+    font-size: 18px;
+}
+.author-info button{
+    padding: 10px 15px;
+    letter-spacing: 1px;
+    font-size: 15px;
+    font-weight: bold;
+}
+/*/author profile top: description*/
+
+/*tabs for author*/
+  .author-page .background-bar{
+      background-color: #dadada;
+      height: 110px;
+      width: 100%;
+  }
+    .author-page .background-bar .tabs{
+        padding-top: 15px;
+    }
+    .author-page .background-bar .tabs label{
+        line-height: 5;
+    }
+    .entry .info-entry p.uppercase{
+        text-transform: uppercase;
+    }
+
+
+    /*style for tab 1*/
+  #author-tab-content1 ul{
+      list-style-type: none;
+      padding-left: 0;
+  }
+  #author-tab-content1 ul li{
+      font-size: 17px;
+  }
+  #author-tab-content1 ul li span{
+      font-weight: bold;
+  }
+  #author-tab-content1 .info-entry{
+      border-bottom: 2px solid #DADADA;
+      padding-bottom: 25px;
+  }
+  #author-tab-content1 .info-entry p.uppercase{
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+  }
+  #author-tab-content1 .info-blog li a{
+      /*color: #000;*/
+  }
+  #author-tab-content1 .loading-posts .view-more::before{
+      display: none;
+  }
+
+  /*author-tab2*/
+    .text-listing-entries .user a{
+        font-size: 20px;
+    }
+    .text-listing-entries .date{
+        font-size: 18px;
+        color: #8a8a8d;
+        font-family: 'Open Sans';
+    }
+    #author-tab-content2 h2 a{
+        font-family: "Montserrat","Open Sans",sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #555;
+        text-decoration: none;
+    }
+    #author-tab-content2 .entry{
+        clear: both;
+        font-size: 18px;
+        line-height: 27px;
+    }
+    #author-tab-content2 .post_preview{
+        height: 81px;
+    }
+
+    /*author-tab 3*/
+    #author-tab-content2 p.message-entries,
+    #author-tab-content3 p {
+        font-size: 36px;
+        font-family: "Montserrat","Open Sans",sans-serif;
+        color: #444;
+        padding: 8%;
+        line-height: 1.1;
+    }
+
+/*/tabs for author*/
+   
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: none;
+}

@@ -350,13 +350,22 @@ sub avatar {
 sub as_hashref {
   my $self = shift;
   my $user_obj = {
-    is_admin  => $self->is_admin,
-    role      => $self->role,
-    id        => $self->id,
-    username  => $self->username,
-    avatar    => $self->avatar,
-    theme     => $self->theme,
-    biography => $self->biography,
+    id             => $self->id,
+    name           => $self->name,
+    username       => $self->username,
+    password       => $self->password,
+    register_date  => $self->register_date,
+    email          => $self->email,
+    biography      => $self->biography,
+    theme          => $self->theme,
+    avatar_path    => $self->avatar_path,
+    avatar         => $self->avatar,
+    #company        => $self->company,
+    #telephone      => $self->telephone,
+    role           => $self->role,
+    activation_key => $self->activation_key,
+    status         => $self->status,
+    is_admin       => $self->is_admin,
   };
 
   return $user_obj;

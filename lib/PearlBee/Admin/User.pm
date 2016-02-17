@@ -252,18 +252,18 @@ any '/admin/users/add' => sub {
       $dt->set_time_zone( $settings->timezone );
       
       my ($password, $pass_hash) = create_password();#, $salt) = create_password();
-      my $username   = params->{username};
-      my $email      = params->{email};
-      my $name       = params->{name};
-      my $role       = params->{role};
+      my $username = params->{username};
+      my $email    = params->{email};
+      my $name     = params->{name};
+      my $role     = params->{role};
 
       resultset('User')->create({
-        username        => $username,
-        password        => $pass_hash,
-        name            => $name,
-        register_date   => join (' ', $dt->ymd, $dt->hms),
-        role            => $role,
-        email           => $email,
+        username      => $username,
+        password      => $pass_hash,
+        name          => $name,
+        register_date => join (' ', $dt->ymd, $dt->hms),
+        role          => $role,
+        email         => $email,
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',

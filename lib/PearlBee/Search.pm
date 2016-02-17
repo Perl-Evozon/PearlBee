@@ -49,8 +49,9 @@ sub map_user {
 
 get '/search/user-info/:query' => sub {
     my $search_query = route_parameters->{'query'};
+    my $lc_query     = lc $search_query;
     my @user         = resultset('User')->
-                       search( \[ "lower(username) like '%?%'" => $search_query ] );
+                       search( \[ "lower(username) like '\%$lc_query\%'" ] );
 
     my $json = JSON->new;
     $json->allow_blessed(1);
@@ -67,7 +68,9 @@ Search user posts.
 
 get '/search/user-posts/:query' => sub {
     my $search_query = route_parameters->{'query'};
-    my ( $user )     = resultset('User')->search( \[ 'lower(username) = ?' => $search_query ] );
+    my $lc_query     = lc $search_query;
+    my ( $user )     = resultset('User')->
+                       search( \[ "lower(username) like '\%$lc_query\%'" ] );
     my @posts        = resultset('Post')->search(
                         { status => 'published', user_id => $user->id },
                         { order_by => { -desc => "created_date" },

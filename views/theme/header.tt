@@ -27,10 +27,18 @@
                 <div class="btn-group right-icon">
       					<div class="user header-icon hidden" style="display:inline-block">
 [% IF session.user.id %]
+
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
-	        <img class="user-image" src="[% session.user.avatar %]"> 
-
+              
+            
+          
+              [% IF session.theme == 'dark'%]
+               <img class="user-image" src="/blog/img/male-user.png">
+               [%ELSE%]
+               <img class="user-image" src="/blog/img/male-user-light.png">
+               [%END%]
+	       <!--  <img class="user-image" src="[% session.user.avatar %]"> -->
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
               <div class="links-group header-menu-links write-post">

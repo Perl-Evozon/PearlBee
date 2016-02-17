@@ -245,12 +245,12 @@ post '/comments' => sub {
   my $comment_text = body_parameters->get('comment');
   my $post         = resultset('Post')->find({ slug => $post_slug });
 
-  my $user        = session('user');
-  my $username    = $user->{username};
-  my $user_id     = $user->{id};
+  my $user     = session('user');
+  my $username = $user->{username};
+  my $user_id  = $user->{id};
 
-  my $parameters  = body_parameters;
-  $parameters->{id} = $post->id;
+  my $parameters     = body_parameters;
+  $parameters->{id}  = $post->id;
   $parameters->{uid} = $user_id;
 
   my @comments    = resultset('Comment')->get_approved_comments_by_post_id($post->id);
@@ -442,7 +442,7 @@ get '/posts/user/:username' => sub {
   my ( $user )    =
     resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
-    # we did not identify the user
+    error "No such user '$username'";
   }
   my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
@@ -496,7 +496,7 @@ get '/posts/user/:username/page/:page' => sub {
     resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     # we did not identify the user
-    error "Could not find posts for user '$username'"
+    error "No such user '$username'";
   }
   my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
@@ -514,13 +514,13 @@ get '/posts/user/:username/page/:page' => sub {
 
   my $template_data =
       {
-      posts         => \@mapped_posts,
-      tags          => \@tags,
-      categories    => \@categories,
-      page          => $page,
-      total_pages   => $total_pages,
-      next_link     => $next_link,
-      previous_link => $previous_link,
+      posts          => \@mapped_posts,
+      tags           => \@tags,
+      categories     => \@categories,
+      page           => $page,
+      total_pages    => $total_pages,
+      next_link      => $next_link,
+      previous_link  => $previous_link,
       posts_for_user => $username,
       };
   if ( param('format') ) {
@@ -683,7 +683,7 @@ get '/profile/author/:username' => sub {
   my ( $user )    =
     resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
-    warn "No user found for '$username'\n";
+    error "No such user '$username'";
   }
   my @blog_owners = resultset('BlogOwner')->search({user_id => $user->id });
   my @blogs;
@@ -736,9 +736,9 @@ post '/sign-up' => sub {
   my $err;
 
   my $template_params = {
-    username        => $params->{'username'},
-    email           => $params->{'email'},
-    name            => $params->{'name'},
+    username => $params->{'username'},
+    email    => $params->{'email'},
+    name     => $params->{'name'},
   };
 
   my $response = $params->{'g-recaptcha-response'};
@@ -777,13 +777,13 @@ post '/sign-up' => sub {
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
             resultset('User')->create({
-              username        => $params->{username},
-              password        => $crypt_sha,
-              email           => $params->{'email'},
-              name            => $params->{'name'},
-              register_date   => join (' ', $dt->ymd, $dt->hms),
-              role            => 'author',
-              status          => 'pending'
+              username      => $params->{username},
+              password      => $crypt_sha,
+              email         => $params->{'email'},
+              name          => $params->{'name'},
+              register_date => join (' ', $dt->ymd, $dt->hms),
+              role          => 'author',
+              status        => 'pending'
             });
 
             # Notify the author that a new comment was submited
@@ -796,12 +796,12 @@ post '/sign-up' => sub {
               Subject  => 'A new user applied as an author to the blog',
 
               tt_vars  => {
-                name             => $params->{'name'},
-                username         => $params->{'username'},
-                email            => $params->{'email'},
-                signature        => config->{email_signature},
-                blog_name        => session('blog_name'),
-                app_url          => session('app_url'),
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                email     => $params->{'email'},
+                signature => config->{email_signature},
+                blog_name => session('blog_name'),
+                app_url   => session('app_url'),
               }
             }) or error "Could not send new_user email";
 

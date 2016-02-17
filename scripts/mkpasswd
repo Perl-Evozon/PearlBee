@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Digest::SHA;
+
+my ( $username, $password ) = @ARGV;
+die "No username specified!\n" unless $username;
+die "No password specified!\n" unless $password;
+
+my @chars  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+my $salt   = join '', map $chars[ rand @chars ], 1 .. 16;
+            
+my $crypt_sha  = '$6$' . $salt . '$' .
+                 Digest::SHA::sha512_base64( $salt . $password );  
+print "$crypt_sha\n";

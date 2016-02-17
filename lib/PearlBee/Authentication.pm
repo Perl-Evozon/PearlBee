@@ -31,9 +31,9 @@ post '/register_success' => sub {
   my $err;
 
   my $template_params = {
-    username        => $params->{'username'},
-    email           => $params->{'email'},
-    name            => $params->{'name'},
+    username => $params->{'username'},
+    email    => $params->{'email'},
+    name     => $params->{'name'},
   };
 
   my $response = $params->{'g-recaptcha-response'};
@@ -72,13 +72,13 @@ post '/register_success' => sub {
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
             resultset('User')->create({
-              username        => $params->{username},
-              password        => $crypt_sha,
-              email           => $params->{'email'},
-              name            => $params->{'name'},
-              register_date   => join (' ', $dt->ymd, $dt->hms),
-              role            => 'author',
-              status          => 'pending'
+              username      => $params->{username},
+              password      => $crypt_sha,
+              email         => $params->{'email'},
+              name          => $params->{'name'},
+              register_date => join (' ', $dt->ymd, $dt->hms),
+              role          => 'author',
+              status        => 'pending'
             });
 
             # Notify the author that a new comment was submited
@@ -91,12 +91,12 @@ post '/register_success' => sub {
               Subject  => 'A new user applied as an author to the blog',
 
               tt_vars  => {
-                name             => $params->{'name'},
-                username         => $params->{'username'},
-                email            => $params->{'email'},
-                signature        => config->{email_signature},
-                blog_name        => session('blog_name'),
-                app_url          => session('app_url'),
+                name      => $params->{'name'},
+                username  => $params->{'username'},
+                email     => $params->{'email'},
+                signature => config->{email_signature},
+                blog_name => session('blog_name'),
+                app_url   => session('app_url'),
               }
             }) or error "Could not send new_user email";
 

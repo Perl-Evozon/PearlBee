@@ -46,7 +46,7 @@ plugins:
         default:
           dsn: dbi:Pg:database=blogs_perl_org;host=139.162.204.109
           schema_class: PearlBee::Model::Schema
-          user: paulm
+          user: danf
           password: 
           options:
             RaiseError:        1
@@ -73,7 +73,7 @@ images_path:      '/uploads/images'
 default_avatar:   '/blog/img/male-user.png'
 theme:            'light'
 
-app_url:          'http://localhost:5014'
+app_url:          'http://localhost:5020'
 email_templates:  'views/emails/'
 
 # Images from MovableType

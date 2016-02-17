@@ -143,16 +143,18 @@ $(document).ready(function() {
             })
             .done(function (data) {
                 var themeq = data.toString();
+                var url = window.location.href;
                 //var posts = JSON.parse();
                 //console.log(themeq[]);
                 if (themeq === "light") {
                     $("#theme").attr("href", "/blog/css/light.css");
                     $("#cmn-toggle-4").attr('checked', true);
+                    $(".user-image").attr('src', "/blog/img/male-user-light.png");
                     } else {
                      $("#theme").attr("href", "/blog/css/dark.css"); 
                      $("#cmn-toggle-4").attr('checked', false);
+                     $(".user-image").attr('src', "/blog/img/male-user.png");
                  }
-               
         });
         });
     });
@@ -162,15 +164,13 @@ $(document).ready(function() {
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
-        var slug = $("#reply_post_comment_form #slug").val();
+        var slug = $("#reply_post_comment_form #id").val();
 
         console.log(comment);
         console.log(slug);
 
-
        // e.preventDefault();
        // e.stopPropagation();
-
 
         $.ajax({
             method: "POST",

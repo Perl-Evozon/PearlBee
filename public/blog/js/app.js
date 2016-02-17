@@ -164,7 +164,7 @@ $(document).ready(function() {
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
-        var slug = $("#reply_post_comment_form #id").val();
+        var slug = $("#reply_post_comment_form #slug").val();
 
         console.log(comment);
         console.log(slug);

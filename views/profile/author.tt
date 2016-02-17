@@ -26,8 +26,8 @@
                                             </p>
                                         </div>
                                         <div class="rss-part">
-                                            <a href="" target="_blank">
-                                                <button id="rss" class="btn btn-primary btn-xs" type="button">RSS</button>
+                                            <a href="/feed/author/[% user.username %]" target="_blank">
+                                                <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
                                             </a>
                                         </div>
 

@@ -2291,6 +2291,8 @@ footer .fwidget #powered_by {
 }
 
 
+
+
 /* Responsive CSS */
 
 /* Mobile phones */
@@ -2322,6 +2324,16 @@ footer .fwidget #powered_by {
    .blog-start .close-overlay {
       margin-left: 6em;
    }
+	/* profile page */
+	.credentials .buttons-group {
+		width: 85% !important;
+	}
+	.credentials .profile-pic {
+		margin-top: 80px;
+	}
+	.myprofile-head h1 {
+		font-size: 34px;
+	}
 }
 
 @media (max-width: 480px) {
@@ -2351,8 +2363,6 @@ footer .fwidget #powered_by {
 	}
 	footer .fwidget #powered_by {
 		margin: 0 auto;
-/*		width: 100%;*/
-/*		text-align: center;*/
 		float: initial;
 	}
 		
@@ -2360,20 +2370,29 @@ footer .fwidget #powered_by {
 	.myprofile.register .container {
 		margin: 30px auto;
 	}
+	.myprofile-head h1 {
+		margin-left: 10px;
+	}
 	.myprofile-head .write-post {
 		margin-top: 5px;
 	}
+	.myprofile-head .links-group {
+		text-align: center;
+	}
 	.credentials label {
 		display: inherit !important;
+	}
+	.credentials h2 {
+		margin: 30px 0 20px 10px !important;
 	}
 	.credentials .col-sm-2 {
 		text-align: center;
 	}
 	.credentials .col-sm-10 .input-group {
-		margin-left: 40px;
+		margin: 10px auto;
+		padding: 0 10px;
 	}
 	.credentials .buttons-group {
-		width: 80% !important;
 		margin-left: 40px
 	}
 	.credentials .buttons-group label {
@@ -2381,6 +2400,9 @@ footer .fwidget #powered_by {
 	}
 	.credentials .buttons-group button {
 		width: 58px !important;
+	}
+	.credentials .form-control {
+		width: 100% !important;
 	}
 }
 
@@ -2410,6 +2432,10 @@ footer .fwidget #powered_by {
       position: initial;
       margin-left: 11em;
    }
+	/* profile page */
+	.credentials .buttons-group {
+		width: 85%;
+	}
 }
 
 @media (min-width: 481px) and (max-width: 581px) and (orientation: landscape) {
@@ -2548,6 +2574,19 @@ footer .fwidget #powered_by {
    }
 }
 
+@media (max-width: 768px) {
+	.myprofile-head .links-group {
+		text-align: center;
+	}
+	.credentials .profile-pic {
+		text-align: center;
+		padding-top: 15px;
+	}
+	.myprofile-head .links-group {
+		margin: 15px 0;
+	}
+}
+
 @media (min-width: 960px) and (max-width: 1024px) and (orientation: landscape) {
    .blog-start-wrapper {
       margin-top: 5em;
@@ -2583,12 +2622,6 @@ footer .fwidget #powered_by {
       line-height:0;
       text-align:right;
    }  
-/*
-   .header{
-      height:auto;
-      padding:15px 0px;
-   }  
-*/
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -3259,7 +3292,7 @@ a:focus {
 }
 .credentials .input-group {
    margin: 10px 0 0 70px;
-   width: 100%;
+   width: 85%;
 }
 .credentials label {
    display: table-cell;
@@ -3271,7 +3304,7 @@ a:focus {
 }
 .credentials .form-control {
    height: 50px;
-   width: 80%;
+   width: 100%;
    padding: 6px 20px;
    display: table-cell;
 }
@@ -3280,7 +3313,6 @@ a:focus {
    resize: vertical;
 }
 .credentials .buttons-group {
-   width: 85%;
    margin-right: 50px;
    margin-bottom: 50px;
 }
@@ -3295,6 +3327,7 @@ a:focus {
 .credentials .confirmNewPassword.error:focus {
    border-color: red;
 }
+
 /*END My profile page*/
 
 /* listings fumy */

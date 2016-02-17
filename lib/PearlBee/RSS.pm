@@ -3,7 +3,7 @@ package PearlBee::RSS;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::Feed;
-
+use Data::Dumper;
 use Try::Tiny;
 
 =head2
@@ -100,13 +100,45 @@ get '/feed/post/:slug' => sub {
             format  => params->{format} ||
                        config->{plugins}{feed}{format},
             title   => config->{plugins}{feed}{title},
-            entries => [ map { title => $_->fullname . " commented on " . $post->title,
-                               link => config->{app_url} . '/post/' . route_parameters->{slug} . "#comment_" . $_->id }, @comments ],
+            entries => [ map { title => $_->fullname. " commented on " . $post->title,
+                               link => '/post/' . route_parameters->{slug} . "#comment_" . $_->id }, @comments ],
         );
     }
     catch {
         my ( $exception ) = @_;
 
+        if ( $exception->does('FeedInvalidFormat') ) {
+            return $exception->message;
+        }
+        elsif ( $exception->does('FeedNoFormat') ) {
+            return $exception->message;
+        }
+        else {
+            $exception->rethrow;
+        }
+    };
+
+    return $feed;
+};
+get '/feed/author/:username' => sub {
+    my $feed;
+    my $user = resultset('User')->find({username => route_parameters->{username}});
+    my $user_id= $user->id;
+    my @posts = reverse resultset('Post')->search(
+        { user_id => $user_id },
+        { order_by => { -asc => "created_date" }, rows => 10 }
+    );
+    try {
+        $feed = create_feed(
+            format  => params->{format} ||
+                       config->{plugins}{feed}{format},
+            title   => config->{plugins}{feed}{title},
+            entries => [ map { title => $_->title,
+                link =>  '/post/' . $_->slug  }, @posts ],
+        );
+    }
+    catch {
+        my ( $exception ) = @_;
         if ( $exception->does('FeedInvalidFormat') ) {
             return $exception->message;
         }

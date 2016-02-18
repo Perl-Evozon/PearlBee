@@ -1,5 +1,6 @@
 package PearlBee::Author::Comment;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -113,7 +114,13 @@ get '/author/comments/approve/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->approve($user); };
+  try {
+    $comment->approve($user);
+  }
+  catch {
+    info $_;
+    error "Could not approve comment for $user->{username}";
+  };
 
   redirect '/author/comments';
 };

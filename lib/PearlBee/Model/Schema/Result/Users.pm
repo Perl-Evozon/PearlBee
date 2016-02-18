@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::Users;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::User - User table.
+PearlBee::Model::Schema::Result::Users - Users table.
 
 =cut
 
@@ -16,11 +16,11 @@ use Dancer2; # Pick up the default avatar
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<user>
+=head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table("user");
+__PACKAGE__->table("users");
 
 =head1 ACCESSORS
 

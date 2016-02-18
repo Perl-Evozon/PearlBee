@@ -17,7 +17,7 @@ use PearlBee::Helpers::Util qw(create_password);
 use Email::Template;
 use DateTime;
 
-get '/admin/users' => sub { redirect session('app_url') . '/admin/users/page/1'; };
+get '/admin/users' => sub { redirect '/admin/users/page/1'; };
 
 =head
 
@@ -36,8 +36,7 @@ get '/admin/users/page/:page' => sub {
     @users = resultset('Users')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   }
   
-  
-  my $count       = resultset('View::Count::StatusUser')->first;
+  my $count = resultset('View::Count::StatusUser')->first;
   
   my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   
@@ -46,7 +45,6 @@ get '/admin/users/page/:page' => sub {
     my $count_pending = resultset('Users')->search({ status => 'pending' })->count;
     $all -= $count_pending;
   }
-  
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);

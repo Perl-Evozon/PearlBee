@@ -7,6 +7,7 @@ Email: andrei.cacio@evozon.com
 
 package PearlBee::Admin::Comment;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -119,7 +120,13 @@ get '/admin/comments/approve/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->approve($user); };
+  try {
+    $comment->approve($user);
+  }
+  catch {
+    info $_;
+    error "Could not approve comment for $user->{username}";
+  };
 
   redirect request()->{headers}->{referer};
 };
@@ -136,7 +143,13 @@ get '/admin/comments/trash/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->trash($user); };
+  try {
+    $comment->trash($user);
+  }
+  catch {
+    info $_;
+    error "Could not trash comment for $user->{username}";
+  };
 
   redirect request()->{headers}->{referer};
 };
@@ -153,7 +166,13 @@ get '/admin/comments/spam/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->spam($user); };
+  try {
+    $comment->spam($user);
+  }
+  catch {
+    info $_;
+    error "Could not spam-bin comment for $user->{username}";
+  }
 
   redirect request()->{headers}->{referer};
 };
@@ -170,7 +189,14 @@ get '/admin/comments/pending/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->pending($user); };
+  try {
+    $comment->pending($user);
+  }
+  catch {
+    info $_;
+    error "Could not spam-bin comment for $user->{username}";
+  }
+
 
   redirect request()->{headers}->{referer};
 };

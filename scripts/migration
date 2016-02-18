@@ -36,39 +36,39 @@ my $PER_USER_PATH = '/users';
 
 my %queries = (
   insert_user => { mySQL => <<'EOS', Pg => <<'EOS' },
-INSERT INTO `user`(id,
-                   name,
-                   username,
-                   password,
-                   status,
-                   preferred_language,
-                   register_date,
-                   email,
-                   role,
-                   biography)
-            VALUES(?,?,?,?,?,?,?,?,?,?)
+INSERT INTO users(id,
+                  name,
+                  username,
+                  password,
+                  status,
+                  preferred_language,
+                  register_date,
+                  email,
+                  role,
+                  biography)
+           VALUES(?,?,?,?,?,?,?,?,?,?)
 EOS
-INSERT INTO "user"(id,
-                   name,
-                   username,
-                   password,
-                   status,
-                   preferred_language,
-                   register_date,
-                   email,
-                   role,
-                   biography)
-            VALUES(?,?,?,?,?,?,?,?,?,?)
+INSERT INTO users(id,
+                  name,
+                  username,
+                  password,
+                  status,
+                  preferred_language,
+                  register_date,
+                  email,
+                  role,
+                  biography)
+           VALUES(?,?,?,?,?,?,?,?,?,?)
 EOS
   update_user => { mySQL => <<'EOS', Pg => <<'EOS' },
-UPDATE `user` SET avatar_path = ? WHERE id = ?
+UPDATE users SET avatar_path = ? WHERE id = ?
 EOS
-UPDATE "user" SET avatar_path = ? WHERE id = ?
+UPDATE users SET avatar_path = ? WHERE id = ?
 EOS
   select_id => { mySQL => <<'EOS', Pg => <<'EOS' },
-SELECT id FROM `user` WHERE name = ?
+SELECT id FROM users WHERE name = ?
 EOS
-SELECT id FROM "user" WHERE name = ?
+SELECT id FROM users WHERE name = ?
 EOS
 );
 
@@ -91,10 +91,7 @@ sub map_user {
     preferred_language => $user->{author_preferred_language},
     register_date      => $user->{author_created_on},
     email              => decode_utf8($user->{author_email}),
-#    company   => # XXX not present in MT data
-#    telephone => # XXX not present in MT data
     role               => $user->{author_is_superuser} ? 'admin' : 'author',
-#    activation_key => undef, # XXX not present in MT data
     status             => $user->{author_status} == 1 ? 'active' : 'inactive',
     biography          => decode_utf8($user->{author_meta_vclob}),
   };
@@ -619,7 +616,7 @@ sub migrate_assets {
 sub update_sequences {
   $out_dbh->do( <<'EOS' );
 select setval('user_id_seq',
-                ( select max( id ) from "user" ) + 1, true )
+                ( select max( id ) from users ) + 1, true )
 EOS
   $out_dbh->do( <<'EOS' );
 select setval('blog_id_seq',

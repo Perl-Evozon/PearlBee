@@ -1,5 +1,6 @@
 package PearlBee::Admin::Tag;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -65,20 +66,24 @@ Delete method
 get '/admin/tags/delete/:id' => sub {
 
   my $tag_id = params->{id};
+  my $tag = resultset('Tag')->find( $tag_id );
 
   # Delete first all many to many dependecies for safly removal of the isolated tag
-  eval {
-    my $tag = resultset('Tag')->find( $tag_id );
+  try {
     foreach ( $tag->post_tags ) {
       $_->delete;
     }
 
     $tag->delete;
+  }
+  catch {
+    info $_;
+    error "Could not delete tag";
   };
 
   error $@ if ( $@ );
 
-  redirect session('app_url') . '/admin/tags';
+  redirect '/admin/tags';
 
 };
 
@@ -127,11 +132,15 @@ any '/admin/tags/edit/:id' => sub {
 
     }
     else {
-      eval {
+      try {
         $tag->update({
             name => $name,
             slug => $slug
           });
+      }
+      catch {
+        info $_;
+        error "Could not update tag named '$name'";
       };
 
       @tags = resultset('Tag')->all;

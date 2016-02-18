@@ -118,7 +118,13 @@ get '/author/posts/publish/:id' => sub {
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
 
-  eval { $post->publish($user); };
+  try {
+    $post->publish($user);
+  }
+  catch {
+    info $_;
+    error "Could not publish post for $user->{username}";
+  };
 
   redirect '/author/posts';
 };
@@ -135,7 +141,13 @@ get '/author/posts/draft/:id' => sub {
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
 
-  eval { $post->draft($user); };
+  try {
+    $post->draft($user);
+  }
+  catch {
+    info $_;
+    error "Could not file draft post for $user->{username}";
+  };
 
   redirect '/author/posts';
 };

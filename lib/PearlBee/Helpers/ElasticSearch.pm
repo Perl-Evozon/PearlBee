@@ -162,49 +162,6 @@ sub search_comments {
     return @results;
 }
 
-=item /search/tags:query
-
-Search tags.
-
-=cut
-
-get '/search/tags/:query' => sub {
-    my $search_query = route_parameters->{'query'};
-    my $es = Search::Elasticsearch->new(
-        trace_to => 'Stderr'    # Trace to stderr
-    );
-
-    my $error;
-    my $elastic_results;
-    my @results;
-
-    try {
-        $elastic_results = $es->search(
-            index => 'tags',
-            body => {
-                query => {
-                    match_phrase_prefix => {
-                        name => $search_query
-                    }
-                }
-            }
-        );
-        # Iterate through elastic result hits, search DB for them and push them in results
-        for (my $i = 0; $i < $elastic_results->{hits}{total}; $i++) {
-            my $rs = resultset('Tag')->find({ id => $elastic_results->{hits}{hits}[$i]{_id}});
-            push @results, {
-                id     => $rs->id,
-                name   => $rs->name,
-                slug   => $rs->slug
-            };
-        }
-    } catch {
-        $error = "Error in search: \n $_";
-    };
-
-    return Dumper(\@results);
-};
-
 =item indexDB()
 
 Index the DB for elastic
@@ -246,7 +203,7 @@ sub indexDB {
         }
     };
 
-    my $users = resultset('User')->search({});
+    my $users = resultset('Users')->search({});
     while ( my $user = $users->next()) {
         if($user->status eq 'active') {
             $es->index(

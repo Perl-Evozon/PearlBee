@@ -24,7 +24,7 @@ sub can_create {
 	my $hs = HTML::Strip->new();
         $text = $hs->parse( $text );
 
-	$user 	 = $schema->resultset('User')->find( $user->{id} );
+	$user 	 = $schema->resultset('Users')->find( $user->{id} );
 	my $fullname = $user->name;
 	my $email    = $user->email;
 

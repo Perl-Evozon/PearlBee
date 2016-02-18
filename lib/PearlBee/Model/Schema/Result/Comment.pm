@@ -172,13 +172,13 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::Users>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "uid",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::Users",
   { id => "uid" },
   {
     is_deferrable => 1,
@@ -229,7 +229,7 @@ sub is_authorized {
   my ($self, $user) = @_;
 
   my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('User')->find( $user->{id} );
+  $user          = $schema->resultset('Users')->find( $user->{id} );
   my $authorized = 0;
   $authorized    = 1 if ( $user->is_admin );
   $authorized    = 1 if ( !$user->is_admin && $self->post->user_id == $user->id );

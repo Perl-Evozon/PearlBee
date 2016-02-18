@@ -83,13 +83,13 @@ __PACKAGE__->has_many(
 
 Type: has_many
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::Users>
 
 =cut
 
 __PACKAGE__->has_many(
   "users",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::Users",
   { "foreign.role" => "self.name" },
   { cascade_copy => 0, cascade_delete => 0 },
 );

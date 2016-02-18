@@ -93,7 +93,7 @@ post '/theme' => sub { # Should be PATCH
  if ($session_user){   
      return unless $session_user->{id}; 
      #$theme = route_parameters('theme');
-     my $user  = resultset('User')->find({id => $session_user->{id}});
+     my $user  = resultset('Users')->find({id => $session_user->{id}});
      $user->update({ theme => $theme });
      } 
     my $json = JSON->new;
@@ -442,7 +442,7 @@ get '/posts/user/:username' => sub {
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
   my ( $user )    =
-    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
+    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     error "No such user '$username'";
   }
@@ -495,7 +495,7 @@ get '/posts/user/:username/page/:page' => sub {
   my $page        = route_parameters->{'page'};
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my ( $user )    =
-    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
+    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     # we did not identify the user
     error "No such user '$username'";
@@ -683,7 +683,7 @@ get '/profile/author/:username' => sub {
   my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
   my ( $user )    =
-    resultset('User')->search( \[ 'lower(username) = ?' => lc $username ] );
+    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
   unless ($user) {
     error "No such user '$username'";
   }
@@ -751,12 +751,12 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $existing_users = resultset('User')->search( { email => $params->{'email'} } )->count;
+      my $existing_users = resultset('Users')->search( { email => $params->{'email'} } )->count;
 
       if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $existing_users = resultset('User')->search( { username => $params->{'username'} } )->count;
+        $existing_users = resultset('Users')->search( { username => $params->{'username'} } )->count;
         if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
@@ -778,7 +778,7 @@ post '/sign-up' => sub {
                              '$' .
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
-            resultset('User')->create({
+            resultset('Users')->create({
               username      => $params->{username},
               password      => $crypt_sha,
               email         => $params->{'email'},
@@ -789,7 +789,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
+            my $first_admin = resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {

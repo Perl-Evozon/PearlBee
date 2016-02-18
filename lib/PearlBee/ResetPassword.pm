@@ -19,7 +19,7 @@ get '/activation' => sub {
     info "\n\n~~~~~~~~~~~~ activation link ~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
     my $token = params->{'token'};
 
-    my $user_reset_token = resultset('User')->search( {activation_key => $token} )->first();
+    my $user_reset_token = resultset('Users')->search( {activation_key => $token} )->first();
 
     if ($user_reset_token) {
         template 'set-password' => {show_input => 1,token      => $token,}, {layout => 'admin'};
@@ -36,7 +36,7 @@ any ['post', 'get'] => '/set-password' => sub {
 
     if ( $params->{'token'} ) {
 
-        my $al = resultset('User')->search( {activation_key => $params->{'token'}} )->first();
+        my $al = resultset('Users')->search( {activation_key => $params->{'token'}} )->first();
 
         if ( defined($al) ) {
 
@@ -84,7 +84,7 @@ any ['get', 'post'] => '/forgot-password' => sub {
         my $result = recaptcha_verify($secret);
         if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
 
-            my $user = resultset('User')->search( {email => $params->{email}} )->first;
+            my $user = resultset('Users')->search( {email => $params->{email}} )->first;
 
             if ($user) {
                 my $date             = DateTime->now();

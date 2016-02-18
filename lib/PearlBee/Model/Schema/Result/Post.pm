@@ -186,13 +186,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::Users>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::Users",
   { id => "user_id" },
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
@@ -292,7 +292,7 @@ sub is_authorized {
   my ($self, $user) = @_;
 
   my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('User')->find( $user->{id} );
+  $user          = $schema->resultset('Users')->find( $user->{id} );
   my $authorized = 0;
   $authorized    = 1 if ( $user->is_admin );
   $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );

@@ -122,7 +122,9 @@ get '/feed/post/:slug' => sub {
 };
 get '/feed/author/:username' => sub {
     my $feed;
-    my $user = resultset('User')->find({username => route_parameters->{username}});
+    my $username = route_parameters->{username};
+    my ( $user )    =
+      resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
     my $user_id= $user->id;
     my @posts = reverse resultset('Post')->search(
         { user_id => $user_id },

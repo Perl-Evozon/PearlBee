@@ -1,5 +1,5 @@
 use utf8;
-package PearlBee::Model::Schema::Result::User;
+package PearlBee::Model::Schema::Result::Users;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE

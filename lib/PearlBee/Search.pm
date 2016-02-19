@@ -23,9 +23,9 @@ Search user info.
 sub map_user {
     my ($user) = @_;
 
-    my $blog_count    = resultset('BlogOwner')->count({user_id => $user->id});
-    my $post_count    = resultset('Post')->count({user_id => $user->id});
-    my $comment_count = resultset('Comment')->count({uid => $user->id});
+    my $blog_count    = resultset('BlogOwner')->count({ user_id => $user->id });
+    my $post_count    = resultset('Post')->count({ user_id => $user->id });
+    my $comment_count = resultset('Comment')->count({ uid => $user->id });
 
     return
       { #id            => $user->id, # We shouldn't be exposing this.
@@ -71,8 +71,8 @@ get '/search/user-posts/:query' => sub {
     my $lc_query     = lc $search_query;
     my ( $user )     = resultset('Users')->
                        search( \[ "lower(username) like '\%$lc_query\%'" ] );
-    my @posts        = resultset('Post')->search(
-                        { status => 'published', user_id => $user->id },
+    my @posts        = resultset('Post')->search_published(
+                        { user_id => $user->id },
                         { order_by => { -desc => "created_date" },
                           rows => config->{'search'}{'user_posts'} || 10 }
     );

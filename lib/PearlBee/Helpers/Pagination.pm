@@ -3,8 +3,8 @@ package PearlBee::Helpers::Pagination;
 use Data::Pageset;
 
 require Exporter;
-our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw/get_total_pages get_previous_next_link generate_pagination_numbering/;
+our @ISA 	= qw(Exporter);
+our @EXPORT_OK	= qw/get_total_pages get_previous_next_link generate_pagination_numbering/;
 
 =head
 

@@ -107,14 +107,13 @@ sub as_hashref {
   };          
               
   return $tag_hashref;
-              
-}             
+}
 
 sub as_hashref_sanitized {
   my $self = shift;
-  my $tag_href = $self->as_hashref;
-  delete $tag_href->{id};
-  return $tag_href;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  return $href;
 }
 
 1;

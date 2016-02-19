@@ -402,10 +402,10 @@ sub as_hashref {
 
 sub as_hashref_sanitized {
   my $self = shift;
-  my $post_href = $self->as_hashref;
-  delete $post_href->{id};
-  delete $post_href->{user_id};
-  return $post_href;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  delete $href->{user_id};
+  return $href;
 }
 
 1;

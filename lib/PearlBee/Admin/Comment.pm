@@ -25,10 +25,10 @@ List all comments
 
 get '/admin/comments/page/:page' => sub {
 
-  my $nr_of_rows   = 5; # Number of posts per page
-  my $page         = params->{page} || 1;
-  my @comments     = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my $count        = resultset('View::Count::StatusComment')->first;
+  my $nr_of_rows = 5; # Number of posts per page
+  my $page       = params->{page} || 1;
+  my @comments   = resultset('Comment')->search({}, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
+  my $count      = resultset('View::Count::StatusComment')->first;
 
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
 
@@ -69,11 +69,11 @@ List all spam comments
 
 get '/admin/comments/:status/page/:page' => sub {
 
-  my $nr_of_rows   = 5; # Number of posts per page
-  my $page         = params->{page} || 1;
-  my $status       = params->{status};
-  my @comments     = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
-  my $count        = resultset('View::Count::StatusComment')->first;
+  my $nr_of_rows = 5; # Number of posts per page
+  my $page       = params->{page} || 1;
+  my $status     = params->{status};
+  my @comments   = resultset('Comment')->search({ status => $status  }, { order_by => { -desc => "comment_date" }, rows => $nr_of_rows, page => $page });
+  my $count      = resultset('View::Count::StatusComment')->first;
 
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
   my $status_count                              = $count->get_status_count($status);

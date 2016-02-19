@@ -31,10 +31,10 @@ list all posts method per page
 
 get '/admin/posts/page/:page' => sub {
 
-    my $nr_of_rows  = 5; # Number of posts per page
-    my $page        = params->{page};
-    my @posts       = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
-    my $count       = resultset('View::Count::StatusPost')->first;
+    my $nr_of_rows = 5; # Number of posts per page
+    my $page       = params->{page};
+    my @posts      = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $count      = resultset('View::Count::StatusPost')->first;
 
     my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
 
@@ -74,10 +74,10 @@ list all published posts
 
 get '/admin/posts/:status/page/:page' => sub {
 
-    my $nr_of_rows  = 5; # Number of posts per page
-    my $page        = params->{page} || 1;
-    my $status      = params->{status};
-    my @posts       = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $nr_of_rows = 5; # Number of posts per page
+    my $page       = params->{page} || 1;
+    my $status     = params->{status};
+    my @posts      = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
     my $count      = resultset('View::Count::StatusPost')->first;
 
     my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
@@ -310,13 +310,13 @@ update method
 
 post '/admin/posts/update/:id' => sub {
 
-    my $post_id   = params->{id};
-    my $post      = resultset('Post')->find({ id => $post_id });
-    my $title     = params->{title};
-    my $content   = params->{post};
-    my $tags      = params->{tags};
+    my $post_id = params->{id};
+    my $post    = resultset('Post')->find({ id => $post_id });
+    my $title   = params->{title};
+    my $content = params->{post};
+    my $tags    = params->{tags};
 
-    my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug}, $post->id );
+    my ($slug, $changed) = resultset('Post')->check_slug( params->{slug}, $post->id );
     session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
     try {

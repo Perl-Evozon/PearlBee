@@ -23,7 +23,7 @@ DROP TABLE acl;
 DROP TABLE ability;
 DROP TABLE user_oauth;
 DROP TABLE oauth;
-DROP TABLE "user";
+DROP TABLE users;
 DROP TABLE theme;
 
 DROP TYPE active_state;

@@ -44,7 +44,7 @@ post '/register_success' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $existing_users = resultset('Users')->search( { email => $params->{'email'} } )->count;
+      my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
 
       if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
@@ -56,11 +56,6 @@ post '/register_success' => sub {
 
           # Create the user
           if ( $params->{'username'} ) {
-
-            # Set the proper timezone
-            my $dt       = DateTime->now;
-            my $settings = resultset('Setting')->first;
-            $dt->set_time_zone( $settings->timezone );
 
             # Match encryption from MT
             my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
@@ -76,7 +71,6 @@ post '/register_success' => sub {
               password      => $crypt_sha,
               email         => $params->{'email'},
               name          => $params->{'name'},
-              register_date => join (' ', $dt->ymd, $dt->hms),
               role          => 'author',
               status        => 'pending'
             });

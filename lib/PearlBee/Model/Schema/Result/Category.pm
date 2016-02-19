@@ -177,9 +177,9 @@ sub as_hashref {
 
 sub as_hashref_sanitized {
   my $self = shift;
-  my $category_href = $self->as_hashref;
-  delete $category_href->{id};
-  return $category_href;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  return $href;
 }
 
 1;

@@ -39,9 +39,7 @@ sub can_create {
   return $post;
 }
 
-=haed
-
-Check if the slug is already used, if so generate a new slug or return the old one
+=item Check if the slug is already used, if so generate a new slug or return the old one
 
 =cut
 
@@ -164,6 +162,13 @@ sub get_recent_posts {
   			-desc => "created_date"
   		}, rows => 3
 	});
+}
+
+sub search_published {
+  my ( $self, @args ) = @_;
+
+  $args[0]{status} = 'published';
+  return $self->search( @args );
 }
 
 1;

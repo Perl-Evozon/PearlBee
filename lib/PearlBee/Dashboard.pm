@@ -71,16 +71,16 @@ any '/profile' => sub {
   my $name  = params->{name};
   my $email = params->{email};
 
-  my $old_password   = params->{old_password};
-  my $new_password   = params->{new_password};
-  my $new_password2  = params->{new_password2};
+  my $old_password  = params->{old_password};
+  my $new_password  = params->{new_password};
+  my $new_password2 = params->{new_password2};
 
   if ( $name && $email ) {
 
     $user->update({
-        name  => $name,
-        email => $email
-      });
+      name  => $name,
+      email => $email
+    });
 
     template 'admin/profile', { user => $user, success => 'Your data was updated succesfully!' }, { layout => 'admin' };
 

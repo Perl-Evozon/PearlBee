@@ -1,5 +1,6 @@
 package PearlBee::Admin::Tag;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -7,9 +8,7 @@ use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Util qw(string_to_slug);
 
-=haed
-
-List all tags
+=item List all tags
 
 =cut
 
@@ -21,9 +20,7 @@ get '/admin/tags' => sub {
 
 };
 
-=head
-
-Add a new tag
+=item Add a new tag
 
 =cut
 
@@ -42,11 +39,14 @@ post '/admin/tags/add' => sub {
     template 'admin/tags/list', { warning => "The tag name or slug already exists", tags => \@tags } , { layout => 'admin' };
   }
   else {
-    eval {
+    try {
       my $tag = resultset('Tag')->create({
-          name   => $name,
-          slug   => $slug
-        });
+        name   => $name,
+        slug   => $slug
+      });
+    }
+    catch {
+      info "Could not creatag named '$name'";
     };
 
     @tags = resultset('Tag')->all;
@@ -56,35 +56,33 @@ post '/admin/tags/add' => sub {
 
 };
 
-=head
-
-Delete method
+=item Delete method
 
 =cut
 
 get '/admin/tags/delete/:id' => sub {
 
   my $tag_id = params->{id};
+  my $tag    = resultset('Tag')->find( $tag_id );
 
   # Delete first all many to many dependecies for safly removal of the isolated tag
-  eval {
-    my $tag = resultset('Tag')->find( $tag_id );
+  try {
     foreach ( $tag->post_tags ) {
       $_->delete;
     }
 
     $tag->delete;
+  }
+  catch {
+    info $_;
+    error "Could not delete tag";
   };
 
-  error $@ if ( $@ );
-
-  redirect session('app_url') . '/admin/tags';
+  redirect '/admin/tags';
 
 };
 
-=head
-
-edit method
+=item edit method
 
 =cut
 
@@ -106,42 +104,46 @@ any '/admin/tags/edit/:id' => sub {
     if ( $found_slug ) {
 
       template 'admin/tags/list',
-      {
+        {
         tag     => $tag,
-        tags   => \@tags,
+        tags    => \@tags,
         warning => 'The tag slug already exists'
-      },
-      { layout => 'admin' };
+        },
+        { layout => 'admin' };
 
     }
     # Check if the user entered an existing name
     elsif ( $found_name ) {
 
       template 'admin/tags/list',
-      {
+        {
         tag     => $tag,
-        tags   => \@tags,
+        tags    => \@tags,
         warning => 'The tag name already exists'
-      },
+        },
       { layout => 'admin' };
 
     }
     else {
-      eval {
+      try {
         $tag->update({
-            name => $name,
-            slug => $slug
-          });
+          name => $name,
+          slug => $slug
+        });
+      }
+      catch {
+        info $_;
+        error "Could not update tag named '$name'";
       };
 
       @tags = resultset('Tag')->all;
 
       template 'admin/tags/list',
-      {
+        {
         tag     => $tag,
-        tags   => \@tags,
+        tags    => \@tags,
         success => 'The tag was updated successfully'
-      },
+        },
       { layout => 'admin' };
     }
   }
@@ -149,8 +151,8 @@ any '/admin/tags/edit/:id' => sub {
     # If the form wasn't submited just list the tags
     template 'admin/tags/list',
       {
-        tag   => $tag,
-        tags  => \@tags
+      tag  => $tag,
+      tags => \@tags
       },
       { layout => 'admin' };
   }

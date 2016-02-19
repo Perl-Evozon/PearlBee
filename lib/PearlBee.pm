@@ -8,18 +8,19 @@ use Dancer2::Plugin::reCAPTCHA;
 # Other used modules
 use DateTime;
 use JSON qw//;
-use Text::Markdown qw( markdown );
 use Try::Tiny;
 use Digest::SHA;
 
 # Included controllers
+use PearlBee::Profile;
+use PearlBee::Post;
 
 # Common controllers
 use PearlBee::Authentication;
 use PearlBee::Authorization;
 use PearlBee::Dashboard;
 use PearlBee::REST;
-use PearlBee::RSS;
+use PearlBee::Feed;
 use PearlBee::ResetPassword;
 use PearlBee::Search;
 
@@ -53,7 +54,7 @@ Prepare the blog path
 
 =cut
 
-hook 'before' => sub {
+hook before => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
   session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
   session multiuser => resultset('Setting')->first->multiuser;
@@ -80,32 +81,33 @@ get '/avatars/*' => sub {
     send_file $file;
 };
 
-=item /theme/:name
+=item /theme
 
 Set user's theme (assuming they're logged in) to the given name.
 
 =cut
 
 
-post '/theme' => sub { # Should be PATCH
- my $session_user = session('user');
- my $theme = body_parameters->get('theme') eq 'true' ? 'light' : 'dark'; 
- if ($session_user){   
+post '/theme' => sub {
+
+  my $session_user = session('user');
+  my $theme        = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
+  if ($session_user) {
      return unless $session_user->{id}; 
-     #$theme = route_parameters('theme');
-     my $user  = resultset('Users')->find({id => $session_user->{id}});
+     my $user = resultset('Users')->find({ id => $session_user->{id} });
      $user->update({ theme => $theme });
-     } 
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode([$theme]); 
-    session theme => $theme;
-    content_type 'application/json';
-    return to_json([$theme]);
-    return;
+  } 
+  my $json = JSON->new;
+  $json->allow_blessed(1);
+  $json->convert_blessed(1);
+  $json->encode([$theme]); 
+
+  session theme => $theme;
+  content_type 'application/json';
+  return to_json([$theme]);
 };
-=head
+
+=item /
 
 Home page
 
@@ -113,11 +115,11 @@ Home page
 
 get '/' => sub {
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
+  my @posts       = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search_published({})->count;
   my @tags        = resultset('View::PublishedTags')->all();
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent      = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
@@ -126,28 +128,23 @@ get '/' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
   
-    template 'index',
-      {
-        posts         => \@mapped_posts,
-        recent        => \@recent,
-        popular       => \@popular,
-        tags          => \@tags,
-        categories    => \@categories,
-        page          => 1,
-        total_pages   => $total_pages,
-        previous_link => $previous_link,
-        next_link     => $next_link
+  template 'index',
+    {
+      posts         => \@mapped_posts,
+      recent        => \@recent,
+      popular       => \@popular,
+      tags          => \@tags,
+      categories    => \@categories,
+      page          => 1,
+      total_pages   => $total_pages,
+      previous_link => $previous_link,
+      next_link     => $next_link
     };
 };
 
-get '/search' => sub {
-  template 'searchresults';
-};
+get '/search' => sub { template 'searchresults' };
 
-
-=head
-
-Home page
+=item /page/:page - Home paging
 
 =cut
 
@@ -155,11 +152,11 @@ get '/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $page        = route_parameters->{'page'};
-  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
+  my @posts       = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my $nr_of_posts = resultset('Post')->search_published({})->count;
   my @tags        = resultset('View::PublishedTags')->all();
   my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @recent      = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
@@ -194,46 +191,6 @@ get '/page/:page' => sub {
   }
 };
 
-
-=head
-
-View post method
-
-=cut
-
-get '/post/:slug' => sub {
-
-  my $slug          = route_parameters->{'slug'};
-  my $post          = resultset('Post')->find({ slug => $slug });
-  my $settings      = resultset('Setting')->first;
-  my @tags          = resultset('View::PublishedTags')->all();
-  my @categories    = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->get_recent_posts();
-  my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  my ($next_post, $previous_post, @post_tags, @comments);
-  if ( $post and $post->id ) {
-    $next_post     = $post->next_post;
-    $previous_post = $post->previous_post;
-    @post_tags     = $post->tag_objects;
-    @comments      = map { $_->as_hashref }
-                     resultset('Comment')->get_approved_comments_by_post_id($post->id);
-  }
-
-  template 'post',
-    {
-      post          => $post,
-      next_post     => $next_post,
-      previous_post => $previous_post,
-      recent        => \@recent,
-      popular       => \@popular,
-      categories    => \@categories,
-      comments      => \@comments,
-      setting       => $settings,
-      tags          => \@post_tags,
-    };
-};
-
 =head
 
 Add a comment method
@@ -254,10 +211,6 @@ post '/comments' => sub {
   $parameters->{id}  = $post->id;
   $parameters->{uid} = $poster_id;
   
-  my @comments     = resultset('Comment')->get_approved_comments_by_post_id($post->id);
-  my @categories   = resultset('Category')->all();
-  my @recent       = resultset('Post')->get_recent_posts();
-  my @popular      = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
   my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
 
@@ -312,340 +265,6 @@ post '/comments' => sub {
   return to_json(\%result);
 };
 
-=head
-
-List all posts by selected category
-
-=cut
-
-get '/posts/category/:slug' => sub {
-
-  my $slug        = route_parameters->{'slug'};
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = 1;
-  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  unless ( @posts ) {
-    error "Could not find posts for slug '$slug'";
-  }
-  my $total_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedTags')->all();
-  my @categories  = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = map { $_->as_hashref_sanitized }
-                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = map { $_->as_hashref_sanitized }
-                    resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($total_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
-
-  # Extract all posts with the wanted category
-  my $template_data = {
-    posts              => \@mapped_posts,
-    recent             => \@recent,
-    popular            => \@popular,
-    tags               => \@tags,
-    page               => $page,
-    categories         => \@categories,
-    total_pages        => $total_pages,
-    next_link          => $next_link,
-    previous_link      => $previous_link,
-    posts_for_category => $slug
-  };
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }     
-  else {
-    template 'index', $template_data;
-  }
-};
-
-=head
-
-List all posts by selected category
-
-=cut
-
-get '/posts/category/:slug/page/:page' => sub {
-
-  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
-  my $page        = route_parameters->{'page'};
-  my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    map { $_->tag_objects } @posts;
-  my @categories  = map { $_->as_hashref_sanitized }
-                    map { $_->category_objects } @posts;
-  my @recent      = map { $_->as_hashref_sanitized }
-                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = map { $_->as_hashref_sanitized }
-                    resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-  my $movable_type_url = config->{movable_type_url};
-  my $app_url = config->{app_url};
-
-  for my $post ( @mapped_posts ) {
-    $post->{content} =~ s{$movable_type_url}{$app_url}g;
-  }
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/category/' . $slug);
-
-  # Extract all posts with the wanted category
-  my $template_data =
-    {
-    posts              => \@mapped_posts,
-    recent             => \@recent,
-    popular            => \@popular,
-    tags               => \@tags,
-    categories         => \@categories,
-    page               => $page,
-    total_pages        => $total_pages,
-    next_link          => $next_link,
-    previous_link      => $previous_link,
-    posts_for_category => $slug
-    };
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }
-  else {
-    template 'index', $template_data;
-  }     
-
-};
-
-=head
-
-List all posts by selected author
-
-=cut
-
-get '/posts/user/:username' => sub {
-
-  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
-  my $username    = route_parameters->{'username'};
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
-  unless ($user) {
-    error "No such user '$username'";
-  }
-  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-  my $movable_type_url = config->{movable_type_url};
-  my $app_url = config->{app_url};
-
-  for my $post ( @mapped_posts ) {
-    $post->{content} =~ s{$movable_type_url}{$app_url}g;
-  }
-
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
-
-  # Extract all posts with the wanted category
-  template 'index',
-      {
-        posts          => \@mapped_posts,
-        recent         => \@recent,
-        popular        => \@popular,
-        tags           => \@tags,
-        page           => 1,
-        categories     => \@categories,
-        total_pages    => $total_pages,
-        next_link      => $next_link,
-        previous_link  => $previous_link,
-        posts_for_user => $username,
-    };
-};
-
-=head
-
-List all posts by selected category
-
-=cut
-
-get '/posts/user/:username/page/:page' => sub {
-
-  my $username    = route_parameters->{'username'};
-  my $page        = route_parameters->{'page'};
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
-  unless ($user) {
-    # we did not identify the user
-    error "No such user '$username'";
-  }
-  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    map { $_->tag_objects } @posts;
-  my @categories  = map { $_->as_hashref_sanitized }
-                    map { $_->category_objects } @posts;
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/user/' . $username);
-
-  my $template_data =
-      {
-      posts          => \@mapped_posts,
-      tags           => \@tags,
-      categories     => \@categories,
-      page           => $page,
-      total_pages    => $total_pages,
-      next_link      => $next_link,
-      previous_link  => $previous_link,
-      posts_for_user => $username,
-      };
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }
-  else {
-    template 'index', $template_data;
-  }
-};
-
-=head
-
-List all posts by selected tag
-
-=cut
-
-get '/posts/tag/:slug' => sub {
-
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized } resultset('View::PublishedTags')->all();
-  my @categories  = map { $_->as_hashref_sanitized } resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = map { $_->as_hashref_sanitized } resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = map { $_->as_hashref_sanitized } resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
-
-  my $template_data = {
-    posts         => \@mapped_posts,
-    recent        => \@recent,
-    popular       => \@popular,
-    tags          => \@tags,
-    page          => 1,
-    categories    => \@categories,
-    total_pages   => $total_pages,
-    next_link     => $next_link,
-    previous_link => $previous_link,
-    posts_for_tag => $slug
-  };
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }     
-  else {
-    template 'index', $template_data;
-  }
-};
-
-=head
-
-List all posts by selected tag
-
-=cut
-
-get '/posts/tag/:slug/page/:page' => sub {
-
-  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
-  my $slug        = route_parameters->{'slug'};
-  my $page        = route_parameters->{'page'};
-  my $tag         = resultset('Tag')->find({ slug => $slug });
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    map { $_->tag_objects } @posts;
-  my @categories  = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = map { $_->as_hashref_sanitized }
-                    resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = map { $_->as_hashref_sanitized }
-                    resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-  my $movable_type_url = config->{movable_type_url};
-  my $app_url = config->{app_url};
-
-  for my $post ( @mapped_posts ) {
-    $post->{content} =~ s{$movable_type_url}{$app_url}g;
-  }
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/tag/' . $slug);
-
-  # Extract all posts with the wanted category
-  my $template_data =
-      {
-        posts          => \@mapped_posts,
-        recent         => \@recent,
-        popular        => \@popular,
-        tags           => \@tags,
-        page           => $page,
-        categories     => \@categories,
-        total_pages    => $total_pages,
-        next_link      => $next_link,
-        previous_link  => $previous_link,
-#        posts_for_user => $username,
-    };
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }
-  else {
-    template 'index', $template_data;
-  }     
-};
-
 get '/register' => sub {
    
   template 'register', {
@@ -654,76 +273,11 @@ get '/register' => sub {
 
 };
 
-get '/register_success' => sub {
-   
-  template 'register_success';
+get '/register_success' => sub { template 'register_success' };
 
-};
+get '/register_done' => sub { template 'register_done' };
 
-get '/register_done' => sub {
-   
-  template 'register_done';
-
-};
-
-get '/password_recovery' => sub {
-
-  template 'password_recovery';
-
-};
-
-get '/profile' => sub {
-
-  template 'profile';
-
-};
-
-get '/profile/author/:username' => sub {
-
-  my $nr_of_rows  = config->{blogs_on_page} || 5; # Number of posts per page
-  my $username    = route_parameters->{'username'};
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
-  unless ($user) {
-    error "No such user '$username'";
-  }
-  my @blog_owners = resultset('BlogOwner')->search({user_id => $user->id });
-  my @blogs;
-  for my $blog_owner ( @blog_owners ) {
-    push @blogs, map { $_->as_hashref_sanitized }
-                 resultset('Blog')->find({id => $blog_owner->blog_id });
-  }
-  my @posts = resultset('Post')->search({user_id => $user->id });
-  my @post_tags;
-  for my $post ( @posts ) {
-    push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;
-  }
-  for my $blog ( @blogs ) {
-    $blog->{count} = {
-      owners => 1,
-      post   => scalar @posts,
-      tag    => scalar @post_tags,
-    };
-    $blog->{post_tags} = \@post_tags;
-  }
-
-  my $template_data = {
-      blogs      => \@blogs,
-      blog_count => scalar @blogs,
-      user       => $user->as_hashref_sanitized,
-  }; 
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }     
-  else {
-    template 'profile/author', $template_data;
-  }
-
-};
+get '/password_recovery' => sub { template 'password_recovery' };
 
 get '/sign-up' => sub {
 
@@ -744,30 +298,24 @@ post '/sign-up' => sub {
   };
 
   my $response = $params->{'g-recaptcha-response'};
-  my $result = recaptcha_verify($response);
-
+  my $result   = recaptcha_verify($response);
 
   if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secrete code
-    eval {
+    try {
 
-      my $existing_users = resultset('Users')->search( { email => $params->{'email'} } )->count;
+      my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
 
       if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $existing_users = resultset('Users')->search( { username => $params->{'username'} } )->count;
+        $existing_users = resultset('Users')->search({ username => $params->{'username'} })->count;
         if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
 
           # Create the user
           if ( $params->{'username'} ) {
-
-            # Set the proper timezone
-            my $dt       = DateTime->now;
-            my $settings = resultset('Setting')->first;
-            $dt->set_time_zone( $settings->timezone );
 
             # Match encryption from MT
             my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
@@ -779,25 +327,24 @@ post '/sign-up' => sub {
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
             resultset('Users')->create({
-              username      => $params->{username},
-              password      => $crypt_sha,
-              email         => $params->{'email'},
-              name          => $params->{'name'},
-              register_date => join (' ', $dt->ymd, $dt->hms),
-              role          => 'author',
-              status        => 'pending'
+              username => $params->{username},
+              password => $crypt_sha,
+              email    => $params->{'email'},
+              name     => $params->{'name'},
+              role     => 'author',
+              status   => 'pending'
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
+            my $first_admin = resultset('Users')->search({ role => 'admin', status => 'active' })->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
-              From     => config->{default_email_sender},
-              To       => $first_admin->email,
-              Subject  => 'A new user applied as an author to the blog',
+              From    => config->{default_email_sender},
+              To      => $first_admin->email,
+              Subject => 'A new user applied as an author to the blog',
 
-              tt_vars  => {
+              tt_vars => {
                 name      => $params->{'name'},
                 username  => $params->{'username'},
                 email     => $params->{'email'},
@@ -813,11 +360,11 @@ post '/sign-up' => sub {
             Email::Template->send( config->{email_templates} .
                                    'activation_email.tt',
             {
-              From     => config->{default_email_sender},
-              To       => $params->{'email'},
-              Subject  => 'Welcome to Blogs.Perl.Org',
+              From    => config->{default_email_sender},
+              To      => $params->{'email'},
+              Subject => 'Welcome to Blogs.Perl.Org',
 
-              tt_vars  => {
+              tt_vars => {
                 name      => $params->{'name'},
                 username  => $params->{'username'},
                 mail_body => "/activation?token=$token",
@@ -829,8 +376,10 @@ post '/sign-up' => sub {
           }
         }
       }
+    }
+    catch {
+      error $_;
     };
-    error $@ if ( $@ );
   }
   else {
     # The secret code inncorrect
@@ -839,7 +388,7 @@ post '/sign-up' => sub {
   }
 
   if ($err) {
-    $template_params->{warning} = $err if $err;
+    $template_params->{warning}   = $err;
     $template_params->{recaptcha} = recaptcha_display();
 
     template 'signup', $template_params;

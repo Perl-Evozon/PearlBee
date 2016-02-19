@@ -35,7 +35,7 @@ CREATE TABLE oauth (
 --
 -- Users now are assigned to a class when they're created.
 --
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET ucs2 NULL,
   `username` varchar(200) NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`name`),
-  CONSTRAINT `user_ibfk_2` FOREIGN KEY (`theme`) REFERENCES `theme` (`name`)
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`name`),
+  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`theme`) REFERENCES `theme` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='User information.';
 
 
@@ -63,11 +63,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Users can authenticate themselves via LinkedIn, Facebook &c.
 --
 CREATE TABLE user_oauth (
-  user_id int(11) NOT NULL REFERENCES "user" (id),
+  user_id int(11) NOT NULL REFERENCES users (id),
   name varchar(255) NOT NULL REFERENCES oauth (name),
   service_id varchar(255) NOT NULL,
   PRIMARY KEY (user_id, name, service_id),
-  CONSTRAINT `user_oath_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`id`),
+  CONSTRAINT `user_oath_ibfk_1` FOREIGN KEY (users) REFERENCES users (`id`),
   CONSTRAINT `user_oath_ibfk_2` FOREIGN KEY (`oauth`) REFERENCES `oauth` (`name`)
 );
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `blog_owners` (
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('inactive','active','suspended','pending') NOT NULL DEFAULT 'inactive',
   PRIMARY KEY (`user_id`,`blog_id`),
-  CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `blog_owner_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES users (`id`),
   CONSTRAINT `blog_owner_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Blog owners.';
 
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `category_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES users (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Category table.';
 
 
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES users (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Post table.';
 
 
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `asset` (
   PRIMARY KEY (`id`),
 
   CONSTRAINT `asset_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`),
-  CONSTRAINT `asset_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `asset_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES users (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Asset table.';
 
 
@@ -215,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `post_id` (`post_id`),
   KEY `fk_comment_reply_to` (`reply_to`),
   KEY `comment_ibfk_2` (`uid`),
-  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `user` (`id`),
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`uid`) REFERENCES users (`id`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Comment table.';
 

@@ -99,9 +99,9 @@ sub map_posts {
         }
 
         push(@mapped_posts, $el)
-	}
+    }
 
-	return @mapped_posts;
+    return @mapped_posts;
 }
 
 =head

@@ -23,6 +23,7 @@
   }
     .author-page .background-bar .tabs{
         padding-top: 15px;
+        /*background-color: #3F7F5F;*/
     }
     .author-page .background-bar .tabs label{
         line-height: 5;
@@ -87,21 +88,33 @@
     }
 
     /*author-tab 3*/
-    #author-tab-content2 p.message-entries,
+    #author-tab-content2 p.no-posts,
     #author-tab-content3 p {
         font-size: 36px;
         font-family: "Montserrat","Open Sans",sans-serif;
         color: #444;
-        padding: 8%;
+        padding: 8% 8% 8% 0;
         line-height: 1.1;
     }
 
 /*/tabs for author*/
+
+    #author-tab-content2 .text-listing-entries::before, .loading-posts .view-more::before{
+        display: none;
+    }
+    #author-tab-content2 .entry .bubble img{
+        display: none;
+    }
+    .author-page .text-listing-entries {
+        border-bottom: 2px solid #dadada;
+        padding-bottom: 25px;
+    }
+
    
 
 footer{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: none;
-}
+     position: absolute;
+     bottom: 0;
+     width: 100%;
+     display: none;
+ }

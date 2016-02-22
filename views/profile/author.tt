@@ -104,11 +104,10 @@
                         </div>
 
                         <div id="author-tab-content2" class="tab-content">
+                            <p class="no-posts hidden">We're sorry, no entries associated with this user have been found</p>
                             <div class="author-entries">
                                 <div class="entry clearfix hidden">
-                                    <div class="col-xs-2">
-                                    </div>
-                                    <div class="text-listing-entries col-xs-10">
+                                    <div class="text-listing-entries col-xs-12">
                                         <div class="bubble">
                                             <img class="user-image" src="">
                                         </div>
@@ -153,7 +152,7 @@
                             <div class="loading-posts loading-author-entries">
                                 <div class="col-xs-2">
                                 </div>
-                                <div class="view-more col-xs-10">
+                                <div class="view-more-entries col-xs-10">
                                     <div class="bubble">
                                         <button id="more-author-entries" data-page-number="0" class="btn btn-primary btn-xs more-posts" type="button">more</button>
                                     </div>

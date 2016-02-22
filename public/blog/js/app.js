@@ -1,7 +1,6 @@
 
 $(document).ready(function() {
 
-
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -335,61 +334,6 @@ $(window).resize(function(){
 });
 
 
-//button MORE - for listing page
-//$('#more-posts').click(function() {
-//    var button = $(this),
-//        pageNumber =  +(button.attr("data-page-number")) + 1;
-//
-//    $('.progressloader').show();
-//
-//    $.ajax({
-//        // Assuming an endpoint here that responds to GETs with a response.
-//        url: '/page/' + pageNumber + '?format=JSON',
-//        type: 'GET'
-//    })
-//        .done(function(data) {
-//            var posts = JSON.parse(data);
-//
-//            // Once the server responds with the result, update the
-//            //  textbox with that result.
-//            for( var i= 0; i < posts.length; i++){
-//                var entryItem = $(".entry").get(0),
-//                    newItem = $(entryItem).clone(),
-//                    commentsText;
-//
-//                if(posts[i].nr_of_comments ==  1){
-//                    commentsText = "Comment";
-//                } else{
-//                    commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-//                }
-//
-//                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-//                newItem.find(".post_preview_wrapper").html(posts[i].content);
-//                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-//                newItem.find(".user a").html(posts[i].user.username);
-//                newItem.find(".post-heading h2 a").html(posts[i].title);
-//                newItem.find(".comments-listings a").text(commentsText);
-//                newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-//                newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-//                newItem.find(".date").text(posts[i].created_date_human);
-//
-//
-//
-//                newItem.insertBefore($(".loading-posts"));
-//            }
-//
-//            $(".truncate").dotdotdot({
-//                ellipsis  : '... ',
-//            });
-//
-//            $('.progressloader').hide();
-//            button.attr("data-page-number", pageNumber);
-//
-//          $(".truncate").dotdotdot({
-//            ellipsis  : '... ',
-//          });
-//        });
-//});
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
@@ -1043,3 +987,4 @@ $('#more-author-posts').click(function() {
             }
         })
 });
+

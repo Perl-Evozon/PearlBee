@@ -49,13 +49,16 @@ post '/admin/categories/add' => sub {
     $params->{warning} = "The category name or slug already exists";
   }
   else {
-    eval {
-      my $user = session('user');
+    try {
+      my $user     = session('user');
       my $category = resultset('Category')->create({
-          name   => $name,
-          slug   => $slug,
+          name    => $name,
+          slug    => $slug,
           user_id => $user->{id}
         });
+    }
+    catch {
+      error "Could not create category '$name'";
     };
 
     $params->{success} = "The cateogry was successfully added.";
@@ -68,9 +71,7 @@ post '/admin/categories/add' => sub {
 
 };
 
-=head
-
-delete method
+=item delete method
 
 =cut
 
@@ -78,21 +79,19 @@ get '/admin/categories/delete/:id' => sub {
 
   my $id = params->{id};
 
-  eval {
+  try {
     my $category = resultset('Category')->find( $id );
 
     $category->safe_cascade_delete();
-  };
-
-  if ( $@ ) {
-    error $@;
-    my @categories   = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
+  }
+  catch {
+    error $_;
+    my @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
     template 'admin/categories/list', { categories => \@categories, warning => "Something went wrong." }, { layout => 'admin' };
-  }
-  else {
-    redirect session('app_url') . "/admin/categories";
-  }
+  };
+
+  redirect "/admin/categories";
 
 };
 

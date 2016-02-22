@@ -1,5 +1,5 @@
-select setval('user_id_seq',
-              ( select max( id ) from "user" ) + 1, true );
+select setval('users_id_seq',
+              ( select max( id ) from users ) + 1, true );
 
 select setval('blog_id_seq',
               ( select max( id ) from blog ) + 1, true );

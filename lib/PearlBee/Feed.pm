@@ -1,4 +1,4 @@
-package PearlBee::RSS;
+package PearlBee::Feed;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
@@ -6,9 +6,7 @@ use Dancer2::Plugin::Feed;
 use Data::Dumper;
 use Try::Tiny;
 
-=head2
-
-Get XML feed of all current posts
+=head2 Get XML feed of all current posts
 
 =cut
 
@@ -41,9 +39,7 @@ get '/feed' => sub {
     return $feed;
 };
 
-=head2
-
-Get XML feed of all current posts for a given user
+=head2 Get XML feed of all current posts for a given user
 
 =cut
 
@@ -81,9 +77,7 @@ get '/feed/:uid' => sub {
 };
 
 
-=head2
-
-Get XML feed of all current comments for a given blogpost
+=head2 Get XML feed of all current comments for a given blogpost
 
 =cut
 
@@ -120,9 +114,12 @@ get '/feed/post/:slug' => sub {
 
     return $feed;
 };
+
 get '/feed/author/:username' => sub {
     my $feed;
-    my $user = resultset('User')->find({username => route_parameters->{username}});
+    my $username = route_parameters->{username};
+    my ( $user )    =
+      resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
     my $user_id= $user->id;
     my @posts = reverse resultset('Post')->search(
         { user_id => $user_id },

@@ -107,13 +107,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::Users>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::Users",
   { id => "user_id" },
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
@@ -177,9 +177,9 @@ sub as_hashref {
 
 sub as_hashref_sanitized {
   my $self = shift;
-  my $category_href = $self->as_hashref;
-  delete $category_href->{id};
-  return $category_href;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  return $href;
 }
 
 1;

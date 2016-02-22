@@ -44,23 +44,18 @@ post '/register_success' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $existing_users = resultset('User')->search( { email => $params->{'email'} } )->count;
+      my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
 
       if ($existing_users > 0) {
         $err = "An user with this email address already exists.";
       } else {
-        $existing_users = resultset('User')->search( \[ 'lower(username) = ?' => $params->{username} ] )->count;
+        $existing_users = resultset('Users')->search( \[ 'lower(username) = ?' => $params->{username} ] )->count;
         if ($existing_users > 0) {
           $err = "The provided username is already in use.";
         } else {
 
           # Create the user
           if ( $params->{'username'} ) {
-
-            # Set the proper timezone
-            my $dt       = DateTime->now;
-            my $settings = resultset('Setting')->first;
-            $dt->set_time_zone( $settings->timezone );
 
             # Match encryption from MT
             my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
@@ -71,18 +66,17 @@ post '/register_success' => sub {
                              '$' .
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
-            resultset('User')->create({
+            resultset('Users')->create({
               username      => $params->{username},
               password      => $crypt_sha,
               email         => $params->{'email'},
               name          => $params->{'name'},
-              register_date => join (' ', $dt->ymd, $dt->hms),
               role          => 'author',
               status        => 'pending'
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'active' } )->first;
+            my $first_admin = resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
@@ -149,7 +143,7 @@ post '/oauth/:username/service/:service/service_id/:service_id' => sub {
   my $username   = route_parameters->{'username'};
   my $service    = route_parameters->{'service'};
   my $service_id = route_parameters->{'service_id'};
-  my $user       = resultset('User')->find(
+  my $user       = resultset('Users')->find(
     \[ 'lower(username) = ?' => $username ] );
   error "No username specified to attach a service to"
     unless $username;
@@ -185,7 +179,7 @@ get '/oauth/:service/service_id/:service_id' => sub {
   try {
     my $user_oauth = resultset('UserOAuth')->
                   find({ service => $service, service_id => $service_id });
-    $user       = resultset('User')->find($user->{id});
+    $user       = resultset('Users')->find($user->{id});
   }
   catch {
     return to_json({ username => undef });
@@ -199,7 +193,7 @@ post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
 
-  my $user = resultset("User")->search( \[
+  my $user = resultset("Users")->search( \[
     "lower(username) = ? AND (status = 'active' or status = 'inactive')",
     $username ]
   )->first;

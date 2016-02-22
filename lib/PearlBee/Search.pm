@@ -23,9 +23,9 @@ Search user info.
 sub map_user {
     my ($user) = @_;
 
-    my $blog_count    = resultset('BlogOwner')->count({user_id => $user->id});
-    my $post_count    = resultset('Post')->count({user_id => $user->id});
-    my $comment_count = resultset('Comment')->count({uid => $user->id});
+    my $blog_count    = resultset('BlogOwner')->count({ user_id => $user->id });
+    my $post_count    = resultset('Post')->count({ user_id => $user->id });
+    my $comment_count = resultset('Comment')->count({ uid => $user->id });
 
     return
       { #id            => $user->id, # We shouldn't be exposing this.
@@ -50,7 +50,7 @@ sub map_user {
 get '/search/user-info/:query' => sub {
     my $search_query = route_parameters->{'query'};
     my $lc_query     = lc $search_query;
-    my @user         = resultset('User')->
+    my @user         = resultset('Users')->
                        search( \[ "lower(username) like '\%$lc_query\%'" ] );
 
     my $json = JSON->new;
@@ -69,10 +69,10 @@ Search user posts.
 get '/search/user-posts/:query' => sub {
     my $search_query = route_parameters->{'query'};
     my $lc_query     = lc $search_query;
-    my ( $user )     = resultset('User')->
+    my ( $user )     = resultset('Users')->
                        search( \[ "lower(username) like '\%$lc_query\%'" ] );
-    my @posts        = resultset('Post')->search(
-                        { status => 'published', user_id => $user->id },
+    my @posts        = resultset('Post')->search_published(
+                        { user_id => $user->id },
                         { order_by => { -desc => "created_date" },
                           rows => config->{'search'}{'user_posts'} || 10 }
     );
@@ -103,7 +103,7 @@ sub map_tags {
 get '/search/user-tags/:query' => sub {
     my $search_query = route_parameters->{'query'};
     my @tags         = resultset('Tag')->search(
-      name => { like => '%' . $search_query . '%' }
+      { name => { like => '%' . $search_query . '%' } }
     );
     @tags = map { map_tags( $_ ) } @tags;
 
@@ -139,7 +139,9 @@ Search users.
 
 get '/search/users/:query' => sub {
     my $search_query = route_parameters->{'query'};
-    my @results = search_posts($search_query);
+    my $page         = 1;
+    my @results =
+        PearlBee::Helpers::ElasticSearch::search_posts($search_query,$page);
     my $json = JSON->new;
     $json->allow_blessed(1);
     $json->convert_blessed(1);

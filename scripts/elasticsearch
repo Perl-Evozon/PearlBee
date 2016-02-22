@@ -46,7 +46,7 @@ sub index_posts {
   my $in_sth = $in_dbh->prepare(<<'EOF');
   SELECT u.username, p.id, p.slug, p.title, p.content, p.created_date
     FROM post p
-    JOIN `user` u ON p.user_id = u.id
+    JOIN users u ON p.user_id = u.id
 ORDER BY p.id
 EOF
 
@@ -83,7 +83,7 @@ sub index_comments {
   my $in_sth = $in_dbh->prepare(<<'EOF');
   SELECT u.username, p.slug, c.id, c.email, c.content, c.comment_date
     FROM comment c
-    JOIN `user` u ON c.uid = u.id
+    JOIN users u ON c.uid = u.id
     JOIN post p ON c.post_id = p.id
 ORDER BY c.id
 EOF

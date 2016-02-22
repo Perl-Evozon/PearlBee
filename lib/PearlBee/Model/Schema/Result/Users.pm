@@ -1,12 +1,12 @@
 use utf8;
-package PearlBee::Model::Schema::Result::User;
+package PearlBee::Model::Schema::Result::Users;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::User - User table.
+PearlBee::Model::Schema::Result::Users - Users table.
 
 =cut
 
@@ -16,11 +16,11 @@ use Dancer2; # Pick up the default avatar
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<user>
+=head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table("user");
+__PACKAGE__->table("users");
 
 =head1 ACCESSORS
 
@@ -374,9 +374,9 @@ sub as_hashref {
 
 sub as_hashref_sanitized {
   my $self = shift;
-  my $user_href = $self->as_hashref;
-  delete $user_href->{id};
-  return $user_href;
+  my $href = $self->as_hashref;
+  delete $href->{id};
+  return $href;
 }
 
 1;

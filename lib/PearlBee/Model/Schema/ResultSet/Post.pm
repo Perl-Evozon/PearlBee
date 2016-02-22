@@ -39,9 +39,7 @@ sub can_create {
   return $post;
 }
 
-=haed
-
-Check if the slug is already used, if so generate a new slug or return the old one
+=item Check if the slug is already used, if so generate a new slug or return the old one
 
 =cut
 
@@ -146,7 +144,7 @@ sub is_authorized {
   my ($self, $user) = @_;
 
   my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('User')->find( $user->{id} );
+  $user          = $schema->resultset('Users')->find( $user->{id} );
   my $authorized = 0;
   $authorized    = 1 if ( $user->is_admin );
   $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
@@ -164,6 +162,13 @@ sub get_recent_posts {
   			-desc => "created_date"
   		}, rows => 3
 	});
+}
+
+sub search_published {
+  my ( $self, @args ) = @_;
+
+  $args[0]{status} = 'published';
+  return $self->search( @args );
 }
 
 1;

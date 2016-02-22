@@ -17,36 +17,32 @@ use PearlBee::Helpers::Util qw(create_password);
 use Email::Template;
 use DateTime;
 
-get '/admin/users' => sub { redirect session('app_url') . '/admin/users/page/1'; };
+get '/admin/users' => sub { redirect '/admin/users/page/1'; };
 
-=head
-
-List all users
+=item List all users
 
 =cut
 
 get '/admin/users/page/:page' => sub {
 
-  my $nr_of_rows  = 5; # Number of posts per page
-  my $page        = params->{page} || 1;
+  my $nr_of_rows = 5; # Number of posts per page
+  my $page       = params->{page} || 1;
   my @users;
   if (session('multiuser')) {
-    @users = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+    @users = resultset('Users')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   } else {
-    @users = resultset('User')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+    @users = resultset('Users')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   }
   
-  
-  my $count       = resultset('View::Count::StatusUser')->first;
+  my $count = resultset('View::Count::StatusUser')->first;
   
   my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
   
   if (! session('multiuser')) {
     # do not count 'pending' users
-    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
+    my $count_pending = resultset('Users')->search({ status => 'pending' })->count;
     $all -= $count_pending;
   }
-  
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
@@ -77,9 +73,7 @@ get '/admin/users/page/:page' => sub {
 
 };
 
-=head
-
-List all users grouped by status
+=item List all users grouped by status
 
 =cut
 
@@ -88,7 +82,7 @@ get '/admin/users/:status/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
   my $status      = params->{status};
-  my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  my @users       = resultset('Users')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusUser')->first;
   
   my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
@@ -96,7 +90,7 @@ get '/admin/users/:status/page/:page' => sub {
   
   if (! session('multiuser')) {
     # do not count 'pending' users
-    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
+    my $count_pending = resultset('Users')->search({ status => 'pending' })->count;
     $all -= $count_pending;
   }
 
@@ -130,84 +124,94 @@ get '/admin/users/:status/page/:page' => sub {
 
 };
 
-=head
-
-Activate user
+=item Activate user
 
 =cut
 
 any '/admin/users/activate/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('User')->find( $user_id );
+  my $user    = resultset('Users')->find( $user_id );
 
-  eval { $user->activate(); };
+  try {
+    $user->activate();
+  }
+  catch {
+    info $_;
+    error "Could not activate user";
+  };
 
-  redirect session('app_url') . '/admin/users';
+  redirect '/admin/users';
 };
 
-=head
-
-Deactivate user
+=item Deactivate user
 
 =cut
 
 any '/admin/users/deactivate/:id' => sub {
 
-  my $user_id = params->{id};
-  my $user   = resultset('User')->find( $user_id );
-  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
+  my $user_id          = params->{id};
+  my $user             = resultset('Users')->find( $user_id );
+  my $admin_user_count = resultset('Users')->search({ role => 'admin' })->count;
 
   if ( $user->is_admin and
        $admin_user_count <= 1 ) {
       error "Could not deactivate the only active user";
   }
   else {
-      eval { $user->deactivate(); };
+    try {
+      $user->deactivate();
+    }
+    catch {
+      info $_;
+      error "Could not deactivate user";
+    };
   }
 
-  redirect session('app_url') . '/admin/users';
+  redirect '/admin/users';
 };
 
-=head
-
-Suspend user
+=item Suspend user
 
 =cut
 
 any '/admin/users/suspend/:id' => sub {
 
-  my $user_id = params->{id};
-  my $user   = resultset('User')->find( $user_id );
-  my $admin_user_count = resultset('User')->search({ role => 'admin' })->count;
+  my $user_id          = params->{id};
+  my $user             = resultset('Users')->find( $user_id );
+  my $admin_user_count = resultset('Users')->search({ role => 'admin' })->count;
 
   if ( $user->is_admin and
        $admin_user_count <= 1 ) {
       error "Could not suspend the only active user";
   }
   else {
-      eval { $user->suspend(); };
+    try {
+      $user->suspend();
+    }
+    catch {
+      info $_;
+      error "Could not mark comment as pending for $user->{username}";
+    };
   }
 
-  redirect session('app_url') . '/admin/users';
+  redirect '/admin/users';
 };
 
-=head
-
-Allow pending user
+=item Allow pending user
 
 =cut
 
 any '/admin/users/allow/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('User')->find( $user_id );
+  my $user   = resultset('Users')->find( $user_id );
   
   if ($user) {
-    eval {
-      my ($password, $pass_hash) = create_password();#, $salt) = create_password();
+    try {
+      my ($password, $pass_hash) = create_password();
       
-      $user->update( {password => $pass_hash} );#, salt => $salt} );
+      $user->update( {password => $pass_hash} );
     
       $user->allow();
       
@@ -227,16 +231,18 @@ any '/admin/users/allow/:id' => sub {
                   signature => config->{email_signature},
                   allowed   => 1,
               },
-      }) or error "Could not send the email";
+          });
+    }
+    catch {
+      info "Error sending email: $_";
+      error "Could not send the email";
     };
   }
 
-  redirect session('app_url') . '/admin/users';
+  redirect '/admin/users';
 };
 
-=head
-
-Add a new user
+=item Add a new user
 
 =cut
 
@@ -244,7 +250,7 @@ any '/admin/users/add' => sub {
 
   if ( params->{username} ) {
 
-    eval {
+    try {
 
       # Set the proper timezone
       my $dt       = DateTime->now;          
@@ -257,7 +263,7 @@ any '/admin/users/add' => sub {
       my $name     = params->{name};
       my $role     = params->{role};
 
-      resultset('User')->create({
+      resultset('Users')->create({
         username      => $username,
         password      => $pass_hash,
         name          => $name,
@@ -282,25 +288,21 @@ any '/admin/users/add' => sub {
                 signature => config->{email_signature}
             },
         }) or error "Could not send the email";
-    };
-
-    error $@ if ( $@ );
-
-    if ( $@ ) {
+    }
+    catch {
+      error $_;
       template 'admin/users/add', 
         {
           warning => 'Something went wrong. Please contact the administrator.'
         }, 
         { layout => 'admin' };
-    }
-    else {
-      template 'admin/users/add', 
-        {
-          success => 'The user was added succesfully and will be activated after he logs in.'
-        }, 
-        { layout => 'admin' };
-    }
-    
+    };
+
+    template 'admin/users/add', 
+      {
+      success => 'The user was added succesfully and will be activated after he logs in.'
+      }, 
+      { layout => 'admin' };
   }
   else {
     template 'admin/users/add', {},  { layout => 'admin' };

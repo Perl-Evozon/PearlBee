@@ -8,6 +8,7 @@ Email: andrei.cacio@evozon.com
 
 package PearlBee::Admin::Post;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
@@ -20,7 +21,7 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link gene
 use DateTime;
 use String::Util qw(trim);
 
-get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
+get '/admin/posts' => sub { redirect '/admin/posts/page/1'; };
 
 =head
 
@@ -30,10 +31,10 @@ list all posts method per page
 
 get '/admin/posts/page/:page' => sub {
 
-    my $nr_of_rows  = 5; # Number of posts per page
-    my $page        = params->{page};
-    my @posts       = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
-    my $count       = resultset('View::Count::StatusPost')->first;
+    my $nr_of_rows = 5; # Number of posts per page
+    my $page       = params->{page};
+    my @posts      = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $count      = resultset('View::Count::StatusPost')->first;
 
     my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
 
@@ -73,10 +74,10 @@ list all published posts
 
 get '/admin/posts/:status/page/:page' => sub {
 
-    my $nr_of_rows  = 5; # Number of posts per page
-    my $page        = params->{page} || 1;
-    my $status      = params->{status};
-    my @posts       = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
+    my $nr_of_rows = 5; # Number of posts per page
+    my $page       = params->{page} || 1;
+    my $status     = params->{status};
+    my @posts      = resultset('Post')->search( { status => $status }, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
     my $count      = resultset('View::Count::StatusPost')->first;
 
     my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
@@ -122,9 +123,15 @@ get '/admin/posts/publish/:id' => sub {
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
 
-  eval { $post->publish($user); };
+  try {
+    $post->publish($user);
+  }
+  catch {
+    info $_;
+    error "Could not publish post for $user->{username}";
+  };
 
-  redirect session('app_url') . '/admin/posts';
+  redirect '/admin/posts';
 
 };
 
@@ -140,9 +147,15 @@ get '/admin/posts/draft/:id' => sub {
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
 
-  eval { $post->draft($user); };
+  try {
+    $post->draft($user);
+  }
+  catch {
+    info $_;
+    error "Could not set draft mode for post $user->{username}";
+  };
 
-  redirect session('app_url') . '/admin/posts';
+  redirect '/admin/posts';
 };
 
 =head
@@ -157,9 +170,15 @@ get '/admin/posts/trash/:id' => sub {
   my $post    = resultset('Post')->find($post_id);
   my $user    = session('user');
 
-  eval { $post->trash($user); };
+  try {
+    $post->trash($user);
+  }
+  catch {
+    info $_;
+    error "Could not trash post for $user->{username}";
+  };
 
-  redirect session('app_url') . '/admin/posts';
+  redirect '/admin/posts';
 
 };
 
@@ -174,14 +193,11 @@ any '/admin/posts/add' => sub {
     my @categories = resultset('Category')->all();
     my $post;
 
-    eval {
+    try {
         if ( params->{post} ) {
           
           # Set the proper timezone
-          my $dt       = DateTime->now;          
-          my $settings = resultset('Setting')->first;
-          $dt->set_time_zone( $settings->timezone );
-
+          #
           my $user              = session('user');
           my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug} );
           session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
@@ -199,7 +215,6 @@ any '/admin/posts/add' => sub {
           }
 
           # Next we can store the post into the database safely
-          my $dtf = schema->storage->datetime_parser;
           my $params = {
               title        => params->{title},
               slug         => $slug,
@@ -207,7 +222,6 @@ any '/admin/posts/add' => sub {
               user_id      => $user->{id},
               status       => params->{status},
               cover        => ( $cover_filename ) ? $cover_filename : '',
-              created_date => $dtf->format_datetime($dt),
           };
           $post = resultset('Post')->can_create($params);
   
@@ -217,15 +231,18 @@ any '/admin/posts/add' => sub {
           # Connect and update the tags table
           resultset('PostTag')->connect_tags( params->{tags}, $post->id );
         }
+    }
+    catch {
+      info $_;
+      error "Could not addd post";
     };
 
-    error $@ if ($@);
     # If the post was added successfully, store a success message to show on the view
     session success => 'The post was added successfully' if ( !$@ && $post );
 
     # If the user created a new post redirect him to the post created
     if ( $post ) {
-      redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
+      redirect '/admin/posts/edit/' . $post->slug;
     }
     else {
       template 'admin/posts/add', { categories => \@categories }, { layout => 'admin' };
@@ -268,7 +285,7 @@ get '/admin/posts/edit/:slug' => sub {
         all_categories => \@all_categories,
         ids            => \@categories_ids,
         all_tags       => \@all_tags
-      };
+    };
 
     # Check if there are any messages to show
     # Delete them after stored on the stash
@@ -293,16 +310,16 @@ update method
 
 post '/admin/posts/update/:id' => sub {
 
-    my $post_id   = params->{id};
-    my $post      = resultset('Post')->find({ id => $post_id });
-    my $title     = params->{title};
-    my $content   = params->{post};
-    my $tags      = params->{tags};
+    my $post_id = params->{id};
+    my $post    = resultset('Post')->find({ id => $post_id });
+    my $title   = params->{title};
+    my $content = params->{post};
+    my $tags    = params->{tags};
 
-    my ($slug, $changed)  = resultset('Post')->check_slug( params->{slug}, $post->id );
+    my ($slug, $changed) = resultset('Post')->check_slug( params->{slug}, $post->id );
     session warning => 'The slug was already taken but we generated a similar slug for you! Feel free to change it as you wish.' if ($changed);
 
-    eval {
+    try {
         # Upload the cover image
         my $cover;
         my $ext;
@@ -319,15 +336,13 @@ post '/admin/posts/update/:id' => sub {
         }
 
         my $status = params->{status};
-        $post->update(
-            {
-                title   => $title,
-                slug    => $slug,
-                cover   => ($crypted_filename) ? $crypted_filename . $ext : $post->cover,
-                status  => $status,
-                content => $content,
-            }
-        );
+        $post->update({
+            title   => $title,
+            slug    => $slug,
+            cover   => ($crypted_filename) ? $crypted_filename . $ext : $post->cover,
+            status  => $status,
+            content => $content,
+        });
 
         # Reconnect the categories with the new one and delete the old ones
         resultset('PostCategory')->connect_categories( params->{category}, $post->id );
@@ -335,13 +350,15 @@ post '/admin/posts/update/:id' => sub {
         # Reconnect and update the selected tags
         resultset('PostTag')->connect_tags( params->{tags}, $post->id );
 
+    }
+    catch {
+        info $_;
+        error "Could not upload your post";
     };
-
-    error $@ if ($@);
 
     session success => 'The post was updated successfully!';
 
-    redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
+    redirect '/admin/posts/edit/' . $post->slug;
 
 };
 

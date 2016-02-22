@@ -25,7 +25,7 @@ Dashboard index
 any '/dashboard' => sub {
 
   my $user = session('user');
-     $user = resultset('User')->find( $user->{id} );
+     $user = resultset('Users')->find( $user->{id} );
 
   if ( $user->status eq 'inactive' ) {
 
@@ -66,21 +66,21 @@ Edit profile
 any '/profile' => sub {
 
   my $user = session('user');
-  $user    = resultset('User')->find( $user->{id} );
+  $user    = resultset('Users')->find( $user->{id} );
 
   my $name  = params->{name};
   my $email = params->{email};
 
-  my $old_password   = params->{old_password};
-  my $new_password   = params->{new_password};
-  my $new_password2  = params->{new_password2};
+  my $old_password  = params->{old_password};
+  my $new_password  = params->{new_password};
+  my $new_password2 = params->{new_password2};
 
   if ( $name && $email ) {
 
     $user->update({
-        name  => $name,
-        email => $email
-      });
+      name  => $name,
+      email => $email
+    });
 
     template 'admin/profile', { user => $user, success => 'Your data was updated succesfully!' }, { layout => 'admin' };
 

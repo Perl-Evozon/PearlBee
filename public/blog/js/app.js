@@ -883,9 +883,9 @@ function getAuthorEntries (button) {
 
             if (posts.length === 0) {
                 button.addClass('hidden');
-                //if (pageNumber == 0) {
-                //    $('.no-posts').show();
-                //}
+                if (pageNumber == 0) {
+                    $('.no-posts').removeClass('hidden');
+                }
             } else {
                 // TODO: daca se schimba in back-end si vin cate 10 odata, schimba aici in 10
                 if (posts.length < 5) {

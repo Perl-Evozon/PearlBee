@@ -920,11 +920,8 @@ $('#more-posts').click(function() {
             ellipsis  : '... ',
           });
         });
-});
-	
+    });
 }
-
-
 /* AUTHOR PROFILE PAGE RELATED JS */
 function getAuthorEntries (button) {
     var author = $('.author-description .author-name>a').text(),

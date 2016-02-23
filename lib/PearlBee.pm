@@ -261,8 +261,13 @@ post '/comments' => sub {
       $result{email_sent} = 0;
   };
 
-  content_type 'application/json';
-  return to_json(\%result);
+  my $json = JSON->new;
+  $json->allow_blessed(1);
+  $json->convert_blessed(1);
+  unless ($result{status} eq 'approved') {
+  delete $result{content};
+  }
+  return $json->encode(\%result); 
 };
 
 get '/register' => sub {

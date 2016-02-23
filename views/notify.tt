@@ -1,5 +1,5 @@
 <div class="blog">
    <div class="container">
-      [% INCLUDE register_success.tt %]
+      [% INCLUDE components/alerts.tt %]
    </div>
 </div>

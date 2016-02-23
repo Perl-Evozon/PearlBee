@@ -10,13 +10,14 @@ DROP TYPE comment_status;
 DROP TABLE post_tag;
 DROP TABLE tag;
 DROP TABLE post_category;
+DROP TABLE blog_categories;
+DROP TABLE category;
 DROP TABLE asset;
 DROP TABLE post;
 
 DROP TYPE post_status;
 DROP TYPE post_format;
 
-DROP TABLE category;
 DROP TABLE blog_owners;
 DROP TABLE blog;
 DROP TABLE acl;

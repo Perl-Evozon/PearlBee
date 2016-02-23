@@ -38,7 +38,7 @@
               		<h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% posts_for_category %]</a></h2>
           		[% END %]
           		[% IF posts_for_user %]
-              		<h2 class="page-heading"> User </i> <a href="/posts/user/[% posts_for_user %]">[% posts_for_user %]</a></h2>
+              		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user %]">[% posts_for_user %]</a></h2>
           		[% END %]
               </div>
               [% FOREACH post in posts %]
@@ -56,7 +56,7 @@
                         </div>
                          <div class="info-entry">
                            <div class="user">
-                             <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                             <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
                            </div>
                            <div class="date">
                              [% post.created_date_human %]

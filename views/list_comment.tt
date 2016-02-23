@@ -6,7 +6,7 @@
           <a class="pull-left" href="#">
             <img class="avatar" src="[% comment.avatar_path %]" class="img-responsive" />
           </a>
-          <div class="comment-author"><a href="/posts/user/[% comment.username %]">[% comment.username %]</a></div>
+          <div class="comment-author"><a href="/profile/author/[% comment.username %]">[% comment.username %]</a></div>
           <div class="cmeta">Commented [% comment.comment_date_human %]</div>
           <p> [% comment.content %] </p>
           <div class="clearfix"></div>

@@ -124,14 +124,13 @@ post '/register_success' => sub {
     # Repopulate the fields with the data
     $err = "Invalid secret code.";
   }
-
   if ($err) {
     $template_params->{warning} = $err if $err;
     $template_params->{recaptcha} = recaptcha_display();
 
     template 'signup', $template_params;
   } else {
-    template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
+    template 'register_success', {success => 'The user was created and it is waiting for admin approval.'};
   }
 };
 

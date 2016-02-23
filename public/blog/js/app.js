@@ -442,7 +442,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
-                        newItem.find(".info-entry a").attr("href", "/posts/user/" + userInfo[i].username);
+                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].username);
                         newItem.find(".info-entry .date").text(userInfo[i].register_date);
 
                         newItem.find(".properties li.nr-blog span").text(userInfo[i].counts.blog);
@@ -685,7 +685,7 @@ if (newURL == userURL) {
 						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
 					}
 
-					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+					newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
 					newItem.find(".post_preview_wrapper").html(posts[i].content);
 					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
 					newItem.find(".user a").html(posts[i].user.username);
@@ -827,7 +827,7 @@ $('#more-posts').click(function() {
                     commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                 }
 
-                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                 newItem.find(".post_preview_wrapper").html(posts[i].content);
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                 newItem.find(".user a").html(posts[i].user.username);
@@ -906,7 +906,7 @@ function getAuthorEntries (button) {
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
 
-                    newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                    newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                     newItem.find(".post_preview_wrapper").html(posts[i].content);
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.username);

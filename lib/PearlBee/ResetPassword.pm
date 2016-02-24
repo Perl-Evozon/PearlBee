@@ -45,7 +45,6 @@ any ['post', 'get'] => '/set-password' => sub {
                 # passwords must be typed in twice and they were the same
                 if ( $params->{'password'} eq $params->{'rep_password'} ) {
                     my $hashed_password = crypt( $params->{'password'}, $user->password );
-warn "[$params->{password}] [$password]";
                     
                     if ( $user->update({ password => $hashed_password,
                                          activation_key => '' }) ) {

@@ -16,7 +16,7 @@
                         <!-- Meta details -->
                         <div class="meta">
                             <div class="bubble">
-				                <img class="user-image" src="[% post.user.avatar %]">
+				                <img class="user-image hey" src="[% post.user.avatar %]">
                             </div>
                              <div class="info-entry">
                                <div class="user">
@@ -108,7 +108,7 @@
                     [% INCLUDE comment_form.tt %]
 
                     <!-- Comment section -->
-                    [% INCLUDE list_comments.tt %]
+                    [% INCLUDE list_comment.tt %]
 <!--   
       start sidebar
       <aside class="col-md-4">

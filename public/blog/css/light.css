@@ -82,3 +82,6 @@
 .author-description .profile-description p{
     color: #040404;
 }
+.author-description .rss-part a button{
+    background-color: #FF6600;
+}

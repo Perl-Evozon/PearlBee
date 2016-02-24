@@ -568,7 +568,6 @@ $('#search-more-posts').click(function () {
 //MORE BUTTON - for USER
 var pageURL = window.location.pathname.split('/');
 var newURL = pageURL[1] + "/" + pageURL[2];
-console.log(newURL);
 var userName = "/" + pageURL[3];
 var userURL = "posts/user";
 var tagURL = "posts/tag";

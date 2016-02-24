@@ -867,6 +867,33 @@ $('#more-posts').click(function() {
     });
 }
 /* AUTHOR PROFILE PAGE RELATED JS */
+if (newURL == 'profile/author') {
+    if ($(".author-page input[name=author-tabs]:checked").attr('id') == "author-tab1") {
+        $('#author-tab-content1').show();
+    } else if ($(".author-page input[name=author-tabs]:checked").attr('id') == "author-tab2") {
+        $('#author-tab-content2').show();
+    } else {
+        $('#author-tab-content3').show();
+    }
+}
+$(".author-page input[name=author-tabs]").on("change", function(){
+    var activeTab = $(this).attr('id');
+    if (activeTab == "author-tab1") {
+        $('#author-tab-content1').show();
+        $('#author-tab-content2').hide();
+        $('#author-tab-content3').hide();
+    } else if (activeTab == "author-tab2") {
+        $('#author-tab-content2').show();
+        $('#author-tab-content1').hide();
+        $('#author-tab-content3').hide();
+    } else {
+        $('#author-tab-content3').show();
+        $('#author-tab-content1').hide();
+        $('#author-tab-content2').hide();
+    }
+
+});
+
 function getAuthorEntries (button) {
     var author = $('.author-description .author-name>a').text(),
         pageNumber = +(button.attr("data-page-number"));

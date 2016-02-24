@@ -78,3 +78,7 @@
    color: #333333;
 }
 
+/*profile/author between themes*/
+.author-description .profile-description p{
+    color: #040404;
+}

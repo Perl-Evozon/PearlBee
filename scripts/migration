@@ -183,6 +183,7 @@ EOS
 INSERT INTO blog(id,name,slug,description,created_date,edited_date)
           VALUES(?,?,?,?,?,?)
 EOS
+
   my $out_owner_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO blog_owners(blog_id,user_id)
           VALUES(?,?)

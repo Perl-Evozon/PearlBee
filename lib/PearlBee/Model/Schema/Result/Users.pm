@@ -376,6 +376,7 @@ sub as_hashref_sanitized {
   my $self = shift;
   my $href = $self->as_hashref;
   delete $href->{id};
+  delete $href->{password};
   return $href;
 }
 

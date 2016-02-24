@@ -1,0 +1,92 @@
+# This is the main configuration file of your Dancer2 app
+# env-related settings should go to environments/$env.yml
+# all the settings in this file will be loaded at Dancer's startup.
+
+# Your application's name
+appname: "Blogs.Perl.Org"
+
+# The default layout to use for your application (located in
+# views/layouts/main.tt)
+layout: "main"
+
+# when the charset is set to UTF-8 Dancer2 will handle for you
+# all the magic of encoding and decoding. You should not care
+# about unicode within your app when this setting is set (recommended).
+charset: "UTF-8"
+
+
+# template engine
+# simple: default and very basic template engine
+# template_toolkit: TT
+
+session: "YAML"
+
+#Logging
+#logger: "file"
+#log: "error"
+template: "template_toolkit"
+engines:
+  template:
+    template_toolkit:
+      encoding: 'utf8'
+      start_tag: '[%'
+      end_tag:   '%]'
+  session:
+    YAML:
+      session_dir: "sessions"
+
+mail_server:
+    user: 'jobs@builtinperl.com'
+    password:
+    host: 'mail.evozon.com'
+    port: 587
+
+plugins:
+      DBIC:
+        default:
+          dsn: dbi:Pg:database=blogs_perl_org;host=139.162.204.109
+          schema_class: PearlBee::Model::Schema
+          user: jgoff
+          password: 
+          options:
+            RaiseError:        1
+            PrintError:        1
+            mysql_enable_utf8: 1
+            quote_names:       1
+      feed:
+        title:     'blogs.perl.org'
+        format:    'Atom'
+        max_posts: 10
+      reCAPTCHA:
+        site_key: 'XXX'
+        secret:   'XXX'
+        options:
+          theme: 'light'
+          type:  'image'
+          size:  'normal'
+
+# Constants
+covers_folder:    'public/uploads/covers/'
+import_folder:    'public/uploads/import/'
+images_folder:    'public/uploads/images/'
+images_path:      '/uploads/images' 
+default_avatar:   '/blog/img/male-user.png'
+theme:            'light'
+
+app_url:          'http://localhost:5000'
+email_templates:  'views/emails/'
+
+# Images from MovableType
+movable_type_url: 'http://blogs.perl.org'
+
+user_assets:      '/home/danf'
+
+
+# Specifics
+email_signature:       'The Blogs.Perl.Org Team'
+default_email_sender:  'no-reply@pearlbee.com'
+welcome_email_subject: 'Welcome to Blogs.Perl.Org!'
+posts_on_page:         5
+blogs_on_page:         5
+search:
+  user_posts: 10

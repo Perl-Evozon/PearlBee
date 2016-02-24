@@ -209,9 +209,9 @@ any '/admin/users/allow/:id' => sub {
   
   if ($user) {
     try {
-      my ($password, $pass_hash) = create_password();
+      my $hashed_password = create_password();
       
-      $user->update( {password => $pass_hash} );
+      $user->update({ password => $hashed_password });
     
       $user->allow();
       
@@ -224,7 +224,7 @@ any '/admin/users/allow/:id' => sub {
               tt_vars => {
                   role      => $user->role,
                   username  => $user->username,
-                  password  => $password,
+                  password  => $hashed_password,
                   name      => $user->name,
                   app_url   => config->{app_url},
                   blog_name => session('blog_name'),
@@ -252,22 +252,16 @@ any '/admin/users/add' => sub {
 
     try {
 
-      # Set the proper timezone
-      my $dt       = DateTime->now;          
-      my $settings = resultset('Setting')->first;
-      $dt->set_time_zone( $settings->timezone );
-      
-      my ($password, $pass_hash) = create_password();#, $salt) = create_password();
-      my $username = params->{username};
-      my $email    = params->{email};
-      my $name     = params->{name};
-      my $role     = params->{role};
+      my $hashed_password = create_password( params->{password} );
+      my $username        = params->{username};
+      my $email           = params->{email};
+      my $name            = params->{name};
+      my $role            = params->{role};
 
       resultset('Users')->create({
         username      => $username,
-        password      => $pass_hash,
+        password      => $hashed_password,
         name          => $name,
-        register_date => join (' ', $dt->ymd, $dt->hms),
         role          => $role,
         email         => $email,
       });
@@ -281,7 +275,7 @@ any '/admin/users/add' => sub {
             tt_vars => {
                 role      => $role,
                 username  => $username,
-                password  => $password,
+                password  => $hashed_password,
                 name      => $name,
                 app_url   => config->{app_url},
                 blog_name => session('blog_name'),

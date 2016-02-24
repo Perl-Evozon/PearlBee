@@ -150,13 +150,13 @@ EOS
 
 sub map_blog {
   my $blog = shift;
-  my $dirified = dirify( $blog->{blog_name} );
+  my $dirified = dirify( $blog->{blog_description} );
   return {
     id           => $blog->{blog_id},
-    name         => decode_utf8($blog->{blog_name}),
-    slug         => decode_utf8($dirified),
-    description  => decode_utf8($blog->{blog_description}),
-    created_by   => $blog->{blog_created_by},
+    user_id      => $blog->{association_author_id},
+    name         => decode_utf8( $blog->{blog_name} ),
+    slug         => decode_utf8( $dirified ),
+    description  => decode_utf8( $blog->{blog_description} ),
     created_date => $blog->{blog_created_on},
     edited_date  => $blog->{blog_modified_on},
   };
@@ -165,8 +165,18 @@ sub map_blog {
 my %blog_user; # key $blog_id, value $user_id
 
 sub migrate_blogs {
-  my $in_sth = $in_dbh->prepare( 'SELECT * FROM mt_blog ORDER BY blog_id' );
-#SELECT id FROM users WHERE name = ?
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+   SELECT b.blog_id,
+          a.association_author_id,
+          b.blog_name,
+          b.blog_description,
+          b.blog_created_on,
+          b.blog_modified_on
+     FROM mt_blog b
+LEFT JOIN mt_association a
+       ON b.blog_id = a.association_blog_id
+ORDER BY blog_id
+EOS
 
   my @fields = qw( id name slug description created_date edited_date );
   my $out_sth = $out_dbh->prepare( <<'EOS' );
@@ -191,8 +201,8 @@ EOS
 
     $out_sth->execute( @{$out_blog}{@fields} );
 
-    $blog_user{$out_blog->{id}} = $out_blog->{created_by};
-    $out_owner_sth->execute($out_blog->{id},$out_blog->{created_by});
+    $blog_user{$out_blog->{id}} = $out_blog->{user_id};
+    $out_owner_sth->execute($out_blog->{id},$out_blog->{user_id});
   }
 }
 
@@ -226,6 +236,8 @@ sub migrate_posts {
 ORDER BY entry_id
 EOS
 
+  my @fields =
+    qw(id title slug description content created_date status user_id);
   my $out_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO post(id,title,slug,description,content,created_date,status,user_id)
           VALUES(?,?,?,?,?,?,?,?)

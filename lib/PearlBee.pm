@@ -331,13 +331,18 @@ post '/sign-up' => sub {
                              '$' .
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+
             resultset('Users')->create({
-              username => $params->{username},
-              password => $crypt_sha,
-              email    => $params->{'email'},
-              name     => $params->{'name'},
-              role     => 'author',
-              status   => 'pending'
+              username         => $params->{username},
+              password         => $crypt_sha,
+              email            => $params->{'email'},
+              name             => $params->{'name'},
+              role             => 'author',
+              status           => 'pending',
+              activation_token => $activation_token
             });
 
             # Notify the author that a new comment was submited
@@ -359,9 +364,6 @@ post '/sign-up' => sub {
               }
             }) or error "Could not send new_user email";
 
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
             Email::Template->send( config->{email_templates} .
                                    'activation_email.tt',
             {

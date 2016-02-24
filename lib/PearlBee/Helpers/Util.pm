@@ -5,11 +5,22 @@ use String::Dirify;
 use String::Random;
 use String::Util 'trim';
 
+use Digest::Bcrypt;
+use Data::Entropy::Algorithms qw(rand_bits);
+use MIME::Base64 qw(encode_base64 decode_base64);
+
 use PearlBee::Password;
 
 require Exporter;
-our @ISA 		= qw(Exporter);
-our @EXPORT_OK 	= qw/generate_crypted_filename generate_new_slug_name string_to_slug map_posts create_password/;
+our @ISA 	= qw(Exporter);
+our @EXPORT_OK 	= qw(
+    generate_crypted_filename 
+    generate_new_slug_name 
+    string_to_slug 
+    map_posts 
+    create_password
+    generate_hash
+);
 
 
 =head
@@ -104,19 +115,42 @@ sub map_posts {
     return @mapped_posts;
 }
 
-=head
-
-Create a password
+=head2 Create a password
 
 =cut
 
 sub create_password {
+  my $plaintext = shift;
 	
-    my $pass       = new String::Random;
-    my $password   = $pass->randpattern("Ccc!cCn");
-    my $pass_hash  = generate_hash($password);
+  # Match encryption from MT
+  my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+  my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
 
-	return $password, $pass_hash->{hash};#, $pass_hash->{salt};
+  my $crypt_sha =
+    '$6$' . $salt . '$' . Digest::SHA::sha512_base64( $salt . $plaintext );
+}
+
+=head2 Create an authentication token
+
+=cut
+
+sub generate_hash {
+    return -1 if @_ < 1 || @_ > 2;
+	
+    my $password = shift;
+    my $hashref = {};
+
+    my $bcrypt = Digest->new('Bcrypt');
+    $bcrypt->cost(12);
+
+    my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
+    my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+    $bcrypt->salt($salt);
+    $bcrypt->add($password);
+
+    $hashref->{hash} = $bcrypt->hexdigest;
+	
+    return $hashref;
 }
 
 1;

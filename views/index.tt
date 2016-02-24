@@ -5,7 +5,7 @@
     		<div class="row">
     			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
     				<h1>There is more than one way to blog it.</h1>
-    				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
+    				<h4>blogs.perl.org is a common blogging platform for the Perl community.</h4>
                                     <div class="buttons-wrapper">
                                             <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
                                             <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
@@ -48,15 +48,11 @@
                   </div>
                     <div class="text-listing-entries col-xs-10">
                        <div class="bubble">
-                            [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img class="user-image" src="[%post.user.avatar%]">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img class="user-image" src="/blog/img/male-user.png">
-                            [%ELSE%]
-                            <img class="user-image" src="/blog/img/male-user-light.png">
-                            [%END%]
-                            [%END%]
+                        [% IF (session.theme == 'dark') %]
+                      <img class="user-image" src="/blog/img/male-user.png">
+                        [%ELSE%]
+                        <img class="user-image" src="/blog/img/male-user-light.png">
+                        [%END%]
                         </div>
                          <div class="info-entry">
                            <div class="user">

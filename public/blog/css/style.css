@@ -4268,10 +4268,6 @@ input.cmn-toggle-round-flat:checked + label:after {
    display: none;
 }
 
-.header .header-icon .bubble {
-   display: inline-block;
-}
-
 @media all and (max-width: 580px) {
    .switch {
       display: none;

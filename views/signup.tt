@@ -8,27 +8,10 @@
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
-      var uid = response.authResponse.userID;
-      console.log("user id", uid);
-      var userName = '[% session.user.username %]';
-      console.log("username is " + userName);
-
-
-//$(ajax)(function( POST"/oauth" data{"username":username, "service":"Facebook", "service_id":response.authResponse.userID}))
-
-        //$.ajax({
-         //       url: "/oauth" ,
-         //       method: "POST",
-         //       contentType: "application/x-www-form-urlencoded",
-         //      data: { 
-         //         username: userName,
-         //         service: "Facebook",
-         //         service_id: uid
-         //       }
-         //   })
       // Logged into your app and Facebook.
-      testAPI();
+      openWin();
       getUserInfo();
+      testAPI();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -40,26 +23,6 @@
         'into Facebook.';
     }
   }
-
-  function getUserInfo() {
-        FB.api('/me', function(response) {
-
-          var useid = response.id;
-          var userName = '[% session.user.username %]';
-          console.log("username is " + userName);
-          console.log("userID is " + useid);
-          $.ajax({
-                url: "/oauth" ,
-                method: "POST",
-                contentType: "application/x-www-form-urlencoded",
-               data: { 
-                  username: userName,
-                  service: "Facebook",
-                  service_id: useid
-                }
-            })
-    });
-    }
 
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
@@ -76,8 +39,15 @@
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
+    version    : 'v2.5' // use graph api version 2.5
   });
+
+  FB.Event.subscribe('auth.login', function(response) {
+      window.location.reload();
+    });
+    FB.Event.subscribe('auth.logout', function(response) {
+      window.location.reload();
+    });
 
   // Now that we've initialized the JavaScript SDK, we call 
   // FB.getLoginStatus().  This function gets the state of the
@@ -90,6 +60,8 @@
   //    your app or not.
   //
   // These three cases are handled in the callback function.
+
+
 
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
@@ -112,25 +84,42 @@
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-     // document.getElementById('status').innerHTML =
-     //   'Thanks for logging in, ' + response.name + '!';
-    //var userName = '[% session.user.username %]';
-    //console.log("username is " + userName);
-    //var service_id = response.authResponse.userID;
-    //$(ajax)(function( POST"/oauth" data{"username":username, "service":"Facebook", "service_id":response.authResponse.userID}))
+      document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!';
     });
-  }
+  } 
+
+
+    function openWin() {
+     window.open ("/passwordSignin", "mywindow","menubar=1,resizable=1,width=810,height=366");
+    }
+
+
+   function getUserInfo() {
+        FB.api('/me', function(response) {
+
+          var useid = response.id;
+          var userName = '[% session.user.username %]';
+          console.log("username is " + userName);
+          console.log("userID is " + useid);
+          
+          $.ajax({
+                url: "/oauth" ,
+                method: "POST",
+                contentType: "application/x-www-form-urlencoded",
+               data: { 
+                  username: userName,
+                  service: "Facebook",
+                  service_id: useid
+                }
+            })
+    });
+    } 
 </script>
 
 
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1152755544737488";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+
 <div class="blog">
  
   <div class="register sign-up">
@@ -231,18 +220,14 @@
           <div class="row">
             <div class="col-sm-12">                                                    
               <div class="social">
-                <a href="#" class="github"><i class="icon-github"></i></a> 
+                <a class="github"><i class="icon-github"></i></a>
+
                 <a class="facebook" id="face"><i class="icon-facebook"></i></a>
 <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"></div>
-<!--
-                <a href="#" class="facebook"><i class="icon-facebook"></i></a>
--->
-                <a href="#" class="google-plus"><i class="icon-google-plus"></i></a>
-                <a"#" class="google-plus"><i class="icon-google-plus"></i></a>
-                <a href="#" class="google-plus"><i class="icon-google-plus"></i></a>
-                <a href="#" class="google-plus"><i class="icon-google-plus"></i></a>
-                <a href="#" class="twitter"><i class="icon-twitter"></i></a>                 
-                <a href="#" class="linkedin"><i class="icon-linkedin"></i></a>                
+
+
+                <a href="#" class="twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="linkedin"><i class="icon-linkedin"></i></a>
               </div>                           
              </div>
             </div>

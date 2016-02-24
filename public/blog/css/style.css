@@ -3990,7 +3990,7 @@ background-size: cover;
 }
 
 .individual-post-tags {
-   margin: 25px 0 50px 0;
+   margin: 25px 0 0 0;
 }
 
 .individual-post-tags .label-tags {
@@ -4009,13 +4009,17 @@ background-size: cover;
    display: inline-block;
 }
 
-.individual-post-tags .tags a {
+.individual-post-tags a {
    padding: 0 5px;
    color: #999999;
 }
 
-.individual-post-tags .tags a:hover {
+.individual-post-tags a:hover {
    color: #16cbe6;
+}
+
+.individual-post-category {
+	   margin-bottom: 50px;
 }
 
 .individual-post .pager-post li {

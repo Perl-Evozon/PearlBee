@@ -79,3 +79,12 @@
 .blog .page-heading {
    color: rgba(255, 255, 255, 0.1);
 }
+
+/*profile/author between themes*/
+.author-description .profile-description p{
+    color: #fff;
+}
+
+/*.author-page .tabs{*/
+    /*background: rgba(0, 0, 0, 0) url("../img/backblog.jpg") repeat scroll 0 0;*/
+/*}*/

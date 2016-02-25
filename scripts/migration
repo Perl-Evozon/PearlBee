@@ -212,13 +212,16 @@ EOS
 sub map_post {
   my $post = shift;
   my $dirified = dirify( $post->{entry_title} );
+  my $content = $post->{entry_text};
+  $content .= ' ' . $post->{entry_text_more};
   return {
     id           => $post->{entry_id},
     title        => decode_utf8($post->{entry_title}),
     slug         => decode_utf8($dirified),
     description  => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
-    content      => decode_utf8($post->{entry_text}),
+    summary      => decode_utf8($post->{entry_text}),
+    content      => decode_utf8($content),
     created_date => $post->{entry_authored_on},
     #type post_format DEFAULT 'HTML',
     #status post_status DEFAULT 'draft',
@@ -229,6 +232,7 @@ sub map_post {
 }
 
 my %user_post; #key $user_id, value @{ $post_id }
+my %blog_post; #key $blog_id, value @{ $post }
 
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
@@ -238,10 +242,10 @@ ORDER BY entry_id
 EOS
 
   my @fields =
-    qw(id title slug description content created_date status user_id);
+    qw(id title slug description summary content created_date status user_id);
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO post(id,title,slug,description,content,created_date,status,user_id)
-          VALUES(?,?,?,?,?,?,?,?)
+INSERT INTO post(id,title,slug,description,summary,content,created_date,status,user_id)
+          VALUES(?,?,?,?,?,?,?,?,?)
 EOS
 
   $in_sth->execute();
@@ -253,6 +257,7 @@ EOS
 #last;
     my $out_post = map_post( $in_post );
     push @{ $user_post{ $out_post->{user_id} } }, $out_post->{id};
+    push @{ $blog_post{ $out_post->{blog_id} } }, $out_post->{id};
     $out_sth->execute( @{$out_post}{@fields} );
   }
 }
@@ -320,8 +325,6 @@ sub map_category {
     blog_id => $category->{category_blog_id},
   };
 }
-#$mt_category = {
-#};
 
 sub migrate_categories {
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
@@ -389,49 +392,40 @@ sub synthesize_post_tags {
 
 ###############################################################################
 
+sub map_post_category {
+  my $post_category = shift;
+  return {
+    category_id => $post_category->{category_id},
+    blog_id     => $post_category->{blog_id},
+  };
+}
+
 sub synthesize_post_categories {
-  my $in_sth = $in_dbh->prepare(
-    'SELECT category_id, category_blog_id
-       FROM mt_category
-   ORDER BY category_id');
-  my %blog_category;
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+SELECT c.category_id,
+       b.blog_id
+  FROM mt_category c
+  JOIN mt_blog b
+    ON c.category_id = b.blog_id
+EOS
+
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO post_category( post_id, category_id ) VALUES( ?, ? )
+EOS
+
   my $count = 0;
 
   $in_sth->execute;
-  while ( my $in_category = $in_sth->fetchrow_hashref ) {
+  while ( my $in_blog_category = $in_sth->fetchrow_hashref ) {
     print '.' if $count++ % 100 == 0;
+    my $out_blog_category = map_post_category( $in_blog_category );
 #use Data::Dumper; print Dumper($in_category);
 #last;
-    push @{ $blog_category{ $in_category->{category_blog_id} } },
-      $in_category->{category_id};
-  }
 
-  my $out_sth = $out_dbh->prepare(
-    'insert into post_category(post_id,category_id) values(?,?)');
+    for my $post_id ( @{ $blog_post{$out_blog_category->{blog_id}} } ) {
+      print '.' if $count++ % 100 == 0;
 
-  die "*** blog_category has no data!\n" unless keys %blog_category;
-  die "*** user_post has no data!\n" unless keys %user_post;
-
-  $count = 0;
-  for my $blog_id ( keys %blog_category ) {
-    my $user_id = $blog_user{$blog_id};
-
-    unless ( $blog_category{$blog_id} and @{ $blog_category{$blog_id} } ) {
-      warn "*** Skipping blog ID $blog_id: no categories\n";
-      next;
-    }
-    
-    for my $category_id ( @{ $blog_category{$blog_id} } ) {
-
-      unless ( $user_post{$user_id} and @{ $user_post{$user_id} } ) {
-        warn "*** Skipping user ID $user_id: no posts\n";
-        next;
-      }
-
-      for my $post_id ( @{ $user_post{$user_id} } ) {
-        print '.' if $count++ % 100 == 0;
-        $out_sth->execute($post_id,$category_id);
-      }
+      $out_sth->execute($post_id, $out_blog_category->{category_id});
     }
   }
 }

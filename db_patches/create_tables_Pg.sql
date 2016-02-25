@@ -146,6 +146,7 @@ CREATE TABLE post (
   slug varchar(255),
   description varchar(255),
   cover varchar(300),
+  summary text NOT NULL,
   content text NOT NULL,
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   type post_format DEFAULT 'HTML',

@@ -419,6 +419,10 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 }
                 $('#tab-content1 .progressloader').hide();
                 $('#search-more-posts').attr("data-posts-number", pageNumber);
+                  $(".truncate").dotdotdot({
+                    ellipsis  : '... ',
+                  });
+
 
             })
             .fail(function () {

@@ -131,11 +131,59 @@ $(".social .github").on('click', function() {
 });
 
 
+// ajax when toggle changes.
+    $(function changeTheme(){
 
+        $('#cmn-toggle-4').on('change',function() {
+            var theme = $('#cmn-toggle-4').is(':checked');
+            console.log("theme:",theme);
+            $.ajax({
+         //Assuming an endpoint here that responds to GETs with a response.
+                url: "/theme" ,
+                method: "POST",
+                contentType: "application/x-www-form-urlencoded",
+               data: { 
+                  theme: theme
+                }
+            })
+            .done(function (data) {
+                var themeq = data.toString();
+                var url = window.location.href;
+                //var posts = JSON.parse();
+                //console.log(themeq[]);
 
+                $('.bubble').each(function() {
 
-
-
+                    var src = $( this ).parent().find('img').attr('src');
+                    console.log("src:",src);
+                  
+                    var userImg = $( this ).parent().find('img');
+                    if (src !== undefined) { 
+                        var avatar = (src.match(/\avatars/g)||[]).length;
+         
+                        if (themeq === "light" && avatar === 0) {
+                        $("#theme").attr("href", "/blog/css/light.css");
+                        $("#cmn-toggle-4").attr('checked', true);
+                        userImg.attr('src', "/blog/img/male-user-light.png");
+                        } 
+                         else if (themeq === "light" && avatar === 1) {
+                            $("#theme").attr("href", "/blog/css/light.css");
+                            $("#cmn-toggle-4").attr('checked', true);
+                        }
+                         else if (themeq === "dark" && avatar === 0) {
+                         $("#theme").attr("href", "/blog/css/dark.css"); 
+                         $("#cmn-toggle-4").attr('checked', false);
+                         userImg.attr('src', "/blog/img/male-user.png");
+                        }
+                         else if (themeq === "dark" && avatar === 1) {
+                            $("#theme").attr("href", "/blog/css/dark.css");
+                            $("#cmn-toggle-4").attr('checked', false);
+                        }
+                    }
+             });
+        });
+        });
+    });
 
 
     // Leave a comment for a blog post
@@ -436,9 +484,8 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 }
 //tab 2: user-info;
     function getPeople(searchTerm) {
-        var themeinitial = $('#cmn-toggle-4').is(':checked'); 
-     
-        
+        var themeinitial = $('#cmn-toggle-4').is(':checked');
+
 
         $('#tab-content2 .progressloader-holder').show();
         $.ajax({
@@ -461,14 +508,23 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         var entryItem = $(".user-info-entry").get(0),
                             newItem = $(entryItem).clone(),
                             avatarPath;
-                     
+
                             if (userInfo[i].avatar_path) {
-                                avatarPath = userInfo[i].avatar_path;
+                            avatarPath = userInfo[i].avatar_path;
                             } else if ( themeinitial === false) {
-                            avatarPath = "/blog/img/male-user.png";
-                            } else {
+                           avatarPath = "/blog/img/male-user.png";
+                            } else if ( themeinitial === true) {
                             avatarPath = "/blog/img/male-user-light.png";
                             }
+                            
+                           // if (userInfo[i].avatar_path) {
+                           //     avatarPath = userInfo[i].avatar_path;}
+                           // else { avatarPath = "/blog/img/male-user.png"; }
+                            //} else if ( themeinitial === false) {
+                           // avatarPath = "/blog/img/male-user.png";
+                           // } else if ( themeinitial === true) {
+                            //avatarPath = "/blog/img/male-user-light.png";
+                           // }
 
                        // if (userInfo[i].avatar_path) {
                        //     avatarPath = userInfo[i].avatar_path;
@@ -492,13 +548,12 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.appendTo($(".user-info-listing"));
                         newItem.removeClass('hidden');
 
-
-
-
-
                     }
+
                 }
+                
             })
+
             .fail(function() {
                 $('#tab-content2 .user-info-entry:not(.hidden)').remove();
                 $('.no-posts2').show();
@@ -865,6 +920,35 @@ $('#more-posts').click(function() {
 
 }
 
+
+/* AUTHOR PROFILE PAGE RELATED JS */
+if (newURL == 'profile/author') {
+    if ($(".author-page input[name=author-tabs]:checked").attr('id') == "author-tab1") {
+        $('#author-tab-content1').show();
+    } else if ($(".author-page input[name=author-tabs]:checked").attr('id') == "author-tab2") {
+        $('#author-tab-content2').show();
+    } else {
+        $('#author-tab-content3').show();
+    }
+}
+$(".author-page input[name=author-tabs]").on("change", function(){
+    var activeTab = $(this).attr('id');
+    if (activeTab == "author-tab1") {
+        $('#author-tab-content1').show();
+        $('#author-tab-content2').hide();
+        $('#author-tab-content3').hide();
+    } else if (activeTab == "author-tab2") {
+        $('#author-tab-content2').show();
+        $('#author-tab-content1').hide();
+        $('#author-tab-content3').hide();
+    } else {
+        $('#author-tab-content3').show();
+        $('#author-tab-content1').hide();
+        $('#author-tab-content2').hide();
+    }
+
+});
+
 function getAuthorEntries (button) {
     var author = $('.author-description .author-name>a').text(),
         pageNumber = +(button.attr("data-page-number"));
@@ -987,57 +1071,6 @@ $('#more-author-posts').click(function() {
 });
 
 
-// ajax when toggle changes.
-    $(function changeTheme(){
 
-        $('#cmn-toggle-4').on('change',function() {
-            var theme = $('#cmn-toggle-4').is(':checked');
-
-            $.ajax({
-         //Assuming an endpoint here that responds to GETs with a response.
-                url: "/theme" ,
-                method: "POST",
-                contentType: "application/x-www-form-urlencoded",
-               data: { 
-                  theme: theme
-                }
-            })
-            .done(function (data) {
-                var themeq = data.toString();
-                var url = window.location.href;
-                //var posts = JSON.parse();
-                //console.log(themeq[]);
-
-                $('.bubble').each(function() {
-
-                    var src = $( this ).parent().find('img').attr('src');
-                  
-                    if (src === undefined) { return false;}
-                    var userImg = $( this ).parent().find('img');
-
-                    var avatar = (src.match(/\avatars/g)||[]).length;
-     
-                    if (themeq === "light" && avatar === 0) {
-                    $("#theme").attr("href", "/blog/css/light.css");
-                    $("#cmn-toggle-4").attr('checked', true);
-                    userImg.attr('src', "/blog/img/male-user-light.png");
-                    } 
-                     else if (themeq === "light" && avatar === 1) {
-                        $("#theme").attr("href", "/blog/css/light.css");
-                        $("#cmn-toggle-4").attr('checked', true);
-                    }
-                     else if (themeq === "dark" && avatar === 0) {
-                     $("#theme").attr("href", "/blog/css/dark.css"); 
-                     $("#cmn-toggle-4").attr('checked', false);
-                     userImg.attr('src', "/blog/img/male-user.png");
-                    }
-                     else if (themeq === "dark" && avatar === 1) {
-                        $("#theme").attr("href", "/blog/css/dark.css");
-                        $("#cmn-toggle-4").attr('checked', false);
-                    }
-             });
-        });
-        });
-    });
 	
-}
+

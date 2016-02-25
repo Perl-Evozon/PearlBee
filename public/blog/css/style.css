@@ -3777,10 +3777,7 @@ background-size: cover;
 
 #tab1:checked ~ #tab-content1,
 #tab2:checked ~ #tab-content2,
-#tab3:checked ~ #tab-content3,
-#author-tab1:checked ~ #author-tab-content1,
-#author-tab2:checked ~ #author-tab-content2,
-#author-tab3:checked ~ #author-tab-content3 {
+#tab3:checked ~ #tab-content3 {
     display: block;
 }
 

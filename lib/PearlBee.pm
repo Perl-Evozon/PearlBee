@@ -278,6 +278,12 @@ get '/register' => sub {
 
 };
 
+get '/passwordSignin' => sub {
+   
+  template 'passwordSignin';
+
+};
+
 get '/register_success' => sub { template 'register_success' };
 
 get '/register_done' => sub { template 'register_done' };

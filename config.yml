@@ -78,7 +78,9 @@ email_templates:  'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
-user_assets:      '/home/jgoff/'
+
+user_assets:      '/home/danf'
+
 
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'

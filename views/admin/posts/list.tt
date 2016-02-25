@@ -18,10 +18,10 @@
         <div class="awidget">
            <div class="awidget-head">
                [% IF status %]
-				  <h3>All [% status %] [% post_type ? post_type.name_plural : "content" %]</h3>
-			   [% ELSE %]
-				  <h3>All [% post_type ? post_type.name_plural : "content" %]</h3>
-			   [% END %]
+                  <h3>All [% status %] [% post_type ? post_type.name_plural : "content" %]</h3>
+               [% ELSE %]
+                  <h3>All [% post_type ? post_type.name_plural : "content" %]</h3>
+               [% END %]
            </div>
            <div class="awidget-body">
 
@@ -60,8 +60,8 @@
                     <td width="25%">
                       <b> <a href="/post/[% post.slug %]"> [% post.title %] </a> </b>
                       <br />
+                      <i class="icon-file-alt"></i> [% post.post_type %]
                       <br />
-
                       [% IF (post.status == 'published') %]
                         <span class="label label-success"> Published </span>
                       [% ELSE %]

@@ -41,6 +41,8 @@
               		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user %]">[% posts_for_user %]</a></h2>
           		[% END %]
               </div>
+
+              [% USE HTML.Strip 'strip'%]
               [% FOREACH post in posts %]
         
                 <div class="entry clearfix">
@@ -83,7 +85,7 @@
                          <div class="post_preview truncate">
                           <div class="post_preview_wrapper">
                             <p>
-                              [% post.content %]
+                              [% post.content | strip %]
                             </p>
                           </div>
                          </div>

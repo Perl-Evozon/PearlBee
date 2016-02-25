@@ -404,7 +404,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".user a").html(posts[i].username);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].username);
-                        newItem.find(".post_preview_wrapper").html(posts[i].content);
+                        newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
                         newItem.find(".comments-listings a").text(commentsText);
@@ -637,7 +637,7 @@ if (newURL == userURL) {
                     }
 
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -713,7 +713,7 @@ if (newURL == userURL) {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -789,7 +789,7 @@ if (newURL == userURL) {
                     }
 
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -855,7 +855,7 @@ $('#more-posts').click(function() {
                 }
 
                 newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                newItem.find(".post_preview_wrapper").html(posts[i].content);
+                newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                 newItem.find(".user a").html(posts[i].user.username);
                 newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -961,7 +961,7 @@ function getAuthorEntries (button) {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);

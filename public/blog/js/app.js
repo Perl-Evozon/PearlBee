@@ -1,6 +1,4 @@
-
 $(document).ready(function() {
-
 
     //  Blog start overlay
     function getCookie(c_name) {
@@ -125,10 +123,6 @@ $(document).ready(function() {
     });
 
 
-// github oauth
-$(".social .github").on('click', function() {
-    window.open('https://github.com/login/oauth/authorize?client_id=15f5e15f31e764d2f01e');
-});
 
 
 // ajax when toggle changes.
@@ -186,10 +180,14 @@ $(".social .github").on('click', function() {
     });
 
 
+
     // Leave a comment for a blog post
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
         var slug = $("#reply_post_comment_form #slug").val();
+
+        console.log(comment);
+        console.log(slug);
 
        // e.preventDefault();
        // e.stopPropagation();
@@ -209,8 +207,8 @@ $(".social .github").on('click', function() {
                 var entryItem = $(".comment-list .comment").get(0),
                     newItem = $(entryItem).clone();
 
-               // newItem.find(".comment-author b").html(data.user.username);
-               // newItem.find(".content-comment .cmeta .hours").html(data.comment_date_human);
+                newItem.find(".comment-author b").html(data.user.username);
+                newItem.find(".content-comment .cmeta .hours").html(data.comment_date_human);
                 newItem.find(".content-comment p").html(data.content);
 
                // newItem.insertBefore($(".comment"));
@@ -302,9 +300,9 @@ $(".social .github").on('click', function() {
       return false;
       }
     });
-	
-//	My profile password confirmation 
-	
+    
+//  My profile password confirmation 
+    
   $("#confirmNewPassword").keyup(function() {
     if( $(this).val() !== $("#newPassword").val() ){
         $("#confirmNewPassword").addClass('error');
@@ -313,11 +311,11 @@ $(".social .github").on('click', function() {
     }
   });
 
-//	Sign up
-	$('.sign-up').css('min-height',$(window).height()-80);
-	$(window).resize(function(){
-	  $('.sign-up').css('min-height',$(window).height()-80);
-	});
+//  Sign up
+    $('.sign-up').css('min-height',$(window).height()-80);
+    $(window).resize(function(){
+      $('.sign-up').css('min-height',$(window).height()-80);
+    });
 
 
 
@@ -357,61 +355,6 @@ $(window).resize(function(){
 });
 
 
-//button MORE - for listing page
-//$('#more-posts').click(function() {
-//    var button = $(this),
-//        pageNumber =  +(button.attr("data-page-number")) + 1;
-//
-//    $('.progressloader').show();
-//
-//    $.ajax({
-//        // Assuming an endpoint here that responds to GETs with a response.
-//        url: '/page/' + pageNumber + '?format=JSON',
-//        type: 'GET'
-//    })
-//        .done(function(data) {
-//            var posts = JSON.parse(data);
-//
-//            // Once the server responds with the result, update the
-//            //  textbox with that result.
-//            for( var i= 0; i < posts.length; i++){
-//                var entryItem = $(".entry").get(0),
-//                    newItem = $(entryItem).clone(),
-//                    commentsText;
-//
-//                if(posts[i].nr_of_comments ==  1){
-//                    commentsText = "Comment";
-//                } else{
-//                    commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-//                }
-//
-//                newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-//                newItem.find(".post_preview_wrapper").html(posts[i].content);
-//                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-//                newItem.find(".user a").html(posts[i].user.username);
-//                newItem.find(".post-heading h2 a").html(posts[i].title);
-//                newItem.find(".comments-listings a").text(commentsText);
-//                newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-//                newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-//                newItem.find(".date").text(posts[i].created_date);
-//
-//
-//
-//                newItem.insertBefore($(".loading-posts"));
-//            }
-//
-//            $(".truncate").dotdotdot({
-//                ellipsis  : '... ',
-//            });
-//
-//            $('.progressloader').hide();
-//            button.attr("data-page-number", pageNumber);
-//
-//          $(".truncate").dotdotdot({
-//            ellipsis  : '... ',
-//          });
-//        });
-//});
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
@@ -433,12 +376,18 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                 var posts = JSON.parse(data).posts;
                 if (posts.length === 0) {
-                    $('.no-posts').show();
-                    //$('.tabs .loading-posts').css('margin-bottom', '0');
                     $(".view-more").addClass("cut");
+                    if (pageNumber == 0) {
+                        //$('.tabs .loading-posts').css('margin-bottom', '0');
+                        $('.no-posts').show();
+                    }
                 } else {
+                    if(posts.length < 10){
+                        $(".view-more").addClass("cut");
+                    } else{
+                        $(".view-more").removeClass("cut");
+                    }
                     $('.no-posts').hide();
-                    $(".view-more").removeClass("cut");
 
                     //  textbox with that result.
                     for (var i = 0; i < posts.length; i++) {
@@ -461,7 +410,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.find(".comments-listings a").text(commentsText);
                         newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
                         newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                        newItem.find(".date").text(posts[i].created_date);
+                        newItem.find(".date").text(posts[i].created_date_human);
 
 
                         newItem.insertBefore($(".loading-posts"));
@@ -485,8 +434,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 //tab 2: user-info;
     function getPeople(searchTerm) {
         var themeinitial = $('#cmn-toggle-4').is(':checked');
-
-
         $('#tab-content2 .progressloader-holder').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
@@ -497,7 +444,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 $('#tab-content2 .user-info-entry:not(.hidden)').remove();
 
                 var userInfo = JSON.parse(data).info;
-
                 if (userInfo.length === 0){
                     $('.no-posts2').show();
                 } else {
@@ -509,31 +455,13 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             newItem = $(entryItem).clone(),
                             avatarPath;
 
-                            if (userInfo[i].avatar_path) {
+                        if (userInfo[i].avatar_path) {
                             avatarPath = userInfo[i].avatar_path;
                             } else if ( themeinitial === false) {
                            avatarPath = "/blog/img/male-user.png";
                             } else if ( themeinitial === true) {
                             avatarPath = "/blog/img/male-user-light.png";
                             }
-                            
-                           // if (userInfo[i].avatar_path) {
-                           //     avatarPath = userInfo[i].avatar_path;}
-                           // else { avatarPath = "/blog/img/male-user.png"; }
-                            //} else if ( themeinitial === false) {
-                           // avatarPath = "/blog/img/male-user.png";
-                           // } else if ( themeinitial === true) {
-                            //avatarPath = "/blog/img/male-user-light.png";
-                           // }
-
-                       // if (userInfo[i].avatar_path) {
-                       //     avatarPath = userInfo[i].avatar_path;
-                      // } else if ( themeinitial === false) {
-                      //      avatarPath = "/blog/img/male-user.png";
-                      //  }
-                      //  else {
-                      //      avatarPath = "/blog/img/male-user-light.png";
-                      //  }
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
@@ -547,13 +475,9 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.appendTo($(".user-info-listing"));
                         newItem.removeClass('hidden');
-
                     }
-
                 }
-                
             })
-
             .fail(function() {
                 $('#tab-content2 .user-info-entry:not(.hidden)').remove();
                 $('.no-posts2').show();
@@ -563,8 +487,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 $(".search-input").addClass("cut");
                 $('#tab-content2 .progressloader-holder').hide();
             });
-
-      
     }
 //tab3 : tags
     function getTags(searchTerm) {
@@ -650,7 +572,6 @@ $('input[name=tabs]').on('change', function () {
             getUserPosts(searchTerm, 0, true);
         } else if (activeTabId == 'tab2') {
             getPeople(searchTerm);
-
         } else {
             getTags(searchTerm);
         }
@@ -675,195 +596,233 @@ var userURL = "posts/user";
 var tagURL = "posts/tag";
 var categoryURL = "posts/category";
 if (newURL == userURL) {
-	$("#latest_posts").addClass("hidden");
-	//button MORE - for listing page - USER
-	$('#more-posts').click(function() {
-		var button = $(this),
-			pageNumber =  +(button.attr("data-page-number")) + 1,
-			pageURL = window.location.pathname.split('/'),
-			userName = "/" + pageURL[3];
+    $("#latest_posts").addClass("hidden");
+    //button MORE - for listing page - USER
+    $('#more-posts').click(function() {
+        var button = $(this),
+            pageNumber =  +(button.attr("data-page-number")) + 1,
+            pageURL = window.location.pathname.split('/'),
+            userName = "/" + pageURL[3];
 
-		$('.progressloader').show();
+        $('.progressloader').show();
 
-		$.ajax({
-			// Assuming an endpoint here that responds to GETs with a response.
-			url: '/posts/user' + userName + '/page/' + pageNumber + '?format=JSON',
-			type: 'GET'
-		})
-			.done(function(data) {
-				var posts = JSON.parse(data).posts;
-				var nrPage = JSON.parse(data).page;
-				var maxPage = JSON.parse(data).total_pages;
-				if ( nrPage >= maxPage ) {
-					$('#view_more').addClass('hidden');
-					$('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
-				}
-				// Once the server responds with the result, update the
-				//  textbox with that result.
-				for( var i= 0; i < posts.length; i++){
-					var entryItem = $(".entry").get(0),
-						newItem = $(entryItem).clone(),
-						commentsText;
+        $.ajax({
+            // Assuming an endpoint here that responds to GETs with a response.
+            url: '/posts/user' + userName + '/page/' + pageNumber + '?format=JSON',
+            type: 'GET'
+        })
+            .done(function(data) {
+                var posts = JSON.parse(data).posts;
+                var nrPage = JSON.parse(data).page;
+                var maxPage = JSON.parse(data).total_pages;
+                if ( nrPage >= maxPage ) {
+                    $('#view_more').addClass('hidden');
+                    $('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
+                }
+                // Once the server responds with the result, update the
+                //  textbox with that result.
+                for( var i= 0; i < posts.length; i++){
+                    var entryItem = $(".entry").get(0),
+                        newItem = $(entryItem).clone(),
+                        commentsText;
 
-					if(posts[i].nr_of_comments ==  1){
-						commentsText = "Comment";
-					} else{
-						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-					}
+                    if(posts[i].nr_of_comments ==  1){
+                        commentsText = "Comment";
+                    } else{
+                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                    }
 
-					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-					newItem.find(".post_preview_wrapper").html(posts[i].content);
-					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-					newItem.find(".user a").html(posts[i].user.username);
-					newItem.find(".post-heading h2 a").html(posts[i].title);
-					newItem.find(".comments-listings a").text(commentsText);
-					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+                    newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".user a").html(posts[i].user.username);
+                    newItem.find(".post-heading h2 a").html(posts[i].title);
+                    newItem.find(".comments-listings a").text(commentsText);
+                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".date").text(posts[i].created_date_human);
 
-					newItem.insertBefore($(".loading-posts"));
-				}
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
 
-				$(".truncate").dotdotdot({
-					ellipsis  : '... ',
-				});
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
 
-				$('.progressloader').hide();
-				button.attr("data-page-number", pageNumber);
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
-			  $(".truncate").dotdotdot({
-				ellipsis  : '... ',
-			  });
-			});
-	});
-		
+                    newItem.insertBefore($(".loading-posts"));
+                }
+
+                $(".truncate").dotdotdot({
+                    ellipsis  : '... ',
+                });
+
+                $('.progressloader').hide();
+                button.attr("data-page-number", pageNumber);
+
+              $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+              });
+            });
+    });
+        
 } else if (newURL == tagURL) {
-	$("#latest_posts").addClass("hidden");
-	//button MORE - for listing page - TAGS
-	$('#more-posts').click(function() {
-		var button = $(this),
-			pageNumber =  +(button.attr("data-page-number")) + 1,
-			pageURL = window.location.pathname.split('/'),
-			tagName = "/" + pageURL[3];
-		
-		$('.progressloader').show();
+    $("#latest_posts").addClass("hidden");
+    //button MORE - for listing page - TAGS
+    $('#more-posts').click(function() {
+        var button = $(this),
+            pageNumber =  +(button.attr("data-page-number")) + 1,
+            pageURL = window.location.pathname.split('/'),
+            tagName = "/" + pageURL[3];
+        
+        $('.progressloader').show();
 
-		$.ajax({
-			// Assuming an endpoint here that responds to GETs with a response.
-			url: '/posts/tag' + tagName + '/page/' + pageNumber + '?format=JSON',
-			type: 'GET'
-		})
-			.done(function(data) {
-				var posts = JSON.parse(data).posts;
-				var nrPage = JSON.parse(data).page;
-				var maxPage = JSON.parse(data).total_pages;
-				if ( nrPage >= maxPage ) {
-					$('#view_more').addClass('hidden');
-					$('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
-				}
-				// Once the server responds with the result, update the
-				//  textbox with that result.
-				for( var i= 0; i < posts.length; i++){
-					var entryItem = $(".entry").get(0),
-						newItem = $(entryItem).clone(),
-						commentsText;
+        $.ajax({
+            // Assuming an endpoint here that responds to GETs with a response.
+            url: '/posts/tag' + tagName + '/page/' + pageNumber + '?format=JSON',
+            type: 'GET'
+        })
+            .done(function(data) {
+                var posts = JSON.parse(data).posts;
+                var nrPage = JSON.parse(data).page;
+                var maxPage = JSON.parse(data).total_pages;
+                if ( nrPage >= maxPage ) {
+                    $('#view_more').addClass('hidden');
+                    $('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
+                }
+                // Once the server responds with the result, update the
+                //  textbox with that result.
+                for( var i= 0; i < posts.length; i++){
+                    var entryItem = $(".entry").get(0),
+                        newItem = $(entryItem).clone(),
+                        commentsText;
 
-					if(posts[i].nr_of_comments ==  1){
-						commentsText = "Comment";
-					} else{
-						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-					}
+                    if(posts[i].nr_of_comments ==  1){
+                        commentsText = "Comment";
+                    } else{
+                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                    }
 
-					newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-					newItem.find(".post_preview_wrapper").html(posts[i].content);
-					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-					newItem.find(".user a").html(posts[i].user.username);
-					newItem.find(".post-heading h2 a").html(posts[i].title);
-					newItem.find(".comments-listings a").text(commentsText);
-					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+                    newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".user a").html(posts[i].user.username);
+                    newItem.find(".post-heading h2 a").html(posts[i].title);
+                    newItem.find(".comments-listings a").text(commentsText);
+                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".date").text(posts[i].created_date_human);
 
-					newItem.insertBefore($(".loading-posts"));
-				}
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
 
-				$(".truncate").dotdotdot({
-					ellipsis  : '... ',
-				});
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
 
-				$('.progressloader').hide();
-				button.attr("data-page-number", pageNumber);
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
-			  $(".truncate").dotdotdot({
-				ellipsis  : '... ',
-			  });
-			});
-	});
-	
+                    newItem.insertBefore($(".loading-posts"));
+                }
+
+                $(".truncate").dotdotdot({
+                    ellipsis  : '... ',
+                });
+
+                $('.progressloader').hide();
+                button.attr("data-page-number", pageNumber);
+
+              $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+              });
+            });
+    });
+    
 } else if (newURL == categoryURL) {
-		$("#latest_posts").addClass("hidden");
-	//button MORE - for listing page - CATEGORY
-	$('#more-posts').click(function() {
-		var button = $(this),
-			pageNumber =  +(button.attr("data-page-number")) + 1,
-			pageURL = window.location.pathname.split('/'),
-			categoryName = "/" + pageURL[3];
-		
-		$('.progressloader').show();
+        $("#latest_posts").addClass("hidden");
+    //button MORE - for listing page - CATEGORY
+    $('#more-posts').click(function() {
+        var button = $(this),
+            pageNumber =  +(button.attr("data-page-number")) + 1,
+            pageURL = window.location.pathname.split('/'),
+            categoryName = "/" + pageURL[3];
+        
+        $('.progressloader').show();
 
-		$.ajax({
-			// Assuming an endpoint here that responds to GETs with a response.
-			url: '/posts/category' + categoryName + '/page/' + pageNumber + '?format=JSON',
-			type: 'GET'
-		})
-			.done(function(data) {
-				var posts = JSON.parse(data).posts;
-				var nrPage = JSON.parse(data).page;
-				var maxPage = JSON.parse(data).total_pages;
-				if ( nrPage >= maxPage ) {
-					$('#view_more').addClass('hidden');
-					$('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
-				}
-				// Once the server responds with the result, update the
-				//  textbox with that result.
-				for( var i= 0; i < posts.length; i++){
-					var entryItem = $(".entry").get(0),
-						newItem = $(entryItem).clone(),
-						commentsText;
+        $.ajax({
+            // Assuming an endpoint here that responds to GETs with a response.
+            url: '/posts/category' + categoryName + '/page/' + pageNumber + '?format=JSON',
+            type: 'GET'
+        })
+            .done(function(data) {
+                var posts = JSON.parse(data).posts;
+                var nrPage = JSON.parse(data).page;
+                var maxPage = JSON.parse(data).total_pages;
+                if ( nrPage >= maxPage ) {
+                    $('#view_more').addClass('hidden');
+                    $('#display_msg_posts').fadeIn().delay(1000).fadeOut(1500);
+                }
+                // Once the server responds with the result, update the
+                //  textbox with that result.
+                for( var i= 0; i < posts.length; i++){
+                    var entryItem = $(".entry").get(0),
+                        newItem = $(entryItem).clone(),
+                        commentsText;
 
-					if(posts[i].nr_of_comments ==  1){
-						commentsText = "Comment";
-					} else{
-						commentsText = "Comments (" + posts[i].nr_of_comments + ")";
-					}
+                    if(posts[i].nr_of_comments ==  1){
+                        commentsText = "Comment";
+                    } else{
+                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                    }
 
-					newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-					newItem.find(".post_preview_wrapper").html(posts[i].content);
-					newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
-					newItem.find(".user a").html(posts[i].user.username);
-					newItem.find(".post-heading h2 a").html(posts[i].title);
-					newItem.find(".comments-listings a").text(commentsText);
-					newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
-					newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-					newItem.find(".date").text(posts[i].created_date);
+                    newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".user a").html(posts[i].user.username);
+                    newItem.find(".post-heading h2 a").html(posts[i].title);
+                    newItem.find(".comments-listings a").text(commentsText);
+                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
+                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".date").text(posts[i].created_date_human);
 
-					newItem.insertBefore($(".loading-posts"));
-				}
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
 
-				$(".truncate").dotdotdot({
-					ellipsis  : '... ',
-				});
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
 
-				$('.progressloader').hide();
-				button.attr("data-page-number", pageNumber);
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
+                    newItem.insertBefore($(".loading-posts"));
+                }
 
-			  $(".truncate").dotdotdot({
-				ellipsis  : '... ',
-			  });
-			});
-	});
+                $(".truncate").dotdotdot({
+                    ellipsis  : '... ',
+                });
+
+                $('.progressloader').hide();
+                button.attr("data-page-number", pageNumber);
+
+              $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+              });
+            });
+    });
 } else {
-	
+    
 //button MORE - for listing page
 $('#more-posts').click(function() {
     var button = $(this),
@@ -899,7 +858,20 @@ $('#more-posts').click(function() {
                 newItem.find(".comments-listings a").text(commentsText);
                 newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug +"#comments");
                 newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
-                newItem.find(".date").text(posts[i].created_date);
+                    newItem.find(".date").text(posts[i].created_date_human);
+
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
 
                 newItem.insertBefore($(".loading-posts"));
             }
@@ -915,12 +887,8 @@ $('#more-posts').click(function() {
             ellipsis  : '... ',
           });
         });
-
     });
-
 }
-
-
 /* AUTHOR PROFILE PAGE RELATED JS */
 if (newURL == 'profile/author') {
     if ($(".author-page input[name=author-tabs]:checked").attr('id') == "author-tab1") {
@@ -1071,6 +1039,4 @@ $('#more-author-posts').click(function() {
 });
 
 
-
-	
 

@@ -80,7 +80,7 @@
                                     <li class="information-blog"> [% blog.description %] </li>
                                     <li><span class="entries-count"> [% blog.count.post %] entries </span>  on the blog</li>
                                     <li>
-                                        <a class="pull-right entry-slug" href="/post/[% blog.slug %]">Go to blog</a>
+                                        <a class="pull-right entry-slug" href="/posts/user/[% user.username %]">Go to blog</a>
                                     </li>
                                 </ul>
 

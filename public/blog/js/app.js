@@ -670,7 +670,7 @@ if (newURL == userURL) {
 
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
                     newItem.find(".post_preview_wrapper").html(posts[i].content);
-                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
                     newItem.find(".comments-listings a").text(commentsText);
@@ -746,7 +746,7 @@ if (newURL == userURL) {
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                     newItem.find(".post_preview_wrapper").html(posts[i].content);
-                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.username);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
                     newItem.find(".comments-listings a").text(commentsText);
@@ -888,7 +888,7 @@ $('#more-posts').click(function() {
 
                 newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                 newItem.find(".post_preview_wrapper").html(posts[i].content);
-                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
+                newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                 newItem.find(".user a").html(posts[i].user.username);
                 newItem.find(".post-heading h2 a").html(posts[i].title);
                 newItem.find(".comments-listings a").text(commentsText);

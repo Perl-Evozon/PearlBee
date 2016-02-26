@@ -36,8 +36,10 @@
                             [%ELSE %]
                             [% IF (session.theme == 'dark') %]
                             <img class="user-image" src="/blog/img/male-user.png">
-                            [%ELSE%]
+                            [%ELSIF (session.theme == 'light')%]
                             <img class="user-image" src="/blog/img/male-user-light.png">
+                            [%ELSE%]
+                            <img class="user-image" src="/blog/img/male-user.png">   
                             [%END%]
                             [%END%]
                      </div> 
@@ -60,7 +62,17 @@
 [% ELSE %]
             <form id="register_head" action="/login" method="post">
   <!--                <span class="male-user icon icon-toggle"></span>-->
-            <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+            <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="bubble">
+                  [% IF (session.theme == 'dark') %]
+                            <img class="user-image" src="/blog/img/male-user.png">
+                  [%ELSIF (session.theme == 'light')%]
+                            <img class="user-image" src="/blog/img/male-user-light.png">
+                  [%ELSE%]
+                            <img class="user-image" src="/blog/img/male-user.png">                  
+                  [%END%]
+              </div>
+            </div>
             <div class="dropdown-menu dropdown-login">
               <div class="input-group input-login">
                 <input type="text" class="form-control dropdown_input" placeholder="Email or username" aria-describedby="basic-addon1" name="username">

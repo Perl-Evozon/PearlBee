@@ -399,7 +399,7 @@ strong{
 }
 
 .header .header-icon .male-user {
-   background: url('../img/male-user.png') center center no-repeat;
+   /* background: url('../img/male-user.png') center center no-repeat; */
    width: 25px;
    height: 80px;
    background-size: 25px;
@@ -4075,6 +4075,15 @@ background-size: cover;
    margin-top: 40px;
 }
 
+.comments .comment-list .comment-author a {
+   color: #16cbe6;
+}
+
+.comments .comment-list .comment-author a:hover {
+   color: #0fa6bc;
+}
+
+
 .comments .comment-list .comment-author b {
    color: #333333;
 }
@@ -4323,4 +4332,24 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 #display_msg_posts h4 {
 	font-weight: bold;
+}
+
+#display_msg_commments .hidden {
+   display: none;
+}
+
+#display_msg_commments .display_msg {
+   padding: 0;
+   color: #FF0000;
+   font-style: italic;
+}
+
+.show {
+   display: block !important;
+   visibility: visible !important;
+}
+
+.header .header-icon .male-user .bubble img {
+   width: 30px;
+   height: 30px;
 }

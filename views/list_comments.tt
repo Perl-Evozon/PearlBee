@@ -1,21 +1,25 @@
-<div class="comments" id="comments">
-
+ <div class="comments" id="comments">
+    <div id="display_msg_commments" class="col-xs-12">
+        <div class="col-xs-2">
+        </div>
+        <h4 class="display_msg hidden col-xs-10">Your comment will be dispayed after the post owner's approval</h4>
+    </div>
     <ul class="comment-list">
-
         <li class="comment clearfix hidden " id="comment_[% comment.id %]">
                 <div class="col-xs-2">
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-			<img class="user-image" src="[% comment.uid.avatar %]">
+            <img class="user-image" src="[% comment.uid.avatar %]">
                     </div>
                 [% IF comment.fullname %]
+
                     <div class="comment-author">
-                        <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                        <a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]<b></b></a>
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                         <b><a href="/profile/author/[% comment.uid.username %]">[% comment.uid.username %]</a></b>
+                         <a href="/profile/author/[% comment.uid.username %]">[% comment.uid.username %]<b></b></a>
                     </div>
                 [% END %]
                 
@@ -37,7 +41,7 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-			            <img class="user-image" src="[% comment.uid.avatar %]">
+                        <img class="user-image" src="[% comment.uid.avatar %]">
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
@@ -50,7 +54,7 @@
                 [% END %]
                 
                 <div class="cmeta">
-		     <span class="hours">[% comment.comment_date_human %]</span>
+             <span class="hours">[% comment.comment_date_human %]</span>
                 </div>
                 <p>
                     [% comment.content %]
@@ -62,4 +66,4 @@
             </li>
         [% END %]
     </ul>
-</div>
+</div> 

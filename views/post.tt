@@ -82,7 +82,7 @@
 <!--                              	<div class="tags">-->
 <!--                              		<a class="linear-tag"> Code Books Design SCM Perl Testing POE The Stupids </a>-->
                               		[% FOREACH category in post.post_categories %]
-                              		<a class="tags linear-tag" href="/posts/category/[% category.category.name %]">[% category.category.name %]</a>
+                              		<a class="tags linear-tag" href="/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
                               		[% END %]
 <!--                              	</div>-->
                               </div>

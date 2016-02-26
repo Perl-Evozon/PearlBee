@@ -6,15 +6,25 @@ use warnings;
 use DBI;
 use Search::Elasticsearch;
 use Try::Tiny;
+use Getopt::Long;
 
 $|++;
 
-my $database_name = $ARGV[0] || 'BlogsPerlOrg';
+my ( $in_driver   ) = ( 'Pg'             );
+my ( $in_database ) = ( 'blogs_perl_org' );
+my ( $in_user     ) = ( 'jgoff'          );
+my ( $in_password ) = ( ''               );
 
-my $in_dsn = "dbi:mysql:database=$database_name";
+GetOptions(
+  'in-driver=s'  => \$in_driver,
+  'in-db=s'      => \$in_database,
+  'in-user=s'    => \$in_user,
+);
+
+my $in_dsn  = "dbi:$in_driver:database=$in_database";
+
+my $in_dbh  = DBI->connect( $in_dsn, $in_user, $in_password );
 my $e = Search::Elasticsearch->new;
-
-my $in_dbh = DBI->connect($in_dsn,'root');
 
 ###############################################################################
 

@@ -3123,7 +3123,11 @@ a:focus {
   background: url("../img/camel-logo.jpg") center center no-repeat;
   background-size: cover;
 */
-  background: #cecece;
+   background: url('../img/camila-gri.jpg') center center no-repeat;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
 }
 
 .register .container {
@@ -3202,7 +3206,11 @@ a:focus {
   width: 100%; 
   height: calc(100% - 80px);
   padding-top: 80px;
-  background: #cecece;
+   background: url('../img/camila-gri.jpg') center center no-repeat;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
 }
 
 .register-success h1, .register-done h1 {

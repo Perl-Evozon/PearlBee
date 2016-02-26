@@ -69,22 +69,17 @@
                                 	<div class="label-tags">
                                     	<h4>Tags:</h4>
                                     </div>
-<!--                                    <div class="tags">-->
 										[% FOREACH tag IN tags %]
 										<a class="linear-tag" href="/posts/tag/[% tag.slug %]">[% tag.name %]</a>
 										[% END %]
-<!--                                    </div> -->
                               </div>
                               <div class="individual-post-tags individual-post-category">
                               	<div class="label-tags">
                               		<h4>Categories:</h4>
                               	</div>
-<!--                              	<div class="tags">-->
-<!--                              		<a class="linear-tag"> Code Books Design SCM Perl Testing POE The Stupids </a>-->
                               		[% FOREACH category in post.post_categories %]
-                              		<a class="tags linear-tag" href="/posts/category/[% category.category.name %]">[% category.category.name %]</a>
+                              		<a class="tags linear-tag" href="/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
                               		[% END %]
-<!--                              	</div>-->
                               </div>
 
                               <ul class="pager-post clearfix">

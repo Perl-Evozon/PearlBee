@@ -120,7 +120,12 @@
         padding-bottom: 25px;
     }
 
-
+/*avatars to user profile*/
+.author-page .description .bubble img.user-image{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
    
 
 footer{

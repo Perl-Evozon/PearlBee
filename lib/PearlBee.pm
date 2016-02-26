@@ -245,6 +245,8 @@ post '/comments' => sub {
 
     my %expurgated_user = %$user;
     delete $expurgated_user{id};
+    delete $expurgated_user{password};
+    delete $expurgated_user{email};    
     $result{user} = \%expurgated_user;
     $result{comment_date} = $comment->comment_date;
     $result{comment_date_human} = $comment->comment_date_human;

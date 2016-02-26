@@ -55,7 +55,7 @@ plugins:
             quote_names:       1
       feed:
         title:     'blogs.perl.org'
-        format:    'Atom'
+        format:    'atom'
         max_posts: 10
       reCAPTCHA:
         site_key: 'XXX'

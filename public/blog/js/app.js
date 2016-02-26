@@ -185,6 +185,9 @@ $(document).ready(function() {
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
         var slug = $("#reply_post_comment_form #slug").val();
+        $("#reply_post_comment_form").trigger('reset');
+        var themeinitial = $('#cmn-toggle-4').is(':checked');
+
 
         console.log(comment);
         console.log(slug);
@@ -202,19 +205,34 @@ $(document).ready(function() {
             }
         })
         .done(function (data) {
-            //var posts = JSON.parse(data);
+            var posts = JSON.parse(data);
             //for( var i= 0; i < posts.length; i++){
                 var entryItem = $(".comment-list .comment").get(0),
-                    newItem = $(entryItem).clone();
+                    newItem = $(entryItem).clone(),
+                    avatarPath;
 
-                newItem.find(".comment-author b").html(data.user.username);
-                newItem.find(".content-comment .cmeta .hours").html(data.comment_date_human);
-                newItem.find(".content-comment p").html(data.content);
+                    if (posts.status === 'approved') {
+                    if (posts.user.avatar_path) {
+                        avatarPath = posts.user.avatar_path;
+                        } else if (themeinitial === false){ 
+                            avatarPath = "/blog/img/male-user.png";
+                        } else if (themeinitial === true) {
+                            avatarPath = "/blog/img/male-user-light.png";
+                        }
+
+                newItem.find(".bubble img.user-image").attr("src", avatarPath);
+                newItem.find(".comment-author a").html(posts.user.name);
+                newItem.find(".comment-author a").attr("href", "/profile/author/" + posts.user.username);
+                newItem.find(".content-comment .cmeta .hours").html(posts.comment_date_human);
+                newItem.find(".content-comment p").html(posts.content);
 
                // newItem.insertBefore($(".comment"));
                   $($(".comment-list").get(0)).prepend(newItem);
                   newItem.removeClass('hidden');
             //}
+                } else if (posts.status === 'pending') {
+                    $(".display_msg").addClass("show");
+                }
         });
     });
 
@@ -419,11 +437,10 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                 }
                 $('#tab-content1 .progressloader').hide();
                 $('#search-more-posts').attr("data-posts-number", pageNumber);
+
                   $(".truncate").dotdotdot({
                     ellipsis  : '... ',
                   });
-
-
             })
             .fail(function () {
                 $('#tab-content1 .entry:not(.hidden)').remove();

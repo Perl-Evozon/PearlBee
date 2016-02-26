@@ -121,7 +121,7 @@
                     [% INCLUDE comment_form.tt %]
 
                     <!-- Comment section -->
-                    [% INCLUDE list_comment.tt %]
+                    [% INCLUDE list_comments.tt %]
 <!--   
       start sidebar
       <aside class="col-md-4">

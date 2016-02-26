@@ -340,10 +340,10 @@ $(document).ready(function() {
       $('.register').css('min-height',$(window).height()-80);
     });
 //Listing page
-	$('.blog').css('min-height', $(window).height()-$('footer').height()-45);
-	$(window).resize(function(){
-		$('.blog').css('min-height', $(window).height()-$('footer').height()-45);
-	}); 
+//	$('.blog').css('min-height', $(window).height()-$('footer').height()-45);
+//	$(window).resize(function(){
+//		$('.blog').css('min-height', $(window).height()-$('footer').height()-45);
+//	}); 
 //Individual posts 
 	$('.blog-post').css('min-height', $(window).height()-$('.blog-comment').height()-$('footer').height()-80);
 	$(window).resize(function(){

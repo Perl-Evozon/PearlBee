@@ -53,7 +53,7 @@
 }
 
 .text-listing-entries::before, .loading-posts .view-more::before {
-  background: none;
+    background: #cccccc none repeat scroll 0 0;
 }
 
 .loading-posts .more-posts {

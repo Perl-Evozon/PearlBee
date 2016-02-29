@@ -3875,6 +3875,9 @@ background-size: cover;
    font-size: 18px;
    color: #43c8e7;
 }
+.people .info-entry .date{
+   font-size: 14px;
+}
 
 .people .properties ul li {
    font-family: 'Montserrat', 'Open Sans', sans-serif;

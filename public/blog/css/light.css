@@ -40,11 +40,14 @@
 
 .text-listing-entries a.read-more,
 .blog .posts.listings .read-more {
-   color: #333333;
+   color: #16cbe6;
 }
 
 .people .properties ul li {
    color: #333333;
+}
+.people .info-entry .date{
+    color: #333333;
 }
 
 #tag-list .btn-tag {

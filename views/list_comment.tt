@@ -1,15 +1,53 @@
-<div class="comments">
-  <div class="title"><h5>[% nr_of_comments %] Comments</h5></div>
+<div class="comments" id="comments">
+  <!-- <div class="title"><h5>[% nr_of_comments %] Comments</h5></div> -->
   <ul class="comment-list">
+
+          <li class="comment clearfix hidden " id="comment_[% comment.id %]">
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-10 content-comment">
+                    <div class="bubble">
+            <img class="user-image" src="[% comment.uid.avatar %]">
+                    </div>
+                
+                    <div class="comment-author comment-author-registered">
+                         <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                    </div>
+                
+                <div class="cmeta">
+             <span class="hours">[% comment.comment_date_human %]</span>
+                </div>
+                <p>
+                    [% comment.content %]
+                </p>
+                <div class="clearfix">
+                </div>
+                
+                </div>
+            </li>
     [% FOREACH comment in comments %]
-      <li class="comment">
-          <a class="pull-left" href="#">
-            <img class="avatar" src="[% comment.avatar_path %]" class="img-responsive" />
-          </a>
-          <div class="comment-author"><a href="/profile/author/[% comment.username %]">[% comment.username %]</a></div>
-          <div class="cmeta">Commented [% comment.comment_date_human %]</div>
-          <p> [% comment.content %] </p>
-          <div class="clearfix"></div>
+      <li class="comment  clearfix hidden " id="comment_[% comment.id %]">
+           <div class="col-xs-2">
+                </div>
+                <div class="col-xs-10 content-comment">
+                    <div class="bubble">
+                      <img class="user-image" src="[% comment.uid.avatar %]">
+                    </div>
+
+                    <div class="comment-author comment-author-registered">
+                         <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                    </div>
+                
+                <div class="cmeta">
+             <span class="hours">[% comment.comment_date_human %]</span>
+                </div>
+                <p>
+                    [% comment.content %]
+                </p>
+                <div class="clearfix">
+                </div>
+                
+                </div>
       </li>
     [% END %]
   </ul>

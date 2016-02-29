@@ -79,3 +79,39 @@
 .blog .page-heading {
    color: rgba(255, 255, 255, 0.1);
 }
+
+/*profile/author between themes*/
+.author-description .profile-description p{
+    color: #fff;
+}
+#author-tab-content1 .info-entry p.uppercase{
+    color: #fff;
+}
+#author-tab-content1 ul li{
+    color: #fff;
+}
+#author-tab-content2 p.no-posts, #author-tab-content3 p{
+    color: #fff !important;
+}
+.blog h2 a{
+    color: #fff!important;
+}
+.post_preview_wrapper{
+    color: #fff;
+}
+.author-page .background-bar{
+    background-color: #152e4a!important;
+}
+.tabs [id^="tab"]:checked + label, .tabs [id^="author-tab"]:checked + label{
+    color: #16cbe6;
+    border-bottom: 4px solid #16cbe6;
+}
+.tabs label:hover{
+    color: #16cbe6;
+    border-bottom: 4px solid #16cbe6;
+}
+.author-description .rss-part a button{
+    background-color: #FF6600;
+}
+
+

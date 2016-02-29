@@ -78,3 +78,11 @@
    color: #333333;
 }
 
+/*profile/author between themes*/
+.author-description .profile-description p{
+    color: #040404!important;
+}
+.author-description .rss-part a button{
+    background-color: #FF6600;
+}
+

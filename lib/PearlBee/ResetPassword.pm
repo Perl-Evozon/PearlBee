@@ -13,7 +13,6 @@ use PearlBee::Password;
 
 use DateTime;
 
-
 get '/activation' => sub {
 
     info "\n\n~~~~~~~~~~~~ activation link ~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
@@ -36,40 +35,53 @@ any ['post', 'get'] => '/set-password' => sub {
 
     if ( $params->{'token'} ) {
 
-        my $al = resultset('Users')->search( {activation_key => $params->{'token'}} )->first();
+        my $user = resultset('Users')->search( {activation_key => $params->{'token'}} )->first();
 
-        if ( defined($al) ) {
+        if ( defined $user ) {
 
             # post request
             if ( $params->{'password'} ) {
 
                 # passwords must be typed in twice and they were the same
                 if ( $params->{'password'} eq $params->{'rep_password'} ) {
-                    my $password = crypt( $params->{'password'}, $al->salt );
+                    my $hashed_password = crypt( $params->{'password'}, $user->password );
                     
-                    if ( $al->update( {password => $password->{hash}, activation_key => ''} ) ) {
-                        my $user_obj->{is_admin} = $al->is_admin;
-                        $user_obj->{role}     = $al->role;
-                        $user_obj->{id}       = $al->id;
-                        $user_obj->{username} = $al->username;
+                    if ( $user->update({ password => $hashed_password,
+                                         activation_key => '' }) ) {
+		        my $user_obj = {
+                          is_admin => $user->is_admin,
+                          role     => $user->role,
+                          id       => $user->id,
+                          username => $user->username,
+                        };
 
                         session user    => $user_obj;
-                        session user_id => $al->id;
+                        session user_id => $user->id;
 
                         session success => 'Your password was sucessfuly changed';
                         redirect('/dashboard');
                     }
                 }
                 else {
-                    session error                 => 'Your inputed passwords do not match';
+                    session error           => 'Entered and confirmed passwords do not match';
                     template 'set-password' => {show_input => 1,token      => $params->{'token'},}, {layout => 'admin'};
                 }
             }
+            else {
+              info "No password supplied for username " . $user->username;
+              error "No information found for this user";
+            }
+        }
+        else {
+            error "No activation key found for this user";
         }
     }
     #get request
     else {
-        template 'set-password' => {show_input => 1,token      => $params->{'token'},}, {layout => 'admin'};
+      template 'set-password' => {
+        show_input => 1,
+        token      => $params->{'token'}
+      }, {layout => 'admin'};
     }
 };
 

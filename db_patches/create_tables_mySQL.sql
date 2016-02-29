@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `slug` varchar(255) CHARACTER SET ucs2,
   `description` varchar(255) CHARACTER SET ucs2 DEFAULT NULL,
   `cover` varchar(300),
+  `summary` text CHARACTER SET ucs2 NOT NULL,
   `content` text CHARACTER SET ucs2 NOT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` enum('HTML','Markdown') DEFAULT 'HTML',

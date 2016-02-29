@@ -56,10 +56,11 @@ get '/post/:slug' => sub {
 
 get '/posts/category/:slug' => sub {
 
-  my $slug        = route_parameters->{'slug'};
-  my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my $page        = 1;
-  my @posts       = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my $slug         = route_parameters->{'slug'};
+  my $category_obj = resultset('Category')->find({ 'slug' => $slug });
+  my $nr_of_rows   = config->{posts_on_page} || 5; # Number of posts per page
+  my $page         = 1;
+  my @posts        = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   unless ( @posts ) {
     error "Could not find posts for slug '$slug'";
   }
@@ -91,7 +92,8 @@ get '/posts/category/:slug' => sub {
     total_pages        => $total_pages,
     next_link          => $next_link,
     previous_link      => $previous_link,
-    posts_for_category => $slug
+    posts_for_category => $slug,
+    category_name      => $category_obj->name,
   };
 
   if ( param('format') ) {

@@ -24,7 +24,6 @@
     padding-top: 10px;
 }
 .author-description .rss-part a button{
-    background-color: #9d1e15;
     border: 1px solid transparent;
 }
     /*/author profile top: description*/
@@ -121,7 +120,12 @@
         padding-bottom: 25px;
     }
 
-
+/*avatars to user profile*/
+.author-page .description .bubble img.user-image{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
    
 
 footer{

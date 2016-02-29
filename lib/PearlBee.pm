@@ -245,6 +245,8 @@ post '/comments' => sub {
 
     my %expurgated_user = %$user;
     delete $expurgated_user{id};
+    delete $expurgated_user{password};
+    delete $expurgated_user{email};    
     $result{user} = \%expurgated_user;
     $result{comment_date} = $comment->comment_date;
     $result{comment_date_human} = $comment->comment_date_human;
@@ -275,6 +277,12 @@ get '/register' => sub {
   template 'register', {
       recaptcha  => recaptcha_display(),
   };
+
+};
+
+get '/passwordSignin' => sub {
+   
+  template 'passwordSignin';
 
 };
 
@@ -331,13 +339,18 @@ post '/sign-up' => sub {
                              '$' .
                              Digest::SHA::sha512_base64( $salt . $params->{'password'} );
 
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
+
             resultset('Users')->create({
-              username => $params->{username},
-              password => $crypt_sha,
-              email    => $params->{'email'},
-              name     => $params->{'name'},
-              role     => 'author',
-              status   => 'pending'
+              username         => $params->{username},
+              password         => $crypt_sha,
+              email            => $params->{'email'},
+              name             => $params->{'name'},
+              role             => 'author',
+              status           => 'pending',
+              activation_token => $activation_token
             });
 
             # Notify the author that a new comment was submited
@@ -359,9 +372,6 @@ post '/sign-up' => sub {
               }
             }) or error "Could not send new_user email";
 
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
             Email::Template->send( config->{email_templates} .
                                    'activation_email.tt',
             {

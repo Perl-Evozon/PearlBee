@@ -4,7 +4,9 @@ use JSON qw//;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::reCAPTCHA;
+
 use PearlBee::Password;
+use PearlBee::Helpers::Util qw( create_password generate_hash );
 
 =head
 
@@ -57,22 +59,19 @@ post '/register_success' => sub {
           # Create the user
           if ( $params->{'username'} ) {
 
-            # Match encryption from MT
-            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
-            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+            my $crypt_sha = create_password( $params->{'password'} );
 
-            my $crypt_sha  = '$6$' .
-                             $salt .
-                             '$' .
-                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
-
+            my $date             = DateTime->now();
+            my $activation_token = generate_hash( $params->{'email'} . $date );
+            my $token = $activation_token->{hash};
             resultset('Users')->create({
-              username      => $params->{username},
-              password      => $crypt_sha,
-              email         => $params->{'email'},
-              name          => $params->{'name'},
-              role          => 'author',
-              status        => 'pending'
+              username       => $params->{username},
+              password       => $crypt_sha,
+              email          => $params->{'email'},
+              name           => $params->{'name'},
+              role           => 'author',
+              status         => 'pending',
+              activation_key => $token,
             });
 
             # Notify the author that a new comment was submited
@@ -85,18 +84,14 @@ post '/register_success' => sub {
               Subject  => 'A new user applied as an author to the blog',
 
               tt_vars  => {
+                config    => config,
                 name      => $params->{'name'},
                 username  => $params->{'username'},
                 email     => $params->{'email'},
-                signature => config->{email_signature},
-                blog_name => session('blog_name'),
-                app_url   => session('app_url'),
+                signature => config->{email_signature}
               }
             }) or error "Could not send new_user email";
 
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
             Email::Template->send( config->{email_templates} .
                                    'activation_email.tt',
             {
@@ -105,6 +100,7 @@ post '/register_success' => sub {
               Subject  => 'Welcome to Blogs.Perl.Org',
 
               tt_vars  => {
+                config    => config,
                 name      => $params->{'name'},
                 username  => $params->{'username'},
                 mail_body => "/activation?token=$token",
@@ -225,7 +221,8 @@ get '/logout' => sub {
   
   context->destroy_session;
   
-  session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
+  session blog_name => resultset('Setting')->first->blog_name
+    unless ( session('blog_name') );
   session app_url   => config->{app_url};
 
   template 'login', { success => "You were successfully logged out." }, { layout => 'admin' };

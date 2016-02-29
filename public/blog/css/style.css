@@ -399,7 +399,7 @@ strong{
 }
 
 .header .header-icon .male-user {
-   background: url('../img/male-user.png') center center no-repeat;
+   /* background: url('../img/male-user.png') center center no-repeat; */
    width: 25px;
    height: 80px;
    background-size: 25px;
@@ -3123,7 +3123,11 @@ a:focus {
   background: url("../img/camel-logo.jpg") center center no-repeat;
   background-size: cover;
 */
-  background: #cecece;
+   background: url('../img/camila-gri.jpg') center center no-repeat;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
 }
 
 .register .container {
@@ -3202,7 +3206,11 @@ a:focus {
   width: 100%; 
   height: calc(100% - 80px);
   padding-top: 80px;
-  background: #cecece;
+   background: url('../img/camila-gri.jpg') center center no-repeat;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
 }
 
 .register-success h1, .register-done h1 {
@@ -3777,10 +3785,7 @@ background-size: cover;
 
 #tab1:checked ~ #tab-content1,
 #tab2:checked ~ #tab-content2,
-#tab3:checked ~ #tab-content3,
-#author-tab1:checked ~ #author-tab-content1,
-#author-tab2:checked ~ #author-tab-content2,
-#author-tab3:checked ~ #author-tab-content3 {
+#tab3:checked ~ #tab-content3 {
     display: block;
 }
 
@@ -3990,7 +3995,7 @@ background-size: cover;
 }
 
 .individual-post-tags {
-   margin: 25px 0 50px 0;
+   margin: 25px 0 0 0;
 }
 
 .individual-post-tags .label-tags {
@@ -4009,13 +4014,17 @@ background-size: cover;
    display: inline-block;
 }
 
-.individual-post-tags .tags a {
+.individual-post-tags a {
    padding: 0 5px;
    color: #999999;
 }
 
-.individual-post-tags .tags a:hover {
+.individual-post-tags a:hover {
    color: #16cbe6;
+}
+
+.individual-post-category {
+	   margin-bottom: 50px;
 }
 
 .individual-post .pager-post li {
@@ -4073,6 +4082,15 @@ background-size: cover;
 .comments .comment-list .comment-author {
    margin-top: 40px;
 }
+
+.comments .comment-list .comment-author a {
+   color: #16cbe6;
+}
+
+.comments .comment-list .comment-author a:hover {
+   color: #0fa6bc;
+}
+
 
 .comments .comment-list .comment-author b {
    color: #333333;
@@ -4264,6 +4282,10 @@ input.cmn-toggle-round-flat:checked + label:after {
    display: none;
 }
 
+.header .header-icon .bubble {
+   display: inline-block;
+}
+
 @media all and (max-width: 580px) {
    .switch {
       display: none;
@@ -4318,4 +4340,24 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 #display_msg_posts h4 {
 	font-weight: bold;
+}
+
+#display_msg_commments .hidden {
+   display: none;
+}
+
+#display_msg_commments .display_msg {
+   padding: 0;
+   color: #FF0000;
+   font-style: italic;
+}
+
+.show {
+   display: block !important;
+   visibility: visible !important;
+}
+
+.header .header-icon .male-user .bubble img {
+   width: 30px;
+   height: 30px;
 }

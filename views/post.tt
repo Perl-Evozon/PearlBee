@@ -15,8 +15,10 @@
                     <div class="entry clearfix">
                         <!-- Meta details -->
                         <div class="meta">
-                            <div class="bubble">
-				                <img class="user-image hey" src="[% post.user.avatar %]">
+                            <div class="img-wrapper">
+                              <div class="bubble">
+  				                      <img class="user-image hey" src="[% post.user.avatar %]">
+                              </div>
                             </div>
                              <div class="info-entry">
                                <div class="user">
@@ -47,6 +49,8 @@
 
 
                         </div>
+                        <div class="post-content">
+
                         <!-- Thumbnail -->
                         [% INCLUDE cover.tt %]
                         
@@ -54,6 +58,7 @@
                         <p>
                            [% post.content %]
                         </p>
+                        </div>
 
 <!--                         [% IF (setting.social_media == '1') %]
     [% INCLUDE social_media_buttons.tt %]

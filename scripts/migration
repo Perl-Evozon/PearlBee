@@ -10,9 +10,9 @@ use String::Dirify qw( dirify );
 use Try::Tiny;
 use Getopt::Long;
 
-my ( $in_driver, $out_driver )     = ( 'mysql', 'Pg' );
+my ( $in_driver,   $out_driver   ) = ( 'mysql', 'Pg' );
 my ( $in_database, $out_database ) = ( 'mt_blogs_perl_org', 'blogs_perl_org' );
-my ( $in_user, $out_user )         = ( 'root', 'jgoff' );
+my ( $in_user,     $out_user     ) = ( 'root', 'jgoff' );
 my ( $in_password, $out_password ) = ( '', '' );
 
 GetOptions(
@@ -75,6 +75,7 @@ sub migrate_users {
      FROM mt_author a
 LEFT JOIN mt_author_meta am
        ON a.author_id = am.author_meta_author_id
+    WHERE am.author_meta_type = 'field.about_blurb'
  GROUP BY a.author_id
  ORDER BY a.author_id
 EOS
@@ -210,9 +211,9 @@ EOS
 ###############################################################################
 
 sub map_post {
-  my $post = shift;
+  my $post     = shift;
   my $dirified = dirify( $post->{entry_title} );
-  my $content = $post->{entry_text};
+  my $content  = $post->{entry_text};
   $content .= ' ' . $post->{entry_text_more};
   return {
     id           => $post->{entry_id},
@@ -222,6 +223,7 @@ sub map_post {
     #cover varchar(300) NOT NULL,
     summary      => decode_utf8($post->{entry_text}),
     content      => decode_utf8($content),
+    keywords      => decode_utf8($post->{entry_keywords}),
     created_date => $post->{entry_authored_on},
     #type post_format DEFAULT 'HTML',
     #status post_status DEFAULT 'draft',
@@ -233,11 +235,24 @@ sub map_post {
 
 my %user_post; #key $user_id, value @{ $post_id }
 my %blog_post; #key $blog_id, value @{ $post }
+my %tag;
+my %post_keyword; #key $post_id, value @{ $tag_name }
+my %keyword_post; #key $keyword_name, value @{ $post_id }
 
 sub migrate_posts {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
-  SELECT *
-    FROM mt_entry
+  SELECT entry_title,
+         entry_text,
+         entry_text_more,
+         entry_id,
+         entry_title,
+         entry_basename,
+         entry_text,
+         entry_keywords,
+         entry_authored_on,
+         entry_author_id,
+         entry_blog_id
+         FROM mt_entry
 ORDER BY entry_id
 EOS
 
@@ -258,7 +273,50 @@ EOS
     my $out_post = map_post( $in_post );
     push @{ $user_post{ $out_post->{user_id} } }, $out_post->{id};
     push @{ $blog_post{ $out_post->{blog_id} } }, $out_post->{id};
+    if ( $out_post->{keywords} ) {
+        my @tag = split /\s*,\s*/, $out_post->{keywords};
+        $tag{$_} = 1 for @tag;
+        $post_keyword{$out_post->{id}} = \@tag;
+        push @{ $keyword_post{$_} }, $out_post->{id} for @tag;
+    }
     $out_sth->execute( @{$out_post}{@fields} );
+  }
+}
+
+###############################################################################
+
+sub synthesize_tags {
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO tag( id, name, slug ) VALUES( ?, ?, ? )
+EOS
+
+  my $count = 0;
+
+  my $index = 1;
+  for my $name ( sort keys %tag ) {
+    print '.' if $count++ % 100 == 0;
+
+    $tag{$name} = $index++;
+    $out_sth->execute($tag{$name}, $name, dirify( $name ));
+  }
+}
+
+###############################################################################
+
+sub synthesize_post_tags {
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO post_tag( post_id, tag_id ) VALUES( ?, ? )
+EOS
+
+  my $count = 0;
+  for my $post_id ( keys %post_keyword ) {
+    for my $keyword_name ( @{ $post_keyword{$post_id} } ) {
+      print '.' if $count++ % 100 == 0;
+
+      my $tag_id = $tag{$keyword_name};
+
+      $out_sth->execute($post_id, $tag_id);
+    }
   }
 }
 
@@ -353,45 +411,6 @@ sub migrate_categories {
 
 ###############################################################################
 
-sub synthesize_post_tags {
-  my $in_sth = $in_dbh->prepare(
-    'SELECT objecttag_id, objecttag_tag_id
-       FROM mt_objecttag
-   ORDER BY objecttag_id');
-  my %post_tag;
-  my $count = 0;
-
-  $in_sth->execute;
-  while ( my $in_category = $in_sth->fetchrow_hashref ) {
-    print '.' if $count++ % 100 == 0;
-#use Data::Dumper; print Dumper($in_category);
-#last;
-    push @{ $post_tag{$in_category->{objecttag_id} } },
-      $in_category->{objecttag_tag_id};
-  }
-
-  my $out_sth = $out_dbh->prepare(
-    'insert into post_tag(tag_id,post_id) values(?,?)');
-
-  die "*** post_tag has no data!\n" unless keys %post_tag;
-
-  $count = 0;
-  for my $post_id ( keys %post_tag ) {
-
-    unless ( $post_tag{$post_id} and @{ $post_tag{$post_id} } ) {
-      warn "*** Skipping post ID $post_id: no tags\n";
-      next;
-    }
-
-    for my $tag_id ( @{ $post_tag{$post_id} } ) {
-      print '.' if $count++ % 100 == 0;
-      $out_sth->execute($tag_id,$post_id);
-    }
-  }
-}
-
-###############################################################################
-
 sub map_post_category {
   my $post_category = shift;
   return {
@@ -427,39 +446,6 @@ EOS
 
       $out_sth->execute($post_id, $out_blog_category->{category_id});
     }
-  }
-}
-
-###############################################################################
-
-sub map_tag {
-  my $tag = shift;
-  my $dirified = dirify( $tag->{tag_name} );
-  return {
-    id   => $tag->{tag_id},
-    name => decode_utf8($tag->{tag_name}),
-    slug => decode_utf8($dirified),
-  };
-}
-#$mt_tag = {
-#};
-
-sub migrate_tags {
-  my $in_sth = $in_dbh->prepare('SELECT * FROM mt_tag ORDER BY tag_id');
-  my $out_sth = $out_dbh->prepare(
-    'INSERT INTO tag(id,name,slug) VALUES(?,?,?)'
-  );
-  $in_sth->execute();
-
-  my $count  = 0;
-  while ( my $in_tag = $in_sth->fetchrow_hashref ) {
-    print '.' if $count++ % 100 == 0;
-#use Data::Dumper; print Dumper($in_tag);
-#last;
-    my $out_tag = map_tag($in_tag);
-    $out_sth->execute(
-        @{$out_tag}{qw( id name slug )}
-    );
   }
 }
 
@@ -528,20 +514,20 @@ print "migrating posts: ";
 migrate_posts;
 print "\n";
 
+print "synthesizing tags ";
+synthesize_tags;
+print "\n";
+
+print "synthesizing post tags ";
+synthesize_post_tags;
+print "\n";
+
 print "migrating comments: ";
 migrate_comments;
 print "\n";
 
 print "migrating categories: ";
 migrate_categories;
-print "\n";
-
-print "migrating tags: ";
-migrate_tags;
-print "\n";
-
-print "synthesizing post tags ";
-synthesize_post_tags;
 print "\n";
 
 print "synthesizing post categories ";

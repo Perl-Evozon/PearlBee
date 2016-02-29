@@ -1,6 +1,14 @@
 
 
 /*author profile top: description*/
+.author-description {
+	position: relative;
+	margin-top: 0px;
+	width: 100%;
+}
+.author-description .container .row {
+	margin-top: 80px;
+}
 .author-description .description{
     padding: 50px 0;
 }

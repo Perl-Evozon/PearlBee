@@ -185,15 +185,17 @@
   [% INCLUDE components/alerts.tt %]
        <div class="row"> 
        <div class="col-sm-6 col-sm-offset-3 text-center"> 
+
 <!--
 <div
   class="fb-like"
   data-share="true"
   data-width="450"
   data-show-faces="true">
+
 </div>
 -->
-<!--<div id="status">hey</div>-->
+<!-- <div id="status">hey</div> -->
          <h3>Welcome back!</h3>
          <h4>Please enter your credentials:</h4>
 <!--
@@ -223,9 +225,9 @@
             <div class="col-sm-12">                                                    
               <div class="social">
                 <a href="#" class="github"><i class="icon-github"></i></a>
-
                 <a href="#" class="facebook" id="face"><i class="icon-facebook"></i></a>
 <!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"></div>-->
+
 
 
                 <a href="#" class="twitter"><i class="icon-twitter"></i></a>

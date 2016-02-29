@@ -103,6 +103,10 @@ sub search_posts {
     for my $result ( @{ $elastic_results->{hits}{hits} } ) {
         my $rs = resultset('Post')->find({ id => $result->{_id} });
         next unless $rs and $rs->id;
+        my $user_avatar = $rs->user->avatar;
+        if (($user_avatar eq '/blog/img/male-user.png') || ($user_avatar eq '/blog/img/male-user-light.png')){
+                   $user_avatar = "";
+        }                
         push @results, {
             #id            => $rs->id, # We shouldn't expose this.
             title          => $rs->title,
@@ -112,7 +116,7 @@ sub search_posts {
             created_date   => $rs->created_date_human,
             nr_of_comments => $rs->nr_of_comments,
             username       => $rs->user->username,
-	        user => { avatar => $rs->user->avatar },
+            user           =>{ avatar => $user_avatar },
             tags           => $result->{_source}{tags}
         };
     }

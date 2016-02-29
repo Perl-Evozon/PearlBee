@@ -4156,12 +4156,19 @@ background-size: cover;
     .search-input input{
         background: #dadada none repeat scroll 0 0;
         border: medium none;
-        color: #999999;
-        font-size: 18px;
-        margin-top: 125px;
+        color: #666666;
+        font-size: 36px;
+        margin-top: 100px;
         padding: 10px;
+        height: 100px;
     }
 
+.search-input p{
+   color: #666;
+   font-size: 18px;
+   opacity: 0.4;
+   padding-left: 10px;
+}
 .search-page #tab-content3 ul {
         padding-top: 25px;
     }

@@ -88,7 +88,9 @@ $(document).ready(function() {
 
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
-        $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+        if (class_name != undefined) {
+            $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+        }
     });
 
     $(".reply_comment_div").each(function(){
@@ -334,6 +336,7 @@ $(document).ready(function() {
     $(window).resize(function(){
       $('.sign-up').css('min-height',$(window).height()-80);
     });
+
 // Register
     $('.register').css('min-height',$(window).height()-80);
     $(window).resize(function(){
@@ -349,7 +352,6 @@ $(document).ready(function() {
 	$(window).resize(function(){
 		$('.blog-post').css('min-height', $(window).height()-$('.blog-comment').height()-$('footer').height()-80);
 	}); 
-
 
 
 $(window).resize(function(){
@@ -395,6 +397,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
             $('#tab-content1 .progressloader-holder').show();
         }
 		var themeinitial = $('#cmn-toggle-4').is(':checked');
+
         $('.progressloader').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
@@ -428,7 +431,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             newItem = $(entryItem).clone(),
                             commentsText,
 							avatarPath;
-						
+
                         if (posts[i].nr_of_comments == 1) {
                             commentsText = "Comment";
                         } else {
@@ -439,12 +442,12 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         if (posts[i].user.avatar) {
                             avatarPath = posts[i].user.avatar;
                             } else if ( themeinitial === false) {
-                            avatarPath = "/blog/img/male-user.png";
-                             } else if ( themeinitial === true) {
-                             avatarPath = "/blog/img/male-user-light.png";
-                             }
-						
-						newItem.find(".bubble img.user-image").attr("src", avatarPath);
+                           avatarPath = "/blog/img/male-user.png";
+                            } else if ( themeinitial === true) {
+                            avatarPath = "/blog/img/male-user-light.png";
+                            }
+
+                        newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].username);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));

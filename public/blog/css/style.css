@@ -4054,6 +4054,9 @@ background-size: cover;
    padding-bottom: 25px;
    border-bottom: 2px solid #c9c9c9;
 }
+.blog-comment .title a i.icon-rss{
+   color: #ff6600;
+}
 
 .blog-comment .title i {
    padding-left: 10px;
@@ -4074,6 +4077,7 @@ background-size: cover;
    position: absolute;
    top:28px;
    left: -120px;
+   background: #ffffff;
 }
 
 .comments .comment-list {
@@ -4370,21 +4374,9 @@ input.cmn-toggle-round-flat:checked + label:after {
    width: 30px;
    height: 30px;
 }
-
-.individual-post .meta .post-content p img {
-   max-width: 100% !important;
-   height: 100% !important;
+.individual-post .meta .post-content p *{
+   padding-bottom: 15px;
 }
-
-.individual-post .meta .post-content p * {
-   max-width: 100% !important;
-}
-
-.individual-post .meta .post-content iframe {
-   width: 100% !important;
-}
-
-.individual-post .meta .post-content img {
-   width: 100% !important;
-   height: 100% !important;
+.posts .post-content p{
+   margin-bottom: 10px;
 }

@@ -240,6 +240,7 @@ my %post_keyword; #key $post_id, value @{ $tag_name }
 my %keyword_post; #key $keyword_name, value @{ $post_id }
 
 sub migrate_posts {
+  my ( $tag ) = @_;
   my $in_sth = $in_dbh->prepare( <<'EOS' );
   SELECT entry_title,
          entry_text,
@@ -275,7 +276,7 @@ EOS
     push @{ $blog_post{ $out_post->{blog_id} } }, $out_post->{id};
     if ( $out_post->{keywords} ) {
         my @tag = split /\s*,\s*/, $out_post->{keywords};
-        $tag{$_} = 1 for @tag;
+        $tag->{$_} = 1 for @tag;
         $post_keyword{$out_post->{id}} = \@tag;
         push @{ $keyword_post{$_} }, $out_post->{id} for @tag;
     }
@@ -283,37 +284,67 @@ EOS
   }
 }
 
+sub migrate_some_tags {
+  my ( $tag ) = @_;
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+    SELECT objecttag_id, t.tag_name
+      FROM mt_objecttag ot
+      JOIN mt_tag t
+        ON t.tag_id = ot.objecttag_tag_id
+  ORDER BY objecttag_id
+EOS
+
+  my %post_tag;
+
+  $in_sth->execute;
+
+  my $count = 0;
+  while ( my $in_category = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+    $tag->{$in_category->{tag_name}} = 1;
+  }
+}
+
 ###############################################################################
 
 sub synthesize_tags {
+  my ( $tag ) = @_;
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO tag( id, name, slug ) VALUES( ?, ?, ? )
+INSERT INTO tag( id, name, slug )
+            VALUES( ?, ?, ? )
 EOS
 
   my $count = 0;
 
   my $index = 1;
-  for my $name ( sort keys %tag ) {
+  for my $name ( sort keys %{ $tag } ) {
     print '.' if $count++ % 100 == 0;
 
-    $tag{$name} = $index++;
-    $out_sth->execute($tag{$name}, $name, dirify( $name ));
+    $tag->{$name} = $index++;
+    $out_sth->execute($tag->{$name}, $name, dirify( $name ));
   }
 }
 
 ###############################################################################
 
 sub synthesize_post_tags {
+  my ( $tag ) = @_;
   my $out_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO post_tag( post_id, tag_id ) VALUES( ?, ? )
 EOS
 
   my $count = 0;
   for my $post_id ( keys %post_keyword ) {
+
+    unless ( $post_keyword{$post_id} and @{ $post_keyword{$post_id} } ) {
+      warn "*** Skipping post ID $post_id: no tags\n";
+      next;
+    }
+
     for my $keyword_name ( @{ $post_keyword{$post_id} } ) {
       print '.' if $count++ % 100 == 0;
 
-      my $tag_id = $tag{$keyword_name};
+      my $tag_id = $tag->{$keyword_name};
 
       $out_sth->execute($post_id, $tag_id);
     }
@@ -511,15 +542,19 @@ migrate_blogs;
 print "\n";
 
 print "migrating posts: ";
-migrate_posts;
+migrate_posts( \%tag );
+print "\n";
+
+print "migrating some posts: ";
+migrate_some_tags( \%tag );
 print "\n";
 
 print "synthesizing tags ";
-synthesize_tags;
+synthesize_tags( \%tag );
 print "\n";
 
 print "synthesizing post tags ";
-synthesize_post_tags;
+synthesize_post_tags( \%tag );
 print "\n";
 
 print "migrating comments: ";

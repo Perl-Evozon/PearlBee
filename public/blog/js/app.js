@@ -88,7 +88,9 @@ $(document).ready(function() {
 
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
-        $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+        if (class_name != undefined) {
+            $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+        }
     });
 
     $(".reply_comment_div").each(function(){

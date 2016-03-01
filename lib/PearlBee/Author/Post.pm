@@ -342,7 +342,7 @@ post '/author/posts/update/:id' => sub {
       );
 
       # Reconnect the categories with the new one and delete the old ones
-        resultset('PostCategory')->connect_categories( params->{category}, $post->id, $user->{id} );
+        resultset('PostCategory')->connect_categories( params->{categories}, $post->id, $user->{id} );
 
         # Reconnect and update the selected tags
         resultset('PostTag')->connect_tags( params->{tags}, $post->id );

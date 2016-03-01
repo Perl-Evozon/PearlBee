@@ -88,9 +88,7 @@ $(document).ready(function() {
 
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
-        if (class_name != undefined) {
-            $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
-        }
+        $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
     });
 
     $(".reply_comment_div").each(function(){
@@ -330,13 +328,35 @@ $(document).ready(function() {
         $("#confirmNewPassword").removeClass('error');
     }
   });
+	
+//My Profile PAGE - Change Picture
+$(document).on('change', '.btn-file :file', function() {
+  var input = $(this),
+      numFiles = input.get(0).files ? input.get(0).files.length : 1,
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  input.trigger('fileselect', [numFiles, label]);
+});
+
+$(document).ready( function() {
+    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+        
+        var input = $(this).parents('.input-group').find(':text'),
+            log = numFiles > 1 ? numFiles + ' files selected' : label;
+        
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+        
+    });
+});
 
 //  Sign up
     $('.sign-up').css('min-height',$(window).height()-80);
     $(window).resize(function(){
       $('.sign-up').css('min-height',$(window).height()-80);
     });
-
 // Register
     $('.register').css('min-height',$(window).height()-80);
     $(window).resize(function(){
@@ -352,6 +372,7 @@ $(document).ready(function() {
 	$(window).resize(function(){
 		$('.blog-post').css('min-height', $(window).height()-$('.blog-comment').height()-$('footer').height()-80);
 	}); 
+
 
 
 $(window).resize(function(){
@@ -397,7 +418,6 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
             $('#tab-content1 .progressloader-holder').show();
         }
 		var themeinitial = $('#cmn-toggle-4').is(':checked');
-
         $('.progressloader').show();
         $.ajax({
             // Assuming an endpoint here that responds to GETs with a response.
@@ -431,7 +451,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             newItem = $(entryItem).clone(),
                             commentsText,
 							avatarPath;
-
+						
                         if (posts[i].nr_of_comments == 1) {
                             commentsText = "Comment";
                         } else {
@@ -442,12 +462,12 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         if (posts[i].user.avatar) {
                             avatarPath = posts[i].user.avatar;
                             } else if ( themeinitial === false) {
-                           avatarPath = "/blog/img/male-user.png";
-                            } else if ( themeinitial === true) {
-                            avatarPath = "/blog/img/male-user-light.png";
-                            }
-
-                        newItem.find(".bubble img.user-image").attr("src", avatarPath);
+                            avatarPath = "/blog/img/male-user.png";
+                             } else if ( themeinitial === true) {
+                             avatarPath = "/blog/img/male-user-light.png";
+                             }
+						
+						newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].username);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
@@ -1086,6 +1106,3 @@ $('#more-author-posts').click(function() {
             }
         })
 });
-
-
-

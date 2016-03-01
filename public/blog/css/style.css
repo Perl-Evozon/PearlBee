@@ -4381,6 +4381,48 @@ input.cmn-toggle-round-flat:checked + label:after {
    width: 100%;
    height: auto;
 }
+
 .posts .post-content p{
    margin-bottom: 10px;
 }
+
+.individual-post .meta .post-content img {
+   width: 100% !important;
+   height: 100% !important;
+}
+
+/*--------------------------------*/
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+/*  min-width: 100%;*/
+/*  min-height: 100%;*/
+  font-size: 50px;
+/*  text-align: right;*/
+  filter: alpha(opacity=0);
+  opacity: 0;
+/*  background: red;*/
+  cursor: pointer;
+  display: block;
+}
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+.change-pic {
+	background: #333;
+	color: #3BBEDC;
+	font-weight: 700;
+	margin: 10px auto;
+}
+.change-pic:hover {
+	color: #0fa6bc;
+	border: 1px solid #3BBEDC;
+}
+.change-pic p {
+	font-size: 14px;

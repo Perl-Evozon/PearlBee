@@ -1,6 +1,14 @@
 
 
 /*author profile top: description*/
+.author-description {
+	position: relative;
+	margin-top: 0px;
+	width: 100%;
+}
+.author-description .container .row {
+	margin-top: 80px;
+}
 .author-description .description{
     padding: 50px 0;
 }
@@ -58,7 +66,7 @@
       font-weight: bold;
   }
   #author-tab-content1 .info-entry{
-      border-bottom: 2px solid #DADADA;
+      border-bottom: 1px solid rgba(242, 245, 238, 0.1);
       padding-bottom: 25px;
   }
   #author-tab-content1 .info-entry p.uppercase{
@@ -116,7 +124,7 @@
         display: none;
     }
     .author-page .text-listing-entries {
-        border-bottom: 2px solid #dadada;
+        border-bottom: 1px solid rgba(242, 245, 238, 0.1);
         padding-bottom: 25px;
     }
 

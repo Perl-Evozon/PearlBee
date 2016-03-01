@@ -3875,6 +3875,9 @@ background-size: cover;
    font-size: 18px;
    color: #43c8e7;
 }
+.people .info-entry .date{
+   font-size: 14px;
+}
 
 .people .properties ul li {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
@@ -4051,6 +4054,9 @@ background-size: cover;
    padding-bottom: 25px;
    border-bottom: 2px solid #c9c9c9;
 }
+.blog-comment .title a i.icon-rss{
+   color: #ff6600;
+}
 
 .blog-comment .title i {
    padding-left: 10px;
@@ -4154,12 +4160,19 @@ background-size: cover;
     .search-input input{
         background: #dadada none repeat scroll 0 0;
         border: medium none;
-        color: #999999;
-        font-size: 18px;
-        margin-top: 125px;
+        color: #666666;
+        font-size: 36px;
+        margin-top: 100px;
         padding: 10px;
+        height: 100px;
     }
 
+.search-input p{
+   color: #666;
+   font-size: 18px;
+   opacity: 0.4;
+   padding-left: 10px;
+}
 .search-page #tab-content3 ul {
         padding-top: 25px;
     }
@@ -4360,4 +4373,14 @@ input.cmn-toggle-round-flat:checked + label:after {
 .header .header-icon .male-user .bubble img {
    width: 30px;
    height: 30px;
+}
+.individual-post .meta .post-content p *{
+   padding-bottom: 15px;
+}
+.individual-post .meta .post-content p img{
+   width: 100%;
+   height: auto;
+}
+.posts .post-content p{
+   margin-bottom: 10px;
 }

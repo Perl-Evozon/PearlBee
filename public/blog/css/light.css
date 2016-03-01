@@ -40,20 +40,23 @@
 
 .text-listing-entries a.read-more,
 .blog .posts.listings .read-more {
-   color: #333333;
+   color: #16cbe6;
 }
 
 .people .properties ul li {
    color: #333333;
 }
+.people .info-entry .date{
+    color: #333333;
+}
 
 #tag-list .btn-tag {
-   background-color: #dadada;
+   background-color: #19132D;
    color: #ffffff;
 }
 
 .text-listing-entries::before, .loading-posts .view-more::before {
-  background: none;
+    background: #cccccc none repeat scroll 0 0;
 }
 
 .loading-posts .more-posts {
@@ -79,6 +82,9 @@
 }
 
 /*profile/author between themes*/
+.author-description {
+	background-color: #ffffff;
+}
 .author-description .profile-description p{
     color: #040404!important;
 }

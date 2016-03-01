@@ -4377,6 +4377,10 @@ input.cmn-toggle-round-flat:checked + label:after {
 .individual-post .meta .post-content p *{
    padding-bottom: 15px;
 }
+.individual-post .meta .post-content p img{
+   width: 100%;
+   height: auto;
+}
 .posts .post-content p{
    margin-bottom: 10px;
 }

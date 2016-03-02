@@ -210,10 +210,6 @@ EOS
 
 ###############################################################################
 
-+---------------------------+
-| entry_convert_breaks      |
-+---------------------------+
-
 my %post_type = (
   '__default__'               => 'HTML',
   '0'                         => 'HTML',
@@ -272,9 +268,17 @@ ORDER BY entry_id
 EOS
 
   my @fields =
-    qw(id title slug description summary content created_date status user_id);
+    qw(id title slug description content content_more created_date status user_id);
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO post(id,title,slug,description,summary,content,created_date,status,user_id)
+INSERT INTO post(id,
+                 title,
+                 slug,
+                 description,
+                 content,
+                 content_more,
+                 created_date,
+                 status,
+                 user_id)
           VALUES(?,?,?,?,?,?,?,?,?)
 EOS
 

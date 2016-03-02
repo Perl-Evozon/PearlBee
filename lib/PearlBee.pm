@@ -284,8 +284,6 @@ get '/passwordSignin' => sub {
 
 };
 
-get '/register_success' => sub { template 'register_success' };
-
 get '/register_done' => sub { template 'register_done' };
 
 get '/password_recovery' => sub { template 'password_recovery' };

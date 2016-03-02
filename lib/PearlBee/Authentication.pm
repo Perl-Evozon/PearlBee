@@ -1,11 +1,13 @@
 package PearlBee::Authentication;
 
+use Try::Tiny;
 use JSON qw//;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::reCAPTCHA;
 
 use PearlBee::Password;
+use PearlBee::Helpers::Email qw( send_email_complete );
 use PearlBee::Helpers::Util qw( create_password generate_hash );
 
 =head
@@ -27,6 +29,8 @@ login method
 
 =cut
 
+get '/register_success' => sub { template 'register_success' };
+
 post '/register_success' => sub {
   my $params = body_parameters;
 
@@ -41,92 +45,99 @@ post '/register_success' => sub {
   my $response = $params->{'g-recaptcha-response'};
   my $result = recaptcha_verify($response);
 
-
-  if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
-    # The user entered the correct secrete code
-    eval {
-
-      my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
-
-      if ($existing_users > 0) {
-        $err = "An user with this email address already exists.";
-      } else {
-        $existing_users = resultset('Users')->search( \[ 'lower(username) = ?' => $params->{username} ] )->count;
-        if ($existing_users > 0) {
-          $err = "The provided username is already in use.";
-        } else {
-
-          # Create the user
-          if ( $params->{'username'} ) {
-
-            my $crypt_sha = create_password( $params->{'password'} );
-
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
-            resultset('Users')->create({
-              username       => $params->{username},
-              password       => $crypt_sha,
-              email          => $params->{'email'},
-              name           => $params->{'name'},
-              role           => 'author',
-              status         => 'pending',
-              activation_key => $token,
-            });
-
-            # Notify the author that a new comment was submited
-            my $first_admin = resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
-
-            Email::Template->send( config->{email_templates} . 'new_user.tt',
-            {
-              From     => config->{default_email_sender},
-              To       => $first_admin->email,
-              Subject  => 'A new user applied as an author to the blog',
-
-              tt_vars  => {
-                config    => config,
-                name      => $params->{'name'},
-                username  => $params->{'username'},
-                email     => $params->{'email'},
-                signature => config->{email_signature}
-              }
-            }) or error "Could not send new_user email";
-
-            Email::Template->send( config->{email_templates} .
-                                   'activation_email.tt',
-            {
-              From     => config->{default_email_sender},
-              To       => $params->{'email'},
-              Subject  => 'Welcome to Blogs.Perl.Org',
-
-              tt_vars  => {
-                config    => config,
-                name      => $params->{'name'},
-                username  => $params->{'username'},
-                mail_body => "/activation?token=$token",
-              }
-            }) or error "Could not send the email";
-
-          } else {
-            $err = 'Please provide a username.';
-          }
-        }
-      }
+  unless ( $params->{'username'} ) {
+    template 'signup', {
+      warning => "Please provide a username",
+      ecaptcha => recaptcha_display()
     };
-    error $@ if ( $@ );
+    return
   }
-  else {
-    # The secret code inncorrect
-    # Repopulate the fields with the data
-    $err = "Invalid secret code.";
-  }
-  if ($err) {
-    $template_params->{warning} = $err if $err;
-    $template_params->{recaptcha} = recaptcha_display();
 
-    template 'signup', $template_params;
-  } else {
-    template 'register_success', {success => 'The user was created and it is waiting for admin approval.'};
+  unless ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
+    # The user entered the correct secret code
+    template 'signup', {
+      warning => "Captcha failed",
+      ecaptcha => recaptcha_display()
+    };
+    return
+  }
+
+  my $existing_users =
+    resultset('Users')->search({ email => $params->{'email'} })->count;
+  if ($existing_users > 0) {
+    template 'signup', {
+      warning => "An user with this email address already exists.",
+      ecaptcha => recaptcha_display()
+    };
+    return
+  }
+
+  $existing_users =
+    resultset('Users')->search( \[ 'lower(username) = ?' =>
+                                   $params->{username} ] )->count;
+  if ($existing_users > 0) {
+    template 'signup', {
+      warning => "The provided username is already in use.",
+      ecaptcha => recaptcha_display()
+    };
+    return
+  }
+
+  my $crypt_sha        = create_password( $params->{'password'} );
+  my $date             = DateTime->now();
+  my $activation_token = generate_hash( $params->{'email'} . $date );
+  my $token            = $activation_token->{hash};
+
+  resultset('Users')->create({
+    username       => $params->{username},
+    password       => $crypt_sha,
+    email          => $params->{'email'},
+    name           => $params->{'name'},
+    role           => 'author',
+    status         => 'pending',
+    activation_key => $token,
+  });
+
+  # Notify the author that a new comment was submited
+  my $first_admin =
+    resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
+
+  try {
+     PearlBee::Helpers::Email::send_email_complete({
+       template => 'new_user.tt',
+       from     => config->{default_email_sender},
+       to       => $first_admin->email,
+       subject  => 'A new user applied as an author to the blog',
+
+       template_params => {
+         config    => config,
+         name      => $params->{'name'},
+         username  => $params->{'username'},
+         email     => $params->{'email'},
+         signature => config->{email_signature}
+       }
+     });
+
+     PearlBee::Helpers::Email::send_email_complete({
+       template => 'activation_email.tt',
+       from     => config->{default_email_sender},
+       to       => $params->{email},
+       subject  => 'Welcome to Blogs.Perl.Org',
+
+       template_params => {
+         config    => config,
+         name      => $params->{'name'},
+         username  => $params->{'username'},
+         mail_body => "/activation?token=$token",
+       }
+     });
+  }
+  catch {
+      error $_;
+  };
+
+  template 'register_success', {
+    success => 'The user was created and it is waiting for admin approval.'
   }
 };
 

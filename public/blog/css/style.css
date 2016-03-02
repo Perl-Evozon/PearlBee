@@ -498,6 +498,7 @@ strong{
 
 .links-group .dark-button:hover {
    color: #0fa6bc;
+   border: 1px solid #3BBEDC;
 }
 
 .dropdown-login .buttons-group {
@@ -2328,6 +2329,10 @@ footer .fwidget #powered_by {
 	.credentials .buttons-group {
 		width: 85% !important;
 	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
+	}
 	.credentials .profile-pic {
 		margin-top: 80px;
 	}
@@ -2378,6 +2383,10 @@ footer .fwidget #powered_by {
 	}
 	.myprofile-head .links-group {
 		text-align: center;
+	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
 	}
 	.credentials label {
 		display: inherit !important;
@@ -2584,6 +2593,10 @@ footer .fwidget #powered_by {
 	}
 	.myprofile-head .links-group {
 		margin: 15px 0;
+	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
 	}
 }
 
@@ -3287,6 +3300,9 @@ a:focus {
 .myprofile-head h5 {
    display: inline;
    margin-left: 10px;
+}
+.credentials .bubble {
+	text-align: center;
 }
 .credentials .bubble img{
    border-radius: 50%;
@@ -4400,13 +4416,9 @@ input.cmn-toggle-round-flat:checked + label:after {
   position: absolute;
   top: 0;
   right: 0;
-/*  min-width: 100%;*/
-/*  min-height: 100%;*/
   font-size: 50px;
-/*  text-align: right;*/
   filter: alpha(opacity=0);
   opacity: 0;
-/*  background: red;*/
   cursor: pointer;
   display: block;
 }

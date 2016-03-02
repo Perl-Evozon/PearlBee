@@ -81,7 +81,6 @@
                          </div>
 
                          <!-- Post cover -->
-                         [% INCLUDE cover.tt %]
                          
                          <!-- Post content -->
                          <div class="post_preview truncate">

@@ -33,58 +33,50 @@ get '/activation' => sub {
 any ['post', 'get'] => '/set-password' => sub {
     my $params = params;
 
-    if ( $params->{'token'} ) {
-
-        my $user = resultset('Users')->search( {activation_key => $params->{'token'}} )->first();
-
-        if ( defined $user ) {
-
-            # post request
-            if ( $params->{'password'} ) {
-
-                # passwords must be typed in twice and they were the same
-                if ( $params->{'password'} eq $params->{'rep_password'} ) {
-                    my $hashed_password = crypt( $params->{'password'}, $user->password );
-                    
-                    if ( $user->update({ password => $hashed_password,
-                                         activation_key => '' }) ) {
-		        my $user_obj = {
-                          is_admin => $user->is_admin,
-                          role     => $user->role,
-                          id       => $user->id,
-                          username => $user->username,
-                        };
-
-                        session user    => $user_obj;
-                        session user_id => $user->id;
-
-                        session success => 'Your password was sucessfuly changed';
-                        redirect('/dashboard');
-                    }
-                }
-                else {
-                    session error           => 'Entered and confirmed passwords do not match';
-                    template 'set-password' => {show_input => 1,token      => $params->{'token'},}, {layout => 'admin'};
-                }
-            }
-            else {
-              info "No password supplied for username " . $user->username;
-              error "No information found for this user";
-            }
-        }
-        else {
-            error "No activation key found for this user";
-        }
+    unless ( $params->{token} and $params->{password} ) {
+        template 'set-password' => {
+            show_input => 1,
+            token      => $params->{'token'}
+        }, {layout => 'admin'};
+        return;
     }
-    #get request
-    else {
-      template 'set-password' => {
-        show_input => 1,
-        token      => $params->{'token'}
-      }, {layout => 'admin'};
+
+    my $user =
+        resultset('Users')->search({
+            activation_key => $params->{'token'} })->first();
+    unless ( defined $user ) {
+        error "No activation key found for this user";
+        return;
     }
+
+    # Password must match the confirmation
+    #
+    unless ( $params->{'password'} eq $params->{'rep_password'} ) {
+        session error           => 'Entered and confirmed passwords do not match';
+        template 'set-password' => {show_input => 1,token      => $params->{'token'},}, {layout => 'admin'};
+    }
+
+    my $hashed_password =
+        crypt( $params->{'password'}, $user->password );
+    my $updated = $user->update({
+        password       => $hashed_password,
+        activation_key => '',
+        status         => 'active'
+    });
+
+    my $user_obj = {
+      is_admin => $user->is_admin,
+      role     => $user->role,
+      id       => $user->id,
+      username => $user->username,
+    };
+
+    session user    => $user_obj;
+    session user_id => $user->id;
+
+    session success => 'Your password was sucessfuly changed';
+    redirect('/dashboard');
 };
-
 
 any ['get', 'post'] => '/forgot-password' => sub {
     my $params = params;

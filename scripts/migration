@@ -235,7 +235,7 @@ sub map_post {
     extra_content => decode_utf8($extra_content),
     keywords      => decode_utf8($post->{entry_keywords}),
     created_date  => $post->{entry_authored_on},
-    type          => $type,
+    type          => $post_type,
     #status post_status DEFAULT 'draft',
     status        => 'published', # XXX Imported posts are already published
     user_id       => $post->{entry_author_id},

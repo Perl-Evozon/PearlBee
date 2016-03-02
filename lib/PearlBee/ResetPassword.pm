@@ -3,25 +3,29 @@ package ResetPassword;
 use strict;
 use warnings;
 
+use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Dancer2::Plugin::reCAPTCHA;
 
 use PearlBee::Helpers::Util;
+use PearlBee::Helpers::Email;
 
 use PearlBee::Password;
 
 use DateTime;
 
 get '/activation' => sub {
-
-    info "\n\n~~~~~~~~~~~~ activation link ~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
     my $token = params->{'token'};
 
-    my $user_reset_token = resultset('Users')->search({ activation_key => $token })->first();
+    my $user_reset_token =
+         resultset('Users')->search({ activation_key => $token })->first();
 
     if ($user_reset_token) {
-        template 'set-password' => {show_input => 1,token      => $token,}, {layout => 'admin'};
+        template 'set-password' => {
+            show_input => 1,
+            token      => $token,
+        }, { layout => 'admin' };
     }
     else {
         session error => 'Your activation token is invalid, please try the forgot password option again.';
@@ -99,21 +103,26 @@ any ['get', 'post'] => '/forgot-password' => sub {
                 if ($token) {
                     if ( $user->status ne 'suspended' ) {
                         $user->update( {activation_key => $token} );
-                        Email::Template->send(
-                            config->{email_templates} . 'forgot-password.tt',
-                            {   From    => config->{default_email_sender},
-                                To      => $params->{email},
-                                Subject => 'Reset password link on blog.cluj.pm',
 
-                                tt_vars => {
+                        try {
+                            PearlBee::Helpers::Email::send_email_complete({
+                                template => 'forgot-password.tt',
+                                from     => config->{default_email_sender},
+                                to       => $params->{email},
+                                subject  => 'Reset password link on blog.cluj.pm',
+
+                                template_params => {
                                     name      => $user->name,
                                     app_url   => config->{app_url},
                                     token     => "/activation?token=$token",
                                     blog_name => session('blog_name'),
                                     signature => config->{email_signature}
-                                },
-                            }
-                        ) or error "Could not send the email";
+                                }
+                            });
+                        }
+                        catch {
+                            error "Could not send the email";
+                        };
 
                         session success => 'You have successfully reset you password! Please check your inbox!';
                         template 'forgot-password', {show_input => 0}, {layout => 'admin'};
@@ -146,10 +155,9 @@ any ['get', 'post'] => '/forgot-password' => sub {
     else {
         template 'forgot-password', {
             show_input => 1,
-            recaptcha => recaptcha_display(),
-        }, {layout => 'admin'};
+            recaptcha  => recaptcha_display(),
+        }, { layout => 'admin' };
     }
-
 };
 
 true;

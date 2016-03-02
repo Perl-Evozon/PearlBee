@@ -54,7 +54,7 @@ EOF
 
 sub index_posts {
   my $in_sth = $in_dbh->prepare(<<'EOF');
-  SELECT u.username, p.id, p.slug, p.title, p.content, p.created_date
+  SELECT u.username, p.id, p.slug, p.title, p.content, p.content_more, p.created_date
     FROM post p
     JOIN users u ON p.user_id = u.id
 ORDER BY p.id
@@ -72,6 +72,8 @@ EOF
     if ( exists $post_tags{$post->{id}} ) {
       $tag_list = join( ' | ', map { $_->{name} } @{ $post_tags{$post->{id}} } );
     }
+    my $content = $post->{content};
+    $content   .= ' ' . $post->{content_more} if $post->{content_more};
     $e->index(
       index   => 'posts',
       type    => 'published_blog_posts',
@@ -81,7 +83,7 @@ EOF
           username => $post->{username},
           slug     => $post->{slug},
           title    => $post->{title},
-          content  => $post->{content},
+          content  => $content,
           date     => $post->{created_date},
           tags     => $tag_list
       }

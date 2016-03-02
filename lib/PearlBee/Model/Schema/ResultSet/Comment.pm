@@ -34,12 +34,12 @@ sub can_create {
 	# Let mySQL default to writing in UTC.
 	#
 	my $comment = $schema->resultset('Comment')->create({
-		fullname     => $fullname,
-		content      => $text,
-		email        => $email,
-		post_id      => $post_id,
-		status       => $status,
-		uid          => $uid,
+		fullname => $fullname,
+		content  => $text,
+		email    => $email,
+		post_id  => $post_id,
+		status   => $status,
+		uid      => $uid,
 	});
 
 	return $comment;

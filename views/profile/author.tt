@@ -143,6 +143,7 @@
                                         <div class="post_preview_wrapper">
                                             <p>
                                                 [% post.content %]
+                                                [% post.content_more %]
                                             </p>
                                         </div>
                                     </div>

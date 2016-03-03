@@ -69,10 +69,12 @@ any ['post', 'get'] => '/set-password' => sub {
     });
 
     my $user_obj = {
-      is_admin => $user->is_admin,
-      role     => $user->role,
-      id       => $user->id,
-      username => $user->username,
+      is_admin  => $user->is_admin,
+      role      => $user->role,
+      id        => $user->id,
+      username  => $user->username,
+      avatar    => $user->avatar,
+      biography => $user->biography,
     };
 
     session user    => $user_obj;

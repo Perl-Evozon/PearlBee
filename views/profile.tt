@@ -5,10 +5,20 @@
 $(document).ready(function() {
 	var userEmail = '[% session.user.email %]',
 		userUserName = '[% session.user.username %]',
-		userDisplayName = '[% session.user.name %]';
-	$("#user_email").attr('placeholder', userEmail);      
-	$("#user_username").attr('placeholder', userUserName);
-	$("#user_display_name").attr('placeholder', userDisplayName);
+		userDisplayName = '[% session.user.name %]',
+		userBiography = '[% session.user.biography %]';
+	if(userEmail){
+		$("#user_email").attr('placeholder', userEmail);
+	}
+	if(userUserName){
+		$("#user_username").attr('placeholder', userUserName);
+	}
+	if(userDisplayName){
+		$("#user_display_name").attr('placeholder', userDisplayName);
+	}
+	if(userBiography) {
+		$("#user_biography").attr('placeholder', userBiography);
+	}
 });
 </script>
 
@@ -34,7 +44,14 @@ $(document).ready(function() {
 						<div class="bubble">
                             <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
                         </div>
-						<h4>Change picture</h4>
+						<div>
+							<form enctype="multipart/form-data" method="post">
+								<span class="file-input btn btn-file light-button buttons-group change-pic">
+									<p>Change picture</p> <input type="file">
+								</span>
+							<form>
+						</div>
+				
 					</div>
 					<div class="col-sm-10">
 					
@@ -42,19 +59,19 @@ $(document).ready(function() {
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="">
+								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com">
 							</div>
 							<div class="input-group">
 								<label>Username</label>
-								<input type="text" id="user_username" class="form-control" placeholder="">
+								<input type="text" id="user_username" class="form-control" placeholder="username">
 							</div>
 							<div class="input-group">
 								<label>Display Name</label>
-								<input type="text" id="user_display_name" class="form-control" placeholder="">
+								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname">
 							</div>
 							<div class="input-group">
 								<label>About</label>
-								<textarea rows="4" class="form-control" placeholder="ex: I blog about Perl"></textarea>
+								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl"></textarea>
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>

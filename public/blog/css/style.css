@@ -4374,13 +4374,41 @@ input.cmn-toggle-round-flat:checked + label:after {
    width: 30px;
    height: 30px;
 }
-.individual-post .meta .post-content p *{
+
+.posts .post-content p {
+   margin-bottom: 10px;
+}
+
+/* Overwrites all img/gif/iframe/etc to match full size of grid and remain responsive */
+
+.individual-post .meta .post-content p img {
+   max-width: 100% !important;
+   height: 100% !important;
    padding-bottom: 15px;
 }
-.individual-post .meta .post-content p img{
-   width: 100%;
-   height: auto;
+
+.individual-post .meta .post-content p * {
+   max-width: 100% !important;
 }
-.posts .post-content p{
-   margin-bottom: 10px;
+
+.individual-post .meta .post-content iframe {
+   width: 100% !important;
+}
+
+.individual-post .meta .post-content img {
+   width: 100% !important;
+   height: 100% !important;
+}
+
+/* Search input modifications  */
+
+.search-input input {
+   width: 90%;
+   line-height: normal;
+}
+
+@media all and (max-width: 483px) {
+   .search-input input {
+      font-size: 23px;
+   }
 }

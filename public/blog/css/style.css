@@ -498,6 +498,7 @@ strong{
 
 .links-group .dark-button:hover {
    color: #0fa6bc;
+   border: 1px solid #3BBEDC;
 }
 
 .dropdown-login .buttons-group {
@@ -2328,6 +2329,10 @@ footer .fwidget #powered_by {
 	.credentials .buttons-group {
 		width: 85% !important;
 	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
+	}
 	.credentials .profile-pic {
 		margin-top: 80px;
 	}
@@ -2378,6 +2383,10 @@ footer .fwidget #powered_by {
 	}
 	.myprofile-head .links-group {
 		text-align: center;
+	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
 	}
 	.credentials label {
 		display: inherit !important;
@@ -2584,6 +2593,10 @@ footer .fwidget #powered_by {
 	}
 	.myprofile-head .links-group {
 		margin: 15px 0;
+	}
+	.credentials .change-pic {
+		margin: 10px auto !important;
+		width: auto !important;
 	}
 }
 
@@ -3287,6 +3300,9 @@ a:focus {
 .myprofile-head h5 {
    display: inline;
    margin-left: 10px;
+}
+.credentials .bubble {
+	text-align: center;
 }
 .credentials .bubble img{
    border-radius: 50%;
@@ -4391,6 +4407,7 @@ input.cmn-toggle-round-flat:checked + label:after {
    max-width: 100% !important;
 }
 
+
 .individual-post .meta .post-content iframe {
    width: 100% !important;
 }
@@ -4399,6 +4416,7 @@ input.cmn-toggle-round-flat:checked + label:after {
    width: 100% !important;
    height: 100% !important;
 }
+
 
 /* Search input modifications  */
 
@@ -4411,4 +4429,37 @@ input.cmn-toggle-round-flat:checked + label:after {
    .search-input input {
       font-size: 23px;
    }
+}
+
+/*--------------------------------*/
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 50px;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  cursor: pointer;
+  display: block;
+}
+input[readonly] {
+  background-color: white !important;
+  cursor: text !important;
+}
+.change-pic {
+	background: #333;
+	color: #3BBEDC;
+	font-weight: 700;
+	margin: 10px auto;
+}
+.change-pic:hover {
+	color: #0fa6bc;
+	border: 1px solid #3BBEDC;
+}
+.change-pic p {
+	font-size: 14px;
 }

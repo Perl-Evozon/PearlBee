@@ -34,7 +34,14 @@ $(document).ready(function() {
 						<div class="bubble">
                             <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
                         </div>
-						<h4>Change picture</h4>
+						<div>
+							<form enctype="multipart/form-data" method="post">
+								<span class="file-input btn btn-file light-button buttons-group change-pic">
+									<p>Change picture</p> <input type="file">
+								</span>
+							<form>
+						</div>
+				
 					</div>
 					<div class="col-sm-10">
 					

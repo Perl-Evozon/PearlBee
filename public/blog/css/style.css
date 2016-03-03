@@ -3238,9 +3238,23 @@ a:focus {
 .register-done .btn-start {
   padding: 15px 46px;  
   margin: 40px;
-  color: #000000;
-  background-color: #ffffff;
+/*   color: #000000;
+background-color: #ffffff; */
   font-weight: bold;
+  background-color: #19132D;
+  color: #ffffff;
+}
+
+@media all and (max-width: 450px) {
+   .register-done h1 {
+      font-size: 38px;
+   }
+   .register-done .btn-start {
+      padding: 12px 30px;
+   }
+   .register-done h4 {
+      font-size: 17px;
+   }
 }
 
 /*END style Register.tt*/

@@ -57,6 +57,7 @@
                         <!-- Para -->
                         <p>
                            [% post.content %]
+                           [% post.content_more %]
                         </p>
                         </div>
 

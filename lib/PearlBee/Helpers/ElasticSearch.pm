@@ -113,10 +113,11 @@ sub search_posts {
             slug           => $rs->slug,
             description    => $rs->description,
             content        => $rs->content,
+            content_more   => $rs->content_more,
             created_date   => $rs->created_date_human,
             nr_of_comments => $rs->nr_of_comments,
             username       => $rs->user->username,
-            user           =>{ avatar => $user_avatar },
+            user           => { avatar => $user_avatar },
             tags           => $result->{_source}{tags}
         };
     }

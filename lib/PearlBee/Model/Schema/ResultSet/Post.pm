@@ -18,15 +18,13 @@ Create a new post
 sub can_create {
   my ($self, $params) = @_;
 
-  my $title         = $params->{title};
-  my $slug          = $params->{slug};
-  my $content       = $params->{content};
-  my $user_id       = $params->{user_id};
-  my $status        = $params->{status};
-  my $cover         = $params->{cover};
+  my $title        = $params->{title};
+  my $slug         = $params->{slug};
+  my $content      = $params->{content};
+  my $user_id      = $params->{user_id};
+  my $status       = $params->{status};
+  my $cover        = $params->{cover};
 
-  # Let mySQL default to writing in UTC.
-  #
   my $post = $self->create({
       title        => $title,
       slug         => $slug,
@@ -46,12 +44,12 @@ sub can_create {
 sub check_slug {
 	my ($self, $slug, $post_id) = @_;
 
-	my $schema 	   	 = $self->result_source->schema;
-	$slug    		 = string_to_slug( $slug );
+	my $schema = $self->result_source->schema;
+	$slug      = string_to_slug( $slug );
 
-	my $found_slug 	 = ($post_id)
-						? $schema->resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first
-						: $schema->resultset('Post')->find({ slug => $slug });
+	my $found_slug 	 = $post_id
+				? $schema->resultset('Post')->search({ id => { '!=' => $post_id }, slug => $slug })->first
+				: $schema->resultset('Post')->find({ slug => $slug });
 	my $slug_changed = 0;
 
 	if ( $found_slug ) {

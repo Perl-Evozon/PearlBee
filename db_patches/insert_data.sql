@@ -24,6 +24,13 @@ INSERT INTO acl VALUES('admin',   'create user'),
                       ('visitor', 'view post');
 
 
+INSERT INTO post_format VALUES('HTML'),
+                              ('Markdown'),
+                              ('Markdown_With_Smartypants'),
+                              ('RichText'),
+                              ('Textile2');
+
+
 INSERT INTO theme VALUES('light'),
                         ('dark');
 

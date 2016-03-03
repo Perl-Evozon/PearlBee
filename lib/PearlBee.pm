@@ -266,9 +266,7 @@ post '/comments' => sub {
   my $json = JSON->new;
   $json->allow_blessed(1);
   $json->convert_blessed(1);
-  unless ($result{status} eq 'approved') {
-  delete $result{content};
-  }
+  delete $result{content} unless $result{status} eq 'approved';
   return $json->encode(\%result); 
 };
 
@@ -285,8 +283,6 @@ get '/passwordSignin' => sub {
   template 'passwordSignin';
 
 };
-
-get '/register_success' => sub { template 'register_success' };
 
 get '/register_done' => sub { template 'register_done' };
 

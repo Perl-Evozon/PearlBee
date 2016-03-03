@@ -61,6 +61,11 @@ __PACKAGE__->table("post");
   data_type: 'text'
   is_nullable: 0
 
+=head2 content_more
+
+  data_type: 'text'
+  is_nullable: 0
+
 =head2 created_date
 
   data_type: 'timestamp'
@@ -102,6 +107,8 @@ __PACKAGE__->add_columns(
   "cover",
   { data_type => "varchar", is_nullable => 0, size => 300 },
   "content",
+  { data_type => "text", is_nullable => 0 },
+  "content_more",
   { data_type => "text", is_nullable => 0 },
   "created_date",
   {
@@ -391,6 +398,7 @@ sub as_hashref {
     description  => $self->description,
     cover        => $self->cover,
     content      => $self->content,
+    content_more => $self->content_more,
     created_date => $self->created_date,
     type         => $self->type,
     status       => $self->status,

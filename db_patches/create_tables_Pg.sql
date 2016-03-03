@@ -128,9 +128,9 @@ CREATE TABLE blog_categories (
 );
 
 
-CREATE TYPE post_format AS ENUM (
-  'HTML',
-  'Markdown'
+CREATE TABLE post_format (
+  name varchar(255) NOT NULL UNIQUE,
+  PRIMARY KEY (name)
 );
 
 CREATE TYPE post_status AS ENUM (
@@ -146,10 +146,10 @@ CREATE TABLE post (
   slug varchar(255),
   description varchar(255),
   cover varchar(300),
-  summary text NOT NULL,
   content text NOT NULL,
+  content_more text,
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  type post_format DEFAULT 'HTML',
+  type varchar(255) NOT NULL DEFAULT 'HTML' REFERENCES post_format (name),
   status post_status DEFAULT 'draft',
   user_id integer NOT NULL REFERENCES users (id),
   PRIMARY KEY (id)
@@ -203,7 +203,7 @@ CREATE TABLE comment (
   website varchar(255) DEFAULT NULL,
   avatar varchar(255) DEFAULT NULL,
   comment_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  type post_format DEFAULT 'HTML',
+  type varchar(255) NOT NULL DEFAULT 'HTML' REFERENCES post_format (name),
   status comment_status DEFAULT 'pending',
   post_id integer NOT NULL REFERENCES post (id),
   uid integer NOT NULL REFERENCES users (id),

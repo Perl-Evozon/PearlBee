@@ -84,22 +84,19 @@ Generate a valid slug kind name
 sub map_posts {
     my (@posts) = @_;
     
-    
     # map info (utf8 compliance)
     my @mapped_posts = ();
     foreach my $post (@posts) {
-        my $el;
-        map {$el->{$_} = eval{$post->$_}} ('title', 'content', 'id', 'slug', 'description', 'cover', 'created_date', 'status', 'user_id', 'nr_of_comments');
-	    $el->{created_date_human} = $post->created_date_human;
-        
-        # extract a sample from the content (first words)
-        my $chunk = 600;
-        my $post_content = $el->{content};
+        my $el = $post->as_hashref;
+        $el->{nr_of_comments}     = $post->nr_of_comments;
+        $el->{created_date_human} = $post->created_date_human;
         
         # get post author
-        $el->{user}->{username} = $post->user->username;
-        $el->{user}->{avatar}   = $post->user->avatar;
-        $el->{user}->{id}       = $post->user->id;
+        $el->{user} = {
+            username => $post->user->username,
+            avatar   => $post->user->avatar,
+            id       => $post->user->id,
+        };
         
         # add post categories
         foreach my $category ($post->post_categories) {

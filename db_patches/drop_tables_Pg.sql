@@ -16,7 +16,7 @@ DROP TABLE asset;
 DROP TABLE post;
 
 DROP TYPE post_status;
-DROP TYPE post_format;
+DROP TABLE post_format;
 
 DROP TABLE blog_owners;
 DROP TABLE blog;

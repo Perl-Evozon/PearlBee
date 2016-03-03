@@ -210,26 +210,36 @@ EOS
 
 ###############################################################################
 
+my %post_type = (
+  '__default__'               => 'HTML',
+  '0'                         => 'HTML',
+  'richtext'                  => 'RichText',
+  'textile_2'                 => 'Textile2',
+  'markdown_with_smartypants' => 'Markdown_With_Smartypants',
+  'markdown'                  => 'Markdown'
+);
+
 sub map_post {
-  my $post     = shift;
-  my $dirified = dirify( $post->{entry_title} );
-  my $content  = $post->{entry_text};
-  $content .= ' ' . $post->{entry_text_more};
+  my $post          = shift;
+  my $post_type     = $post_type{$post->{entry_convert_break}};
+  my $dirified      = dirify( $post->{entry_title} );
+  my $content       = $post->{entry_text};
+  my $extra_content = $post->{entry_text_more};
   return {
-    id           => $post->{entry_id},
-    title        => decode_utf8($post->{entry_title}),
-    slug         => decode_utf8($dirified),
-    description  => $post->{entry_basename}, # XXX ?
+    id            => $post->{entry_id},
+    title         => decode_utf8($post->{entry_title}),
+    slug          => decode_utf8($dirified),
+    description   => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
-    summary      => decode_utf8($post->{entry_text}),
-    content      => decode_utf8($content),
+    content       => decode_utf8($content),
+    extra_content => decode_utf8($extra_content),
     keywords      => decode_utf8($post->{entry_keywords}),
-    created_date => $post->{entry_authored_on},
-    #type post_format DEFAULT 'HTML',
+    created_date  => $post->{entry_authored_on},
+    type          => $post_type,
     #status post_status DEFAULT 'draft',
-    status       => 'published', # XXX Imported posts are already published
-    user_id      => $post->{entry_author_id},
-    blog_id      => $post->{entry_blog_id},
+    status        => 'published', # XXX Imported posts are already published
+    user_id       => $post->{entry_author_id},
+    blog_id       => $post->{entry_blog_id},
   };
 }
 
@@ -258,9 +268,17 @@ ORDER BY entry_id
 EOS
 
   my @fields =
-    qw(id title slug description summary content created_date status user_id);
+    qw(id title slug description content content_more created_date status user_id);
   my $out_sth = $out_dbh->prepare( <<'EOS' );
-INSERT INTO post(id,title,slug,description,summary,content,created_date,status,user_id)
+INSERT INTO post(id,
+                 title,
+                 slug,
+                 description,
+                 content,
+                 content_more,
+                 created_date,
+                 status,
+                 user_id)
           VALUES(?,?,?,?,?,?,?,?,?)
 EOS
 

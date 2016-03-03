@@ -81,13 +81,13 @@
                          </div>
 
                          <!-- Post cover -->
-                         [% INCLUDE cover.tt %]
                          
                          <!-- Post content -->
                          <div class="post_preview truncate">
                           <div class="post_preview_wrapper">
                             <p>
                               [% post.content | strip %]
+                              [% post.content_more | strip %]
                             </p>
                           </div>
                          </div>

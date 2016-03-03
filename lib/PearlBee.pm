@@ -12,6 +12,7 @@ use Try::Tiny;
 use Digest::SHA;
 
 # Included controllers
+use PearlBee::Blog;
 use PearlBee::Profile;
 use PearlBee::Post;
 
@@ -216,13 +217,12 @@ post '/comments' => sub {
 
   my %result;
 
+  # Notify the author that a new comment was submitted
+  my $comment = resultset('Comment')->can_create( $parameters, $user );
+  my $author = $post->user;
+
   try {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
-
-    my $comment = resultset('Comment')->can_create( $parameters, $user );
-
-    # Notify the author that a new comment was submitted
-    my $author = $post->user;
 
     if ($blog and $blog->email_notification) {
       Helpers::Email::send_email_complete(
@@ -247,20 +247,24 @@ post '/comments' => sub {
     delete $expurgated_user{id};
     delete $expurgated_user{password};
     delete $expurgated_user{email};    
-    $result{user} = \%expurgated_user;
-    $result{comment_date} = $comment->comment_date;
-    $result{comment_date_human} = $comment->comment_date_human;
-    $result{status} = $comment->status;
+    %result = (
+        user => \%expurgated_user,
+        comment_date => $comment->comment_date,
+        comment_date_human => $comment->comment_date_human,
+        status => $comment->status,
+    );
 
     #if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $result{content} = $comment->content;
     #}
   }
   catch {
-      $result{message} = q{An error occurred while submitting your comment. We're already on it!};
-      $result{success} = 0;
-      $result{approved} = 0;
-      $result{email_sent} = 0;
+      %result = (
+          message    => q{An error occurred while submitting your comment.},
+          success    => 0,
+          approved   => 0,
+          email_sent => 0,
+      );
   };
 
   my $json = JSON->new;

@@ -12,7 +12,7 @@ use Try::Tiny;
 use Digest::SHA;
 
 # Included controllers
-use PearlBee::Blog;
+use PearlBee::Blogs;
 use PearlBee::Profile;
 use PearlBee::Post;
 

@@ -1,4 +1,4 @@
-package PearlBee::Blog;
+package PearlBee::Blogs;
 
 =head1 PearlBee::Blog
 
@@ -17,9 +17,9 @@ our $VERSION = '0.1';
 
 =cut
 
-get '/blog/user/:username/slug/:slug' => sub {
+get '/blogs/user/:username/slug/:slug' => sub {
 
-  my $num_user_posts = config->{blog}{user_posts} || 10;
+  my $num_user_posts = config->{blogs}{user_posts} || 10;
 
   my $username    = route_parameters->{'username'};
   my ( $user )    =
@@ -46,7 +46,7 @@ get '/blog/user/:username/slug/:slug' => sub {
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
 
   # Extract all posts with the wanted category
-  template 'blog',
+  template 'blogs',
       {
         posts          => \@mapped_posts,
         tags           => \@tags,
@@ -63,9 +63,9 @@ get '/blog/user/:username/slug/:slug' => sub {
 
 =cut
 
-get '/blog/user/:username/slug/:slug/page/:page' => sub {
+get '/blogs/user/:username/slug/:slug/page/:page' => sub {
 
-  my $num_user_posts = config->{blog}{user_posts} || 10;
+  my $num_user_posts = config->{blogs}{user_posts} || 10;
 
   my $username    = route_parameters->{'username'};
   my $page        = route_parameters->{'page'};
@@ -107,7 +107,7 @@ get '/blog/user/:username/slug/:slug/page/:page' => sub {
     $json->encode( $template_data );
   }
   else {
-    template 'blog', $template_data;
+    template 'blogs', $template_data;
   }
 };
 

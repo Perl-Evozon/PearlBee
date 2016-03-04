@@ -256,7 +256,7 @@ Check if the user has administration authority
 =cut
 
 sub is_admin {
-  my ($self) = shift;
+  my ($self) = @_;
 
   return 1 if ( $self->role eq 'admin' );
 
@@ -270,7 +270,7 @@ Check if the user has author authority
 =cut
 
 sub is_author {
-  my ($self) = shift;
+  my ($self) = @_;
 
   return 1 if ( $self->role eq 'author' );
 
@@ -284,7 +284,7 @@ Check if the user is active
 =cut
 
 sub is_active {
-  my ($self) = shift;
+  my ($self) = @_;
 
   return 1 if ( $self->role eq 'active' );
 
@@ -298,7 +298,7 @@ Check if the user is deactived
 =cut
 
 sub is_deactive {
-  my ($self) = shift;
+  my ($self) = @_;
 
   return 1 if ( $self->role eq 'inactive' );
 
@@ -312,25 +312,25 @@ Status changes
 =cut
 
 sub deactivate {
-  my $self = shift;
+  my ($self) = @_;
 
   $self->update({ status => 'inactive' });
 }
 
 sub activate {
-  my $self = shift;
+  my ($self) = @_;
 
   $self->update({ status => 'active' });
 }
 
 sub suspend {
-  my $self = shift;
+  my ($self) = @_;
 
   $self->update({ status => 'suspended' });
 }
 
 sub allow {
-  my $self = shift;
+  my ($self) = @_;
   
   # set a password for the user
   
@@ -340,10 +340,18 @@ sub allow {
 }
 
 sub avatar {
-  my $self = shift;
+  my ($self)       = @_;
+  my $id           = $self->id;
+  my $userpic_path = "userpics/userpic-${id}-100x100.png";
 
-  return $self->avatar_path
-    if $self->avatar_path and $self->avatar_path ne '';
+  if ( $self->avatar_path and
+       $self->avatar_path ne '' and
+       -e "public/" . $self->avatar_path ) {
+    return $self->avatar_path;
+  }
+  if ( -e $userpic_path ) {
+    return $userpic_path;
+  }
   return config->{default_avatar};
 }
 

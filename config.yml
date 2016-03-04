@@ -78,8 +78,6 @@ email_templates:  'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
-user_assets:      '/home/jgoff/'
-user_avatars:     '/home/jgoff/'
 
 # number of items to display per page
 blogs:

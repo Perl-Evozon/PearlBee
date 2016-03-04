@@ -20,8 +20,16 @@ get '/activation' => sub {
 
     my $user_reset_token =
          resultset('Users')->search({ activation_key => $token })->first();
+    if ($user_reset_token->status eq 'pending' ) 
+    {
+        $user_reset_token->update({ 
+        status         => 'active',
+        activation_key => ''          
+        });
 
-    if ($user_reset_token) {
+        template 'register_done' ;
+    }  
+    elsif ($user_reset_token->status eq 'active') {
         template 'set-password' => {
             show_input => 1,
             token      => $token,

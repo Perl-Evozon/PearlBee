@@ -12,7 +12,7 @@ use Try::Tiny;
 use Digest::SHA;
 
 # Included controllers
-use PearlBee::Blog;
+use PearlBee::Blogs;
 use PearlBee::Profile;
 use PearlBee::Post;
 
@@ -67,16 +67,19 @@ Blog assets - XXX this should be managed by nginx or something.
 
 =cut
 
-set public_dir => path(config->{user_assets});
-set avatar_dir => path(config->{user_avatars});
-
 get '/users/*' => sub {
     my ( $file ) = splat;
 
     send_file $file;
 };
 
-get '/avatars/*' => sub {
+get '/avatars/**' => sub {
+    my ( $file ) = splat;
+
+    send_file $file;
+};
+
+get '/userpics/**' => sub {
     my ( $file ) = splat;
 
     send_file $file;

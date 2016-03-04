@@ -194,6 +194,10 @@ get '/oauth/:service/service_id/:service_id' => sub {
   return to_json({ username => $user->{username} });
 };
 
+get '/login' => sub {
+      template 'login'
+};
+
 
 post '/login' => sub {
   my $password = params->{password};

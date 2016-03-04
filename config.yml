@@ -80,7 +80,7 @@ email_templates:  'views/emails/'
 movable_type_url: 'http://blogs.perl.org'
 
 # number of items to display per page
-blog:
+blogs:
   user_posts: 10
 
 # Specifics

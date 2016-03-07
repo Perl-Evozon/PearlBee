@@ -4477,3 +4477,46 @@ input[readonly] {
 .change-pic p {
 	font-size: 14px;
 }
+
+/* pages */
+
+.pages .page-heading h2 {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.pages .pages {
+   clear: both;
+}
+
+.pages .info-page {
+   float: right;
+   margin-bottom: 35px;
+}
+
+.pages .info-page .user {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #43c8e7;
+    margin-bottom: 5px;
+}
+
+.pages .info-page .date {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #8a8a8d;
+}
+
+.pages .post-content {
+   padding-top: 30px;
+}
+
+
+
+
+
+
+

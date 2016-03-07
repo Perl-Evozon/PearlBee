@@ -92,3 +92,17 @@
     background-color: #FF6600;
 }
 
+/*pages*/
+
+.pages {
+  background-color: #ffffff;
+}
+
+.pages .page-heading h2 {
+  color: #333333;
+}
+
+.pages .post-content {
+color: #333333;
+}
+

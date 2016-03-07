@@ -86,11 +86,19 @@ $(document).ready(function() {
         $("#header_onion_logo").css('cursor','pointer');
     });
 
+//  prettyprint
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
         if (class_name != undefined) {
             $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+        } else {
+          $( "pre" ).removeClass().addClass( "prettyprint lang-" );
+
         }
+    });
+
+    $('code').each(function(){ 
+      $( "code" ).removeClass().addClass( "prettyprint lang-" );
     });
 
     $(".reply_comment_div").each(function(){
@@ -400,6 +408,7 @@ $(window).on('beforeunload', function() {
 //If No Posts
 if ($(".no-posts").length > 0){
     $(".view-more").addClass("cut");
+
 } else {
     $(".view-more").removeClass("cut");
 }

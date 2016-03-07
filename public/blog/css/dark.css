@@ -121,4 +121,19 @@
     background-color: #FF6600;
 }
 
+/*pages*/
+
+.pages {
+  background-color: #07001b;
+}
+
+.pages .page-heading h2 {
+  color: #ffffff;
+}
+
+.pages .post-content {
+color: #ffffff;
+}
+
+
 

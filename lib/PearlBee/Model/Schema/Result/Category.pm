@@ -142,7 +142,7 @@ Safely cascade delete a category
 =cut
 
 sub safe_cascade_delete {
-  my $self = shift;
+  my ($self) = @_;
 
   my $schema = $self->result_source->schema;
   
@@ -164,7 +164,7 @@ sub safe_cascade_delete {
 }
 
 sub as_hashref {
-  my $self = shift;
+  my ($self)        = @_;
   my $category_href = {
     id      => $self->id,
     name    => $self->name,
@@ -176,8 +176,9 @@ sub as_hashref {
 }             
 
 sub as_hashref_sanitized {
-  my $self = shift;
-  my $href = $self->as_hashref;
+  my ($self) = @_;
+  my $href   = $self->as_hashref;
+
   delete $href->{id};
   return $href;
 }

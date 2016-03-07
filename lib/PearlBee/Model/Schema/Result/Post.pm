@@ -289,9 +289,7 @@ sub trash {
   $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
 
-=haed
-
-Check if the user has enough authorization for modifying
+=head1 Check if the user has enough authorization for modifying
 
 =cut
 
@@ -307,9 +305,7 @@ sub is_authorized {
   return $authorized;
 }
 
-=head
-
-Return the tag
+=head1 Return the tag
 
 Check if the user has enough authorization for modifying
 
@@ -318,33 +314,31 @@ Check if the user has enough authorization for modifying
 sub tag_objects {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
+
   return map { $schema->resultset('Tag')->find({ id => $_->tag_id }) }
          $schema->resultset('PostTag')->search({ post_id => $self->id });
 }
 
-=head
-
-Return the category
+=head1 Return the category
 
 =cut
 
 sub category_objects {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
+
   return map { $schema->resultset('Category')->find({ id => $_->category_id }) }
          $schema->resultset('PostCategory')->search({ post_id => $self->id });
 }
 
-=head
-
-Return the next post by this user in ID sequence, if any.
+=head1 Return the next post by this user in ID sequence, if any.
 
 =cut
 
 sub next_post {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post = $schema->resultset('Post')->search(
+  my @post   = $schema->resultset('Post')->search(
     { user_id => $self->user_id,
       id => { '>' => $self->id }
     },
@@ -355,16 +349,14 @@ sub next_post {
   return $post[0] || undef;
 }
 
-=head
-
-Return the previous post by this user in ID sequence, if any.
+=head1 Return the previous post by this user in ID sequence, if any.
 
 =cut
 
 sub previous_post {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post = $schema->resultset('Post')->search(
+  my @post   = $schema->resultset('Post')->search(
     { user_id => $self->user_id,
       id => { '<' => $self->id }
     },
@@ -377,20 +369,20 @@ sub previous_post {
 
 sub created_date_human {
 
-        my ($self) = @_;
-        my $yesterday =
-            DateTime->today( time_zone => 'UTC' )->subtract( days => 1 );
-        if ( DateTime->compare( $self->created_date, $yesterday ) == 1 ) {
-                my $dph = Date::Period::Human->new({ lang => 'en' });
-                return $dph->human_readable( $self->created_date );
-        }
-        else {
-                return $self->created_date->strftime('%b %d, %Y %l:%m%p');
-        }
+  my ($self) = @_;
+  my $yesterday =
+      DateTime->today( time_zone => 'UTC' )->subtract( days => 1 );
+  if ( DateTime->compare( $self->created_date, $yesterday ) == 1 ) {
+          my $dph = Date::Period::Human->new({ lang => 'en' });
+          return $dph->human_readable( $self->created_date );
+  }
+  else {
+          return $self->created_date->strftime('%b %d, %Y %l:%m%p');
+  }
 }
 
 sub as_hashref {
-  my $self = shift;
+  my ($self)   = @_;
   my $post_obj = {
     id           => $self->id,
     title        => $self->title,
@@ -409,8 +401,9 @@ sub as_hashref {
 }             
 
 sub as_hashref_sanitized {
-  my $self = shift;
-  my $href = $self->as_hashref;
+  my ($self) = @_;
+  my $href   = $self->as_hashref;
+
   delete $href->{id};
   delete $href->{user_id};
   return $href;

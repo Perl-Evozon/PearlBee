@@ -14,6 +14,7 @@ DROP TABLE blog_categories;
 DROP TABLE category;
 DROP TABLE asset;
 DROP TABLE post;
+DROP TABLE page;
 
 DROP TYPE post_status;
 DROP TABLE post_format;

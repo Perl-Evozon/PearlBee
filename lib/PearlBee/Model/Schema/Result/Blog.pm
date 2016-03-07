@@ -159,7 +159,7 @@ __PACKAGE__->add_unique_constraint("name", ["name"]);
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
 sub as_hashref {
-  my $self = shift;
+  my ($self)       = @_;
   my $blog_as_href = {
     id           => $self->id,
     name         => $self->name,
@@ -174,8 +174,9 @@ sub as_hashref {
 }             
 
 sub as_hashref_sanitized {
-  my $self = shift;
-  my $href = $self->as_hashref;
+  my ($self) = @_;
+  my $href   = $self->as_hashref;
+
   delete $href->{id};
   return $href;
 }

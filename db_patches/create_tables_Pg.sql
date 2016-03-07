@@ -156,6 +156,20 @@ CREATE TABLE post (
 );
 
 
+CREATE TABLE page (
+  id serial UNIQUE,
+  title varchar(255) NOT NULL,
+  slug varchar(255),
+  content text NOT NULL,
+  content_more text,
+  created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  type varchar(255) NOT NULL DEFAULT 'HTML' REFERENCES post_format (name),
+  status post_status DEFAULT 'draft',
+  user_id integer NOT NULL REFERENCES users (id),
+  PRIMARY KEY (id)
+);
+
+
 CREATE TABLE asset (
   id serial NOT NULL,
   blog_id integer NOT NULL REFERENCES blog (id),

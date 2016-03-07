@@ -34,7 +34,7 @@ __PACKAGE__->add_columns(
 );
 
 sub get_all_status_counts {
-  my $self = shift;
+  my ($self) = @_;
 
   return ( $self->total, $self->published, $self->draft, $self->trash );
 }

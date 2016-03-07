@@ -311,27 +311,18 @@ post '/sign-up' => sub {
           # Create the user
           if ( $params->{'username'} ) {
 
-            # Match encryption from MT
-            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
-            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
-
-            my $crypt_sha  = '$6$' .
-                             $salt .
-                             '$' .
-                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
-
             my $date             = DateTime->now();
             my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
+            my $token            = $activation_token->{hash};
 
-            resultset('Users')->create({
-              username         => $params->{username},
-              password         => $crypt_sha,
-              email            => $params->{'email'},
-              name             => $params->{'name'},
-              role             => 'author',
-              status           => 'pending',
-              activation_token => $activation_token
+            resultset('Users')->create_hashed({
+              username       => $params->{username},
+              password       => $params->{password},
+              email          => $params->{'email'},
+              name           => $params->{'name'},
+              role           => 'author',
+              status         => 'pending',
+              activation_key => $activation_token
             });
 
             # Notify the author that a new comment was submited

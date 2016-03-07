@@ -377,4 +377,12 @@ sub as_hashref_sanitized {
   return $href;
 }
 
+sub validate {
+  my ($self, $password) = @_;
+
+  my $hashed = crypt( $password, $self->password );
+
+  return $self->password eq $hashed;
+}
+
 1;

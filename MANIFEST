@@ -717,6 +717,7 @@ views/post_sidebar.tt
 views/post.tt
 views/profile/author.tt
 views/profile.tt
+views/recover-password.tt
 views/register_done.tt
 views/register_success.tt
 views/register.tt

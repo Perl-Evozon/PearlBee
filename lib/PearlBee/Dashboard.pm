@@ -51,8 +51,8 @@ any '/dashboard' => sub {
     }
   }
   else {
-    redirect session('app_url') . '/admin/posts'  if ( $user->is_admin );
-    redirect session('app_url') . '/author/posts';
+    redirect '/admin/posts'  if ( $user->is_admin );
+    redirect '/author/posts';
   }
 
 };

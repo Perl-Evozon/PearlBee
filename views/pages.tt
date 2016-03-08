@@ -1,0 +1,55 @@
+<!-- Page content -->
+<div class="pages">
+    <div class="container">
+        <div class="row">
+            [% INCLUDE components/alerts.tt %]
+            <br><br><br><br><br>
+            <div class="col-md-12 pages-post">
+                <div class="info-page">
+                  <div class="user">
+                    <!-- here someting like-->
+                    <a href="/profile/author/[% page.user.username %]">[% page.user.username %]</a>
+                  </div>
+                  <div class="date">
+                      <!-- here someting like [% page.created_date_human %]-->
+                      Page Date (1 sept 1985)
+                  </div>
+                </div>
+                <div class="pages">
+                  <div class="page-heading">
+                      <h2>ANOTHER AWESOME site</h2>
+                  </div>
+                    <!-- Page one -->
+                    <div class="entry clearfix">
+                        <div class="post-content">
+
+                        <!-- Thumbnail -->
+                        [% INCLUDE cover.tt %]
+                        
+                        <!-- Page content -->
+                        <p>
+                           [% page.content %]
+                        </p>
+                        </div>
+                        <div class="individual-post-tags">
+                            <div class="label-tags">
+                                <h4>Tags:</h4>
+                            </div>
+                        [% FOREACH tag IN tags %]
+                          <a class="linear-tag" href="/posts/tag/[% tag.slug %]">[% tag.name %]</a>
+                        [% END %]
+                        </div>
+                        <ul class="pager-post clearfix">
+                          [% IF previous_page.slug %]
+                            <li class="previous-post pull-left"><a href="/user/[% page.user.username %][% previous_page.slug %]">previous page</a></li>
+                          [% END %]
+                          [% IF next_page.slug %]
+                            <li class="next-post pull-right"><a href="/user/[% page.user.username %][% next_page.slug %]">next page</a></li>
+                          [% END %]
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+

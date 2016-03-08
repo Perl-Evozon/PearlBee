@@ -16,6 +16,8 @@ use PearlBee::Blogs;
 use PearlBee::Profile;
 use PearlBee::Post;
 
+use PearlBee::Routes::Pages;
+
 # Common controllers
 use PearlBee::Authentication;
 use PearlBee::Authorization;
@@ -49,9 +51,7 @@ hook before_template_render => sub {
   $tokens->{copyright_year} = ((localtime)[5]+1900);
 };
   
-=head
-
-Prepare the blog path
+=item Prepare the blog path
 
 =cut
 
@@ -61,9 +61,7 @@ hook before => sub {
   session multiuser => resultset('Setting')->first->multiuser;
 };
 
-=head
-
-Blog assets - XXX this should be managed by nginx or something.
+=head1 Blog assets - XXX this should be managed by nginx or something.
 
 =cut
 
@@ -148,56 +146,7 @@ get '/' => sub {
 
 get '/search' => sub { template 'searchresults' };
 
-=item /page/:page - Home paging
-
-=cut
-
-get '/page/:page' => sub {
-
-  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
-  my $page        = route_parameters->{'page'};
-  my @posts       = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search_published({})->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
-
-  # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
-
-  # Calculate the next and previous page link
-  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages);
-
-  if ( param('format') ) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode([
-      @mapped_posts   
-    ]); 
-  }     
-  else {
-
-    template 'index',
-      {
-        posts         => \@mapped_posts,
-        recent        => \@recent,
-        popular       => \@popular,
-        tags          => \@tags,
-        categories    => \@categories,
-        page          => $page,
-        total_pages   => $total_pages,
-        previous_link => $previous_link,
-        next_link     => $next_link
-    };
-  }
-};
-
-=head
-
-Add a comment method
+=item Add a comment method
 
 =cut
 
@@ -277,6 +226,10 @@ post '/comments' => sub {
   return $json->encode(\%result); 
 };
 
+=item /register
+
+=cut
+
 get '/register' => sub {
    
   template 'register', {
@@ -285,11 +238,19 @@ get '/register' => sub {
 
 };
 
+=item /passwordSignin
+
+=cut
+
 get '/passwordSignin' => sub {
    
   template 'passwordSignin';
 
 };
+
+=item /register_done
+
+=cut
 
 get '/register_done' => sub { template 'register_done' };
 
@@ -301,6 +262,10 @@ get '/sign-up' => sub {
     recaptcha => recaptcha_display()
   };
 };
+
+=item /sign-up
+
+=cut
 
 post '/sign-up' => sub {
   my $params = body_parameters;
@@ -333,27 +298,17 @@ post '/sign-up' => sub {
           # Create the user
           if ( $params->{'username'} ) {
 
-            # Match encryption from MT
-            my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );
-            my $salt   = join '', map $alpha[ rand @alpha ], 1 .. 16;
+            my $date  = DateTime->now();
+            my $token = generate_hash( $params->{'email'} . $date );
 
-            my $crypt_sha  = '$6$' .
-                             $salt .
-                             '$' .
-                             Digest::SHA::sha512_base64( $salt . $params->{'password'} );
-
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token = $activation_token->{hash};
-
-            resultset('Users')->create({
-              username         => $params->{username},
-              password         => $crypt_sha,
-              email            => $params->{'email'},
-              name             => $params->{'name'},
-              role             => 'author',
-              status           => 'pending',
-              activation_token => $activation_token
+            resultset('Users')->create_hashed({
+              username       => $params->{username},
+              password       => $params->{password},
+              email          => $params->{email},
+              name           => $params->{name},
+              role           => 'author',
+              status         => 'pending',
+              activation_key => $token
             });
 
             # Notify the author that a new comment was submited

@@ -29,6 +29,79 @@ login method
 
 =cut
 
+get '/recover-password' => sub { template 'recover-password' };
+
+post '/recover-password' => sub {
+
+  my $params = body_parameters;
+
+  my $err;
+
+  my $template_params = {
+    email    => $params->{'email'},
+  };
+
+
+
+  my $existing_users =
+    resultset('Users')->search({ email => $params->{'email'} })->count;
+  if ($existing_users == 0) {
+    template 'signup', {
+      warning => "The email does not exist in the database."
+    };
+    return
+  }
+
+ my $user =
+    resultset('Users')->find({ email => $params->{'email'} });
+ 
+  my $date  = DateTime->now();
+  my $token = generate_hash( $params->{'email'} . $date );
+ 
+  $user->update ({activation_key => $token });
+
+  my $first_admin =
+    resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
+
+  try {
+     PearlBee::Helpers::Email::send_email_complete({
+       template => 'new_user.tt',
+       from     => config->{default_email_sender},
+       to       => $first_admin->email,
+       subject  => 'A new user applied as an author to the blog',
+
+       template_params => {
+         config    => config,
+         name      => $params->{'name'},
+         username  => $params->{'username'},
+         email     => $params->{'email'},
+         signature => config->{email_signature}
+       }
+     });
+
+     PearlBee::Helpers::Email::send_email_complete({
+       template => 'activation_email.tt',
+       from     => config->{default_email_sender},
+       to       => $params->{email},
+       subject  => 'Welcome to Blogs.Perl.Org',
+
+       template_params => {
+         config    => config,
+         name      => $user->name,
+         username  => $user->username,
+         mail_body => "/activation?token=$token",
+       }
+     });
+  }
+  catch {
+      error $_;
+  };
+
+  template 'recover-password', {
+    success => 'The password was updated.'
+  }
+};
+
 get '/register_success' => sub { template 'register_success' };
 
 post '/register_success' => sub {
@@ -83,24 +156,23 @@ post '/register_success' => sub {
     return
   }
 
-  my $crypt_sha        = create_password( $params->{'password'} );
-  my $date             = DateTime->now();
-  my $activation_token = generate_hash( $params->{'email'} . $date );
-  my $token            = $activation_token->{hash};
+  my $date  = DateTime->now();
+  my $token = generate_hash( $params->{'email'} . $date );
 
-  resultset('Users')->create({
+  resultset('Users')->create_hashed({
     username       => $params->{username},
-    password       => $crypt_sha,
-    email          => $params->{'email'},
-    name           => $params->{'name'},
+    password       => $params->{password},
+    email          => $params->{email},
+    name           => $params->{name},
     role           => 'author',
     status         => 'pending',
     activation_key => $token,
   });
 
-  # Notify the author that a new comment was submited
+  # Notify the author that a new comment was submitted
   my $first_admin =
-    resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
+    resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+  info "No administrator found in the database!" unless $first_admin;
 
   try {
      PearlBee::Helpers::Email::send_email_complete({
@@ -209,10 +281,10 @@ post '/login' => sub {
   )->first;
   
   if ( defined $user ) {
-    my $password_hash = crypt( $password, $user->password );
-    if($user && $user->password eq $password_hash) {
+
+    if ( $user->validate($password) ) {
       
-      session user => $user->as_hashref;
+      session user    => $user->as_hashref;
       session user_id => $user->id;
   	
       redirect('/');

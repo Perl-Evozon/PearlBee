@@ -60,6 +60,8 @@ sub map_user {
   };
 }
 
+my %users;
+
 sub migrate_users {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
    SELECT a.author_id,
@@ -107,6 +109,7 @@ EOS
       $out_sth->execute(
         @{$out_user}{@fields}
       );
+      $users{$out_user->{id}} = 1;
     }
     catch {
       die "Failed to insert user '$in_user->{name}: $_ $!\n";
@@ -164,8 +167,10 @@ sub map_blog {
 }
 
 my %blog_user; # key $blog_id, value $user_id
+my %blog;
 
 sub migrate_blogs {
+  my ( $users ) = @_;
   my $in_sth = $in_dbh->prepare( <<'EOS' );
    SELECT b.blog_id,
           a.association_author_id,
@@ -201,6 +206,16 @@ EOS
     my $out_blog = map_blog( $in_blog );
     next if $out_blog->{name} eq 'blogs.perl.org'; # Skip admin "user"
 
+    unless ( $out_blog->{user_id} ) {
+      warn "*** Skipping blog ID $out_blog->{id}: no user ID\n";
+      next;
+    }
+    unless ( $users{$out_blog->{user_id}} ) {
+      warn "*** Skipping blog ID $out_blog->{id}: invalid user ID $out_blog->{user_id}\n";
+      next;
+    }
+    $blog{$out_blog->{user_id}} = 1;
+
     $out_sth->execute( @{$out_blog}{@fields} );
 
     $blog_user{$out_blog->{id}} = $out_blog->{user_id};
@@ -221,10 +236,14 @@ my %post_type = (
 
 sub map_post {
   my $post          = shift;
-  my $post_type     = $post_type{$post->{entry_convert_break}};
+  my $post_type     = 'HTML';
   my $dirified      = dirify( $post->{entry_title} );
   my $content       = $post->{entry_text};
   my $extra_content = $post->{entry_text_more};
+
+  $post_type = $post_type{$post->{entry_convert_break}} if
+    exists $post->{entry_convert_break};
+
   return {
     id            => $post->{entry_id},
     title         => decode_utf8($post->{entry_title}),
@@ -247,7 +266,9 @@ my %user_post; #key $user_id, value @{ $post_id }
 my %blog_post; #key $blog_id, value @{ $post }
 my %tag;
 my %post_keyword; #key $post_id, value @{ $tag_name }
+my %page_keyword; #key $page_id, value @{ $tag_name }
 my %keyword_post; #key $keyword_name, value @{ $post_id }
+my %keyword_page; #key $keyword_name, value @{ $page_id }
 
 sub migrate_posts {
   my ( $tag ) = @_;
@@ -263,7 +284,8 @@ sub migrate_posts {
          entry_authored_on,
          entry_author_id,
          entry_blog_id
-         FROM mt_entry
+    FROM mt_entry
+   WHERE entry_class = 'entry'
 ORDER BY entry_id
 EOS
 
@@ -301,6 +323,95 @@ EOS
     $out_sth->execute( @{$out_post}{@fields} );
   }
 }
+
+###############################################################################
+
+sub map_page {
+  my $page          = shift;
+  my $page_type     = 'HTML';
+  my $dirified      = dirify( $page->{entry_title} );
+  my $content       = $page->{entry_text};
+  my $extra_content = $page->{entry_text_more};
+
+  $page_type = $post_type{$page->{entry_convert_break}} if
+    exists $page->{entry_convert_break};
+
+  return {
+    id            => $page->{entry_id},
+    title         => decode_utf8($page->{entry_title}),
+    slug          => decode_utf8($dirified),
+    description   => $page->{entry_basename}, # XXX ?
+    #cover varchar(300) NOT NULL,
+    content       => decode_utf8($content),
+    extra_content => decode_utf8($extra_content),
+    keywords      => decode_utf8($page->{entry_keywords}),
+    created_date  => $page->{entry_authored_on},
+    type          => $page_type,
+    #status post_status DEFAULT 'draft',
+    status        => 'published', # XXX Imported posts are already published
+    user_id       => $page->{entry_author_id},
+    blog_id       => $page->{entry_blog_id},
+  };
+}
+
+my %user_page; #key $user_id, value @{ $page_id }
+my %blog_page; #key $blog_id, value @{ $page }
+
+sub migrate_pages {
+  my ( $tag ) = @_;
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+  SELECT entry_title,
+         entry_text,
+         entry_text_more,
+         entry_id,
+         entry_title,
+         entry_basename,
+         entry_text,
+         entry_keywords,
+         entry_authored_on,
+         entry_author_id,
+         entry_blog_id
+    FROM mt_entry
+   WHERE entry_class = 'page'
+ORDER BY entry_id
+EOS
+
+  my @fields =
+    qw(id title slug description content content_more created_date status user_id);
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO page(id,
+                 title,
+                 slug,
+                 description,
+                 content,
+                 content_more,
+                 created_date,
+                 status,
+                 user_id)
+          VALUES(?,?,?,?,?,?,?,?,?)
+EOS
+
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_page = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_page);
+#last;
+    my $out_page = map_page( $in_page );
+    push @{ $user_page{ $out_page->{user_id} } }, $out_page->{id};
+    push @{ $blog_page{ $out_page->{blog_id} } }, $out_page->{id};
+    if ( $out_page->{keywords} ) {
+        my @tag = split /\s*,\s*/, $out_page->{keywords};
+        $tag->{$_} = 1 for @tag;
+        $page_keyword{$out_page->{id}} = \@tag;
+        push @{ $keyword_page{$_} }, $out_page->{id} for @tag;
+    }
+    $out_sth->execute( @{$out_page}{@fields} );
+  }
+}
+
+###############################################################################
 
 sub migrate_some_tags {
   my ( $tag ) = @_;
@@ -371,6 +482,32 @@ EOS
 
 ###############################################################################
 
+sub synthesize_page_tags {
+  my ( $tag ) = @_;
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO page_tag( page_id, tag_id ) VALUES( ?, ? )
+EOS
+
+  my $count = 0;
+  for my $page_id ( keys %page_keyword ) {
+
+    unless ( $page_keyword{$page_id} and @{ $page_keyword{$page_id} } ) {
+      warn "*** Skipping page ID $page_id: no tags\n";
+      next;
+    }
+
+    for my $keyword_name ( @{ $page_keyword{$page_id} } ) {
+      print '.' if $count++ % 100 == 0;
+
+      my $tag_id = $tag->{$keyword_name};
+
+      $out_sth->execute($page_id, $tag_id);
+    }
+  }
+}
+
+###############################################################################
+
 sub map_comment {
   my $comment = shift;
   return {
@@ -389,6 +526,7 @@ sub map_comment {
 }
 
 sub migrate_comments {
+  my ( $users ) = @_;
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_comment ORDER BY comment_id');
   my @fields = qw( id content fullname email website comment_date status post_id uid reply_to );
   my $out_sth = $out_dbh->prepare( <<'EOS' );
@@ -413,6 +551,12 @@ EOS
 #use Data::Dumper; print Dumper($in_comment);
 #last;
     my $out_comment = map_comment($in_comment);
+
+    unless ( $users{$out_comment->{uid}} ) {
+      warn "*** Skipping comment ID $out_comment->{id}: invalid user ID $out_comment->{uid}\n";
+      next;
+    }
+
     $out_sth->execute(
         @{$out_comment}{@fields}
     );
@@ -433,7 +577,10 @@ sub map_category {
   };
 }
 
+my %category;
+
 sub migrate_categories {
+  my ( $blog,$users ) = @_;
   my $in_sth = $in_dbh->prepare('SELECT * FROM mt_category ORDER BY category_id');
   my $out_sth = $out_dbh->prepare(
     'INSERT INTO category(id,name,slug,user_id) VALUES(?,?,?,?)'
@@ -449,6 +596,18 @@ sub migrate_categories {
 #use Data::Dumper; print Dumper($in_category);
 #last;
     my $out_category = map_category($in_category);
+
+    unless ( $users->{$out_category->{user_id}} ) {
+      warn "*** Skipping category ID $out_category->{id}: invalid user ID\n";
+      next;
+    }
+    unless ( $blog->{$out_category->{blog_id}} ) {
+      warn "*** Skipping category ID $out_category->{blog_id}: invalid blog ID $out_category->{blog_id}\n";
+      next;
+    }
+
+    $category{$out_category->{id}} = 1;
+
     $out_sth->execute(
         @{$out_category}{qw( id name slug user_id )}
     );
@@ -469,6 +628,7 @@ sub map_post_category {
 }
 
 sub synthesize_post_categories {
+  my ( $category, $blog ) = @_;
   my $in_sth = $in_dbh->prepare( <<'EOS' );
 SELECT c.category_id,
        b.blog_id
@@ -489,11 +649,60 @@ EOS
     my $out_blog_category = map_post_category( $in_blog_category );
 #use Data::Dumper; print Dumper($in_category);
 #last;
+#
+    unless ( $blog->{$out_blog_category->{blog_id}} ) {
+      warn "*** Skipping post ID $out_blog_category->{category_id}: invalid blog ID $out_blog_category->{blog_id}\n";
+      next;
+    }
+    unless ( $category->{$out_blog_category->{category_id}} ) {
+      warn "*** Skipping post ID $out_blog_category->{category_id}: invalid category ID $out_blog_category->{category_id}\n";
+      next;
+    }
 
     for my $post_id ( @{ $blog_post{$out_blog_category->{blog_id}} } ) {
       print '.' if $count++ % 100 == 0;
 
       $out_sth->execute($post_id, $out_blog_category->{category_id});
+    }
+  }
+}
+
+###############################################################################
+
+sub map_page_category {
+  my $page_category = shift;
+  return {
+    category_id => $page_category->{category_id},
+    blog_id     => $page_category->{blog_id},
+  };
+}
+
+sub synthesize_page_categories {
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+SELECT c.category_id,
+       b.blog_id
+  FROM mt_category c
+  JOIN mt_blog b
+    ON c.category_id = b.blog_id
+EOS
+
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO page_category( page_id, category_id ) VALUES( ?, ? )
+EOS
+
+  my $count = 0;
+
+  $in_sth->execute;
+  while ( my $in_blog_category = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+    my $out_blog_category = map_page_category( $in_blog_category );
+#use Data::Dumper; print Dumper($in_category);
+#last;
+
+    for my $page_id ( @{ $blog_page{$out_blog_category->{blog_id}} } ) {
+      print '.' if $count++ % 100 == 0;
+
+      $out_sth->execute($page_id, $out_blog_category->{category_id});
     }
   }
 }
@@ -556,11 +765,15 @@ create_avatars;
 print "\n";
 
 print "migrating blogs: ";
-migrate_blogs;
+migrate_blogs( \%users );
 print "\n";
 
 print "migrating posts: ";
 migrate_posts( \%tag );
+print "\n";
+
+print "migrating pages ";
+migrate_pages( \%tag );
 print "\n";
 
 print "migrating some posts: ";
@@ -575,16 +788,24 @@ print "synthesizing post tags ";
 synthesize_post_tags( \%tag );
 print "\n";
 
+print "synthesizing page tags ";
+synthesize_page_tags( \%tag );
+print "\n";
+
 print "migrating comments: ";
-migrate_comments;
+migrate_comments( \%users );
 print "\n";
 
 print "migrating categories: ";
-migrate_categories;
+migrate_categories( \%blog, \%users );
 print "\n";
 
 print "synthesizing post categories ";
-synthesize_post_categories;
+synthesize_post_categories( \%category, \%blog );
+print "\n";
+
+print "synthesizing page categories ";
+synthesize_page_categories;
 print "\n";
 
 print "migrating assets: ";

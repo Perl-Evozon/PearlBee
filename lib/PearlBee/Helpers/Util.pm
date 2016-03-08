@@ -18,6 +18,7 @@ our @EXPORT_OK 	= qw(
     generate_new_slug_name 
     string_to_slug 
     map_posts 
+    map_pages 
     create_password
     generate_hash
 );
@@ -75,9 +76,7 @@ sub string_to_slug {
 	return $slug;
 }
 
-=head
-
-Generate a valid slug kind name
+=head1 Generate a valid slug kind name
 
 =cut
 
@@ -110,6 +109,41 @@ sub map_posts {
     }
 
     return @mapped_posts;
+}
+
+=head1 Generate a valid slug kind name
+
+=cut
+
+sub map_pages {
+    my (@pages) = @_;
+    
+    # map info (utf8 compliance)
+    my @mapped_pages = ();
+    foreach my $page (@pages) {
+        my $el = $page->as_hashref;
+        $el->{nr_of_comments}     = $page->nr_of_comments;
+        $el->{created_date_human} = $page->created_date_human;
+        
+        # get page author
+        $el->{user} = {
+            username => $page->user->username,
+            avatar   => $page->user->avatar,
+            id       => $page->user->id,
+        };
+        
+        # add post categories
+        foreach my $category ($page->page_categories) {
+            my $details;
+            $details->{category}->{name} = $category->category->name;
+            $details->{category}->{slug} = $category->category->slug;
+            push(@{$el->{post_categories}}, $details);
+        }
+
+        push(@mapped_pages, $el)
+    }
+
+    return @mapped_pages;
 }
 
 =head2 Create a password
@@ -145,9 +179,7 @@ sub generate_hash {
     $bcrypt->salt($salt);
     $bcrypt->add($password);
 
-    $hashref->{hash} = $bcrypt->hexdigest;
-	
-    return $hashref;
+    return $bcrypt->hexdigest;
 }
 
 1;

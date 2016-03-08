@@ -7,6 +7,9 @@ select setval('blog_id_seq',
 select setval('post_id_seq',
               ( select max( id ) from post ) + 1, true );
 
+select setval('page_id_seq',
+              ( select max( id ) from page ) + 1, true );
+
 select setval('comment_id_seq',
               ( select max( id ) from comment ) + 1, true );
 

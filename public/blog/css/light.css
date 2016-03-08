@@ -93,7 +93,6 @@
 }
 
 
-
 /*blogs/profile page*/
 .blog .blog-top-part .entry-name{
     color: #000;
@@ -101,3 +100,18 @@
 .blog .blog-top-part ul .information-blog{
     color: #000;
 }
+
+/*pages*/
+
+.pages {
+  background-color: #ffffff;
+}
+
+.pages .page-heading h2 {
+  color: #333333;
+}
+
+.pages .post-content {
+color: #333333;
+}
+

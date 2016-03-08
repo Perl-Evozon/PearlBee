@@ -108,11 +108,11 @@ any ['get', 'post'] => '/forgot-password' => sub {
                 my $date             = DateTime->now();
                 my $activation_token = generate_hash( $params->{email} . $date );
 
-                my $token = $activation_token->{hash};
+                my $token = $activation_token;
 
                 if ($token) {
                     if ( $user->status ne 'suspended' ) {
-                        $user->update( {activation_key => $token} );
+                        $user->update({ activation_key => $token });
 
                         try {
                             PearlBee::Helpers::Email::send_email_complete({

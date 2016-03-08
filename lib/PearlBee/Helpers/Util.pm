@@ -76,7 +76,7 @@ sub string_to_slug {
 	return $slug;
 }
 
-=head1 Generate a valid slug name
+=head1 Generate a valid slug kind name
 
 =cut
 
@@ -111,7 +111,7 @@ sub map_posts {
     return @mapped_posts;
 }
 
-=head1 Generate a valid slug name
+=head1 Generate a valid slug kind name
 
 =cut
 

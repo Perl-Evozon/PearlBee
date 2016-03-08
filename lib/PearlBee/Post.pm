@@ -22,10 +22,10 @@ get '/post/:slug' => sub {
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
-  my @tags       = resultset('View::PublishedTags')->all();
-  my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent     = resultset('Post')->get_recent_posts();
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
+  my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
   my ($next_post, $previous_post, @post_tags, @comments);
   if ( $post and $post->id ) {
@@ -65,14 +65,14 @@ get '/posts/category/:slug' => sub {
     error "Could not find posts for slug '$slug'";
   }
   my $total_posts = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedTags')->all();
-  my @categories  = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = map { $_->as_hashref_sanitized }
                     resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = map { $_->as_hashref_sanitized }
                     resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -182,10 +182,12 @@ get '/posts/user/:username' => sub {
   }
   my @posts       = resultset('Post')->search_published({ 'user_id' => $user->id }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search_published({ 'user_id' => $user->id })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -278,14 +280,14 @@ get '/posts/tag/:slug' => sub {
   my $slug        = route_parameters->{'slug'};
   my @posts       = resultset('Post')->search_published({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
   my $nr_of_posts = resultset('Post')->search_published({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedTags')->all();
-  my @categories  = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = map { $_->as_hashref_sanitized }
                     resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = map { $_->as_hashref_sanitized }
                     resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -330,14 +332,14 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $tag         = resultset('Tag')->find({ slug => $slug });
   my @posts       = resultset('Post')->search_published({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
   my $nr_of_posts = resultset('Post')->search_published({ 'tag.slug' => $slug }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = map { $_->as_hashref_sanitized }
-                    map { $_->tag_objects } @posts;
-  my @categories  = map { $_->as_hashref_sanitized }
-                    resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
   my @recent      = map { $_->as_hashref_sanitized }
                     resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = map { $_->as_hashref_sanitized }
                     resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
 
   # extract demo posts info
   my @mapped_posts     = map_posts(@posts);

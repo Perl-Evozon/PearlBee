@@ -55,10 +55,8 @@ post '/recover-password' => sub {
  my $user =
     resultset('Users')->find({ email => $params->{'email'} });
  
-  my $date             = DateTime->now();
-
-  my $activation_token = generate_hash( $params->{'email'} . $date );
-  my $token            = $activation_token->{hash};
+  my $date  = DateTime->now();
+  my $token = generate_hash( $params->{'email'} . $date );
  
   $user->update ({activation_key => $token });
 
@@ -158,9 +156,8 @@ post '/register_success' => sub {
     return
   }
 
-  my $date             = DateTime->now();
-  my $activation_token = generate_hash( $params->{'email'} . $date );
-  my $token            = $activation_token->{hash};
+  my $date  = DateTime->now();
+  my $token = generate_hash( $params->{'email'} . $date );
 
   resultset('Users')->create_hashed({
     username       => $params->{username},

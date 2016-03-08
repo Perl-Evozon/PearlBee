@@ -1,4 +1,6 @@
- <div class="blog">
+<link href="/blog/css/blogs.css" rel="stylesheet">
+
+<div class="blog">
 
     <div class="blog-start show">
     	<div class="container">
@@ -6,10 +8,10 @@
     			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
     				<h1>There is more than one way to blog it.</h1>
     				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
-                                    <div class="buttons-wrapper">
-                                            <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
-                                            <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
-                                    </div>
+                        <div class="buttons-wrapper">
+                                <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
+                                <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
+                        </div>
     				<div class="close-overlay" id="close_overlay">
     					<span class="icon-close"></span>
     					<span class="close-overlay-text ">close and go to listings</span>
@@ -27,28 +29,48 @@
         <div class="col-md-12">
          
            <div class="posts listings">
-              <div class="col-xs-2">
-              </div>
-              <div class="col-xs-10 no-padding">
-                <h2 id="latest_posts" class="page-heading">Latest posts</h2>
-                [% IF posts_for_tag %]
-                	<h2 class="page-heading"> Posts tagged as <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
-          		[% END %]
-          		[% IF posts_for_category %]
-              		<h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% category_name %]</a></h2>
-          		[% END %]
-          		[% IF posts_for_user %]
-              		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user %]">[% posts_for_user %]</a></h2>
-          		[% END %]
-              </div>
+               <div class="blog-top-part">
+                   <div class="col-xs-2 no-padding">
+                       <div class="bubble">
+                           <img class="blog-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]">
+                       </div>
+                   </div>
+                   <div class="col-xs-10">
+                       <div class="blog-info">
+
+                           [% FOREACH blog in blogs %]
+                           <div class="info-blog">
+                               <p class="entry-name">[% blog.name %]</p>
+                               <ul class="info-blog">
+                                   <li class="information-blog"> [% blog.description %] </li>
+                                   [% FOREACH post IN posts %]
+                                   [% LAST IF loop.count == 2 %]
+                                   <a href="/feed/author/[% post.user.username %]" target="_blank">
+                                       <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
+                                   </a>
+                                   [% END %]
+
+                               </ul>
+
+                           </div>
+                           [% END %]
+                       </div>
+
+                       [% IF posts_for_tag %]
+                       <h2 class="page-heading"> Posts tagged as <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
+                       [% END %]
+                       [% IF posts_for_category %]
+                       <h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% category_name %]</a></h2>
+                       [% END %]
+                   </div>
+               </div>
 
               [% USE HTML.Strip 'strip'%]
               [% FOREACH post in posts %]
         
                 <div class="entry clearfix">
-                  <div class="col-xs-2">
-                  </div>
-                    <div class="text-listing-entries col-xs-10">
+
+                    <div class="text-listing-entries col-xs-12">
                        <div class="bubble">
                             [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
                             <img class="user-image" src="[%post.user.avatar%]">
@@ -65,6 +87,7 @@
                          <div class="info-entry">
                            <div class="user">
                              <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
+                               <!--<a href="/feed/author/[% post.user.username %]" target="_blank">RSS</a>-->
                            </div>
                            <div class="date">
                              [% post.created_date_human %]
@@ -101,12 +124,13 @@
                   </div>
                 </div>
               [% END %]
+              [% IF posts.size == 10 %]
               <div class="loading-posts">
                    <div class="col-xs-2">
                    </div>
                    <div id="view_more" class="view-more col-xs-10">
                        <div class="bubble">
-                           <button id="more-posts" data-page-number="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                           <button id="more-blog-posts" data-page-number="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
                        </div>
                        <div style="display: none" class="progressloader">
                            <div class="spinner">
@@ -117,10 +141,12 @@
 
                        </div>
                    </div>
-                   <div id="display_msg_posts" class="col-xs-10">
-						<h4>No more posts</h4>
-				   </div>
               </div>
+               [% END %]
+               <div class="col-xs-10 no-more-posts" [% IF posts.size < 10 %] style="display: block;" [% END %]>
+                    <h4>No more posts</h4>
+               </div>
+
 
               [% IF posts.first %]
                 <!-- Pagination -->

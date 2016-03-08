@@ -92,3 +92,12 @@
     background-color: #FF6600;
 }
 
+
+
+/*blogs/profile page*/
+.blog .blog-top-part .entry-name{
+    color: #000;
+}
+.blog .blog-top-part ul .information-blog{
+    color: #000;
+}

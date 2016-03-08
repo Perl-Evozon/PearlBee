@@ -36,7 +36,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 sub as_hashref {
-  my $self = shift;
+  my ($self)   = @_;
   my $tag_href = {
     id   => $self->id,
     name => $self->name,
@@ -48,10 +48,11 @@ sub as_hashref {
 }             
 
 sub as_hashref_sanitized {
-  my $self = shift;
-  my $published_tags_href = $self->as_hashref;
-  delete $published_tags_href->{id};
-  return $published_tags_href;
+  my ($self) = @_;
+  my $href   = $self->as_hashref;
+
+  delete $href->{id};
+  return $href;
 }
 
 1;

@@ -249,9 +249,8 @@ __PACKAGE__->has_many(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-=head
 
-Check if the user has administration authority
+=head1 Check if the user has administration authority
 
 =cut
 
@@ -259,13 +258,10 @@ sub is_admin {
   my ($self) = @_;
 
   return 1 if ( $self->role eq 'admin' );
-
   return 0;
 }
 
-=head
-
-Check if the user has author authority
+=head1 Check if the user has author authority
 
 =cut
 
@@ -273,13 +269,10 @@ sub is_author {
   my ($self) = @_;
 
   return 1 if ( $self->role eq 'author' );
-
   return 0;
 }
 
-=head
-
-Check if the user is active
+=head1 Check if the user is active
 
 =cut
 
@@ -287,13 +280,10 @@ sub is_active {
   my ($self) = @_;
 
   return 1 if ( $self->role eq 'active' );
-
   return 0;
 }
 
-=head
-
-Check if the user is deactived
+=head1 Check if the user is deactived
 
 =cut
 
@@ -305,9 +295,7 @@ sub is_deactive {
   return 0;
 }
 
-=head
-
-Status changes
+=head1 Status changes
 
 =cut
 
@@ -356,7 +344,7 @@ sub avatar {
 }
 
 sub as_hashref {
-  my $self = shift;
+  my ($self)   = @_;
   my $user_obj = {
     id             => $self->id,
     name           => $self->name,
@@ -381,11 +369,20 @@ sub as_hashref {
 }
 
 sub as_hashref_sanitized {
-  my $self = shift;
-  my $href = $self->as_hashref;
+  my ($self) = @_;
+  my $href   = $self->as_hashref;
+
   delete $href->{id};
   delete $href->{password};
   return $href;
+}
+
+sub validate {
+  my ($self, $password) = @_;
+
+  my $hashed = crypt( $password, $self->password );
+
+  return $self->password eq $hashed;
 }
 
 1;

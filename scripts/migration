@@ -263,7 +263,8 @@ sub migrate_posts {
          entry_authored_on,
          entry_author_id,
          entry_blog_id
-         FROM mt_entry
+    FROM mt_entry
+   WHERE entry_class = 'entry'
 ORDER BY entry_id
 EOS
 
@@ -301,6 +302,94 @@ EOS
     $out_sth->execute( @{$out_post}{@fields} );
   }
 }
+
+###############################################################################
+
+sub map_page {
+  my $page          = shift;
+  my $page_type     = $post_type{$page->{entry_convert_break}};
+  my $dirified      = dirify( $page->{entry_title} );
+  my $content       = $page->{entry_text};
+  my $extra_content = $page->{entry_text_more};
+  return {
+    id            => $page->{entry_id},
+    title         => decode_utf8($page->{entry_title}),
+    slug          => decode_utf8($dirified),
+    description   => $page->{entry_basename}, # XXX ?
+    #cover varchar(300) NOT NULL,
+    content       => decode_utf8($content),
+    extra_content => decode_utf8($extra_content),
+    keywords      => decode_utf8($page->{entry_keywords}),
+    created_date  => $page->{entry_authored_on},
+    type          => $page,
+    #status post_status DEFAULT 'draft',
+    status        => 'published', # XXX Imported posts are already published
+    user_id       => $page->{entry_author_id},
+    blog_id       => $page->{entry_blog_id},
+  };
+}
+
+my %user_page; #key $user_id, value @{ $page_id }
+my %blog_page; #key $blog_id, value @{ $page }
+my %tag;
+my %page_keyword; #key $page_id, value @{ $tag_name }
+my %keyword_page; #key $keyword_name, value @{ $page_id }
+
+sub migrate_pages {
+  my ( $tag ) = @_;
+  my $in_sth = $in_dbh->prepare( <<'EOS' );
+  SELECT entry_title,
+         entry_text,
+         entry_text_more,
+         entry_id,
+         entry_title,
+         entry_basename,
+         entry_text,
+         entry_keywords,
+         entry_authored_on,
+         entry_author_id,
+         entry_blog_id
+    FROM mt_entry
+   WHERE entry_class = 'page'
+ORDER BY entry_id
+EOS
+
+  my @fields =
+    qw(id title slug description content content_more created_date status user_id);
+  my $out_sth = $out_dbh->prepare( <<'EOS' );
+INSERT INTO page(id,
+                 title,
+                 slug,
+                 description,
+                 content,
+                 content_more,
+                 created_date,
+                 status,
+                 user_id)
+          VALUES(?,?,?,?,?,?,?,?,?)
+EOS
+
+  $in_sth->execute();
+
+  my $count  = 0;
+  while ( my $in_page = $in_sth->fetchrow_hashref ) {
+    print '.' if $count++ % 100 == 0;
+#use Data::Dumper; print Dumper($in_page);
+#last;
+    my $out_page = map_page( $in_page );
+    push @{ $user_page{ $out_page->{user_id} } }, $out_page->{id};
+    push @{ $blog_page{ $out_page->{blog_id} } }, $out_page->{id};
+    if ( $out_page->{keywords} ) {
+        my @tag = split /\s*,\s*/, $out_page->{keywords};
+        $tag->{$_} = 1 for @tag;
+        $post_keyword{$out_page->{id}} = \@tag;
+        push @{ $keyword_page{$_} }, $out_page->{id} for @tag;
+    }
+    $out_sth->execute( @{$out_page}{@fields} );
+  }
+}
+
+###############################################################################
 
 sub migrate_some_tags {
   my ( $tag ) = @_;
@@ -561,6 +650,10 @@ print "\n";
 
 print "migrating posts: ";
 migrate_posts( \%tag );
+print "\n";
+
+print "migrating pages ";
+migrate_pages( \%tag );
 print "\n";
 
 print "migrating some posts: ";

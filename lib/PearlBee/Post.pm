@@ -217,7 +217,7 @@ get '/posts/user/:username' => sub {
     };
 };
 
-=head View posts for username by page
+=head2 View posts for username by page
 
 =cut
 

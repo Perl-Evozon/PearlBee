@@ -16,6 +16,8 @@ use PearlBee::Blogs;
 use PearlBee::Profile;
 use PearlBee::Post;
 
+use PearlBee::Routes::Pages;
+
 # Common controllers
 use PearlBee::Authentication;
 use PearlBee::Authorization;
@@ -143,21 +145,6 @@ get '/' => sub {
 };
 
 get '/search' => sub { template 'searchresults' };
-
-=item /page/:page - Home paging
-
-=cut
-
-get '/page/:slug' => sub {
-
-  my $slug = route_parameters->{'slug'};
-  my $page = resultset('Page')->find({ slug => $slug });
-
-  # extract demo posts info
-  my $mapped_page = $page->as_sanitized_hashref;
-
-  template 'index', { page => $mapped_page };
-};
 
 =item Add a comment method
 

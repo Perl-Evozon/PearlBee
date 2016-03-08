@@ -311,18 +311,17 @@ post '/sign-up' => sub {
           # Create the user
           if ( $params->{'username'} ) {
 
-            my $date             = DateTime->now();
-            my $activation_token = generate_hash( $params->{'email'} . $date );
-            my $token            = $activation_token->{hash};
+            my $date  = DateTime->now();
+            my $token = generate_hash( $params->{'email'} . $date );
 
             resultset('Users')->create_hashed({
               username       => $params->{username},
               password       => $params->{password},
-              email          => $params->{'email'},
-              name           => $params->{'name'},
+              email          => $params->{email},
+              name           => $params->{name},
               role           => 'author',
               status         => 'pending',
-              activation_key => $activation_token
+              activation_key => $token
             });
 
             # Notify the author that a new comment was submited

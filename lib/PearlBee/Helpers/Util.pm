@@ -145,9 +145,7 @@ sub generate_hash {
     $bcrypt->salt($salt);
     $bcrypt->add($password);
 
-    $hashref->{hash} = $bcrypt->hexdigest;
-	
-    return $hashref;
+    return $bcrypt->hexdigest;
 }
 
 1;

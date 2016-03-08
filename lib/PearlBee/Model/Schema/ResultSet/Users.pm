@@ -37,7 +37,7 @@ sub create_hashed {
     name           => $args->{name},
     role           => $args->{role},
     status         => $args->{status},
-    activation_key => $args->{activation_token}
+    activation_key => $args->{activation_key}
   });
 }
 

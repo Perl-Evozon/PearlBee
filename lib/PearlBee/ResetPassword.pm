@@ -89,7 +89,7 @@ any ['post', 'get'] => '/set-password' => sub {
     session user_id => $user->id;
 
     session success => 'Your password was sucessfuly changed';
-    redirect('/dashboard');
+    redirect('/');
 };
 
 any ['get', 'post'] => '/forgot-password' => sub {

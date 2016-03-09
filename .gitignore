@@ -14,8 +14,10 @@ MYMETA.yml
 /perltidy.LOG
 perlblog-*
 logs
+public/avatars
 public/covers/*
 public/captcha/*
+public/userpics
 config.yml
 local/
 sessions/

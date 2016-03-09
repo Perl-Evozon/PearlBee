@@ -14,8 +14,8 @@ use Digest::SHA;
 # Included controllers
 use PearlBee::Blogs;
 use PearlBee::Profile;
-use PearlBee::Post;
 
+use PearlBee::Routes::Post;
 use PearlBee::Routes::Pages;
 
 # Common controllers

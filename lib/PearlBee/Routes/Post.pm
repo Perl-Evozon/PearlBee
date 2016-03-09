@@ -1,6 +1,6 @@
-package PearlBee::Post;
+package PearlBee::Routes::Post;
 
-=head1 PearlBee::Post
+=head1 PearlBee::Routes::Post
 
 Post routes from the old PearlBee main file
 
@@ -172,6 +172,58 @@ get '/posts/category/:slug/page/:page' => sub {
     template 'index', $template_data;
   }     
 
+};
+
+=head2 Vew posts by username
+
+=cut
+
+get '/posts/page/:page' => sub {
+
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
+  my $username    = route_parameters->{'username'};
+  my ( $user )    =
+    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
+  unless ($user) {
+    error "No such user '$username'";
+  }
+  my @posts       = resultset('Post')->search_published({ 'user_id' => $user->id }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search_published({ 'user_id' => $user->id })->count;
+  my @recent      = resultset('Post')->search_published({},{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
+
+  # extract demo posts info
+  my @mapped_posts = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
+
+
+  # Calculate the next and previous page link
+  my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
+  my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
+
+  # Extract all posts with the wanted category
+  template 'index',
+      {
+        posts          => \@mapped_posts,
+        recent         => \@recent,
+        popular        => \@popular,
+        tags           => \@tags,
+        page           => 1,
+        categories     => \@categories,
+        total_pages    => $total_pages,
+        next_link      => $next_link,
+        previous_link  => $previous_link,
+        posts_for_user => $username,
+    };
 };
 
 =head2 Vew posts by username

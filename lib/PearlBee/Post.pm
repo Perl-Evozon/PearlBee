@@ -17,6 +17,18 @@ our $VERSION = '0.1';
 
 =cut
 
+#http://blogs.perl.org/users/jt_smith/2016/03/tabletopevents-at-madmongers.html
+#http://blogs.perl.org/users/jt_smith/2015/12/christmas-came-bah-humbug.html#comments
+
+get '/users/:username/:year/:month/:slug' => sub {
+  my $username = route_parameters->{'username'};
+  my $year     = route_parameters->{'year'};
+  my $month    = route_parameters->{'month'};
+  my $slug     = route_parameters->{'slug'};
+
+  redirect "/post/$slug"
+};
+ 
 get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};

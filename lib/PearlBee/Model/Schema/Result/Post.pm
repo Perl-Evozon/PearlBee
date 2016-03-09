@@ -410,7 +410,7 @@ sub as_hashref_sanitized {
 }
 
 sub _massage_content {
-  my ($self,$content) = @_;
+  my ($self) = @_;
   my $content = $self->content;
   my @content = split '\n', $content;
   

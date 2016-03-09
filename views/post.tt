@@ -56,14 +56,10 @@
                         
                         <!-- Para -->
                         <p>
-                           [% post.content %]
-                           [% post.content_more %]
+                           [% post.massaged_content %]
+                           [% post.massaged_content_more %]
                         </p>
                         </div>
-
-<!--                         [% IF (setting.social_media == '1') %]
-    [% INCLUDE social_media_buttons.tt %]
-[% END %] -->
 
 <!--                         [% SET nr_of_comments = post.nr_of_comments %]
     <div class="block_elements">

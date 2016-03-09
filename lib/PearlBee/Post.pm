@@ -34,8 +34,6 @@ get '/post/:slug' => sub {
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
-  my @recent     = resultset('Post')->get_recent_posts();
-  my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
@@ -48,18 +46,15 @@ get '/post/:slug' => sub {
                      resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
-  template 'post',
-    {
-      post          => $post,
-      next_post     => $next_post,
-      previous_post => $previous_post,
-      recent        => \@recent,
-      popular       => \@popular,
-      categories    => \@categories,
-      comments      => \@comments,
-      setting       => $settings,
-      tags          => \@post_tags,
-    };
+  template 'post', {
+    post          => $post,
+    next_post     => $next_post,
+    previous_post => $previous_post,
+    categories    => \@categories,
+    comments      => \@comments,
+    setting       => $settings,
+    tags          => \@post_tags,
+  };
 };
 
 =head2 View posts by category

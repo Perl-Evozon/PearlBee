@@ -409,4 +409,35 @@ sub as_hashref_sanitized {
   return $href;
 }
 
+sub _massage_content {
+  my ($self,$content) = @_;
+  my $content = $self->content;
+  my @content = split '\n', $content;
+  
+  my $in_pre = 0;
+  for (@content) {
+    $in_pre = 1 if m{<pre>};
+    $in_pre = 0 if m{</pre>};
+    next if $in_pre == 1;
+
+    next if / ^ \s* $ /x;
+    next if / ^ < /x;
+
+    s{^}{<p>};
+    s{$}{</p>};
+  }
+
+  return join "\n", @content;
+}
+
+sub massaged_content {
+  my ($self)  = @_;
+  return $self->_massage_content( $self->content );
+}
+
+sub massaged_content_more {
+  my ($self)  = @_;
+  return $self->_massage_content( $self->content_more );
+}
+
 1;

@@ -3213,7 +3213,7 @@ a:focus {
   border-radius: 15px;
 }
 
-.register-success, .register-done {
+.register-success, .register-done, .recover-password {
   position: absolute;
   top: 80px;
   width: 100%; 
@@ -3226,13 +3226,17 @@ a:focus {
    background-size: cover;
 }
 
-.register-success h1, .register-done h1 {
+.register-success h1, .register-done h1, .recover-password h1 {
   margin-bottom: 40px;
   font-size: 50px;
 }
 
 .register-success .text-success {  
   color: #79A301;
+}
+
+.recover-password {
+   z-index: 13;
 }
 
 .register-done .btn-start {
@@ -4514,8 +4518,14 @@ input[readonly] {
 
 .pages .post-content {
    padding-top: 30px;
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
 }
 
+.pages .individual-post-tags {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+}
 
 
 

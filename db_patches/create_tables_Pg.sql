@@ -160,6 +160,8 @@ CREATE TABLE page (
   id serial UNIQUE,
   title varchar(255) NOT NULL,
   slug varchar(255),
+  description varchar(255),
+  cover varchar(300),
   content text NOT NULL,
   content_more text,
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -187,6 +189,13 @@ CREATE TABLE post_category (
 );
 
 
+CREATE TABLE page_category (
+  category_id integer NOT NULL REFERENCES category (id),
+  page_id integer NOT NULL REFERENCES page (id),
+  PRIMARY KEY (category_id,page_id)
+);
+
+
 CREATE TABLE tag (
   id serial UNIQUE,
   name varchar(255) DEFAULT NULL,
@@ -198,6 +207,13 @@ CREATE TABLE post_tag (
   tag_id integer NOT NULL REFERENCES tag (id),
   post_id integer NOT NULL REFERENCES post (id),
   PRIMARY KEY (tag_id,post_id)
+);
+
+
+CREATE TABLE page_tag (
+  tag_id integer NOT NULL REFERENCES tag (id),
+  page_id integer NOT NULL REFERENCES page (id),
+  PRIMARY KEY (tag_id,page_id)
 );
 
 

@@ -8,8 +8,10 @@ DROP TABLE comment;
 DROP TYPE comment_status;
 
 DROP TABLE post_tag;
+DROP TABLE page_tag;
 DROP TABLE tag;
 DROP TABLE post_category;
+DROP TABLE page_category;
 DROP TABLE blog_categories;
 DROP TABLE category;
 DROP TABLE asset;

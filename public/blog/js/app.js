@@ -1128,3 +1128,86 @@ $('#more-author-posts').click(function() {
 
 
 
+//More button for BLOGs individual page
+$('#more-blog-posts').click(function() {
+    var button = $(this),
+        pageNumber =  +(button.attr("data-page-number")) + 1,
+        url = window.location.pathname;
+
+    $('.progressloader').show();
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: url + '/page/' + pageNumber + '?format=JSON',
+        type: 'GET'
+    })
+        .done(function(data) {
+            var posts = JSON.parse(data).posts;
+
+            if (posts.length === 0) {
+                button.parents('.loading-posts').addClass('hidden');
+                $('.no-more-posts').show();
+            } else {
+                // TODO: daca se schimba in back-end si vin cate 10 odata, schimba aici in 10
+                if (posts.length < 10) {
+                    button.parents('.loading-posts').addClass('hidden');
+                    $('.no-more-posts').show();
+                } else {
+                    button.parents('.loading-posts').removeClass('hidden');
+                }
+
+                // Once the server responds with the result, update the
+                //  textbox with that result.
+                for (var i = 0; i < posts.length; i++) {
+                    var entryItem = $(".entry").get(0),
+                        newItem = $(entryItem).clone(),
+                        commentsText;
+
+                    if (posts[i].nr_of_comments == 1) {
+                        commentsText = "Comment";
+                    } else {
+                        commentsText = "Comments (" + posts[i].nr_of_comments + ")";
+                    }
+
+                    newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
+                    newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".user a").html(posts[i].user.username);
+                    newItem.find(".post-heading h2 a").html(posts[i].title);
+                    newItem.find(".comments-listings a").text(commentsText);
+                    newItem.find(".comments-listings a").attr("href", "/post/" + posts[i].slug + "#comments");
+                    newItem.find(".text-listing-entries a.read-more").attr("href", "/post/" + posts[i].slug);
+                    newItem.find(".date").text(posts[i].created_date_human);
+
+                    if (posts[i].post_categories) {
+                        var categoryItem = newItem.find('.category-item.hidden');
+                        for (var j = 0; j < posts[i].post_categories.length; j++) {
+                            var newCategoryItem = categoryItem.clone();
+
+                            newCategoryItem.find('a').text(posts[i].post_categories[j].category.name);
+                            newCategoryItem.find('a').attr('href', '/posts/category/' + posts[i].post_categories[j].category.slug);
+
+                            newCategoryItem.removeClass('hidden');
+                            newCategoryItem.insertAfter(newItem.find('.category-item').last());
+                        }
+                    }
+
+                    newItem.insertBefore($(".loading-posts"));
+                }
+            }
+
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+
+            $('.progressloader').hide();
+            button.attr("data-page-number", pageNumber);
+
+            $(".truncate").dotdotdot({
+                ellipsis  : '... ',
+            });
+        });
+    });
+
+
+

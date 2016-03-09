@@ -4373,7 +4373,8 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 /* end header container */
 
-#display_msg_posts {
+#display_msg_posts,
+.no-more-posts {
     display: none;
 	text-align: center;
 	vertical-align: middle;
@@ -4381,7 +4382,8 @@ input.cmn-toggle-round-flat:checked + label:after {
 	margin-bottom: 75px;
 	color: #16cbe6;
 }
-#display_msg_posts h4 {
+#display_msg_posts h4,
+.no-more-posts h4 {
 	font-weight: bold;
 }
 

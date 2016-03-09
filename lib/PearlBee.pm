@@ -65,12 +65,6 @@ hook before => sub {
 
 =cut
 
-get '/users/*' => sub {
-    my ( $file ) = splat;
-
-    send_file $file;
-};
-
 get '/avatars/**' => sub {
     my ( $file ) = splat;
 

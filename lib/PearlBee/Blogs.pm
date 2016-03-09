@@ -17,6 +17,15 @@ our $VERSION = '0.1';
 
 =cut
 
+#http://139.162.204.109:5030/blogs/user/pmurias/slug/a_blog_about_the_perl_programming_language
+
+get '/users/:username' => sub {
+  my $username = route_parameters->{'username'};
+  my $slug     = 'foo';
+
+  redirect "/blogs/user/$username/slug/$slug"
+};
+
 get '/blogs/user/:username/slug/:slug' => sub {
 
   my $num_user_posts = config->{blogs}{user_posts} || 10;

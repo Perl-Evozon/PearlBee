@@ -24,27 +24,23 @@ our @EXPORT_OK 	= qw(
 );
 
 
-=head
-
-Generate a unique filename using GUID
+=head2 Generate a unique filename using GUID
 
 =cut
 
 sub generate_crypted_filename {
-  	my $guid 	 = Data::GUID->new;
+  	my $guid     = Data::GUID->new;
   	my $filename = $guid->as_string;
 
   	return $filename;
 }
 
-=head
-
-Generate a new slug name based on existing slug names
+=head2 Generate a new slug name based on existing slug names
 
 =cut
 
 sub generate_new_slug_name {
-	my ( $original_slug, $similar_slugs ) = @_;
+	my ($original_slug, $similar_slugs) = @_;
 
 	# Extract only the slugs that matter: the slugs with this pattern: $original_slug-number	
 	my @slugs_of_interest = grep { $_ =~ /^${original_slug}-\d*$/ } @{ $similar_slugs };
@@ -62,9 +58,7 @@ sub generate_new_slug_name {
     return $new_slug_name;
 }
 
-=head
-
-Generate a valid slug kind name
+=head2 Generate a valid slug kind name
 
 =cut
 
@@ -76,7 +70,7 @@ sub string_to_slug {
 	return $slug;
 }
 
-=head1 Generate a valid slug kind name
+=head2 Generate a valid slug kind name
 
 =cut
 
@@ -111,7 +105,7 @@ sub map_posts {
     return @mapped_posts;
 }
 
-=head1 Generate a valid slug kind name
+=head2 Generate a valid slug kind name
 
 =cut
 
@@ -151,7 +145,7 @@ sub map_pages {
 =cut
 
 sub create_password {
-  my $plaintext = shift;
+  my ($plaintext) = @_;
 	
   # Match encryption from MT
   my @alpha  = ( 'a' .. 'z', 'A' .. 'Z', 0 .. 9 );

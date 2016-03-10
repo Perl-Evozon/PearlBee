@@ -35,6 +35,13 @@ $|++;
 my $AVATAR_PATH   = '/avatars';
 my $PER_USER_PATH = '/users';
 
+sub bpo_dirify {
+  my $text = shift;
+  $text = dirify($text);
+  $text =~ s/_/-/g;
+  return $text;
+}
+
 sub munge_asset_file_path {
   my $in_asset = shift;
   $in_asset->{asset_file_path} =~ s{^\%s}{$AVATAR_PATH};
@@ -154,7 +161,7 @@ EOS
 
 sub map_blog {
   my $blog = shift;
-  my $dirified = dirify( $blog->{blog_description} );
+  my $dirified = bpo_dirify( $blog->{blog_description} );
   return {
     id           => $blog->{blog_id},
     user_id      => $blog->{association_author_id},
@@ -235,30 +242,30 @@ my %post_type = (
 );
 
 sub map_post {
-  my $post          = shift;
-  my $post_type     = 'HTML';
-  my $dirified      = dirify( $post->{entry_title} );
-  my $content       = $post->{entry_text};
-  my $extra_content = $post->{entry_text_more};
+  my $post         = shift;
+  my $post_type    = 'HTML';
+  my $dirified     = bpo_dirify( $post->{entry_title} );
+  my $content      = $post->{entry_text};
+  my $content_more = $post->{entry_text_more};
 
   $post_type = $post_type{$post->{entry_convert_break}} if
     exists $post->{entry_convert_break};
 
   return {
-    id            => $post->{entry_id},
-    title         => decode_utf8($post->{entry_title}),
-    slug          => decode_utf8($dirified),
-    description   => $post->{entry_basename}, # XXX ?
+    id           => $post->{entry_id},
+    title        => decode_utf8($post->{entry_title}),
+    slug         => decode_utf8($dirified),
+    description  => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
-    content       => decode_utf8($content),
-    extra_content => decode_utf8($extra_content),
-    keywords      => decode_utf8($post->{entry_keywords}),
-    created_date  => $post->{entry_authored_on},
-    type          => $post_type,
+    content      => decode_utf8($content),
+    content_more => decode_utf8($content_more),
+    keywords     => decode_utf8($post->{entry_keywords}),
+    created_date => $post->{entry_authored_on},
+    type         => $post_type,
     #status post_status DEFAULT 'draft',
-    status        => 'published', # XXX Imported posts are already published
-    user_id       => $post->{entry_author_id},
-    blog_id       => $post->{entry_blog_id},
+    status       => 'published', # XXX Imported posts are already published
+    user_id      => $post->{entry_author_id},
+    blog_id      => $post->{entry_blog_id},
   };
 }
 
@@ -329,7 +336,7 @@ EOS
 sub map_page {
   my $page          = shift;
   my $page_type     = 'HTML';
-  my $dirified      = dirify( $page->{entry_title} );
+  my $dirified      = bpo_dirify( $page->{entry_title} );
   my $content       = $page->{entry_text};
   my $extra_content = $page->{entry_text_more};
 
@@ -450,7 +457,7 @@ EOS
     print '.' if $count++ % 100 == 0;
 
     $tag->{$name} = $index++;
-    $out_sth->execute($tag->{$name}, $name, dirify( $name ));
+    $out_sth->execute($tag->{$name}, $name, bpo_dirify( $name ));
   }
 }
 
@@ -567,7 +574,7 @@ EOS
 
 sub map_category {
   my $category = shift;
-  my $dirified = dirify( $category->{category_label} );
+  my $dirified = bpo_dirify( $category->{category_label} );
   return {
     id      => $category->{category_id},
     name    => decode_utf8($category->{category_label}),

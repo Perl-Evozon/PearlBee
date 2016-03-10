@@ -384,17 +384,19 @@ sub created_date_human {
 sub as_hashref {
   my ($self)   = @_;
   my $post_obj = {
-    id           => $self->id,
-    title        => $self->title,
-    slug         => $self->slug,
-    description  => $self->description,
-    cover        => $self->cover,
-    content      => $self->content,
-    content_more => $self->content_more,
-    created_date => $self->created_date,
-    type         => $self->type,
-    status       => $self->status,
-    user_id      => $self->user_id,
+    id                    => $self->id,
+    title                 => $self->title,
+    slug                  => $self->slug,
+    description           => $self->description,
+    cover                 => $self->cover,
+    content               => $self->content,
+    content_more          => $self->content_more,
+    massaged_content      => $self->massaged_content,
+    massaged_content_more => $self->massaged_content_more,
+    created_date          => $self->created_date,
+    type                  => $self->type,
+    status                => $self->status,
+    user_id               => $self->user_id,
   };          
               
   return $post_obj;
@@ -410,15 +412,17 @@ sub as_hashref_sanitized {
 }
 
 sub _massage_content {
-  my ($self) = @_;
-  my $content = $self->content;
+  my ($self,$content) = @_;
   my @content = split '\n', $content;
   
   my $in_pre = 0;
+  my $in_code = 0;
   for (@content) {
     $in_pre = 1 if m{<pre>};
+    $in_code = 1 if m{<code>};
+    $in_code = 0 if m{</code>};
     $in_pre = 0 if m{</pre>};
-    next if $in_pre == 1;
+    next if $in_pre == 1 or $in_code == 1;
 
     next if / ^ \s* $ /x;
     next if / ^ < /x;

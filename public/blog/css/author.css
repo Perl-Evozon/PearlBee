@@ -142,3 +142,10 @@ footer{
      width: 100%;
      display: none;
  }
+
+/*Media queries*/
+@media all and (max-width: 850px) {
+    .author-description .author-info {
+        padding-left: 25%;
+    }
+}

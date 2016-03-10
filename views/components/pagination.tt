@@ -2,7 +2,7 @@
 
 [% FOREACH page_number in pages %]
 
-  <li [% ( page_number == page ) ? 'class="active"' : '' %] ><a href="[% config.app_url %]/[% action_url %]/[% page_number %]">[% page_number %]</a></li>
+  <li [% ( page_number == page ) ? 'class="active"' : '' %] ><a href="/[% action_url %]/[% page_number %]">[% page_number %]</a></li>
                    
 [% END %]
 

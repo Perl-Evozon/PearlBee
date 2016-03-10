@@ -153,7 +153,7 @@
                                     <div class="block_elements comments-listings">
                                         <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
                                     </div>
-                                    <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                                    <a href="/post/[% post.slug %]" class="read-more">Read More...</a>
                                 </div>
                             </div>
                         </div>

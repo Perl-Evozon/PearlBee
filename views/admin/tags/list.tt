@@ -16,7 +16,7 @@
 		                  
 		        	[% INCLUDE components/alerts.tt %]
 
-					<form method="post" action="[% config.app_url %]/admin/tags/edit/[% tag.id %]">
+					<form method="post" action="/admin/tags/edit/[% tag.id %]">
 
 			        	<div class="form-group">
 	                      <label class="col-lg-2 control-label">Name</label>
@@ -60,7 +60,7 @@
 		                  
 		        	[% INCLUDE components/alerts.tt %]
 
-					<form method="post" action="[% config.app_url %]/admin/tags/add">
+					<form method="post" action="/admin/tags/add">
 
 			        	<div class="form-group">
 	                      <label class="col-lg-2 control-label">Name</label>

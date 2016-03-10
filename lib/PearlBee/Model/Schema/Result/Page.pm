@@ -1,12 +1,12 @@
 use utf8;
-package PearlBee::Model::Schema::Result::Post;
+package PearlBee::Model::Schema::Result::Page;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Post - Post table.
+PearlBee::Model::Schema::Result::Page - Page table.
 
 =cut
 
@@ -18,11 +18,11 @@ use DateTime;
 use DateTime::Format::MySQL;
 use Date::Period::Human;
 
-=head1 TABLE: C<post>
+=head1 TABLE: C<page>
 
 =cut
 
-__PACKAGE__->table("post");
+__PACKAGE__->table("page");
 
 =head1 ACCESSORS
 
@@ -159,33 +159,33 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 post_categories
+=head2 page_categories
 
 Type: has_many
 
-Related object: L<PearlBee::Model::Schema::Result::PostCategory>
+Related object: L<PearlBee::Model::Schema::Result::PageCategory>
 
 =cut
 
 __PACKAGE__->has_many(
-  "post_categories",
-  "PearlBee::Model::Schema::Result::PostCategory",
-  { "foreign.post_id" => "self.id" },
+  "page_categories",
+  "PearlBee::Model::Schema::Result::PageCategory",
+  { "foreign.page_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 post_tags
+=head2 page_tags
 
 Type: has_many
 
-Related object: L<PearlBee::Model::Schema::Result::PostTag>
+Related object: L<PearlBee::Model::Schema::Result::PageTag>
 
 =cut
 
 __PACKAGE__->has_many(
-  "post_tags",
-  "PearlBee::Model::Schema::Result::PostTag",
-  { "foreign.post_id" => "self.id" },
+  "page_tags",
+  "PearlBee::Model::Schema::Result::PageTag",
+  { "foreign.page_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -208,21 +208,21 @@ __PACKAGE__->belongs_to(
 
 Type: many_to_many
 
-Composing rels: L</post_categories> -> category
+Composing rels: L</page_categories> -> category
 
 =cut
 
-__PACKAGE__->many_to_many("categories", "post_categories", "category");
+__PACKAGE__->many_to_many("categories", "page_categories", "category");
 
 =head2 tags
 
 Type: many_to_many
 
-Composing rels: L</post_tags> -> tag
+Composing rels: L</page_tags> -> tag
 
 =cut
 
-__PACKAGE__->many_to_many("tags", "post_tags", "tag");
+__PACKAGE__->many_to_many("tags", "page_tags", "tag");
 
 
 # Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
@@ -233,15 +233,15 @@ __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 =head
 
-Get the number of comments for this post
+Get the number of comments for this page
 
 =cut
 
 sub nr_of_comments {
   my ($self) = @_;
 
-  my @post_comments = $self->comments;
-  my @comments = grep { $_->status eq 'approved' } @post_comments;
+  my @page_comments = $self->comments;
+  my @comments = grep { $_->status eq 'approved' } @page_comments;
 
   return scalar @comments;
 }
@@ -256,8 +256,8 @@ sub get_string_tags {
   my ($self) = @_;
 
   my @tag_names;
-  my @post_tags = $self->post_tags;
-  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
+  my @page_tags = $self->page_tags;
+  push( @tag_names, $_->tag->name ) foreach ( @page_tags );
 
   my $joined_tags = join(', ', @tag_names);
 
@@ -316,7 +316,7 @@ sub tag_objects {
   my $schema = $self->result_source->schema;
 
   return map { $schema->resultset('Tag')->find({ id => $_->tag_id }) }
-         $schema->resultset('PostTag')->search({ post_id => $self->id });
+         $schema->resultset('PageTag')->search({ page_id => $self->id });
 }
 
 =head1 Return the category
@@ -328,17 +328,17 @@ sub category_objects {
   my $schema = $self->result_source->schema;
 
   return map { $schema->resultset('Category')->find({ id => $_->category_id }) }
-         $schema->resultset('PostCategory')->search({ post_id => $self->id });
+         $schema->resultset('PageCategory')->search({ page_id => $self->id });
 }
 
-=head1 Return the next post by this user in ID sequence, if any.
+=head1 Return the next page by this user in ID sequence, if any.
 
 =cut
 
-sub next_post {
+sub next_page {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post   = $schema->resultset('Post')->search(
+  my @page   = $schema->resultset('Page')->search(
     { user_id => $self->user_id,
       id => { '>' => $self->id }
     },
@@ -346,17 +346,17 @@ sub next_post {
       order_by => { -asc => 'id' }
     }
   );
-  return $post[0] || undef;
+  return $page[0] || undef;
 }
 
-=head1 Return the previous post by this user in ID sequence, if any.
+=head1 Return the previous page by this user in ID sequence, if any.
 
 =cut
 
-sub previous_post {
+sub previous_page {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post   = $schema->resultset('Post')->search(
+  my @page   = $schema->resultset('Page')->search(
     { user_id => $self->user_id,
       id => { '<' => $self->id }
     },
@@ -364,7 +364,7 @@ sub previous_post {
       order_by => { -desc => 'id' }
     }
   );
-  return $post[0] || undef;
+  return $page[0] || undef;
 }
 
 sub created_date_human {
@@ -383,7 +383,7 @@ sub created_date_human {
 
 sub as_hashref {
   my ($self)   = @_;
-  my $post_obj = {
+  my $page_obj = {
     id           => $self->id,
     title        => $self->title,
     slug         => $self->slug,
@@ -397,7 +397,7 @@ sub as_hashref {
     user_id      => $self->user_id,
   };          
               
-  return $post_obj;
+  return $page_obj;
 }             
 
 sub as_hashref_sanitized {
@@ -407,37 +407,6 @@ sub as_hashref_sanitized {
   delete $href->{id};
   delete $href->{user_id};
   return $href;
-}
-
-sub _massage_content {
-  my ($self,$content) = @_;
-  my $content = $self->content;
-  my @content = split '\n', $content;
-  
-  my $in_pre = 0;
-  for (@content) {
-    $in_pre = 1 if m{<pre>};
-    $in_pre = 0 if m{</pre>};
-    next if $in_pre == 1;
-
-    next if / ^ \s* $ /x;
-    next if / ^ < /x;
-
-    s{^}{<p>};
-    s{$}{</p>};
-  }
-
-  return join "\n", @content;
-}
-
-sub massaged_content {
-  my ($self)  = @_;
-  return $self->_massage_content( $self->content );
-}
-
-sub massaged_content_more {
-  my ($self)  = @_;
-  return $self->_massage_content( $self->content_more );
 }
 
 1;

@@ -28,13 +28,11 @@ get '/pages/:slug' => sub {
   my @tags       = map { $_->as_hashref_sanitized } $page->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $page->category_objects;
 
-  my ($next_page, $previous_page, @page_tags, @comments);
+  my ($next_page, $previous_page, @page_tags);
   if ( $page and $page->id ) {
     $next_page     = $page->next_page;
     $previous_page = $page->previous_page;
     @page_tags     = $page->tag_objects;
-    @comments      = map { $_->as_hashref }
-                     resultset('Comment')->get_approved_comments_by_post_id($page->id);
   }
 
   template 'pages', {
@@ -42,7 +40,6 @@ get '/pages/:slug' => sub {
     next_page     => $next_page,
     previous_page => $previous_page,
     categories    => \@categories,
-    comments      => \@comments,
     tags          => \@page_tags,
   };
 };
@@ -116,12 +113,11 @@ get '/pages/user/:username/page/:page' => sub {
   my @categories  = map { $_->as_hashref_sanitized }
                     map { $_->category_objects } @pages;
 
-  # extract demo posts info
-  my @mapped_pages = map_posts(@pages);
+  my @mapped_pages = map_pages(@pages);
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_pages, $nr_of_rows);
-  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/user/' . $username);
+  my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/pages/user/' . $username);
 
   my $template_data = {
     pages          => \@mapped_pages,
@@ -142,6 +138,53 @@ get '/pages/user/:username/page/:page' => sub {
   }
   else {
     template 'pages', $template_data;
+  }
+};
+
+=head2 Vew pages by username
+
+=cut
+
+get '/pages/page/:page' => sub {
+
+  my $nr_of_rows  = config->{pages_on_page} || 10;
+  my @pages       = resultset('Page')->search_published({},
+                      { order_by => { -desc => "created_date" },
+                        rows => $nr_of_rows });
+  my $nr_of_pages = resultset('Page')->search_published()->count;
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @pages;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @pages;
+
+  my @mapped_pages = map_pages(@pages);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url = config->{app_url};
+
+  for my $page ( @mapped_pages ) {
+    $page->{content} =~ s{$movable_type_url}{$app_url}g;
+  }
+
+  # Calculate the next and previous page link
+  my $total_pages = get_total_pages($nr_of_pages, $nr_of_rows);
+
+  # Extract all pages with the wanted category
+  my $template_data = {
+    pages       => \@mapped_pages,
+    tags        => \@tags,
+    page        => 1,
+    categories  => \@categories,
+    total_pages => $total_pages,
+  };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'page', $template_data;
   }
 };
 

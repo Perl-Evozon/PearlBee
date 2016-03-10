@@ -1,6 +1,6 @@
-package PearlBee::Post;
+package PearlBee::Routes::Post;
 
-=head1 PearlBee::Post
+=head1 PearlBee::Routes::Post
 
 Post routes from the old PearlBee main file
 
@@ -172,6 +172,60 @@ get '/posts/category/:slug/page/:page' => sub {
     template 'index', $template_data;
   }     
 
+};
+
+=head2 Vew posts by username
+
+=cut
+
+get '/posts/page/:page' => sub {
+
+  my $page        = route_parameters->{'page'};
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
+  my @posts       = resultset('Post')->search_published({},
+                      { order_by => { -desc => "created_date" },
+                        page => $page,
+                        rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search_published()->count;
+  my @recent      = resultset('Post')->search_published({},
+                      { order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
+  my $total_pages = get_total_pages($nr_of_posts, $nr_of_rows);
+
+  # extract demo posts info
+  my @mapped_posts     = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url          = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{massaged_content}      =~ s{$movable_type_url}{$app_url}g;
+    $post->{massaged_content_more} =~ s{$movable_type_url}{$app_url}g;
+  }
+
+  # Extract all posts with the wanted category
+  my $template_data = {
+    posts       => \@mapped_posts,
+    recent      => \@recent,
+    popular     => \@popular,
+    tags        => \@tags,
+    page        => $page,
+    categories  => \@categories,
+    total_pages => $total_pages,
+  };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'index', $template_data;
+  }
 };
 
 =head2 Vew posts by username

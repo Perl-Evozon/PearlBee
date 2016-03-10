@@ -41,3 +41,11 @@
     background-color: #ff6600;
     border: 1px solid transparent;
 }
+
+
+/*Media queries*/
+@media all and (max-width: 768px) {
+    .blog .info-blog {
+        padding-left: 25%;
+    }
+}

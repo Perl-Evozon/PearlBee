@@ -49,8 +49,8 @@ post '/recover-password' => sub {
     template 'signup', {
       warning => "The email does not exist in the database."
     };
-    return
   }
+  else{
 
  my $user =
     resultset('Users')->find({ email => $params->{'email'} });
@@ -100,6 +100,7 @@ post '/recover-password' => sub {
   template 'recover-password', {
     success => 'The password was updated.'
   }
+}
 };
 
 get '/register_success' => sub { template 'register_success' };

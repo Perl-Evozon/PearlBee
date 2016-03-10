@@ -920,7 +920,7 @@ $('#more-posts').click(function() {
 
     $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
-        url: '/page/' + pageNumber + '?format=JSON',
+        url: '/posts/page/' + pageNumber + '?format=JSON',
         type: 'GET'
     })
         .done(function(data) {

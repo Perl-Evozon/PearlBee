@@ -28,13 +28,11 @@ get '/pages/:slug' => sub {
   my @tags       = map { $_->as_hashref_sanitized } $page->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $page->category_objects;
 
-  my ($next_page, $previous_page, @page_tags, @comments);
+  my ($next_page, $previous_page, @page_tags);
   if ( $page and $page->id ) {
     $next_page     = $page->next_page;
     $previous_page = $page->previous_page;
     @page_tags     = $page->tag_objects;
-    @comments      = map { $_->as_hashref }
-                     resultset('Comment')->get_approved_comments_by_page_id($page->id);
   }
 
   template 'pages', {
@@ -42,7 +40,6 @@ get '/pages/:slug' => sub {
     next_page     => $next_page,
     previous_page => $previous_page,
     categories    => \@categories,
-    comments      => \@comments,
     tags          => \@page_tags,
   };
 };

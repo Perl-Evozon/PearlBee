@@ -199,7 +199,8 @@ get '/posts/page/:page' => sub {
   my $app_url = config->{app_url};
 
   for my $post ( @mapped_posts ) {
-    $post->{content} =~ s{$movable_type_url}{$app_url}g;
+    $post->{massaged_content} =~ s{$movable_type_url}{$app_url}g;
+    $post->{massaged_content_more} =~ s{$movable_type_url}{$app_url}g;
   }
 
   # Calculate the next and previous page link

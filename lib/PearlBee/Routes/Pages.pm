@@ -144,7 +144,7 @@ get '/pages/user/:username/page/:page' => sub {
   }
 };
 
-=head2 View pages by username
+=head2 Vew pages by username
 
 =cut
 

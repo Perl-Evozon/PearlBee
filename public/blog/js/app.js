@@ -920,11 +920,11 @@ $('#more-posts').click(function() {
 
     $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
-        url: '/page/' + pageNumber + '?format=JSON',
+        url: '/posts/page/' + pageNumber + '?format=JSON',
         type: 'GET'
     })
         .done(function(data) {
-            var posts = JSON.parse(data);
+            var posts = JSON.parse(data).posts;
             // Once the server responds with the result, update the
             //  textbox with that result.
             for( var i= 0; i < posts.length; i++){

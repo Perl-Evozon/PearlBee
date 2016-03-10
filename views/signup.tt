@@ -213,7 +213,7 @@
             
             <div class="checkbox ">
               <label>
-                <a href="[% config.app_url %]/password_recovery">Forgot your password?</a>
+                <a href="/password_recovery">Forgot your password?</a>
               </label>
             </div>
             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>

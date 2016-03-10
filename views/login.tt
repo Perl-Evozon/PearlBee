@@ -14,7 +14,7 @@
             
             <br />
             [% INCLUDE components/alerts.tt %]
-            <form class="form-horizontal" role="form" action="[% config.app_url %]/login" method="post">
+            <form class="form-horizontal" role="form" action="/login" method="post">
               <div class="form-group">
                 <label for="inputEmail1" class="col-lg-2 control-label">Username</label>
                 <div class="col-lg-10">

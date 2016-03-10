@@ -17,7 +17,7 @@
             <div class="awidget-body">
               [% INCLUDE components/alerts.tt %]
 
-              <form method="post" action="[% config.app_url %]/admin/settings/save">
+              <form method="post" action="/admin/settings/save">
 
                 <h5>Blog name</h5>
 

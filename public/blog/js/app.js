@@ -924,7 +924,7 @@ $('#more-posts').click(function() {
         type: 'GET'
     })
         .done(function(data) {
-            var posts = JSON.parse(data);
+            var posts = JSON.parse(data).posts;
             // Once the server responds with the result, update the
             //  textbox with that result.
             for( var i= 0; i < posts.length; i++){

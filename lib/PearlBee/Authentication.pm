@@ -210,7 +210,7 @@ post '/register_success' => sub {
       error $_;
   };
 
-  template 'register_success', {
+  template 'signup', {
     success => 'The user was created and it is waiting for admin approval.'
   }
 };

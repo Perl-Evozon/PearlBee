@@ -71,4 +71,147 @@ get '/profile/author/:username' => sub {
 
 };
 
+post '/profile' => sub  {
+
+  my $params = body_parameters;
+
+  my $user = session('user');
+
+  my $flag_modification = 0;
+  my $flag_error = 0;
+  my $message='';
+
+  if ( ($params->{'email'}) ne ''){
+  my $existing_user =
+    resultset('Users')->search({ email => $params->{'email'} })->count;
+    warn ">>>>>>>>>>>" . Dumper ($existing_user);
+  if ($existing_user > 0) {
+    $flag_error = 1;
+    $message= "A user with this email address already exists.";
+  
+  }
+  else {
+    $flag_modification = 1;
+    $user->{email} = $params->{email};
+    my $res_user = resultset('Users')->find({id=>$user->{id}});
+    $res_user->update({email=>$params->{email}});
+    session('user', $user);
+  }
+  }
+
+  if ( ($params->{'username'}) ne ''){
+  my $existing_user =
+    resultset('Users')->search({ username => $params->{'username'} })->count;
+  if ($existing_user > 0) {
+     $flag_error = 1;
+     $message=$message."\n A user with this username already exists.";
+  }
+  else {
+    $flag_modification = 1;
+    $user->{username} = $params->{username};
+    my $res_user = resultset('Users')->find({id=>$user->{id}});
+    $res_user->update({username=>$params->{username}});
+    session('user', $user);
+  }
+  }
+
+
+  if ( ($params->{'displayname'}) ne ''){
+  my $existing_user =
+    resultset('Users')->search({ name => $params->{'displayname'} })->count;
+  if ($existing_user > 0) {
+    $flag_error = 1;
+    $message=$message."\n A user with this displayname already exists.";
+  }
+  else {
+    $flag_modification = 1;
+    $user->{name} = $params->{displayname};
+    my $res_user = resultset('Users')->find({id=>$user->{id}});
+    $res_user->update({name=>$params->{displayname}});
+    session('user', $user);
+  }
+  }
+
+
+  if ( ($params->{'about'}) ne ''){
+ 
+    $flag_modification = 1;
+    $user->{biography} = $params->{about};
+    my $res_user = resultset('Users')->find({id=>$user->{id}});
+    $res_user->update({biography=>$params->{about}});
+    session('user', $user);
+  }
+  
+
+  if (($flag_modification == 1) && ($flag_error==0)) {
+        template 'profile', {
+      success => "Everything was successfully updated.",
+    };
+  }
+  elsif (($flag_modification == 1) && ($flag_error==1)) {
+      template 'profile', {
+      warning => "Some fields were updated, but ". $message,
+    };
+  }
+  else  {
+     template 'profile', {
+      warning => $message,
+    };
+  }
+};
+
+post '/profile_password' => sub  {
+  my $params = body_parameters;
+
+  my $user = session('user');
+
+  my $res_user = resultset('Users')->find({id=>$user->{id}});
+
+
+
+  if ( (defined $res_user) && ($params->{'new_password'} ne '')) {
+    
+    if (($params->{'new_password'}) eq ($params->{'confirm_password'})){
+      
+      if ( $res_user->validate($params->{'old_password'}) ) {
+
+        my $hashed_password = crypt( $params->{'new_password'}, $res_user->password );
+        $res_user->update({
+          password       => $hashed_password,
+          });
+
+        template 'profile', {
+          success => "You can now use your new password",
+        };
+
+      }
+
+      else{
+        template 'profile', {
+          warning => "Please insert correctly your old password",
+        };
+      }
+    }
+
+    else{
+      template 'profile', {
+        warning => "Confirmation password was wrongly introduced",
+      };
+    }
+
+  }
+  else{
+   template 'profile', {
+     warning => "No new password was inserted ",
+   };
+ }
+ 
+};
+
+get '/profile_password' => sub  {
+
+   template 'profile';
+
+};
+
 1;

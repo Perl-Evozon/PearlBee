@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 	var userEmail = '[% session.user.email %]',
-		userUserName = '[% session.user.username | uri %]',
+		userUserName = '[% session.user.username %]',
 		userDisplayName = '[% session.user.name %]',
 		userBiography = '[% session.user.biography %]';
 	if(userEmail){
@@ -21,13 +21,13 @@ $(document).ready(function() {
 	}
 });
 </script>
-
+[% INCLUDE components/alerts.tt %]
 <div class="blog">
  
 	<div class="myprofile register sign-up">
  
 		<div class="container">
-
+		
 			<div class="row"> 
 				<div class="myprofile-head">
 					<div class="col-sm-6">
@@ -55,23 +55,23 @@ $(document).ready(function() {
 					</div>
 					<div class="col-sm-10">
 					
-						<form action="" method="get">
+						<form action="/profile" method="post">
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com">
+								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com" name="email">
 							</div>
 							<div class="input-group">
 								<label>Username</label>
-								<input type="text" id="user_username" class="form-control" placeholder="username">
+								<input type="text" id="user_username" class="form-control" placeholder="username" name="username">
 							</div>
 							<div class="input-group">
 								<label>Display Name</label>
-								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname">
+								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname" name="displayname">
 							</div>
 							<div class="input-group">
 								<label>About</label>
-								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl"></textarea>
+								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl" name="about"></textarea>
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>
@@ -80,19 +80,19 @@ $(document).ready(function() {
 							</div>
 						</form>
 						
-						<form action="" method="get" id="changePasswordFrom">
+						<form action="/profile_password" method="post" id="changePasswordFrom">
 							<h2>Password</h2>
 							<div class="input-group">
 								<label>Old Password</label>
-								<input type="password" class="form-control" placeholder="Old Password">
+								<input type="password" class="form-control" placeholder="Old Password" name="old_password">
 							</div>
 							<div class="input-group">
 								<label>New Password</label>
-								<input type="password" class="form-control" id="newPassword" placeholder="New Password">
+								<input type="password" class="form-control" id="newPassword" placeholder="New Password" name="new_password">
 							</div>
 							<div class="input-group">
 								<label>Confirm Password</label>
-								<input type="password" class="form-control confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password">
+								<input type="password" class="form-control confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password" name="confirm_password">
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>

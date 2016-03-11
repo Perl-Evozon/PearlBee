@@ -45,7 +45,7 @@
                                    <li class="information-blog"> [% blog.description %] </li>
                                    [% FOREACH post IN posts %]
                                    [% LAST IF loop.count == 2 %]
-                                   <a href="/feed/author/[% post.user.username %]" target="_blank">
+                                   <a href="/feed/author/[% post.user.username | uri %]" target="_blank">
                                        <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
                                    </a>
                                    [% END %]
@@ -86,8 +86,8 @@
                          </div>
                           <div class="info-entry">
                             <div class="user">
-                              <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
-                               <!--<a href="/feed/author/[% post.user.username %]" target="_blank">RSS</a>-->
+                              <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
+                               <!--<a href="/feed/author/[% post.user.username | uri %]" target="_blank">RSS</a>-->
                             </div>
                             <div class="date">
                               [% post.created_date_human %]

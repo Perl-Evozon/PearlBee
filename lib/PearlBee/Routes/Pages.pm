@@ -52,8 +52,7 @@ get '/pages/user/:username' => sub {
 
   my $nr_of_rows = config->{pages_on_page} || 10;
   my $username   = route_parameters->{'username'};
-  my ( $user )   =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
+  my ( $user )   = resultset('Users')->search_lc( $username );
 
   unless ($user) {
     error "No such user '$username'";
@@ -100,8 +99,7 @@ get '/pages/user/:username/page/:page' => sub {
   my $username    = route_parameters->{'username'};
   my $page        = route_parameters->{'page'};
   my $nr_of_rows  = config->{pages_on_page} || 5;
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
+  my ( $user )    = resultset('Users')->search_lc( $username );
   unless ($user) {
     # we did not identify the user
     error "No such user '$username'";

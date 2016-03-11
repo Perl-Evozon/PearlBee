@@ -22,7 +22,7 @@
                             </div>
                              <div class="info-entry">
                                <div class="user">
-                                 <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
+                                 <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
                                </div>
                                <div class="date">
                                  [% post.created_date_human %]
@@ -36,7 +36,7 @@
                                 <i class="icon-calendar"></i> [% post.created_date_human %]
                             </div>
                             <div class="block_elements">
-                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username | uri %]">[% post.user.username %]</a>
                             </div> -->
 
 <!--

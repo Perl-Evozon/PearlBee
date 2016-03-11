@@ -11,7 +11,7 @@
                     </div>
                 
                     <div class="comment-author comment-author-registered">
-                         <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                         <b><a href="/profile/author/[% comment.uid.username | uri %]">[% comment.fullname %]</a></b>
                     </div>
                 
                 <div class="cmeta">
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="comment-author comment-author-registered">
-                         <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                         <b><a href="/profile/author/[% comment.uid.username | uri %]">[% comment.fullname %]</a></b>
                     </div>
                 
                 <div class="cmeta">

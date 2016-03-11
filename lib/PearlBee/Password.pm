@@ -6,7 +6,7 @@ use Data::Entropy::Algorithms qw(rand_bits);
 use MIME::Base64 qw(encode_base64 decode_base64);
 
 require Exporter;
-our @ISA = qw(Exporter);
+our @ISA    = qw(Exporter);
 our @EXPORT = qw(generate_hash);
 
 # Input: A string containing a password and optionally a salt encoded in base64 (from the database for example)

@@ -8,16 +8,15 @@
                 <div class="info-page">
                   <div class="user">
                     <!-- here someting like-->
-                    <a href="/profile/author/[% page.user.username %]">[% page.user.username %]</a>
+                    <a href="/profile/author/[% page.user.username | uri %]">[% page.user.username %]</a>
                   </div>
                   <div class="date">
-                      <!-- here someting like [% page.created_date_human %]-->
-                      Page Date (1 sept 1985)
+                      [% page.created_date_human %]
                   </div>
                 </div>
                 <div class="pages">
                   <div class="page-heading">
-                      <h2>ANOTHER AWESOME site</h2>
+                      <h2>[% page.title %]</h2>
                   </div>
                     <!-- Page one -->
                     <div class="entry clearfix">
@@ -41,10 +40,10 @@
                         </div>
                         <ul class="pager-post clearfix">
                           [% IF previous_page.slug %]
-                            <li class="previous-post pull-left"><a href="/user/[% page.user.username %][% previous_page.slug %]">previous page</a></li>
+                            <li class="previous-post pull-left"><a href="/pages/[% previous_page.slug %]">previous page</a></li>
                           [% END %]
                           [% IF next_page.slug %]
-                            <li class="next-post pull-right"><a href="/user/[% page.user.username %][% next_page.slug %]">next page</a></li>
+                            <li class="next-post pull-right"><a href="/pages/[% next_page.slug %]">next page</a></li>
                           [% END %]
                         </ul>
                     </div>

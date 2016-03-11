@@ -68,13 +68,13 @@
                                     </div>
                                     <div class="info-entry">
                                         <div class="user">
-                                            <a href="/profile/author/[% post.user.username %]"></a>
+                                            <a href="/profile/author/[% post.user.username | uri %]"></a>
                                         </div>
                                         <div class="date">
                                         </div>
                                         [% FOREACH category in post.post_categories %]
                                         <div class="block_elements">
-                                            <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]"></a>
+                                            <i class="icon-list"></i> <a href="/posts/category/[% category.category.slug %]"></a>
                                         </div>
                                         [% END %]
                                     </div>
@@ -97,7 +97,7 @@
                                     <div class="block_elements comments-listings">
                                         <a href="/post/[% post.slug %]#comments"> </a>
                                     </div>
-                                    <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                                    <a href="/post/[% post.slug %]" class="read-more">Read More...</a>
                                 </div>
                             </div>
                             [% FOREACH post in posts %]
@@ -111,14 +111,14 @@
                                     </div>
                                     <div class="info-entry">
                                         <div class="user">
-                                            <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
+                                            <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
                                         </div>
                                         <div class="date">
                                             [% post.created_date_human %]
                                         </div>
                                         [% FOREACH category in post.post_categories %]
                                         <div class="block_elements">
-                                            <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                                            <i class="icon-list"></i> <a href="/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
                                         </div>
                                         [% END %]
                                     </div>
@@ -144,7 +144,7 @@
                                     <div class="block_elements comments-listings">
                                         <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
                                     </div>
-                                    <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                                    <a href="/post/[% post.slug %]" class="read-more">Read More...</a>
                                 </div>
                             </div>
                             [% END %]

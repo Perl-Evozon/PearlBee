@@ -1,4 +1,4 @@
-package PearlBee::Blogs;
+package PearlBee::Blog;
 
 =head1 PearlBee::Blog
 
@@ -17,18 +17,9 @@ our $VERSION = '0.1';
 
 =cut
 
-#http://139.162.204.109:5030/blogs/user/pmurias/slug/a_blog_about_the_perl_programming_language
+get '/blog/user/:username/slug/:slug' => sub {
 
-get '/users/:username' => sub {
-  my $username = route_parameters->{'username'};
-  my $slug     = 'foo';
-
-  redirect "/blogs/user/$username/slug/$slug"
-};
-
-get '/blogs/user/:username/slug/:slug' => sub {
-
-  my $num_user_posts = config->{blogs}{user_posts} || 10;
+  my $num_user_posts = config->{blog}{user_posts} || 10;
 
   my $username    = route_parameters->{'username'};
   my ( $user )    = resultset('Users')->search_lc( $username );
@@ -53,15 +44,8 @@ get '/blogs/user/:username/slug/:slug' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $num_user_posts);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages, '/posts/user/' . $username);
 
- my @blog_owners = resultset('BlogOwner')->search({ user_id => $user->id });
-    my @blogs;
-    for my $blog_owner ( @blog_owners ) {
-      push @blogs, map { $_->as_hashref_sanitized }
-                   resultset('Blog')->find({ id => $blog_owner->blog_id });
-    }
-
   # Extract all posts with the wanted category
-  template 'blogs',
+  template 'blog',
       {
         posts          => \@mapped_posts,
         tags           => \@tags,
@@ -71,7 +55,6 @@ get '/blogs/user/:username/slug/:slug' => sub {
         next_link      => $next_link,
         previous_link  => $previous_link,
         posts_for_user => $username,
-        blogs          => \@blogs
     };
 };
 
@@ -79,9 +62,9 @@ get '/blogs/user/:username/slug/:slug' => sub {
 
 =cut
 
-get '/blogs/user/:username/slug/:slug/page/:page' => sub {
+get '/blog/user/:username/slug/:slug/page/:page' => sub {
 
-  my $num_user_posts = config->{blogs}{user_posts} || 10;
+  my $num_user_posts = config->{blog}{user_posts} || 10;
 
   my $username    = route_parameters->{'username'};
   my $page        = route_parameters->{'page'};
@@ -122,7 +105,7 @@ get '/blogs/user/:username/slug/:slug/page/:page' => sub {
     $json->encode( $template_data );
   }
   else {
-    template 'blogs', $template_data;
+    template 'blog', $template_data;
   }
 };
 

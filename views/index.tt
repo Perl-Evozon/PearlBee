@@ -7,8 +7,8 @@
     				<h1>There is more than one way to blog it.</h1>
     				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
                                     <div class="buttons-wrapper">
-                                            <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
-                                            <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
+                                            <a href="/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
+                                            <a href="/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
                                     </div>
     				<div class="close-overlay" id="close_overlay">
     					<span class="icon-close"></span>
@@ -38,7 +38,7 @@
               		<h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% category_name %]</a></h2>
           		[% END %]
           		[% IF posts_for_user %]
-              		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user %]">[% posts_for_user %]</a></h2>
+              		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user | uri %]">[% posts_for_user %]</a></h2>
           		[% END %]
               </div>
 
@@ -97,7 +97,7 @@
                         <div class="block_elements comments-listings">
                           <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
                         </div>
-                     <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
+                     <a href="/post/[% post.slug %]" class="read-more">Read More...</a>
                   </div>
                 </div>
               [% END %]

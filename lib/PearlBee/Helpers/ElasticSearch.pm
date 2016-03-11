@@ -117,7 +117,7 @@ sub search_posts {
             created_date   => $rs->created_date_human,
             nr_of_comments => $rs->nr_of_comments,
             username       => $rs->user->username,
-            user           => { avatar => $user_avatar },
+            user           => { avatar => $user_avatar, slug => $rs->user->slug },
             tags           => $result->{_source}{tags}
         };
     }

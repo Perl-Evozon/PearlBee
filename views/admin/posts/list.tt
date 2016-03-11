@@ -42,7 +42,7 @@
 
                   <tr>
                     <td width="20%">
-                      <b> <i class="icon-user"></i> <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a></b>
+                      <b> <i class="icon-user"></i> <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a></b>
                       <br />
                       <b> [% post.user.name %] </b>
                       <br />

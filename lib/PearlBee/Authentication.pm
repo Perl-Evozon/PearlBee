@@ -29,7 +29,7 @@ login method
 
 =cut
 
-get '/recover-password' => sub { template 'recover-password' };
+get '/recover-password' => sub { template 'password_recovery' };
 
 post '/recover-password' => sub {
 
@@ -46,11 +46,12 @@ post '/recover-password' => sub {
   my $existing_users =
     resultset('Users')->search({ email => $params->{'email'} })->count;
   if ($existing_users == 0) {
-    template 'signup', {
+    template 'password_recovery', {
       warning => "The email does not exist in the database."
-    };
-    return
+    }; 
+    
   }
+  else{
 
  my $user =
     resultset('Users')->find({ email => $params->{'email'} });
@@ -100,6 +101,7 @@ post '/recover-password' => sub {
   template 'recover-password', {
     success => 'The password was updated.'
   }
+}
 };
 
 get '/register_success' => sub { template 'register_success' };
@@ -267,7 +269,7 @@ get '/oauth/:service/service_id/:service_id' => sub {
 };
 
 get '/login' => sub {
-      template 'login'
+      template 'signup'
 };
 
 
@@ -286,15 +288,15 @@ post '/login' => sub {
       
       session user    => $user->as_hashref;
       session user_id => $user->id;
-  	
+      
       redirect('/');
     }
     else {
-      template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
+      template 'signup', { warning => "Login failed for the provided username/password pair." };
     }
   }
   else {
-    template 'login', { warning => "Login failed for the provided username/password pair." }, { layout => 'admin' };
+    template 'signup', { warning => "Login failed for the provided username/password pair." };
   }
 };
 
@@ -312,7 +314,8 @@ get '/logout' => sub {
     unless ( session('blog_name') );
   session app_url   => config->{app_url};
 
-  template 'login', { success => "You were successfully logged out." }, { layout => 'admin' };
+  redirect "/";
+  #template 'login', { success => "You were successfully logged out." }, { layout => 'admin' };
 };
 
 true;

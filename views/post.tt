@@ -22,7 +22,7 @@
                             </div>
                              <div class="info-entry">
                                <div class="user">
-                                 <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
+                                 <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
                                </div>
                                <div class="date">
                                  [% post.created_date_human %]
@@ -36,13 +36,13 @@
                                 <i class="icon-calendar"></i> [% post.created_date_human %]
                             </div>
                             <div class="block_elements">
-                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username %]">[% post.user.username %]</a>
+                                <i class="icon-user"></i> <a href="/posts/user/[% post.user.username | uri %]">[% post.user.username %]</a>
                             </div> -->
 
 <!--
                             [% FOREACH category in post.post_categories %]
                                 <div class="block_elements">
-                                    <i class="icon-list"></i> <a href="[% config.app_url %]/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
+                                    <i class="icon-list"></i> <a href="/posts/category/[% category.category.slug %]">[% category.category.name %]</a>
                                 </div>
                             [% END %]
 -->
@@ -56,14 +56,10 @@
                         
                         <!-- Para -->
                         <p>
-                           [% post.content %]
-                           [% post.content_more %]
+                           [% post.massaged_content %]
+                           [% post.massaged_content_more %]
                         </p>
                         </div>
-
-<!--                         [% IF (setting.social_media == '1') %]
-    [% INCLUDE social_media_buttons.tt %]
-[% END %] -->
 
 <!--                         [% SET nr_of_comments = post.nr_of_comments %]
     <div class="block_elements">

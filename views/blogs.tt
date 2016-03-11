@@ -1,34 +1,34 @@
 <link href="/blog/css/blogs.css" rel="stylesheet">
 
 <div class="blog">
-
-    <div class="blog-start show">
-    	<div class="container">
-    		<div class="row">
-    			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
-    				<h1>There is more than one way to blog it.</h1>
-    				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
+ 
+     <div class="blog-start show">
+     	<div class="container">
+     		<div class="row">
+     			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
+     				<h1>There is more than one way to blog it.</h1>
+     				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
                         <div class="buttons-wrapper">
-                                <a href="[% config.app_url %]/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
-                                <a href="[% config.app_url %]/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
+                                <a href="/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
+                                <a href="/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
                         </div>
-    				<div class="close-overlay" id="close_overlay">
-    					<span class="icon-close"></span>
-    					<span class="close-overlay-text ">close and go to listings</span>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
-    	<div class="container-bottom">
-    	</div>
-    </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="content clearfix">
-        <div class="col-md-12">
-         
-           <div class="posts listings">
+     				<div class="close-overlay" id="close_overlay">
+     					<span class="icon-close"></span>
+     					<span class="close-overlay-text ">close and go to listings</span>
+     				</div>
+     			</div>
+     		</div>
+     	</div>
+     	<div class="container-bottom">
+     	</div>
+     </div>
+ 
+   <div class="container">
+     <div class="row">
+       <div class="content clearfix">
+         <div class="col-md-12">
+          
+            <div class="posts listings">
                <div class="blog-top-part">
                    <div class="col-xs-2 no-padding">
                        <div class="bubble">
@@ -45,7 +45,7 @@
                                    <li class="information-blog"> [% blog.description %] </li>
                                    [% FOREACH post IN posts %]
                                    [% LAST IF loop.count == 2 %]
-                                   <a href="/feed/author/[% post.user.username %]" target="_blank">
+                                   <a href="/feed/author/[% post.user.username | uri %]" target="_blank">
                                        <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
                                    </a>
                                    [% END %]
@@ -64,102 +64,102 @@
                        [% END %]
                    </div>
                </div>
-
-              [% USE HTML.Strip 'strip'%]
-              [% FOREACH post in posts %]
-        
-                <div class="entry clearfix">
+ 
+               [% USE HTML.Strip 'strip'%]
+               [% FOREACH post in posts %]
+         
+                 <div class="entry clearfix">
 
                     <div class="text-listing-entries col-xs-12">
-                       <div class="bubble">
-                            [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img class="user-image" src="[%post.user.avatar%]">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img class="user-image" src="/blog/img/male-user.png">
-                            [%ELSIF (session.theme == 'light') %]
-                            <img class="user-image" src="/blog/img/male-user-light.png">
-                            [%ELSE%]
-                            <img class="user-image" src="/blog/img/male-user.png">                                                      
-                            [%END%]
-                            [%END%]
-                        </div>
-                         <div class="info-entry">
-                           <div class="user">
-                             <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
-                               <!--<a href="/feed/author/[% post.user.username %]" target="_blank">RSS</a>-->
-                           </div>
-                           <div class="date">
-                             [% post.created_date_human %]
-                           </div>
-<!--
-                             <div class="block_elements category-item hidden">
-                                 <i class="icon-list"></i> <a href=""></a>
-                             </div>
--->
-
+                        <div class="bubble">
+                             [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
+                             <img class="user-image" src="[%post.user.avatar%]">
+                             [%ELSE %]
+                             [% IF (session.theme == 'dark') %]
+                             <img class="user-image" src="/blog/img/male-user.png">
+                             [%ELSIF (session.theme == 'light') %]
+                             <img class="user-image" src="/blog/img/male-user-light.png">
+                             [%ELSE%]
+                             <img class="user-image" src="/blog/img/male-user.png">                                                      
+                             [%END%]
+                             [%END%]
                          </div>
-                         <div class="post-heading">
-                           <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
-                         </div>
-
-                         <!-- Post cover -->
-                         
-                         <!-- Post content -->
-                         <div class="post_preview truncate">
-                          <div class="post_preview_wrapper">
-                            <p>
-                              [% post.content | strip %]
-                              [% post.content_more | strip %]
-                            </p>
+                          <div class="info-entry">
+                            <div class="user">
+                              <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
+                               <!--<a href="/feed/author/[% post.user.username | uri %]" target="_blank">RSS</a>-->
+                            </div>
+                            <div class="date">
+                              [% post.created_date_human %]
+                            </div>
+ <!--
+                              <div class="block_elements category-item hidden">
+                                  <i class="icon-list"></i> <a href=""></a>
+                              </div>
+ -->
+ 
                           </div>
-                         </div>
-                   
-                     <!-- Read more -->
-                      [% SET nr_of_comments = post.nr_of_comments %]
-                        <div class="block_elements comments-listings">
-                          <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
-                        </div>
-                     <a href="[% config.app_url %]/post/[% post.slug %]" class="read-more">Read More...</a>
-                  </div>
-                </div>
-              [% END %]
-              [% IF posts.size == 10 %]
-              <div class="loading-posts">
-                   <div class="col-xs-2">
-                   </div>
-                   <div id="view_more" class="view-more col-xs-10">
-                       <div class="bubble">
-                           <button id="more-blog-posts" data-page-number="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
-                       </div>
-                       <div style="display: none" class="progressloader">
-                           <div class="spinner">
-                               <div class="bounce1"></div>
-                               <div class="bounce2"></div>
-                               <div class="bounce3"></div>
+                          <div class="post-heading">
+                            <h2><a href="/post/[% post.slug %]">[% post.title %]</a></h2>
+                          </div>
+ 
+                          <!-- Post cover -->
+                          
+                          <!-- Post content -->
+                          <div class="post_preview truncate">
+                           <div class="post_preview_wrapper">
+                             <p>
+                               [% post.content | strip %]
+                               [% post.content_more | strip %]
+                             </p>
                            </div>
-
-                       </div>
+                          </div>
+                    
+                      <!-- Read more -->
+                       [% SET nr_of_comments = post.nr_of_comments %]
+                         <div class="block_elements comments-listings">
+                           <a href="/post/[% post.slug %]#comments"> [% IF nr_of_comments == 1 %] Comment [% ELSE %] Comments [% END %] ([% nr_of_comments %])</a>
+                         </div>
+                      <a href="/post/[% post.slug %]" class="read-more">Read More...</a>
                    </div>
-              </div>
+                 </div>
+               [% END %]
+              [% IF posts.size == 10 %]
+               <div class="loading-posts">
+                    <div class="col-xs-2">
+                    </div>
+                    <div id="view_more" class="view-more col-xs-10">
+                        <div class="bubble">
+                           <button id="more-blog-posts" data-page-number="1" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                        </div>
+                        <div style="display: none" class="progressloader">
+                            <div class="spinner">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+ 
+                        </div>
+                    </div>
+               </div>
                [% END %]
                <div class="col-xs-10 no-more-posts" [% IF posts.size < 10 %] style="display: block;" [% END %]>
                     <h4>No more posts</h4>
                </div>
 
-
-              [% IF posts.first %]
-                <!-- Pagination -->
-          
-                <!-- Each posts should be enclosed inside "entry" class" -->
-                <!-- Post one -->
-              [% ELSE %]
-                  <br />
-                  <h5 class="no-posts">No posts found.</h5>
-              [% END %]
-           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+ 
+               [% IF posts.first %]
+                 <!-- Pagination -->
+           
+                 <!-- Each posts should be enclosed inside "entry" class" -->
+                 <!-- Post one -->
+               [% ELSE %]
+                   <br />
+                   <h5 class="no-posts">No posts found.</h5>
+               [% END %]
+            </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>

@@ -13,6 +13,7 @@ PearlBee::Model::Schema::Result::Users - Users table.
 use strict;
 use warnings;
 use Dancer2; # Pick up the default avatar
+use String::Dirify qw( dirify );
 
 use base 'DBIx::Class::Core';
 
@@ -349,6 +350,7 @@ sub as_hashref {
     id             => $self->id,
     name           => $self->name,
     username       => $self->username,
+    slug           => $self->slug,
     password       => $self->password,
     register_date  => $self->register_date,
     email          => $self->email,
@@ -375,6 +377,19 @@ sub as_hashref_sanitized {
   delete $href->{id};
   delete $href->{password};
   return $href;
+}
+
+sub bpo_dirify {
+  my $text = shift;
+  $text = dirify($text);
+  $text =~ s/_/-/g;
+  return $text;
+}
+
+sub slug {
+  my ($self) = @_;
+
+  return bpo_dirify( $self->username );
 }
 
 sub validate {

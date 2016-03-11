@@ -14,8 +14,8 @@ use Digest::SHA;
 # Included controllers
 use PearlBee::Blogs;
 use PearlBee::Profile;
-use PearlBee::Post;
 
+use PearlBee::Routes::Post;
 use PearlBee::Routes::Pages;
 
 # Common controllers
@@ -64,12 +64,6 @@ hook before => sub {
 =head1 Blog assets - XXX this should be managed by nginx or something.
 
 =cut
-
-get '/users/*' => sub {
-    my ( $file ) = splat;
-
-    send_file $file;
-};
 
 get '/avatars/**' => sub {
     my ( $file ) = splat;

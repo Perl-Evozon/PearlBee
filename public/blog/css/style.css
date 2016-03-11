@@ -3213,7 +3213,7 @@ a:focus {
   border-radius: 15px;
 }
 
-.register-success, .register-done {
+.register-success, .register-done, .recover-password {
   position: absolute;
   top: 80px;
   width: 100%; 
@@ -3226,13 +3226,25 @@ a:focus {
    background-size: cover;
 }
 
-.register-success h1, .register-done h1 {
+.register-success h1, .register-done h1, .recover-password h1 {
   margin-bottom: 40px;
   font-size: 50px;
 }
 
 .register-success .text-success {  
   color: #79A301;
+}
+
+.recover-password {
+   z-index: 13;
+}
+
+.register-done {
+   z-index: 13;
+}
+
+.register-success {
+   z-index: 13;
 }
 
 .register-done .btn-start {
@@ -4060,17 +4072,20 @@ background-size: cover;
 	   margin-bottom: 50px;
 }
 
-.individual-post .pager-post li {
+.individual-post .pager-post li, 
+.pages .pager-post li {
    list-style-type: none;
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    text-transform: uppercase;
 }
 
-.individual-post .pager-post li a {
+.individual-post .pager-post li a,
+.pages .pager-post li a {
    font-weight: bold;
 }
 
-.individual-post .pager-post {
+.individual-post .pager-post,
+.pages .pager-post {
    padding-left: 0;
    margin-bottom: 25px;
 }
@@ -4514,7 +4529,38 @@ input[readonly] {
 
 .pages .post-content {
    padding-top: 30px;
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
 }
+
+.pages .individual-post-tags {
+   font-family: 'Montserrat', 'Open Sans', sans-serif;
+   font-size: 18px;
+   margin-bottom: 40px;
+}
+
+.pages .post-content p {
+   margin: 0 0 10px;
+}
+
+.pages .post-content p img {
+    display: block;
+    margin: 0 auto 15px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.pages .post-content code {
+   white-space: normal;
+}
+
+.pages .pager-post li a {
+   font-size: 18px;
+}
+
+
+
+
 
 
 

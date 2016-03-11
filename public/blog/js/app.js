@@ -488,7 +488,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].username);
-                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].username);
+                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.slug);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -553,7 +553,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
-                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].username);
+                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].slug);
                         newItem.find(".info-entry .date").text(userInfo[i].register_date);
 
                         newItem.find(".properties li.nr-blog span").text(userInfo[i].counts.blog);
@@ -920,11 +920,11 @@ $('#more-posts').click(function() {
 
     $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
-        url: '/page/' + pageNumber + '?format=JSON',
+        url: '/posts/page/' + pageNumber + '?format=JSON',
         type: 'GET'
     })
         .done(function(data) {
-            var posts = JSON.parse(data);
+            var posts = JSON.parse(data).posts;
             // Once the server responds with the result, update the
             //  textbox with that result.
             for( var i= 0; i < posts.length; i++){

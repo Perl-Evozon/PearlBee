@@ -99,7 +99,7 @@
         FB.api('/me', function(response) {
 
           var useid = response.id;
-          var userName = '[% session.user.username %]';
+          var userName = '[% session.user.username | uri %]';
           console.log("username is " + userName);
           console.log("userID is " + useid);
           
@@ -145,7 +145,7 @@
                     <div class="form-group">
                       <label class="col-lg-2 control-label">Username</label>
                       <div class="col-lg-10">
-                        <input type="text" class="form-control" name="username" placeholder="Username" value="[% username %]" required>
+                        <input type="text" class="form-control" name="username" placeholder="Username" value="[% username | uri %]" required>
                       </div>
                     </div>
       
@@ -213,7 +213,7 @@
             
             <div class="checkbox ">
               <label>
-                <a href="[% config.app_url %]/password_recovery">Forgot your password?</a>
+                <a href="/password_recovery">Forgot your password?</a>
               </label>
             </div>
             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>

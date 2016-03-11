@@ -1,6 +1,6 @@
-package PearlBee::Post;
+package PearlBee::Routes::Post;
 
-=head1 PearlBee::Post
+=head1 PearlBee::Routes::Post
 
 Post routes from the old PearlBee main file
 
@@ -17,13 +17,23 @@ our $VERSION = '0.1';
 
 =cut
 
+#http://blogs.perl.org/users/jt_smith/2016/03/tabletopevents-at-madmongers.html
+#http://blogs.perl.org/users/jt_smith/2015/12/christmas-came-bah-humbug.html#comments
+
+get '/users/:username/:year/:month/:slug' => sub {
+  my $username = route_parameters->{'username'};
+  my $year     = route_parameters->{'year'};
+  my $month    = route_parameters->{'month'};
+  my $slug     = route_parameters->{'slug'};
+
+  redirect "/post/$slug"
+};
+ 
 get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
   my $settings   = resultset('Setting')->first;
-  my @recent     = resultset('Post')->get_recent_posts();
-  my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
@@ -36,18 +46,15 @@ get '/post/:slug' => sub {
                      resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
-  template 'post',
-    {
-      post          => $post,
-      next_post     => $next_post,
-      previous_post => $previous_post,
-      recent        => \@recent,
-      popular       => \@popular,
-      categories    => \@categories,
-      comments      => \@comments,
-      setting       => $settings,
-      tags          => \@post_tags,
-    };
+  template 'post', {
+    post          => $post,
+    next_post     => $next_post,
+    previous_post => $previous_post,
+    categories    => \@categories,
+    comments      => \@comments,
+    setting       => $settings,
+    tags          => \@post_tags,
+  };
 };
 
 =head2 View posts by category
@@ -171,12 +178,65 @@ get '/posts/category/:slug/page/:page' => sub {
 
 =cut
 
+get '/posts/page/:page' => sub {
+
+  my $page        = route_parameters->{'page'};
+  my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
+  my @posts       = resultset('Post')->search_published({},
+                      { order_by => { -desc => "created_date" },
+                        page => $page,
+                        rows => $nr_of_rows });
+  my $nr_of_posts = resultset('Post')->search_published()->count;
+  my @recent      = resultset('Post')->search_published({},
+                      { order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @tags        = map { $_->as_hashref_sanitized }
+                    map { $_->tag_objects } @posts;
+  my @categories  = map { $_->as_hashref_sanitized }
+                    map { $_->category_objects } @posts;
+  my $total_pages = get_total_pages($nr_of_posts, $nr_of_rows);
+
+  # extract demo posts info
+  my @mapped_posts     = map_posts(@posts);
+  my $movable_type_url = config->{movable_type_url};
+  my $app_url          = config->{app_url};
+
+  for my $post ( @mapped_posts ) {
+    $post->{massaged_content}      =~ s{$movable_type_url}{$app_url}g;
+    $post->{massaged_content_more} =~ s{$movable_type_url}{$app_url}g;
+  }
+
+  # Extract all posts with the wanted category
+  my $template_data = {
+    posts       => \@mapped_posts,
+    recent      => \@recent,
+    popular     => \@popular,
+    tags        => \@tags,
+    page        => $page,
+    categories  => \@categories,
+    total_pages => $total_pages,
+  };
+
+  if ( param('format') ) {
+    my $json = JSON->new;
+    $json->allow_blessed(1);
+    $json->convert_blessed(1);
+    $json->encode( $template_data );
+  }
+  else {
+    template 'index', $template_data;
+  }
+};
+
+=head2 Vew posts by username
+
+=cut
+
 get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 10; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
+  my ( $user )    = resultset('Users')->search_lc( $username );
   unless ($user) {
     error "No such user '$username'";
   }
@@ -228,8 +288,7 @@ get '/posts/user/:username/page/:page' => sub {
   my $username    = route_parameters->{'username'};
   my $page        = route_parameters->{'page'};
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my ( $user )    =
-    resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
+  my ( $user )    = resultset('Users')->search_lc( $username );
   unless ($user) {
     # we did not identify the user
     error "No such user '$username'";

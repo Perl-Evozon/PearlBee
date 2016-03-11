@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 	var userEmail = '[% session.user.email %]',
-		userUserName = '[% session.user.username %]',
+		userUserName = '[% session.user.username | uri %]',
 		userDisplayName = '[% session.user.name %]',
 		userBiography = '[% session.user.biography %]';
 	if(userEmail){

@@ -21,12 +21,12 @@ $(document).ready(function() {
 	}
 });
 </script>
-[% INCLUDE components/alerts.tt %]
 <div class="blog">
  
 	<div class="myprofile register sign-up">
  
 		<div class="container">
+[% INCLUDE components/alerts.tt %]
 		
 			<div class="row"> 
 				<div class="myprofile-head">

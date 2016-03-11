@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 	var userEmail = '[% session.user.email %]',
-		userUserName = '[% session.user.username %]',
+		userUserName = '[% session.user.username | uri %]',
 		userDisplayName = '[% session.user.name %]',
 		userBiography = '[% session.user.biography %]';
 	if(userEmail){
@@ -21,13 +21,13 @@ $(document).ready(function() {
 	}
 });
 </script>
+
 <div class="blog">
  
 	<div class="myprofile register sign-up">
  
 		<div class="container">
-[% INCLUDE components/alerts.tt %]
-		
+
 			<div class="row"> 
 				<div class="myprofile-head">
 					<div class="col-sm-6">
@@ -59,19 +59,19 @@ $(document).ready(function() {
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com" name="email">
+								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com">
 							</div>
 							<div class="input-group">
 								<label>Username</label>
-								<input type="text" id="user_username" class="form-control" placeholder="username" name="username">
+								<input type="text" id="user_username" class="form-control" placeholder="username">
 							</div>
 							<div class="input-group">
 								<label>Display Name</label>
-								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname" name="displayname">
+								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname">
 							</div>
 							<div class="input-group">
 								<label>About</label>
-								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl" name="about"></textarea>
+								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl"></textarea>
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>
@@ -84,15 +84,15 @@ $(document).ready(function() {
 							<h2>Password</h2>
 							<div class="input-group">
 								<label>Old Password</label>
-								<input type="password" class="form-control" placeholder="Old Password" name="old_password">
+								<input type="password" class="form-control" placeholder="Old Password">
 							</div>
 							<div class="input-group">
 								<label>New Password</label>
-								<input type="password" class="form-control" id="newPassword" placeholder="New Password" name="new_password">
+								<input type="password" class="form-control" id="newPassword" placeholder="New Password">
 							</div>
 							<div class="input-group">
 								<label>Confirm Password</label>
-								<input type="password" class="form-control confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password" name="confirm_password">
+								<input type="password" class="form-control confirmNewPassword" id="confirmNewPassword" placeholder="Confirm New Password">
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>

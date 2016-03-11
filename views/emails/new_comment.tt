@@ -1,75 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+<body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" bgcolor="#06001A">
+<br>
+ 
 
-  <head>    
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
+    
+      <title> BPO's Email Alert</title>
+		  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        
 
-	<!-- Styles -->
-	<!-- Bootstrap CSS -->
-	<link href="[% url %]/blog/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Animate css -->
-	<link href="/[% url %]/blog/css/animate.min.css" rel="stylesheet">
-	<!-- Dropdown menu -->
-	<link href="[% url %]/blog/css/ddlevelsmenu-base.css" rel="stylesheet">
-	<link href="[% url %]/blog/css/ddlevelsmenu-topbar.css" rel="stylesheet">
-	<!-- Countdown -->
-	<link href="[% url %]/blog/css/jquery.countdown.css" rel="stylesheet">
-	<!-- prettyPhoto -->
-	<link href="[% url %]/blog/css/prettyPhoto.css" rel="stylesheet">      
-	<!-- Font awesome CSS -->
-	<link href="[% url %]/blog/css/font-awesome.min.css" rel="stylesheet">     
-	<!-- Custom CSS -->
-	<link href="[% url %]/blog/css/style.css" rel="stylesheet">
-  </head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        background-color: #06001A ;
+      }
+      h1 {
+        margin: 20px 0 20px 0;
+        font-size: 30px;
+		line-height: 33px;
+        color: #43C8E7;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        font-weight: bold;
+		text-transform: uppercase;
+		width: 265px;
+      }
+	  h5 {
+		color: #ffffff;
+	  	font-family: 'Montserrat', 'Open sans', sans-serif;
+		font-size: 20px;
+		font-weight: initial;
+		margin-right: 15px;
+		margin-left: 10px;
+	  }
+      hr {
+        height: 1px;
+        background: #e1e1e1;
+        border: 0 none;
+      }
+      u {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        text-decoration: none !important;
+      }
+      p {
+        margin: 0 0 5px 10px;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        font-size: 15px;
+        text-align: justify;
+        line-height: 16px;
+        color: #ffffff;
+		margin-left: 10px;
+      }
+      img {
+        display: block;
+      }
+      a {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        text-decoration: none !important;
+      }
+      td {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+      }
 
-  <body>
-   
-    <div class="header">
-	    <div class="container">
-	        <div class="row">
-	          <div class="col-md-3 col-sm-3">
-	            <!-- Logo -->
-	            <div class="logo">
-	               <h1><a href="[% url %]">[% session.blog_name %]</a></h1>
-	            </div>
-	          </div>
-	          <div class="col-md-9 col-sm-9">
-	          <div class="navis"></div>                  
-	         </div>
-	        </div>
-	    </div>
-   </div>
 
-	 <div class="page-title">
-	     <div class="container">
-	        <h2>A new comment was submitted </h2>
-	        <hr />
-	     </div>  
-	  </div>
+	</style>
+  
+
+  
+    <table class="bm-wrapper-table" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" bgcolor="#06001A">
       
-      <div class="blog">
-        <div class="container">
-          	<div class="row">
-  				
-          		<b> [% fullname %] </b> posted a new comment on <b> <a href="[% post_url %]"> [% title %]</a></b>
-          		<br />
-				  See the comment here : "[% comment %]"
-          		<br />
-				  This comment is in reply to [% reply_to_user %]'s previous comment : "[% reply_to_content %]" 
-				<br />
-          		<i> You can log in with your user account to manage your comments </i>
-          		<br />
-				<br />
-          		<i> Sincerely, </i>
-				<br />
-				<i>[% signature %]</i>
-				<br />
-				<a href="[% config.app_url %]"> [% config.app_url %] </a>
-			</div>
-		</div>
-	</div>
+      <tbody><tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" border="0" width="720" style="margin-top:50px;">
 
-  </body>
+            <tbody>
 
+            <tr>  <!-- START: MAIL LAYOUT -->
+              <td width="720">
+                <table cellpadding="0" cellspacing="0" border="0" width="720">
+                  <tbody><tr>  <!-- START: LOGO -->
+                    <td width="720">
+                      <table cellpadding="20" cellspacing="0" border="0">
+                        <tbody><tr>
+                          <td width="145" valign="middle">
+                            <img src="/blog/img/comment.png" width="145" height="145" style="margin-left:10px;" alt="">
+                          </td>
+                          <td width="575" valign="middle" float="right">
+                         	<h1>A new comment was added!</h1>
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr> <!-- END:   LOGO -->
+
+					<tr><!-- START:  EMAIL CONTENT -->
+						<td>
+							<table cellpadding="20" cellspacing="0" border="0" width="720">
+								<tbody>
+									<tr>
+										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
+											<h5>Hi, [% username %],</h5>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
+											<h5>Looks like [% fullname %] added a comment to your post [% title %] and it's waiting for approval. You can approve or reject this comment whenever you're ready.</h5>
+										</td>
+									</tr>
+
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<a href="#"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<p style="margin: 0 0 5px 10px;">or copying this link into your browser:</p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7">https://viewcomment</p>
+										</td>
+									</tr>           
+									<tr><!-- START: EMAIL GRAY-ISH LINE--> 
+										<td width="720" height="12" style="padding:0px;">
+											<p style="margin-left:30px; margin-right:40px; border-top: 1px solid #1F1A31;"></p>
+										</td>
+									</tr><!-- END: EMAIL GRAY-ISH LINE-->
+									<tr>
+										<td>
+											<p><i>Copyright &copy; 2016 blog.perl.org. All rights reserved</i></p>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>  
+					</tr><!-- END:  EMAIL CONTENT -->
+
+      				</tbody></table>
+    			</td>
+            </tr> <!-- END: MAIL LAYOUT -->     
+
+          		</tbody></table>
+        	</td>
+    	</tr></tbody>
+	</table>
+
+</body>
 </html>

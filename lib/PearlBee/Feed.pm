@@ -118,10 +118,9 @@ get '/feed/post/:slug' => sub {
 get '/feed/author/:username' => sub {
     my $feed;
     my $username = route_parameters->{username};
-    my ( $user )    =
-      resultset('Users')->search( \[ 'lower(username) = ?' => lc $username ] );
-    my $user_id= $user->id;
-    my @posts =  resultset('Post')->search(
+    my ( $user ) = resultset('Users')->search_lc( $username );
+    my $user_id  = $user->id;
+    my @posts    =  resultset('Post')->search(
         { user_id => $user_id },
         { order_by => { -desc => "created_date" }, rows => 10 }
     );

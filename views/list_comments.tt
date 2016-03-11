@@ -15,11 +15,11 @@
                 [% IF comment.fullname %]
 
                     <div class="comment-author">
-                        <a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]<b></b></a>
+                        <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.fullname %]<b></b></a>
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                         <a href="/profile/author/[% comment.uid.username %]">[% comment.uid.username %]<b></b></a>
+                         <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.username %]<b></b></a>
                     </div>
                 [% END %]
                 
@@ -45,11 +45,11 @@
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">
-                        <b><a href="/profile/author/[% comment.uid.username %]">[% comment.fullname %]</a></b>
+                        <b><a href="/profile/author/[% comment.uid.username | uri %]">[% comment.fullname %]</a></b>
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                        <i class="icon-user"></i> <a href="/profile/author/[% comment.uid.username %]" >[% comment.uid.username %]</a>
+                        <i class="icon-user"></i> <a href="/profile/author/[% comment.uid.username | uri %]" >[% comment.uid.username %]</a>
                     </div>
                 [% END %]
                 

@@ -15,9 +15,11 @@ MYMETA.yml
 perlblog-*
 logs
 public/avatars
+public/avatars/*
 public/covers/*
 public/captcha/*
 public/userpics
+public/userpics/*
 config.yml
 local/
 sessions/

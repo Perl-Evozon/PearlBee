@@ -17,7 +17,7 @@
                                 <div class="col-xs-10">
                                     <div class="author-info">
                                         <div class="author-name">
-                                            <a href="/profile/author/[% user.username %]">[% user.username %]</a>
+                                            <a href="/profile/author/[% user.username | uri %]">[% user.username %]</a>
                                         </div>
 
                                         <div class="profile-description">
@@ -26,7 +26,7 @@
                                             </p>
                                         </div>
                                         <div class="rss-part">
-                                            <a href="/feed/author/[% user.username %]" target="_blank">
+                                            <a href="/feed/author/[% user.username | uri %]" target="_blank">
                                                 <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
                                             </a>
                                         </div>
@@ -80,7 +80,7 @@
                                     <li class="information-blog"> [% blog.description %] </li>
                                     <li><span class="entries-count"> [% blog.count.post %] entries </span>  on the blog</li>
                                     <li>
-                                        <a class="pull-right entry-slug" href="/blogs/user/[% user.username %]/slug/[% blog.slug %]">Go to blog</a>
+                                        <a class="pull-right entry-slug" href="/blogs/user/[% user.username | uri %]/slug/[% blog.slug %]">Go to blog</a>
                                     </li>
                                 </ul>
 

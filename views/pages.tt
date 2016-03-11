@@ -8,7 +8,7 @@
                 <div class="info-page">
                   <div class="user">
                     <!-- here someting like-->
-                    <a href="/profile/author/[% page.user.username %]">[% page.user.username %]</a>
+                    <a href="/profile/author/[% page.user.username | uri %]">[% page.user.username %]</a>
                   </div>
                   <div class="date">
                       [% page.created_date_human %]

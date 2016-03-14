@@ -331,9 +331,41 @@ $("#start-blogging").on('click', function (e) {
       {
         $("#register_form").submit(); // Form submission.
       } else {
+
       return false;
       }
     });
+
+
+//my profile Email validation
+  function isValidEmailAddress(emailAddress) {
+    var error = 0;
+    var email = $("#user_email").val();
+    var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+       //return pattern.test(emailAddress);
+
+     if (!(email).match(pattern)) { 
+      $('#user_email').addClass('error');
+       error++; 
+     }
+    if (error === 0) {
+        return true;
+      } 
+      else {
+        return false;
+      } 
+  };
+
+  $("#changeSetings").on('submit', function() {
+    if (isValidEmailAddress()) // Calling validation function.
+      {
+        $("#changeSetings").submit(); // Form submission.
+      } else {
+        $('#user_email').css('border-color' , 'red');
+        return false;
+      }
+    });
+
     
 //  My profile password confirmation 
     
@@ -622,7 +654,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
         var code = (e.keyCode ? e.keyCode : e.which),
             searchTerm,
             activeTab,
-            activeTabId;
+            activeTabId; 
 
         if (code !== 13) {
             return false;

@@ -325,6 +325,7 @@ strong{
    border:1px solid #0fa6bc;
 }
 
+
 /* Logo & Navigation */
 
 .header{
@@ -4557,6 +4558,20 @@ input[readonly] {
 .pages .pager-post li a {
    font-size: 18px;
 }
+
+/*  error allert  */
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1; 
+}
+
+
+
+
+
+
 
 
 

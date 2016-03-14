@@ -32,7 +32,7 @@ $(document).ready(function() {
 				<div class="myprofile-head">
 					<div class="col-sm-6">
 						<h1>My profile</h1>
-						<h5>Edit your profile</h5>
+						<h5>Edit your profile</h5> 
 					</div>
 					<div class="col-sm-3 col-sm-offset-3 links-group">
 						<a href="/author/posts/add" class="write_post"><button class="write-post dark-button">Write a post</button></a>
@@ -45,21 +45,21 @@ $(document).ready(function() {
                             <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
                         </div>
 						<div>
-							<form enctype="multipart/form-data" method="post">
+							<form action="/profile" enctype="multipart/form-data" method="post">
 								<span class="file-input btn btn-file light-button buttons-group change-pic">
 									<p>Change picture</p> <input type="file">
 								</span>
-							<form>
+							</form> 
 						</div>
 				
 					</div>
 					<div class="col-sm-10">
 					
-						<form action="/profile" method="post">
+						<form id="changeSetings" action="/profile" method="post">
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com" name="email">
+								<input type="text" id="user_email" class="form-control" placeholder="user@example.com" name="email">
 							</div>
 							<div class="input-group">
 								<label>Username</label>
@@ -79,6 +79,7 @@ $(document).ready(function() {
 								<button type="submit" class="dark-button btn-xs pull-right" id="">Save</button>
 							</div>
 						</form>
+
 						
 						<form action="/profile_password" method="post" id="changePasswordFrom">
 							<h2>Password</h2>

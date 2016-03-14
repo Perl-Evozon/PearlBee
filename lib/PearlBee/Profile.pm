@@ -84,7 +84,6 @@ post '/profile' => sub  {
   if ( ($params->{'email'}) ne ''){
   my $existing_user =
     resultset('Users')->search({ email => $params->{'email'} })->count;
-    warn ">>>>>>>>>>>" . Dumper ($existing_user);
   if ($existing_user > 0) {
     $flag_error = 1;
     $message= "A user with this email address already exists.";

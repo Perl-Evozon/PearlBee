@@ -28,7 +28,6 @@ hook before => sub {
 
 get '/profile' => sub {
 
-  PearlBee::Helpers::Access::has_ability( session, 'view user' );
   template 'profile';
 
 };

@@ -32,7 +32,7 @@ $(document).ready(function() {
 				<div class="myprofile-head">
 					<div class="col-sm-6">
 						<h1>My profile</h1>
-						<h5>Edit your profile</h5>
+						<h5>Edit your profile</h5> 
 					</div>
 					<div class="col-sm-3 col-sm-offset-3 links-group">
 						<a href="/author/posts/add" class="write_post"><button class="write-post dark-button">Write a post</button></a>
@@ -45,11 +45,11 @@ $(document).ready(function() {
                             <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
                         </div>
 						<div>
-							<form enctype="multipart/form-data" method="post">
+							<form action="/profile" enctype="multipart/form-data" method="post">
 								<span class="file-input btn btn-file light-button buttons-group change-pic">
 									<p>Change picture</p> <input type="file">
 								</span>
-							</form>
+							</form> 
 						</div>
 				
 					</div>

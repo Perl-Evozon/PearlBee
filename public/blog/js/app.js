@@ -654,7 +654,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
         var code = (e.keyCode ? e.keyCode : e.which),
             searchTerm,
             activeTab,
-            activeTabId;
+            activeTabId; 
 
         if (code !== 13) {
             return false;

@@ -59,7 +59,7 @@ $(document).ready(function() {
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="user.email@evo.com" name="email">
+								<input type="text" id="user_email" class="form-control" placeholder="user@example.com" name="email">
 							</div>
 							<div class="input-group">
 								<label>Username</label>

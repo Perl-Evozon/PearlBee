@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Encode;
+use Encode qw( decode_utf8 );
 
 use DBI;
 use String::Dirify qw( dirify );
@@ -517,16 +517,17 @@ EOS
 
 sub map_comment {
   my $comment = shift;
+  my $status  = $comment->{comment_visible} == 1 ? 'approved' : 'pending';
   return {
     id           => $comment->{comment_id},
     content      => decode_utf8($comment->{comment_text}),
-    fullname     => $comment->{comment_author},
+    fullname     => decode_utf8($comment->{comment_author}),
     email        => $comment->{comment_email},
     website      => $comment->{comment_url},
 #  avatar varchar(255) DEFAULT NULL,
     comment_date => $comment->{comment_created_on},
 #  type post_format DEFAULT 'HTML', # Remain default
-    status       => $comment->{comment_visible} == 1 ? 'approved' : 'pending',
+    status       => $status,
     post_id      => $comment->{comment_entry_id},
     uid          => $comment->{comment_commenter_id},
   };

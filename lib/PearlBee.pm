@@ -13,8 +13,8 @@ use Digest::SHA;
 
 # Included controllers
 use PearlBee::Blogs;
-use PearlBee::Profile;
 
+use PearlBee::Routes::Profile;
 use PearlBee::Routes::Post;
 use PearlBee::Routes::Pages;
 

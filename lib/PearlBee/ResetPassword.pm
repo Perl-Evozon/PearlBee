@@ -27,6 +27,18 @@ get '/activation' => sub {
         activation_key => ''          
         });
 
+        my $user_obj = {
+        is_admin  => $user_reset_token->is_admin,
+        role      => $user_reset_token->role,
+        id        => $user_reset_token->id,
+        username  => $user_reset_token->username,
+        avatar    => $user_reset_token->avatar,
+        biography => $user_reset_token->biography,
+        };
+
+        session user    => $user_obj;
+        session user_id => $user_reset_token->id;
+        
         template 'register_done' ;
     }  
     elsif ($user_reset_token->status eq 'active') {

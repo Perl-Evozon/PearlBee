@@ -63,10 +63,11 @@ lib/PearlBee/Model/Schema/Result/View/PublishedTags.pm
 lib/PearlBee/Model/Schema/Result/View/UserComments.pm
 lib/PearlBee/Password.pm
 lib/PearlBee.pm
-lib/PearlBee/Post.pm
-lib/PearlBee/Profile.pm
 lib/PearlBee/ResetPassword.pm
 lib/PearlBee/REST.pm
+lib/PearlBee/Routes/Pages.pm
+lib/PearlBee/Routes/Post.pm
+lib/PearlBee/Routes/Profile.pm
 lib/PearlBee/Search.pm
 Makefile.PL
 MANIFEST

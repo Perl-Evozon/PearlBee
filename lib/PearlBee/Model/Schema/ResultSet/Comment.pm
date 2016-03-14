@@ -7,6 +7,7 @@ use base 'DBIx::Class::ResultSet';
 
 use Gravatar::URL;
 use DateTime;
+use Encode qw( decode_utf8 );
 
 use HTML::Strip;
 
@@ -31,11 +32,9 @@ sub can_create {
 	$status = 'approved'
             if $user && ( $user->is_admin || $user->id == $post->user->id );
 
-	# Let mySQL default to writing in UTC.
-	#
 	my $comment = $schema->resultset('Comment')->create({
-		fullname => $fullname,
-		content  => $text,
+		fullname => decode_utf8( $fullname ),
+		content  => decode_utf8( $text ),
 		email    => $email,
 		post_id  => $post_id,
 		status   => $status,
@@ -47,19 +46,16 @@ sub can_create {
 
 
 sub get_approved_comments_by_post_id {
-    my ($self, $post_id) = @_;
+	my ($self, $post_id) = @_;
 
-    my @comments = $self->search(
-        { post_id => $post_id,
-      	  status => 'approved',
-        },
-        { order_by =>
-          { -desc => "comment_date" }
-        }
-    );
+	my @comments = $self->search(
+		{ post_id => $post_id,
+		  status  => 'approved',
+		},
+		{ order_by => { -desc => "comment_date" } }
+	);
 
-    return @comments;
-
+	return @comments;
 }
 
 1;

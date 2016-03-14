@@ -154,7 +154,7 @@ post '/profile' => sub  {
   }
   else  {
      template 'profile', {
-      warning => $message,
+      error => $message,
     };
   }
 };

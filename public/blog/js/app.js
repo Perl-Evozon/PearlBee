@@ -45,24 +45,24 @@ $(document).ready(function() {
 //  END Blog start overlay
     
 //  Header
-    if ($(window).width() <= 800){
-        $("body").removeClass("active-overlay");
-        $(".search-label").addClass("hidden");
-        $(".header .user").removeClass("hidden");
-        $(".blog-start").addClass("hidden");
-        $(".header .user").click(function(){
-            event.preventDefault();
-            $(".blog-start").toggleClass("hidden");
-            $("body").toggleClass("active-overlay");
-        });
-    }
-    else {
-        $(".header .user").addClass("hidden");
-        $(".blog-start").removeClass("hidden");
-    }
+   // if ($(window).width() <= 800){
+     //   $("body").removeClass("active-overlay");
+     //   $(".search-label").addClass("hidden");
+     //   $(".header .user").removeClass("hidden");
+     //   $(".blog-start").addClass("hidden");
+     //   $(".header .user").click(function(){
+      //      event.preventDefault();
+      //      $(".blog-start").toggleClass("hidden");
+      //      $("body").toggleClass("active-overlay");
+      //  });
+    //}
+   // else {
+   //     $(".header .user").addClass("hidden");
+   //     $(".blog-start").removeClass("hidden");
+   // }
 
 
-    if ($(window).width() >= 801){
+   // if ($(window).width() >= 801){
         $("#close_overlay").click(function(){
             $(".user").removeClass("hidden");
         });
@@ -71,20 +71,21 @@ $(document).ready(function() {
         } else {
             $(".user").removeClass("hidden");
         }
-    }
+   // }
 
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
     });
 //  END Header
 
-    $("#header_onion_logo").on('click', function (e) {
+    $("#header_onion_logo, #only-logo").on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         window.location = window.location.protocol + "//" + window.location.host + "/";
     }).on('mouseover', function (e) {
         $("#header_onion_logo").css('cursor','pointer');
     });
+
 
 //  prettyprint
     $('pre').each(function(){ 

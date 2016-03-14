@@ -210,9 +210,10 @@ post '/register_success' => sub {
       error $_;
   };
 
-  template 'signup', {
-    success => 'The user was created and it is waiting for admin approval.'
-  }
+  # template 'signup', {
+  #   success => 'The user was created and it is waiting for admin approval.'
+  # }
+  template 'register_success';
 };
 
 =head1 Add OpenAuth ID to an existing user

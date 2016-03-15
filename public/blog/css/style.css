@@ -3244,9 +3244,11 @@ a:focus {
    z-index: 13;
 }
 
-.register-success {
+.register-success, .sign-up {
    z-index: 13;
 }
+
+
 
 .register-done .btn-start {
   padding: 15px 46px;  

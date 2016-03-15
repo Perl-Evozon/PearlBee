@@ -423,7 +423,11 @@ $("#start-blogging").on('click', function (e) {
 	$(window).resize(function(){
 		$('.blog-post').css('min-height', $(window).height()-$('.blog-comment').height()-$('footer').height()-80);
 	}); 
-
+//Pages page
+  $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
+  $(window).resize(function(){
+    $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
+  }); 
 
 $(window).resize(function(){
   $(".truncate").dotdotdot({
@@ -799,7 +803,8 @@ if (newURL == userURL) {
         var button = $(this),
             pageNumber =  +(button.attr("data-page-number")) + 1,
             pageURL = window.location.pathname.split('/'),
-            tagName = "/" + pageURL[3];
+            tagName = "/" + pageURL[3],
+            themeinitial = $('#cmn-toggle-4').is(':checked');
         
         $('.progressloader').show();
 
@@ -821,7 +826,8 @@ if (newURL == userURL) {
                 for( var i= 0; i < posts.length; i++){
                     var entryItem = $(".entry").get(0),
                         newItem = $(entryItem).clone(),
-                        commentsText;
+                        commentsText,
+                        avatarPath;
 
                     if(posts[i].nr_of_comments ==  1){
                         commentsText = "Comment";
@@ -829,6 +835,15 @@ if (newURL == userURL) {
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
 
+                    if (posts[i].user.avatar && posts[i].user.avatar !== "/blog/img/male-user.png") {
+                          avatarPath = posts[i].user.avatar;
+                    } else if ( themeinitial === false) {
+                          avatarPath = "/blog/img/male-user.png";
+                    } else if ( themeinitial === true) {
+                          avatarPath = "/blog/img/male-user-light.png";
+                    }
+
+                    newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                     newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
@@ -875,7 +890,8 @@ if (newURL == userURL) {
         var button = $(this),
             pageNumber =  +(button.attr("data-page-number")) + 1,
             pageURL = window.location.pathname.split('/'),
-            categoryName = "/" + pageURL[3];
+            categoryName = "/" + pageURL[3],
+            themeinitial = $('#cmn-toggle-4').is(':checked');
         
         $('.progressloader').show();
 
@@ -897,7 +913,8 @@ if (newURL == userURL) {
                 for( var i= 0; i < posts.length; i++){
                     var entryItem = $(".entry").get(0),
                         newItem = $(entryItem).clone(),
-                        commentsText;
+                        commentsText,
+                        avatarPath;
 
                     if(posts[i].nr_of_comments ==  1){
                         commentsText = "Comment";
@@ -905,6 +922,15 @@ if (newURL == userURL) {
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
 
+                    if (posts[i].user.avatar && posts[i].user.avatar !== "/blog/img/male-user.png") {
+                            avatarPath = posts[i].user.avatar;
+                    } else if ( themeinitial === false) {
+                           avatarPath = "/blog/img/male-user.png";
+                    } else if ( themeinitial === true) {
+                            avatarPath = "/blog/img/male-user-light.png";
+                    }
+
+                    newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
                     newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
@@ -947,7 +973,8 @@ if (newURL == userURL) {
 //button MORE - for listing page
 $('#more-posts').click(function() {
     var button = $(this),
-        pageNumber =  +(button.attr("data-page-number")) + 1;
+        pageNumber =  +(button.attr("data-page-number")) + 1,
+        themeinitial = $('#cmn-toggle-4').is(':checked');
 
     $('.progressloader').show();
 
@@ -963,7 +990,8 @@ $('#more-posts').click(function() {
             for( var i= 0; i < posts.length; i++){
                 var entryItem = $(".entry").get(0),
                     newItem = $(entryItem).clone(),
-                    commentsText;
+                    commentsText,
+                    avatarPath;
 
                 if(posts[i].nr_of_comments ==  1){
                     commentsText = "Comment";
@@ -971,6 +999,16 @@ $('#more-posts').click(function() {
                     commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                 }
 
+                if (posts[i].user.avatar && posts[i].user.avatar !== "/blog/img/male-user.png") {
+                      avatarPath = posts[i].user.avatar;
+                } else if ( themeinitial === false) {
+                      avatarPath = "/blog/img/male-user.png";
+                } else if ( themeinitial === true) {
+                      avatarPath = "/blog/img/male-user-light.png";
+                }
+
+
+                newItem.find(".bubble img.user-image").attr("src", avatarPath);
                 newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                 newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);

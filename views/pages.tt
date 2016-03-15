@@ -15,7 +15,7 @@
                       [% page.created_date_human %]
                   </div>
                 </div>
-                <div class="pages">
+                <div class="page">
                   <div class="page-heading">
                       <h2>[% page.title %]</h2>
                   </div>
@@ -54,4 +54,4 @@
     </div>
 
 </div>
-
+</div>

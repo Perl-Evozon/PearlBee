@@ -10,7 +10,18 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-            <img class="user-image" src="[% comment.uid.avatar %]">
+                        [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
+                                    <img class="user-image" src="[% comment.uid.avatar %]">
+                              [%ELSE %]
+                              [% IF (session.theme == 'dark') %]
+                              <img class="user-image" src="/blog/img/male-user.png">
+                              [%ELSIF (session.theme == 'light') %]
+                              <img class="user-image" src="/blog/img/male-user-light.png">
+                              [%ELSE%]
+                              <img class="user-image" src="/blog/img/male-user.png">                                                      
+                              [%END%]
+                              [%END%]
+                        
                     </div>
                 [% IF comment.fullname %]
 
@@ -41,7 +52,18 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                        <img class="user-image" src="[% comment.uid.avatar %]">
+                              [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
+                                    <img class="user-image" src="[% comment.uid.avatar %]">
+                              [%ELSE %]
+                              [% IF (session.theme == 'dark') %]
+                              <img class="user-image" src="/blog/img/male-user.png">
+                              [%ELSIF (session.theme == 'light') %]
+                              <img class="user-image" src="/blog/img/male-user-light.png">
+                              [%ELSE%]
+                              <img class="user-image" src="/blog/img/male-user.png">                                                      
+                              [%END%]
+                              [%END%]
+                       
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">

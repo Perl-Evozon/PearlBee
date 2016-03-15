@@ -3,6 +3,7 @@
     <div class="container">
         <div class="row">
             [% INCLUDE components/alerts.tt %]
+            [% FOREACH page in pages %]
             <br><br><br><br><br>
             <div class="col-md-12 pages-post">
                 <div class="info-page">
@@ -14,7 +15,7 @@
                       [% page.created_date_human %]
                   </div>
                 </div>
-                <div class="pages">
+                <div class="page">
                   <div class="page-heading">
                       <h2>[% page.title %]</h2>
                   </div>
@@ -49,6 +50,8 @@
                     </div>
             </div>
         </div>
+            [%END%]
     </div>
-</div>
 
+</div>
+</div>

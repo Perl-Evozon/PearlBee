@@ -33,7 +33,6 @@ get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
-  my $settings   = resultset('Setting')->first;
   my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
@@ -42,7 +41,7 @@ get '/post/:slug' => sub {
     $next_post     = $post->next_post;
     $previous_post = $post->previous_post;
     @post_tags     = $post->tag_objects;
-    @comments      = map { $_->as_hashref }
+    @comments      = map { $_->as_hashref_sanitized }
                      resultset('Comment')->get_approved_comments_by_post_id($post->id);
   }
 
@@ -52,7 +51,6 @@ get '/post/:slug' => sub {
     previous_post => $previous_post,
     categories    => \@categories,
     comments      => \@comments,
-    setting       => $settings,
     tags          => \@post_tags,
   };
 };

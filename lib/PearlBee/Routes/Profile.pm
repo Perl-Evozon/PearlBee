@@ -16,9 +16,13 @@ our $VERSION = '0.1';
 hook before => sub {
   my $user = session('user');
 
-  unless ( request->dispatch_path =~ m{ ^/profile }x and
-           PearlBee::Helpers::Access::has_ability( $user, 'update profile' ) ) {
-    forward '/', { requested_path => request->dispatch_path };
+  if ( request->dispatch_path =~ m{ ^/profile/author }x ) {
+    # Do nothing, /profile/author can be viewed by anyone.
+  }
+  elsif ( request->dispatch_path =~ m{ ^/profile }x ) {
+    unless ( PearlBee::Helpers::Access::has_ability( $user, 'update profile' ) ) {
+      forward '/', { requested_path => request->dispatch_path };
+    }
   }
 };
 

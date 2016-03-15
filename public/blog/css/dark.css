@@ -72,7 +72,7 @@
 }
 
 .text-listing-entries {
-  border-bottom: 1px solid rgba(242, 245, 238, 0.1);
+  border-bottom: 1px solid rgba(242, 245, 238, 0.4);
 }
 
 .progressloader .spinner div {
@@ -138,7 +138,18 @@ color: #ffffff;
 .pages .pager-post li a {
    color: #ffffff;
 }
-
+.author-pages .text-listing-pages .page{
+    color: #fff;
+}
+.author-pages .text-listing-pages .page-preview{
+    color: #fff;
+}
+#author-tab-content1 .info-entry{
+    border-bottom: 1px solid rgba(242, 245, 238, 0.4);
+}
+.author-pages .entry{
+    border-bottom: 1px solid rgba(242, 245, 238, 0.4);
+}
 
 
 /*blogs/profile page*/

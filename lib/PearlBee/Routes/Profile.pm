@@ -17,7 +17,7 @@ hook before => sub {
   my $user = session('user');
 
   unless ( request->dispatch_path =~ m{ ^/profile }x and
-           PearlBee::Helpers::Access::has_ability( $user, 'edit profile' ) ) {
+           PearlBee::Helpers::Access::has_ability( $user, 'update profile' ) ) {
     forward '/', { requested_path => request->dispatch_path };
   }
 };

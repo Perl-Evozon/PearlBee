@@ -17,7 +17,6 @@ use base 'DBIx::Class::Core';
 use DateTime;
 use DateTime::Format::MySQL;
 use Date::Period::Human;
-use Encode qw( decode_utf8 );
 
 =head1 TABLE: C<comment>
 
@@ -256,8 +255,8 @@ sub as_hashref {
   my $self = shift;
   my $user_obj = {
     id                 => $self->id,
-    content            => decode_utf8($self->content),
-    fullname           => decode_utf8($self->fullname),
+    content            => $self->content,
+    fullname           => $self->fullname,
     email              => $self->email,
     website            => $self->website,
     avatar             => $self->avatar,

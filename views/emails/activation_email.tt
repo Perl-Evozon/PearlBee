@@ -1,12 +1,161 @@
 <html>
+<body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" bgcolor="#06001A">
+<br>
+ 
 
-<body>
-<p>Hello, [% name %] ('[% username %]')</p>
-<p>Welcome to blogs.perl.org! We're thrilled you've decided to create an account with us and contribute to the growth of Perl and the Perl community!</p>
-<p>You are now able to activate your blogs.perl.org account, and set your account's password by following this link: <a href="[% config.app_url %][% mail_body %]" style="text-decoration:none;color:#0b4499" target="_blank">[% config.app_url %][% mail_body %]</a></p>
-<p>This link is only valid for one week, so make sure you activate your account as soon as possible.
-Once you've activated your account, you will be able to create posts and comment on other users' posts.</p>
-<p>Thank you,<br>
-The <a href="http://blogs.perl.org" style="text-decoration:none;color:#0b4499">blogs.perl.org</a> Team</p>
+    
+      <title> BPO's Email Alert</title>
+		  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        background-color: #06001A ;
+      }
+      h1 {
+        margin: 20px 0 20px 0;
+        font-size: 30px;
+		line-height: 33px;
+        color: #43C8E7;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        font-weight: bold;
+		text-transform: uppercase;
+		width: 265px;
+      }
+	  h5 {
+		color: #ffffff;
+	  	font-family: 'Montserrat', 'Open sans', sans-serif;
+		font-size: 20px;
+		font-weight: initial;
+		margin-right: 15px;
+		margin-left: 10px;
+	  }
+      hr {
+        height: 1px;
+        background: #1F1A31;
+        border: 0 none;
+		margin-left: 30px;
+		margin-right:40px;
+      }
+      u {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        text-decoration: none !important;
+      }
+      p {
+        margin: 0 0 5px 10px;
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        font-size: 15px;
+        text-align: justify;
+        line-height: 16px;
+        color: #ffffff;
+		margin-left: 10px;
+      }
+      img {
+        display: block;
+      }
+      a {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+        text-decoration: none !important;
+		color: #43C8E7;
+      }
+      td {
+        font-family: 'Montserrat', 'Open sans', sans-serif;
+      }
+
+
+	</style>
+  
+
+  
+    <table class="bm-wrapper-table" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" bgcolor="#06001A">
+      
+      <tbody><tr>
+        <td align="center" valign="top">
+          <table cellpadding="0" cellspacing="0" border="0" width="720" style="margin-top:50px;">
+
+            <tbody>
+
+            <tr>  <!-- START: MAIL LAYOUT -->
+              <td width="720">
+                <table cellpadding="0" cellspacing="0" border="0" width="720">
+                  <tbody><tr>  <!-- START: LOGO -->
+                    <td width="720">
+                      <table cellpadding="20" cellspacing="0" border="0">
+                        <tbody><tr>
+                          <td width="145" valign="middle">
+                            <img src="../../public/blog/img/welcome.png" width="170" height="130" style="margin-left:10px;" alt="">
+                          </td>
+                          <td width="575" valign="middle" float="right">
+                         	<h1 style="margin: 20px 0 20px 0;font-size: 30px;line-height: 33px;color: #43C8E7;font-family: 'Montserrat', 'Open sans', sans-serif;font-weight: bold;text-transform: uppercase;width: 265px;">Welcome to blogs.perl.org</h1>
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr> <!-- END:   LOGO -->
+
+					<tr><!-- START:  EMAIL CONTENT -->
+						<td>
+							<table cellpadding="20" cellspacing="0" border="0" width="720">
+								<tbody>
+									<tr>
+										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
+											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 20px;font-weight: initial;margin-right: 15px;margin-left: 10px;">Hello, [% username %],</h5>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
+											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 20px;font-weight: initial;margin-right: 15px;margin-left: 10px;">Before you start blogging, there's one small step we need you to complete. One small step for you, a huge step for security. This will ensure you can recover your account if you forget your password!</h5>
+										</td>
+									</tr>
+
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<a href="[% config.app_url %][% mail_body %]"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">confirm your account</button></a>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">Having trouble? Just copy and paste this link into your browser:</p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;">[% config.app_url %][% mail_body %]</p>
+										</td>
+									</tr> 
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">If you haven't registered for <a href="http://blogs.perl.org/" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blogs.perl.org</a>, feel free to ignore this message.</p>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" width="720" style="padding-top:0px;">
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">Almost there, blogger,</p>
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">the blogs.perl.org team</p>
+										</td>
+									</tr>           
+									<tr><!-- START: EMAIL GRAY-ISH LINE--> 
+										<td width="720" height="12" style="padding:0px;">
+											<hr style="margin-left:30px; margin-right:40px; height: 1px; background: #1F1A31; border: 0 none;">
+										</td>
+									</tr><!-- END: EMAIL GRAY-ISH LINE-->
+									<tr>
+										<td>
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff; font-style: italic;">Copyright &copy; 2016 blog.perl.org. All rights reserved</p>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>  
+					</tr><!-- END:  EMAIL CONTENT -->
+
+      				</tbody></table>
+    			</td>
+            </tr> <!-- END: MAIL LAYOUT -->     
+
+          		</tbody></table>
+        	</td>
+    	</tr></tbody>
+	</table>
+
 </body>
 </html>

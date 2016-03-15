@@ -45,24 +45,24 @@ $(document).ready(function() {
 //  END Blog start overlay
     
 //  Header
-    if ($(window).width() <= 800){
-        $("body").removeClass("active-overlay");
-        $(".search-label").addClass("hidden");
-        $(".header .user").removeClass("hidden");
-        $(".blog-start").addClass("hidden");
-        $(".header .user").click(function(){
-            event.preventDefault();
-            $(".blog-start").toggleClass("hidden");
-            $("body").toggleClass("active-overlay");
-        });
-    }
-    else {
-        $(".header .user").addClass("hidden");
-        $(".blog-start").removeClass("hidden");
-    }
+   // if ($(window).width() <= 800){
+     //   $("body").removeClass("active-overlay");
+     //   $(".search-label").addClass("hidden");
+     //   $(".header .user").removeClass("hidden");
+     //   $(".blog-start").addClass("hidden");
+     //   $(".header .user").click(function(){
+      //      event.preventDefault();
+      //      $(".blog-start").toggleClass("hidden");
+      //      $("body").toggleClass("active-overlay");
+      //  });
+    //}
+   // else {
+   //     $(".header .user").addClass("hidden");
+   //     $(".blog-start").removeClass("hidden");
+   // }
 
 
-    if ($(window).width() >= 801){
+   // if ($(window).width() >= 801){
         $("#close_overlay").click(function(){
             $(".user").removeClass("hidden");
         });
@@ -71,20 +71,21 @@ $(document).ready(function() {
         } else {
             $(".user").removeClass("hidden");
         }
-    }
+   // }
 
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
     });
 //  END Header
 
-    $("#header_onion_logo").on('click', function (e) {
+    $("#header_onion_logo, #only-logo").on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         window.location = window.location.protocol + "//" + window.location.host + "/";
     }).on('mouseover', function (e) {
         $("#header_onion_logo").css('cursor','pointer');
     });
+
 
 //  prettyprint
     $('pre').each(function(){ 
@@ -331,9 +332,41 @@ $("#start-blogging").on('click', function (e) {
       {
         $("#register_form").submit(); // Form submission.
       } else {
+
       return false;
       }
     });
+
+
+//my profile Email validation
+  function isValidEmailAddress(emailAddress) {
+    var error = 0;
+    var email = $("#user_email").val();
+    var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+       //return pattern.test(emailAddress);
+
+     if (!(email).match(pattern)) { 
+      $('#user_email').addClass('error');
+       error++; 
+     }
+    if (error === 0) {
+        return true;
+      } 
+      else {
+        return false;
+      } 
+  };
+
+  $("#changeSetings").on('submit', function() {
+    if (isValidEmailAddress()) // Calling validation function.
+      {
+        $("#changeSetings").submit(); // Form submission.
+      } else {
+        $('#user_email').css('border-color' , 'red');
+        return false;
+      }
+    });
+
     
 //  My profile password confirmation 
     
@@ -622,7 +655,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
         var code = (e.keyCode ? e.keyCode : e.which),
             searchTerm,
             activeTab,
-            activeTabId;
+            activeTabId; 
 
         if (code !== 13) {
             return false;

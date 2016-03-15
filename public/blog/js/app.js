@@ -1057,7 +1057,7 @@ function getAuthorEntries (button) {
 
 
                     newItem.removeClass('hidden');
-                    newItem.insertBefore($(".loading-posts"));
+                    newItem.appendTo($(".author-entries"));
                 }
 
                 button.attr("data-page-number", pageNumber + 1);
@@ -1070,10 +1070,61 @@ function getAuthorEntries (button) {
             $('.loading-author-entries .progressloader').hide();
         });
 }
-
 //Author profile
 $('#more-author-entries').click(function (){
     getAuthorEntries($(this));
+});
+
+function getAuthorPages (button){
+    var pageAuthor = $('.author-name a').text(),
+        pageNumber = +(button.attr("data-page-number"));
+
+    //$('.loading-author-pages .progressloader').show();
+
+    $.ajax({
+        // Assuming an endpoint here that responds to GETs with a response.
+        url: '/pages/user/' + pageAuthor + '/page/' + pageNumber + '?format=JSON',
+        type: 'GET'
+    })
+        .done(function (data) {
+                var pages = JSON.parse(data).pages;
+
+                if (pages.length === 0) {
+                    button.addClass('hidden');
+                    if (pageNumber == 0) {
+                        $('.no-pages').removeClass('hidden');
+                    }
+                } else {
+                    // TODO: daca se schimba in back-end si vin cate 10 odata, schimba aici in 10
+                    if (pages.length < 10) {
+                        button.addClass('hidden');
+                    } else {
+                        button.removeClass('hidden');
+                    }
+                    // Once the server responds with the result, update the
+                    //  textbox with that result.
+                    for (var i = 0; i < pages.length; i++) {
+                        var entryItem = $(".author-pages .entry").get(0),
+                            newItem = $(entryItem).clone();
+
+                        newItem.find(".info-entry .page").html(pages[i].title);
+                        newItem.find(".page-preview-wrapper").html(pages[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
+                        newItem.find(".read-more").attr("href", '/pages/' + pages[i].slug);
+
+                        newItem.removeClass('hidden');
+                        newItem.appendTo($(".author-pages"));
+                    }
+
+                    button.attr("data-page-number", pageNumber + 1);
+                }
+                $(".truncate").dotdotdot({
+                    ellipsis: '... ',
+                });
+        })
+}
+//Author pages
+$('#more-author-pages').click(function (){
+    getAuthorPages($(this));
 });
 
 // Get  author entries when clicking on tab 2
@@ -1081,25 +1132,32 @@ $('input[name=author-tabs]').on('change', function () {
     var activeTabId = $(this).attr('id');
 
     if (activeTabId == 'author-tab2') {
-        if ($('.entry:not(.hidden)').length == 0) {
+        if ($('.author-entries .entry:not(.hidden)').length == 0) {
             $('#more-author-entries').addClass('hidden');
             getAuthorEntries($('#more-author-entries'));
         }
+    } else if(activeTabId == 'author-tab3'){
+        if ($('.author-pages .entry:not(.hidden)').length == 0) {
+            $('#more-author-pages').addClass('hidden');
+            getAuthorPages($('#more-author-pages'));
+        }
     }
-
 });
 // Get author entries when the page starts on tab 2
 $(document).ready(function () {
-    if ($('input[name=author-tabs]:checked').attr('id') == 'author-tab2') {
+    var activeTabId = $('input[name=author-tabs]:checked').attr('id');
+    if (activeTabId == 'author-tab2') {
         $('#more-author-entries').addClass('hidden');
         getAuthorEntries($('#more-author-entries'));
+    } else if (activeTabId == 'author-tab3') {
+        $('#more-author-pages').addClass('hidden');
+        getAuthorPages($('#more-author-pages'));
     }
 });
 
-//blogs for author profile
 
 $('#more-author-posts').click(function() {
-    var author = $('.author-description .author-name a').text()
+    var author = $('.author-description .author-name a').text();
 
     $.ajax({
         // Assuming an endpoint here that responds to GETs with a response.
@@ -1125,6 +1183,7 @@ $('#more-author-posts').click(function() {
             }
         })
 });
+
 
 
 

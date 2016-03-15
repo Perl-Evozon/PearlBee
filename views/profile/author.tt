@@ -47,19 +47,19 @@
                 <div class="container">
                     <div class="row">
                         <!-- Radio button and label for #tab-content1 -->
-                        <input type="radio" name="author-tabs" id="author-tab1" checked data-search-term="">
+                        <input type="radio" name="author-tabs" id="author-tab1" checked data-author-term="">
                         <label id="blogs" for="author-tab1">
                             <span>blogs</span>
                         </label>
 
                         <!-- Radio button and label for #tab-content2 -->
-                        <input type="radio" name="author-tabs" id="author-tab2" data-search-term="">
+                        <input type="radio" name="author-tabs" id="author-tab2" data-author-term="">
                         <label id="entries" for="author-tab2">
                             <span>entries</span>
                         </label>
 
                         <!-- Radio button and label for #tab-content3 -->
-                        <input type="radio" name="author-tabs" id="author-tab3" data-search-term="">
+                        <input type="radio" name="author-tabs" id="author-tab3" data-author-term="">
                         <label id="pages" for="author-tab3">
                             <span>pages</span>
                         </label>
@@ -176,7 +176,41 @@
                         </div>
                     </div>
                     <div id="author-tab-content3" class="tab-content">
-                        <p>We're sorry, no pages associated with this user have been found</p>
+                        <p class="no-pages hidden">We're sorry, no pages associated with this user have been found</p>
+                        <div class="author-pages">
+                            <div class="entry clearfix hidden">
+                                <div class="text-listing-pages col-xs-12">
+                                    <div class="info-entry">
+                                        <div class="page">
+                                        </div>
+                                    </div>
+
+                                    <!-- Page content -->
+                                    <div class="truncate page-preview">
+                                        <div class="page-preview-wrapper">
+                                        </div>
+                                    </div>
+                                    <a href="" class="read-more">Go to page</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="loading-posts loading-author-pages">
+                            <div class="col-xs-2">
+                            </div>
+                            <div class="view-more-entries col-xs-10">
+                                <div class="bubble">
+                                    <button id="more-author-pages" data-page-number="0" class="btn btn-primary btn-xs more-posts" type="button">more</button>
+                                </div>
+                                <div style="display: none" class="progressloader">
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -78,7 +78,7 @@ $(document).ready(function() {
 								<button type="reset" value="Reset" class="light-button btn-xs pull-left" id="">Cancel</button>
 								<button type="submit" class="dark-button btn-xs pull-right" id="">Save</button>
 							</div>
-						</form>
+						</form> 
 
 						
 						<form action="/profile_password" method="post" id="changePasswordFrom">

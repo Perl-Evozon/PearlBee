@@ -47,6 +47,7 @@ lib/PearlBee/Model/Schema/ResultSet/Comment.pm
 lib/PearlBee/Model/Schema/ResultSet/PostCategory.pm
 lib/PearlBee/Model/Schema/ResultSet/Post.pm
 lib/PearlBee/Model/Schema/ResultSet/PostTag.pm
+lib/PearlBee/Model/Schema/ResultSet/Tag.pm
 lib/PearlBee/Model/Schema/Result/Setting.pm
 lib/PearlBee/Model/Schema/Result/Tag.pm
 lib/PearlBee/Model/Schema/Result/Timezone.pm

@@ -119,3 +119,10 @@ color: #333333;
    color: #999999;
 }
 
+#author-tab-content1 .info-entry{
+    border-bottom: 1px solid #eaeaea;
+}
+.author-pages .entry{
+    border-bottom: 1px solid #eaeaea;
+}
+

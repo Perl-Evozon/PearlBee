@@ -66,7 +66,6 @@
       font-weight: bold;
   }
   #author-tab-content1 .info-entry{
-      border-bottom: 1px solid rgba(242, 245, 238, 0.1);
       padding-bottom: 25px;
   }
   #author-tab-content1 .info-entry p.uppercase{
@@ -124,7 +123,6 @@
         display: none;
     }
     .author-page .text-listing-entries {
-        border-bottom: 1px solid rgba(242, 245, 238, 0.1);
         padding-bottom: 25px;
     }
 
@@ -134,7 +132,33 @@
     height: 130px;
     border-radius: 50%;
 }
-   
+
+/*pages tab*/
+.author-page .text-listing-pages .page-preview{
+    height: 220px;
+    overflow: hidden;
+}
+.author-pages .text-listing-pages .page{
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.author-pages .text-listing-pages a.read-more{
+    font-size: 16px;
+    float: right;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.author-pages .text-listing-pages{
+    padding: 0;
+}
+.author-pages .text-listing-pages .page-preview-wrapper{
+    font-size: 16px;
+    padding-top: 10px;
+}
+/*/pages tab*/
+
 
 footer{
      position: absolute;

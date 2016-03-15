@@ -3,6 +3,7 @@
     <div class="container">
         <div class="row">
             [% INCLUDE components/alerts.tt %]
+            [% FOREACH page in pages %]
             <br><br><br><br><br>
             <div class="col-md-12 pages-post">
                 <div class="info-page">
@@ -49,6 +50,8 @@
                     </div>
             </div>
         </div>
+            [%END%]
     </div>
+
 </div>
 

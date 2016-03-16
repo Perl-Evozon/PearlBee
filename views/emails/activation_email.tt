@@ -89,7 +89,7 @@
                             <img src="../../public/blog/img/welcome.png" width="170" height="130" style="margin-left:10px;" alt="">
                           </td>
                           <td width="575" valign="middle" float="right">
-                         	<h1 style="margin: 20px 0 20px 0;font-size: 30px;line-height: 33px;color: #43C8E7;font-family: 'Montserrat', 'Open sans', sans-serif;font-weight: bold;text-transform: uppercase;width: 265px;">Welcome to blogs.perl.org</h1>
+							  <h1 style="margin: 20px 0 20px 0;font-size: 30px;line-height: 33px;color: #43C8E7;font-family: 'Montserrat', 'Open sans', sans-serif;font-weight: bold;text-transform: uppercase;width: 265px;">Welcome to <a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blogs.perl.org</a></h1>
                           </td>
                         </tr>
                       </tbody></table>
@@ -102,12 +102,12 @@
 								<tbody>
 									<tr>
 										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
-											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 20px;font-weight: initial;margin-right: 15px;margin-left: 10px;">Hello, [% username %],</h5>
+											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif;f ont-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hello, [% username %],</h5>
 										</td>
 									</tr>
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
-											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 20px;font-weight: initial;margin-right: 15px;margin-left: 10px;">Before you start blogging, there's one small step we need you to complete. One small step for you, a huge step for security. This will ensure you can recover your account if you forget your password!</h5>
+											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 20px; font-weight: 100; margin-right: 15px; margin-left: 10px;">Before you start blogging, there's one small step we need you to complete. One small step for you, a huge step for security. This will ensure you can recover your account if you forget your password!</h5>
 										</td>
 									</tr>
 
@@ -119,7 +119,7 @@
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
 											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">Having trouble? Just copy and paste this link into your browser:</p>
-											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;">[% config.app_url %][% mail_body %]</p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[% config.app_url %][% mail_body %]</a></p>
 										</td>
 									</tr> 
 									<tr>
@@ -130,7 +130,7 @@
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
 											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">Almost there, blogger,</p>
-											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">the blogs.perl.org team</p>
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff;">the <a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blogs.perl.org</a> team</p>
 										</td>
 									</tr>           
 									<tr><!-- START: EMAIL GRAY-ISH LINE--> 

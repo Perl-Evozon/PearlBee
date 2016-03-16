@@ -3236,7 +3236,7 @@ a:focus {
   color: #79A301;
 }
 
-.recover-password {
+.recover-password, .err-404, .err-500 {
    z-index: 13;
 }
 
@@ -4508,7 +4508,7 @@ input[readonly] {
     text-align: center;
 }
 
-.pages .pages {
+.pages .page {
    clear: both;
 }
 
@@ -4561,6 +4561,8 @@ input[readonly] {
    font-size: 18px;
 }
 
+
+
 /*  error allert  */
 
 .alert-error {
@@ -4568,6 +4570,84 @@ input[readonly] {
     background-color: #f2dede;
     border-color: #ebccd1; 
 }
+
+.err-404, .err-500 {
+    width: 100%;
+    position: absolute;
+    top:80px;
+     min-height: calc(100% - 80px); 
+    background: url('../img/camila-gri.jpg') center center no-repeat;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.err-404 .container, .err-500 .container {
+   margin-top: 25em;
+}
+
+.err-404 .err, .err-500 .err {
+   color: #333333;
+   -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+}
+
+.err-404 .err h2, .err-500 .err h2 {
+   font-size: 16em;
+}
+
+
+@media all and (max-width: 405px) {
+   .err-404 .err h2, .err-500 .err h2 {
+      font-size: 12em;
+   }
+}
+
+.err-404 .err p, .err-500 .err p {
+   font-size: 6em;
+   line-height: 60px;
+}
+
+.err-404 .err h3, .err-500 .err h3 {
+   margin-top: 120px;
+}
+
+.err-404 .err h3:last-child {
+   margin-top: 10px;
+}
+
+@media all and (max-width: 990px) {
+   .err-404 .container {
+      margin-top: 20em;
+   }
+   .err-500 .container {
+      margin-top: 20em;
+   }
+}
+
+@media all and (max-width: 575px) {
+   .err-500 .container {
+      margin-top: 17em;
+   }
+}
+
+@media all and (max-width: 425px) {
+   .err-500 .err p {
+      font-size: 4em;
+   }
+}
+
+
+
 
 
 

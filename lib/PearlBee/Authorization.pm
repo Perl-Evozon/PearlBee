@@ -3,9 +3,7 @@ package PearlBee::Authorization;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-=head
-
-Check if the user has authorization
+=head1 Check if the user has authorization
 
 =cut
 

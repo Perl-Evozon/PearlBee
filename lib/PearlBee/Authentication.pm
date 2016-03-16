@@ -34,14 +34,14 @@ get '/recover-password' => sub { template 'password_recovery' };
 post '/recover-password' => sub {
 
   my $params = body_parameters;
-
+  my $user   = resultset('Users')->find({ email => $params->{'email'} });
+  my $date   = DateTime->now();
+  my $token  = generate_hash( $params->{'email'} . $date );
   my $err;
 
   my $template_params = {
-    email    => $params->{'email'},
+    email => $params->{'email'},
   };
-
-
 
   my $existing_users =
     resultset('Users')->search({ email => $params->{'email'} })->count;
@@ -49,66 +49,62 @@ post '/recover-password' => sub {
     template 'password_recovery', {
       warning => "The email does not exist in the database."
     }; 
-    
   }
-  else{
+  else {
 
- my $user =
-    resultset('Users')->find({ email => $params->{'email'} });
+    $user->update({ activation_key => $token });
+
+    my $first_admin =
+      resultset('Users')->
+      search({ role => 'admin', status => 'active' })->first;
+
+    try {
+      PearlBee::Helpers::Email::send_email_complete({
+        template => 'forgot-password.tt',
+        from     => config->{'default_email_sender'},
+        to       => $first_admin->email,
+        subject  => 'A new user applied as an author to the blog',
+
+        template_params => {
+          config    => config,
+          name      => $params->{'name'},
+          username  => $params->{'username'},
+          email     => $params->{'email'},
+          signature => config->{'email_signature'}
+        }
+      });
  
-  my $date  = DateTime->now();
-  my $token = generate_hash( $params->{'email'} . $date );
- 
-  $user->update ({activation_key => $token });
+      PearlBee::Helpers::Email::send_email_complete({
+        template => 'forgot-password.tt',
+        from     => config->{'default_email_sender'},
+        to       => $params->{email},
+        subject  => 'Welcome to Blogs.Perl.Org',
 
-  my $first_admin =
-    resultset('Users')->search( {role => 'admin', status => 'active' } )->first;
-
-  try {
-     PearlBee::Helpers::Email::send_email_complete({
-       template => 'new_user.tt',
-       from     => config->{default_email_sender},
-       to       => $first_admin->email,
-       subject  => 'A new user applied as an author to the blog',
-
-       template_params => {
-         config    => config,
-         name      => $params->{'name'},
-         username  => $params->{'username'},
-         email     => $params->{'email'},
-         signature => config->{email_signature}
-       }
-     });
-
-     PearlBee::Helpers::Email::send_email_complete({
-       template => 'activation_email.tt',
-       from     => config->{default_email_sender},
-       to       => $params->{email},
-       subject  => 'Welcome to Blogs.Perl.Org',
-
-       template_params => {
-         config    => config,
-         name      => $user->name,
-         username  => $user->username,
-         mail_body => "/activation?token=$token",
-       }
-     });
-  }
-  catch {
+        template_params => {
+          config    => config,
+          name      => $user->name,
+          username  => $user->username,
+          mail_body => "/activation?token=$token",
+        }
+      });
+    }
+    catch {
       error $_;
-  };
+    };
 
-  template 'recover-password', {
-    success => 'The password was updated.'
+    template 'recover-password', {
+      success => 'The password was updated.'
+    }
   }
-}
 };
 
 get '/register_success' => sub { template 'register_success' };
 
 post '/register_success' => sub {
-  my $params = body_parameters;
-
+  my $params   = body_parameters;
+  my $response = $params->{'g-recaptcha-response'};
+  my $result   = recaptcha_verify($response);
+  my $captcha  = recaptcha_display();
   my $err;
 
   my $template_params = {
@@ -117,13 +113,10 @@ post '/register_success' => sub {
     name     => $params->{'name'},
   };
 
-  my $response = $params->{'g-recaptcha-response'};
-  my $result = recaptcha_verify($response);
-
   unless ( $params->{'username'} ) {
     template 'signup', {
-      warning => "Please provide a username",
-      ecaptcha => recaptcha_display()
+      warning  => "Please provide a username",
+      ecaptcha => $captcha
     };
     return
   }
@@ -131,8 +124,8 @@ post '/register_success' => sub {
   unless ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secret code
     template 'signup', {
-      warning => "Captcha failed",
-      ecaptcha => recaptcha_display()
+      warning  => "Captcha failed",
+      ecaptcha => $captcha
     };
     return
   }
@@ -141,19 +134,18 @@ post '/register_success' => sub {
     resultset('Users')->search({ email => $params->{'email'} })->count;
   if ($existing_users > 0) {
     template 'signup', {
-      warning => "An user with this email address already exists.",
-      ecaptcha => recaptcha_display()
+      warning  => "An user with this email address already exists.",
+      ecaptcha => $captcha
     };
     return
   }
 
   $existing_users =
-    resultset('Users')->search( \[ 'lower(username) = ?' =>
-                                   $params->{username} ] )->count;
+    resultset('Users')->search_lc( $params->{username} )->count;
   if ($existing_users > 0) {
     template 'signup', {
-      warning => "The provided username is already in use.",
-      ecaptcha => recaptcha_display()
+      warning  => "The provided username is already in use.",
+      ecaptcha => $captcha
     };
     return
   }

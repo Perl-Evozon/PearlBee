@@ -4565,6 +4565,8 @@ input[readonly] {
 
 /*  error allert  */
 
+/* 404 & 500 pages */
+
 .alert-error {
     color: #a94442;
     background-color: #f2dede;
@@ -4576,33 +4578,21 @@ input[readonly] {
     position: absolute;
     top:80px;
      min-height: calc(100% - 80px); 
-    background: url('../img/camila-gri.jpg') center center no-repeat;
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+     z-index: 13;
+     background-color: #dadada;
 }
 
 .err-404 .container, .err-500 .container {
-   margin-top: 25em;
+   margin-top: 5em;
 }
 
 .err-404 .err, .err-500 .err {
    color: #333333;
-   -webkit-transform: rotate(-180deg);
-    -moz-transform: rotate(-180deg);
-    -ms-transform: rotate(-180deg);
-    -o-transform: rotate(-180deg);
-    transform: rotate(-180deg);
 }
 
 .err-404 .err h2, .err-500 .err h2 {
-   font-size: 16em;
+   font-size: 210px;
+   color: #43c8e7;
 }
 
 
@@ -4613,30 +4603,28 @@ input[readonly] {
 }
 
 .err-404 .err p, .err-500 .err p {
-   font-size: 6em;
+   font-size: 27px;
    line-height: 60px;
+   color: #43c8e7;
+   text-align: left;
 }
 
 .err-404 .err h3, .err-500 .err h3 {
-   margin-top: 120px;
+   margin-top: 0;
+   font-size: 16px;
+   text-align: left;
 }
 
 .err-404 .err h3:last-child {
-   margin-top: 10px;
+   margin-top: 35px;
 }
 
-@media all and (max-width: 990px) {
-   .err-404 .container {
-      margin-top: 20em;
+@media all and (max-width: 767px) {
+   .crazy-camel {
+      margin-top: 40px;
    }
-   .err-500 .container {
-      margin-top: 20em;
-   }
-}
-
-@media all and (max-width: 575px) {
-   .err-500 .container {
-      margin-top: 17em;
+   .err-404 .err h2, .err-500 .err h2 {
+      text-align: center;
    }
 }
 

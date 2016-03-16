@@ -78,7 +78,7 @@ post '/recover-password' => sub {
         template => 'forgot-password.tt',
         from     => config->{'default_email_sender'},
         to       => $params->{email},
-        subject  => 'Welcome to Blogs.Perl.Org',
+        subject  => 'Reset your blogs.perl.org password',
 
         template_params => {
           config    => config,
@@ -188,7 +188,7 @@ post '/register_success' => sub {
        template => 'activation_email.tt',
        from     => config->{default_email_sender},
        to       => $params->{email},
-       subject  => 'Welcome to Blogs.Perl.Org',
+       subject  => 'Finish setting up your blogs.perl.org account',
 
        template_params => {
          config    => config,

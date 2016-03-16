@@ -45,10 +45,12 @@ $(document).ready(function() {
                             <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
                         </div>
 						<div>
-							<form action="/profile" enctype="multipart/form-data" method="post">
+							<form action="/profile-image" enctype="multipart/form-data" method="post">
 								<span class="file-input btn btn-file light-button buttons-group change-pic">
-									<p>Change picture</p> <input type="file">
+									<p>Change picture</p> <!-- <input type="file" name="file"> -->
+								<input type="file" id="file" class="form-control" name="file">
 								</span>
+<input type="submit">
 							</form> 
 						</div>
 				

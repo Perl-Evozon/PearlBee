@@ -86,83 +86,70 @@ get '/profile/author/:username' => sub {
 
 };
 
-post '/profile' => sub  {
+post '/profile' => sub {
 
-  my $params            = body_parameters;
-  my $user              = session('user');
-  my $flag_modification = 0;
-  my $flag_error        = 0;
-  my $message           = '';
+  my $params      = body_parameters;
+  my $user        = session('user');
+  my $res_user    = resultset('Users')->find({ id => $user->{id} });
+  my $message     = '';
+  my $new_columns = { };
 
-  if ($params->{'email'} ne '') {
+  if ($params->{'email'}) {
     my $existing_user =
       resultset('Users')->search({ email => $params->{'email'} })->count;
     if ($existing_user > 0) {
-      $flag_error = 1;
-      $message    = "A user with this email address already exists.";
-    
+      $message = "A user with this email address already exists.";
     }
     else {
-      $flag_modification = 1;
-      $user->{email}     = $params->{email};
-      my $res_user       = resultset('Users')->find({ id => $user->{id} });
-      $res_user->update({ email => $params->{email} });
-      session('user', $user);
+      $new_columns = { email => $params->{email} };
     }
   }
 
-  if ($params->{'username'} ne '') {
+  if ($params->{'username'}) {
     my $existing_user =
       resultset('Users')->search({ username => $params->{'username'} })->count;
     if ($existing_user > 0) {
-       $flag_error = 1;
-       $message   .= "\n A user with this username already exists.";
+       $message .= "\n A user with this username already exists.";
     }
     else {
-      $flag_modification = 1;
-      $user->{username}  = $params->{username};
-      my $res_user       = resultset('Users')->find({ id => $user->{id} });
-      $res_user->update({ username => $params->{username} });
-      session('user', $user);
+      $new_columns = { username => $params->{username} };
     }
   }
 
-  if ($params->{'displayname'} ne '') {
+  if ($params->{'displayname'}) {
     my $existing_user =
       resultset('Users')->search({ name => $params->{'displayname'} })->count;
     if ($existing_user > 0) {
-      $flag_error = 1;
-      $message   .= "\n A user with this displayname already exists.";
+      $message .= "\n A user with this displayname already exists.";
     }
     else {
-      $flag_modification = 1;
-      $user->{name}      = $params->{displayname};
-      my $res_user       = resultset('Users')->find({ id => $user->{id} });
-      $res_user->update({ name => $params->{displayname} });
-      session('user', $user);
+      $new_columns = { name => $params->{displayname} };
     }
   }
 
-  if ($params->{'about'} ne '') {
- 
-    $flag_modification = 1;
-    $user->{biography} = $params->{about};
-    my $res_user = resultset('Users')->find({ id => $user->{id} });
-    $res_user->update({ biography => $params->{about} });
-    session('user', $user);
+  if ($params->{'about'}) {
+    $new_columns = { biography => $params->{about} };
   }
 
-  if (($flag_modification == 1) && ($flag_error==0)) {
-    template 'profile',
-      {
-        success => "Everything was successfully updated.",
-      };
-  }
-  elsif (($flag_modification == 1) && ($flag_error==1)) {
-    template 'profile',
-      {
-        warning => "Some fields were updated, but ". $message,
-      };
+  if (keys %$new_columns) {
+    my $the_key = (keys %$new_columns)[0];
+
+    $res_user->update( $new_columns );
+    $user->{$the_key} = $new_columns->{$the_key};
+    session('user', $user);
+
+    if ( !$message ) {
+      template 'profile',
+        {
+          success => "Everything was successfully updated.",
+        };
+    }
+    else {
+      template 'profile',
+        {
+          warning => "Some fields were updated, but ". $message,
+        };
+    }
   }
   else {
     template 'profile',
@@ -170,6 +157,30 @@ post '/profile' => sub  {
          warning => $message,
       };
   }
+};
+
+post '/profile-image' => sub {
+
+  my $params      = body_parameters;
+my $file = $params->{file};
+ # my $file = route_parameters->get('file');
+  my $user = session('user');
+warn "#####################\n";
+use YAML;warn Dump($params);
+
+  if ($file) {
+warn "##################### IN\n";
+    my $upload_dir = "userpics/userpics";
+    my $filename   = "userpic-$user->{id}-100x100.png";
+    my $upload     = upload('file_input_name');
+
+    $upload->copy_to("$upload_dir/$filename");
+  }
+
+  template 'profile',
+    {
+      success => "Everything was successfully updated.",
+    };
 };
 
 post '/profile_password' => sub  {

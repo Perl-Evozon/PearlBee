@@ -14,9 +14,11 @@ This is the base structure of the blog -->
   
   [% content %]
   
-  [% IF request.uri != '/register_success' and request.uri != '/register' and request.uri != '/register_done' and request.uri != '/sign-up' and request.uri != '/password_recovery' %] 
-    [% INCLUDE theme/footer.tt %]  
-   [% END %]
+  [% IF (request.uri != '/register_success') && (request.uri != '/register')&& (request.uri != '/register_done') && (request.uri != '/sign-up') && (request.uri != '/password_recovery') && (request.uri != '/recover-password') && (request.uri != '/login') %] 
+
+      [% INCLUDE theme/footer.tt %] 
+
+  [% END %]
     [% INCLUDE theme/scripts.tt %]
 
   </body>

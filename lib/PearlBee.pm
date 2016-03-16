@@ -307,11 +307,17 @@ post '/sign-up' => sub {
 
             # Notify the author that a new comment was submited
             my $first_admin = resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+            if ( $first_admin ) {
+              $first_admin = $first_admin->email;
+            }
+            else {
+              $first_admin = config->{admin_email_sender};
+            }
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
               From    => config->{default_email_sender},
-              To      => $first_admin->email,
+              To      => $first_admin,
               Subject => 'A new user applied as an author to the blog',
 
               tt_vars => {

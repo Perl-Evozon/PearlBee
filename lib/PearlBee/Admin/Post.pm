@@ -23,9 +23,7 @@ use String::Util qw(trim);
 
 get '/admin/posts' => sub { redirect '/admin/posts/page/1'; };
 
-=head
-
-list all posts method per page
+=head2 list all posts method per page
 
 =cut
 
@@ -66,9 +64,7 @@ get '/admin/posts/page/:page' => sub {
 
 };
 
-=head
-
-list all published posts
+=head2 list all published posts
 
 =cut
 
@@ -111,9 +107,7 @@ get '/admin/posts/:status/page/:page' => sub {
       { layout => 'admin' };
 };
 
-=head
-
-publish method
+=head2 publish method
 
 =cut
 
@@ -135,9 +129,7 @@ get '/admin/posts/publish/:id' => sub {
 
 };
 
-=head
-
-draft method
+=head2 draft method
 
 =cut
 
@@ -158,9 +150,7 @@ get '/admin/posts/draft/:id' => sub {
   redirect '/admin/posts';
 };
 
-=head
-
-trash method
+=head2 trash method
 
 =cut
 
@@ -182,9 +172,7 @@ get '/admin/posts/trash/:id' => sub {
 
 };
 
-=head
-
-add method
+=head2 add method
 
 =cut
 
@@ -250,9 +238,7 @@ any '/admin/posts/add' => sub {
 
 };
 
-=head
-
-edit method
+=head2 edit method
 
 =cut
 
@@ -302,9 +288,7 @@ get '/admin/posts/edit/:slug' => sub {
 
 };
 
-=head
-
-update method
+=head2 update method
 
 =cut
 

@@ -19,9 +19,7 @@ use POSIX qw(tzset);
 use XML::Simple qw(:strict);
 
 
-=head
-
-Index of settings page
+=head2 Index of settings page
 
 =cut
 

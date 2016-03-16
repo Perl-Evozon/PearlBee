@@ -61,9 +61,7 @@ get '/admin/comments/page/:page' => sub {
 
 };
 
-=head
-
-List all spam comments
+=head2 List all spam comments
 
 =cut
 
@@ -108,9 +106,7 @@ get '/admin/comments/:status/page/:page' => sub {
 
 };
 
-=head
-
-Accept comment
+=head2 Accept comment
 
 =cut
 
@@ -131,9 +127,7 @@ get '/admin/comments/approve/:id' => sub {
   redirect request()->{headers}->{referer};
 };
 
-=haed
-
-Trash a comment
+=head2 Trash a comment
 
 =cut
 
@@ -177,9 +171,7 @@ get '/admin/comments/spam/:id' => sub {
   redirect request()->{headers}->{referer};
 };
 
-=haed
-
-Pending a comment
+=head2 Pending a comment
 
 =cut
 
@@ -196,7 +188,6 @@ get '/admin/comments/pending/:id' => sub {
     info $_;
     error "Could not spam-bin comment for $user->{username}";
   }
-
 
   redirect request()->{headers}->{referer};
 };

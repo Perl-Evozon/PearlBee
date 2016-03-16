@@ -57,12 +57,20 @@ post '/recover-password' => sub {
     my $first_admin =
       resultset('Users')->
       search({ role => 'admin', status => 'active' })->first;
+    my $first_admin =
+      resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+    if ( $first_admin ) {
+      $first_admin = $first_admin->email;
+    }
+    else {
+      $first_admin = config->{admin_email_sender};
+    }
 
     try {
       PearlBee::Helpers::Email::send_email_complete({
         template => 'forgot-password.tt',
         from     => config->{'default_email_sender'},
-        to       => $first_admin->email,
+        to       => $first_admin,
         subject  => 'A new user applied as an author to the blog',
 
         template_params => {
@@ -166,13 +174,19 @@ post '/register_success' => sub {
   # Notify the author that a new comment was submitted
   my $first_admin =
     resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+  if ( $first_admin ) {
+    $first_admin = $first_admin->email;
+  }
+  else {
+    $first_admin = config->{admin_email_sender};
+  }
   info "No administrator found in the database!" unless $first_admin;
 
   try {
      PearlBee::Helpers::Email::send_email_complete({
        template => 'new_user.tt',
        from     => config->{default_email_sender},
-       to       => $first_admin->email,
+       to       => $first_admin,
        subject  => 'A new user applied as an author to the blog',
 
        template_params => {
@@ -202,9 +216,6 @@ post '/register_success' => sub {
       error $_;
   };
 
-  # template 'signup', {
-  #   success => 'The user was created and it is waiting for admin approval.'
-  # }
   template 'register_success';
 };
 
@@ -308,7 +319,6 @@ get '/logout' => sub {
   session app_url   => config->{app_url};
 
   redirect "/";
-  #template 'login', { success => "You were successfully logged out." }, { layout => 'admin' };
 };
 
 true;

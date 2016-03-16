@@ -158,8 +158,8 @@ post '/comments' => sub {
   $parameters->{id}  = $post->id;
   $parameters->{uid} = $poster_id;
   
-  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
-  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
+#  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
+#  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
 
   my %result;
 
@@ -170,7 +170,7 @@ post '/comments' => sub {
   try {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
-    if ($blog and $blog->email_notification) {
+#    if ($blog and $blog->email_notification) {
       Helpers::Email::send_email_complete(
         { from            => config->{default_email_sender},
           to              => $author->email,
@@ -187,7 +187,7 @@ post '/comments' => sub {
           }
         }
       );
-    }
+#    }
 
     my %expurgated_user = %$user;
     delete $expurgated_user{id};
@@ -216,7 +216,7 @@ post '/comments' => sub {
   my $json = JSON->new;
   $json->allow_blessed(1);
   $json->convert_blessed(1);
-  delete $result{content} unless $result{status} eq 'approved';
+#  delete $result{content} unless $result{status} eq 'approved';
   return $json->encode(\%result); 
 };
 

@@ -57,8 +57,6 @@ post '/recover-password' => sub {
     my $first_admin =
       resultset('Users')->
       search({ role => 'admin', status => 'active' })->first;
-    my $first_admin =
-      resultset('Users')->search({ role => 'admin', status => 'active' })->first;
     if ( $first_admin ) {
       $first_admin = $first_admin->email;
     }

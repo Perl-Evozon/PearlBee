@@ -1,0 +1,17 @@
+
+  <div class="err-404">
+        <div class="container">
+          <div class="row"> 
+           <div class="col-sm-12 text-center"> 
+             <div class="err">
+                <h2>404</h2>
+                <p>PAGE  NOT FOUND</p>
+                <h3>Whoops … something went wrong. We tried really hard looking for it, but the page you were searching for might have been moved, removed, or never existed.</h3>
+                <h3>
+                  So go back <a href="/">HOME</a> or CONTACT us about your problem.
+                </h3>
+             </div>
+           </div>
+         </div>
+       </div> 
+  </div>

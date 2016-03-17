@@ -8,7 +8,7 @@ use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Util qw(string_to_slug);
 
-=item List all tags
+=head2 List all tags
 
 =cut
 
@@ -20,7 +20,7 @@ get '/admin/tags' => sub {
 
 };
 
-=item Add a new tag
+=head2 Add a new tag
 
 =cut
 
@@ -56,7 +56,7 @@ post '/admin/tags/add' => sub {
 
 };
 
-=item Delete method
+=head2 Delete method
 
 =cut
 
@@ -82,7 +82,7 @@ get '/admin/tags/delete/:id' => sub {
 
 };
 
-=item edit method
+=head2 edit method
 
 =cut
 

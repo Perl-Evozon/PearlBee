@@ -158,8 +158,8 @@ post '/comments' => sub {
   $parameters->{id}  = $post->id;
   $parameters->{uid} = $poster_id;
   
-  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
-  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
+#  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
+#  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
 
   my %result;
 
@@ -170,8 +170,8 @@ post '/comments' => sub {
   try {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
-    if ($blog and $blog->email_notification) {
-      Helpers::Email::send_email_complete(
+#    if ($blog and $blog->email_notification) {
+      PearlBee::Helpers::Email::send_email_complete(
         { from            => config->{default_email_sender},
           to              => $author->email,
           subject         => 'A new comment was submitted to your post',
@@ -187,7 +187,7 @@ post '/comments' => sub {
           }
         }
       );
-    }
+#    }
 
     my %expurgated_user = %$user;
     delete $expurgated_user{id};
@@ -216,7 +216,7 @@ post '/comments' => sub {
   my $json = JSON->new;
   $json->allow_blessed(1);
   $json->convert_blessed(1);
-  delete $result{content} unless $result{status} eq 'approved';
+#  delete $result{content} unless $result{status} eq 'approved';
   return $json->encode(\%result); 
 };
 
@@ -307,11 +307,17 @@ post '/sign-up' => sub {
 
             # Notify the author that a new comment was submited
             my $first_admin = resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+            if ( $first_admin ) {
+              $first_admin = $first_admin->email;
+            }
+            else {
+              $first_admin = config->{admin_email_sender};
+            }
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {
               From    => config->{default_email_sender},
-              To      => $first_admin->email,
+              To      => $first_admin,
               Subject => 'A new user applied as an author to the blog',
 
               tt_vars => {

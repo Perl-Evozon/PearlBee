@@ -90,18 +90,18 @@ post '/profile' => sub {
 
   my $params      = body_parameters;
   my $user        = session('user');
-  my $res_user    = resultset('Users')->find({ id => $user->{id} });
-  my $message     = '';
+  my $res_user    = resultset('Users')->find({ id => $user->{'id'} });
   my $new_columns = { };
+  my @message;
 
   if ($params->{'email'}) {
     my $existing_user =
       resultset('Users')->search({ email => $params->{'email'} })->count;
     if ($existing_user > 0) {
-      $message = "A user with this email address already exists.";
+      push @message, "A user with this email address already exists.";
     }
     else {
-      $new_columns = { email => $params->{email} };
+      $new_columns->{'email'} = $params->{'email'};
     }
   }
 
@@ -109,10 +109,10 @@ post '/profile' => sub {
     my $existing_user =
       resultset('Users')->search({ username => $params->{'username'} })->count;
     if ($existing_user > 0) {
-       $message .= "\n A user with this username already exists.";
+       push @message, "A user with this username already exists.";
     }
     else {
-      $new_columns = { username => $params->{username} };
+      $new_columns->{'username'} = $params->{'username'};
     }
   }
 
@@ -120,42 +120,34 @@ post '/profile' => sub {
     my $existing_user =
       resultset('Users')->search({ name => $params->{'displayname'} })->count;
     if ($existing_user > 0) {
-      $message .= "\n A user with this displayname already exists.";
+      push @message, "A user with this displayname already exists.";
     }
     else {
-      $new_columns = { name => $params->{displayname} };
+      $new_columns->{'name'} = $params->{'displayname'};
     }
   }
 
   if ($params->{'about'}) {
-    $new_columns = { biography => $params->{about} };
+    $new_columns->{'biography'} = $params->{'about'};
   }
 
   if (keys %$new_columns) {
-    my $the_key = (keys %$new_columns)[0];
-
     $res_user->update( $new_columns );
-    $user->{$the_key} = $new_columns->{$the_key};
+    $user->{$_} = $new_columns->{$_} for keys %$new_columns;
     session('user', $user);
 
-    if ( !$message ) {
+    if ( !@message ) {
       template 'profile',
-        {
-          success => "Everything was successfully updated.",
-        };
+        { success => "Everything was successfully updated." }
     }
     else {
       template 'profile',
-        {
-          warning => "Some fields were updated, but ". $message,
-        };
+        { warning => "Some fields were updated, but ". join( "\n", @message ) }
     }
   }
   else {
     template 'profile',
-      {
-         warning => $message,
-      };
+      { warning => "No fields changed" }
   }
 };
 

@@ -98,7 +98,7 @@
 								<tbody>
 									<tr>
 										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
-											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hi, [% username %],</h5>
+											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hi, [%name %],</h5>
 										</td>
 									</tr>
 									<tr>
@@ -109,13 +109,13 @@
 
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
-											<a href="#"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
+											<a href="[%post_url%]"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
 										</td>
 									</tr>
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
 											<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">or copying this link into your browser:</p>
-											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">https://viewcomment</p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">[%post_url%]</p>
 										</td>
 									</tr>           
 									<tr><!-- START: EMAIL GRAY-ISH LINE--> 

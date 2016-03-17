@@ -102,7 +102,7 @@
 								<tbody>
 									<tr>
 										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
-											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif;f ont-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hello, [% username %],</h5>
+											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hello, [% username %],</h5>
 										</td>
 									</tr>
 									<tr>
@@ -140,7 +140,7 @@
 									</tr><!-- END: EMAIL GRAY-ISH LINE-->
 									<tr>
 										<td>
-											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff; font-style: italic;">Copyright &copy; 2016 blog.perl.org. All rights reserved</p>
+											<p style="margin: 0 0 5px 10px;font-family: 'Montserrat', 'Open sans', sans-serif;font-size: 15px;text-align: justify;line-height: 16px;color: #ffffff; font-style: italic;">Copyright &copy; 2016 <a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blog.perl.org</a>. All rights reserved</p>
 										</td>
 									</tr>
 								</tbody>

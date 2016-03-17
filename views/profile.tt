@@ -72,7 +72,7 @@ $(document).ready(function() {
 							</div>
 							<div class="input-group">
 								<label>About</label>
-								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl" name="about"></textarea>
+								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl" name="about">[% session.user.biography %]</textarea>
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>

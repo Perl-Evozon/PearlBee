@@ -82,7 +82,7 @@
                       <table cellpadding="20" cellspacing="0" border="0">
                         <tbody><tr>
                           <td width="145" valign="middle">
-                            <img src="../../public/blog/img/comment.png" width="145" height="145" style="margin-left:10px;" alt="">
+                            <img src="[% config.app_url %]/blog/img/comment.png" width="145" height="145" style="margin-left:10px;" alt="">
                           </td>
                           <td width="575" valign="middle" float="right">
                          	<h1 style="margin: 20px 0 20px 0; font-size: 30px; line-height: 33px; color: #43C8E7; font-family: 'Montserrat', 'Open sans', sans-serif; font-weight: bold; text-transform: uppercase; width: 265px;">A new comment was added!</h1>

@@ -57,7 +57,6 @@ plugins:
         format:    'atom'
         max_posts: 10
       reCAPTCHA:
-
         site_key:
         secret:
         options:
@@ -85,7 +84,6 @@ user_pics:        '/home/jgoff/userpics/userpics'
 # number of items to display per page
 blogs:
   user_posts: 10
-
 
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'

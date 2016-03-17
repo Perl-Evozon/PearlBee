@@ -50,7 +50,6 @@ $(document).ready(function() {
 									<p>Change picture</p> <!-- <input type="file" name="file"> -->
 								<input type="file" id="file" class="form-control" name="file">
 								</span>
-<input type="submit">
 							</form> 
 						</div>
 				

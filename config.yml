@@ -57,6 +57,7 @@ plugins:
         format:    'atom'
         max_posts: 10
       reCAPTCHA:
+
         site_key: '6LdQmhITAAAAAP7enD0cWGnmfVkzTTcV1d6r6vkp'
         secret:   '6LdQmhITAAAAANf8ueWfMzWmhWBfaJlQuEMNjc83'
         options:
@@ -80,6 +81,11 @@ movable_type_url: 'http://blogs.perl.org'
 user_assets:      '/home/jgoff/'
 user_avatars:     '/home/jgoff/'
 user_pics:        '/home/jgoff/userpics/userpics'
+
+# number of items to display per page
+blogs:
+  user_posts: 10
+
 
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'

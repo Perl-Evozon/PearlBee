@@ -37,7 +37,7 @@ engines:
 
 mail_server:
     user: 'jobs@builtinperl.com'
-    password:
+    password: '4guFG0s8mDl@z'
     host: 'mail.evozon.com'
     port: 587
 
@@ -57,8 +57,8 @@ plugins:
         format:    'atom'
         max_posts: 10
       reCAPTCHA:
-        site_key: 'XXX'
-        secret:   'XXX'
+        site_key: '6LdQmhITAAAAAP7enD0cWGnmfVkzTTcV1d6r6vkp'
+        secret:   '6LdQmhITAAAAANf8ueWfMzWmhWBfaJlQuEMNjc83'
         options:
           theme: 'light'
           type:  'image'
@@ -77,10 +77,9 @@ email_templates:  'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
-
-# number of items to display per page
-blogs:
-  user_posts: 10
+user_assets:      '/home/jgoff/'
+user_avatars:     '/home/jgoff/'
+user_pics:        '/home/jgoff/userpics/userpics'
 
 # Specifics
 email_signature:       'The Blogs.Perl.Org Team'

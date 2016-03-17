@@ -5,9 +5,9 @@
 
                         <div class="col-md-8 col-sm-8 col-xs-12">
                            <div class="fwidget flinks">
-				  <a href="#"><h5>feedback</h5></a>
+				  <a href="mailto:support@pearlbee.com?Subject=Feedback" target="_top"><h5>Feedback</h5></a>
 				  <a href="https://www.perl.org/"><h5>perl.org</h5></a>
-				  <a href="#"><h5>perlnews.org</h5></a>
+				  <a href="http://www.cpan.org/"><h5>cpan.org</h5></a>
 				  <a href="http://www.pm.org/"><h5>pm.org</h5></a>
 				  <p id="copywrite_desktop">[% copyright_year %] blogs.perl.org. All rights reserved</p>
                            </div>
@@ -24,6 +24,5 @@
                        </div>
 
                      </div>
-
          </div>
       </footer>

@@ -171,6 +171,7 @@ post '/comments' => sub {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
 #    if ($blog and $blog->email_notification) {
+     if ($username ne $author->name){
       PearlBee::Helpers::Email::send_email_complete(
         { from            => config->{default_email_sender},
           to              => $author->email,
@@ -188,7 +189,7 @@ post '/comments' => sub {
         }
       );
 #    }
-
+     }
     my %expurgated_user = %$user;
     delete $expurgated_user{id};
     delete $expurgated_user{password};

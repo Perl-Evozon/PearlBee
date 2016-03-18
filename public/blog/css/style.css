@@ -3365,6 +3365,13 @@ background-color: #ffffff; */
    height: initial;
    resize: vertical;
 }
+.credentials textarea#user_biography {
+   color: #9F9F9F;
+}
+.credentials textarea#user_biography:focus {
+   color: #000000;
+}
+
 .credentials .buttons-group {
    margin-right: 50px;
    margin-bottom: 50px;

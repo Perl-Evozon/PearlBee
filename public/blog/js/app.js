@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -367,6 +368,38 @@ $("#start-blogging").on('click', function (e) {
       }
     });
 
+  // Image upload perview
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('#image_upload_preview').attr('src', e.target.result);
+    }
+      reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#file-upload").change(function () {
+      readURL(this);
+  });
+
+$(".modal-footer .delete-img").on('click', function(){
+    var themeinitial = $('#cmn-toggle-4').is(':checked');
+        if (themeinitial === false){ 
+            $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
+        } else if (themeinitial === true) {
+            $('#image_upload_preview').attr('src', '/blog/img/male-user-light.png');
+        }
+});
+
+//submitting upload picture form
+
+
+$(".save-img").click(function() {
+    $("#upload-img").submit();
+});
+
     
 //  My profile password confirmation 
     
@@ -378,29 +411,6 @@ $("#start-blogging").on('click', function (e) {
     }
   });
 
-
-//My Profile PAGE - Change Picture
- $(document).on('change', '.btn-file :file', function() {
-   var input = $(this),
-       numFiles = input.get(0).files ? input.get(0).files.length : 1,
-       label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-   input.trigger('fileselect', [numFiles, label]);
- });
- 
- $(document).ready( function() {
-     $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-         
-         var input = $(this).parents('.input-group').find(':text'),
-             log = numFiles > 1 ? numFiles + ' files selected' : label;
-         
-         if( input.length ) {
-             input.val(log);
-         } else {
-             if( log ) alert(log);
-         }
-         
-     });
- });
 
 //  Sign up
     $('.sign-up').css('min-height',$(window).height()-80);
@@ -1338,6 +1348,8 @@ $('#more-blog-posts').click(function() {
             });
         });
     });
+
+
 
 
 

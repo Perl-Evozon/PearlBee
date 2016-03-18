@@ -4641,6 +4641,108 @@ input[readonly] {
 }
 
 
+/* modal change img , Profile page */
+
+.modal .modal-footer .save-img,
+.modal .modal-footer .cancel-img {
+   float: left;
+   width: 65px;
+}
+
+.modal .modal-footer .save-img {
+   background: #333;
+   color: #3BBEDC;
+   font-weight: 700;
+}
+
+.modal .modal-footer .cancel-img {
+   background: #ffffff;
+   color: #3BBEDC;
+   border: 1px solid #0fa6bc;
+   font-weight: 700;
+}
+
+.modal .modal-footer .delete-img {
+   background: transparent;
+   color: #3BBEDC;
+   font-weight: 700;
+}
+
+.modal .modal-footer .save-img:hover,
+.modal .modal-footer .cancel-img:hover {
+   color: #0fa6bc;
+   border: 1px solid #3BBEDC;
+}
+
+.modal .modal-footer .delete-img:hover {
+   color: #0fa6bc;
+}
+
+.modal .modal-footer .delete-img:focus {
+   outline: none;
+}
+
+.myprofile .credentials .profile-pic .change-pic {
+   width: 133px;
+   font-size: 15px;
+}
+
+.myprofile .credentials .profile-pic .change-pic:hover {
+   background-color: none;
+}
+
+.modal .modal-body .profile-pic .btn-file {
+   margin-top: 50px;
+}
+
+.modal .modal-body .profile-pic .bubble img {
+    border: 5px solid #444;
+    border-radius: 50%;
+    width: 140px !important;
+    height: 140px !important;
+}
+
+.modal-content {
+   background-color: #dadada;
+}
+
+.modal-footer {
+   border-top: 1px solid #3BBEDC;
+}
+
+.modal-header {
+   border-bottom: 1px solid #3BBEDC;
+   background-color: #fff;
+}
+
+.blog .modal {
+   top: 22%;
+   overflow-y: auto;
+}
+
+@media all and (max-width: 380px) {
+   .modal-body .col-xs-6 {
+      width: 100%
+   }
+   .modal .modal-body .profile-pic .btn-file {
+      display: block;
+   }
+   .modal .modal-footer .delete-img {
+      padding-right: 0;
+      padding-left: 0;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

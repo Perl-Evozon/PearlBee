@@ -57,8 +57,8 @@ plugins:
         format:    'atom'
         max_posts: 10
       reCAPTCHA:
-        site_key: 'XXX'
-        secret:   'XXX'
+        site_key:
+        secret:
         options:
           theme: 'light'
           type:  'image'
@@ -77,6 +77,9 @@ email_templates:  'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
+user_assets:      '/home/jgoff/'
+user_avatars:     '/home/jgoff/'
+user_pics:        '/home/jgoff/userpics/userpics'
 
 # number of items to display per page
 blogs:

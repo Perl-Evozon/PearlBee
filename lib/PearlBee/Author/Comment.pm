@@ -130,7 +130,7 @@ get '/author/comments/trash/:id' => sub {
   my $user       = session('user');
 
   try {
-    $comment->traash($user);
+    $comment->trash($user);
   }
   catch {
     info $_;

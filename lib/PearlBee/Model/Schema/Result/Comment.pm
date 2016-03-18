@@ -198,25 +198,25 @@ __PACKAGE__->belongs_to(
 sub approve {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'approved '}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'approved'}) if ( $self->is_authorized( $user ) );
 }
 
 sub trash {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'trash '}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'trash'}) if ( $self->is_authorized( $user ) );
 }
 
 sub spam {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'spam '}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'spam'}) if ( $self->is_authorized( $user ) );
 }
 
 sub pending {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'pending '}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'pending'}) if ( $self->is_authorized( $user ) );
 }
 
 =haed

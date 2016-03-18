@@ -4252,7 +4252,7 @@ background-size: cover;
         }
 
         #tab-content1 .loading-posts .more-posts {
-            left: -110px;
+            left: 0;
         }
 
         #tab-content2 .people .bubble img {
@@ -4471,7 +4471,6 @@ input.cmn-toggle-round-flat:checked + label:after {
       font-size: 23px;
    }
 }
-
 /*--------------------------------*/
 .btn-file {
   position: relative;

@@ -103,7 +103,7 @@
 									</tr>
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
-											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: initial; margin-right: 15px; margin-left: 10px;">Looks like [% fullname %] added a comment to your post [% title %] and it's waiting for approval. You can approve or reject this comment whenever you're ready.</h5>
+											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-right: 15px; margin-left: 10px;">Looks like [% fullname %] added a comment to your post [% title %] and it's waiting for approval. You can approve or reject this comment whenever you're ready.</h5>
 										</td>
 									</tr>
 
@@ -115,7 +115,7 @@
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
 											<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">or copying this link into your browser:</p>
-											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">[%post_url%]</p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[%post_url%]</a></p>
 										</td>
 									</tr>           
 									<tr><!-- START: EMAIL GRAY-ISH LINE--> 

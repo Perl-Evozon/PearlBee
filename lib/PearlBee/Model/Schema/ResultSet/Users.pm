@@ -3,6 +3,9 @@ package  PearlBee::Model::Schema::ResultSet::Users;
 use strict;
 use warnings;
 
+use Dancer2;
+use Dancer2::Plugin::DBIC;
+use PearlBee::Model::Schema;
 use base 'DBIx::Class::ResultSet';
 
 =head2 Search for a username case-insensitive
@@ -40,6 +43,21 @@ sub create_hashed {
     role           => $args->{role},
     status         => $args->{status},
     activation_key => $args->{activation_key}
+  });
+}
+
+sub create_hashed_with_blog {
+  my ($self, $args) = @_;
+  my $schema  = $self->result_source->schema;
+
+  my $user = $schema->resultset('Users')->create_hashed( $args );
+  my $blog = $schema->resultset('Blog')->create_with_slug({
+    name        => config->{default_blog_name},
+    description => config->{default_blog_description},
+  });
+  $schema->resultset('BlogOwners')->create({
+    blog_id => $blog->id,
+    user_id => $user->id,
   });
 }
 

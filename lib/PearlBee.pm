@@ -171,7 +171,7 @@ post '/comments' => sub {
     # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
 #    if ($blog and $blog->email_notification) {
-     if ($username ne $author->name){
+     if ($username ne $author->username){
       PearlBee::Helpers::Email::send_email_complete(
         { from            => config->{default_email_sender},
           to              => $author->email,
@@ -263,60 +263,56 @@ get '/sign-up' => sub {
 =cut
 
 post '/sign-up' => sub {
-  my $params = body_parameters;
-
-  my $err;
-
+  my $params          = body_parameters;
   my $template_params = {
     username => $params->{'username'},
     email    => $params->{'email'},
     name     => $params->{'name'},
   };
+  my $err = "Invalid secret code.";
 
   my $response = $params->{'g-recaptcha-response'};
   my $result   = recaptcha_verify($response);
 
   if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
-    # The user entered the correct secrete code
-    try {
-
-      my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
-
+    # The user entered the correct secret code
+    my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;
+    if ($existing_users > 0) {
+      $err = "An user with this email address already exists.";
+    } else {
+      $existing_users = resultset('Users')->search({ username => $params->{'username'} })->count;
       if ($existing_users > 0) {
-        $err = "An user with this email address already exists.";
+        $err = "The provided username is already in use.";
       } else {
-        $existing_users = resultset('Users')->search({ username => $params->{'username'} })->count;
-        if ($existing_users > 0) {
-          $err = "The provided username is already in use.";
-        } else {
 
-          # Create the user
-          if ( $params->{'username'} ) {
+        # Create the user
+        if ( $params->{'username'} ) {
+          my $date  = DateTime->now();
+          my $token = generate_hash( $params->{'email'} . $date );
 
-            my $date  = DateTime->now();
-            my $token = generate_hash( $params->{'email'} . $date );
+          resultset('Users')->create_hashed_with_blog({
+            username       => $params->{username},
+            password       => $params->{password},
+            email          => $params->{email},
+            name           => $params->{name},
+            role           => 'author',
+            status         => 'pending',
+            activation_key => $token
+          });
 
-            resultset('Users')->create_hashed({
-              username       => $params->{username},
-              password       => $params->{password},
-              email          => $params->{email},
-              name           => $params->{name},
-              role           => 'author',
-              status         => 'pending',
-              activation_key => $token
-            });
+          # Notify the author that a new comment was submited
+          my $first_admin =
+            resultset('Users')->search({ role => 'admin', status => 'active' })->first;
+          if ( $first_admin ) {
+            $first_admin = $first_admin->email;
+          }
+          else {
+            $first_admin = config->{admin_email_sender};
+          }
 
-            # Notify the author that a new comment was submited
-            my $first_admin = resultset('Users')->search({ role => 'admin', status => 'active' })->first;
-            if ( $first_admin ) {
-              $first_admin = $first_admin->email;
-            }
-            else {
-              $first_admin = config->{admin_email_sender};
-            }
+          try {
 
-            Email::Template->send( config->{email_templates} . 'new_user.tt',
-            {
+            Email::Template->send( config->{email_templates} . 'new_user.tt', {
               From    => config->{default_email_sender},
               To      => $first_admin,
               Subject => 'A new user applied as an author to the blog',
@@ -332,8 +328,7 @@ post '/sign-up' => sub {
             }) or error "Could not send new_user email";
 
             Email::Template->send( config->{email_templates} .
-                                   'activation_email.tt',
-            {
+                                   'activation_email.tt', {
               From    => config->{default_email_sender},
               To      => $params->{'email'},
               Subject => 'Welcome to Blogs.Perl.Org',
@@ -344,21 +339,16 @@ post '/sign-up' => sub {
                 mail_body => "/activation?token=$token",
               }
             }) or error "Could not send the email";
-
-          } else {
-            $err = 'Please provide a username.';
           }
+          catch {
+            error $_;
+          };
+
+        } else {
+          $err = 'Please provide a username.';
         }
       }
     }
-    catch {
-      error $_;
-    };
-  }
-  else {
-    # The secret code inncorrect
-    # Repopulate the fields with the data
-    $err = "Invalid secret code.";
   }
 
   if ($err) {
@@ -367,7 +357,10 @@ post '/sign-up' => sub {
 
     template 'signup', $template_params;
   } else {
-    template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
+    template 'notify',
+      {
+        success => 'The user was created and it is waiting for admin approval.'
+      };
   }
 };
 

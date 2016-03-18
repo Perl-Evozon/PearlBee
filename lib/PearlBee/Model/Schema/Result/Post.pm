@@ -413,17 +413,17 @@ sub as_hashref_sanitized {
 
 sub _massage_content {
   my ($self,$content) = @_;
-  return unless $content;
+  return '' unless $content;
   my @content = split '\n', $content;
   
-  my $in_pre = 0;
+  my $in_pre  = 0;
   my $in_code = 0;
   for (@content) {
-    $in_pre = 1 if m{<pre>};
-    $in_code = 1 if m{<code>};
-    $in_code = 0 if m{</code>};
-    $in_pre = 0 if m{</pre>};
-    next if $in_pre == 1 or $in_code == 1;
+    $in_pre  ++ if m{ <pre> }x;
+    $in_code ++ if m{ <code> }x;
+    $in_code -- if m{ </code> }x;
+    $in_pre  -- if m{ </pre> }x;
+    next if $in_pre > 0 or $in_code > 0;
 
     next if / ^ \s* $ /x;
     next if / ^ < /x;

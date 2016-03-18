@@ -41,6 +41,13 @@
     background-color: #ff6600;
     border: 1px solid transparent;
 }
+.blog .page-heading-blog{
+    font-family: "Montserrat","Open Sans",sans-serif ;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 150px;
+    text-transform: uppercase;
+}
 
 
 /*Media queries*/

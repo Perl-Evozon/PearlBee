@@ -13,7 +13,7 @@ PearlBee::Model::Schema::Result::Users - Users table.
 use strict;
 use warnings;
 use Dancer2; # Pick up the default avatar
-use String::Dirify qw( dirify );
+use PearlBee::Helpers::Util qw( string_to_slug );
 
 use base 'DBIx::Class::Core';
 
@@ -379,17 +379,10 @@ sub as_hashref_sanitized {
   return $href;
 }
 
-sub bpo_dirify {
-  my $text = shift;
-  $text = dirify($text);
-  $text =~ s/_/-/g;
-  return $text;
-}
-
 sub slug {
   my ($self) = @_;
 
-  return bpo_dirify( $self->username );
+  return string_to_slug( $self->username );
 }
 
 sub validate {

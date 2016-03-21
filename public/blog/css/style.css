@@ -4252,7 +4252,7 @@ background-size: cover;
         }
 
         #tab-content1 .loading-posts .more-posts {
-            left: 0;
+            left: -110px;
         }
 
         #tab-content2 .people .bubble img {
@@ -4471,6 +4471,7 @@ input.cmn-toggle-round-flat:checked + label:after {
       font-size: 23px;
    }
 }
+
 /*--------------------------------*/
 .btn-file {
   position: relative;
@@ -4733,7 +4734,18 @@ input[readonly] {
    }
 }
 
+.blog-top-part .bubble .blog-image {
+   width: 130px;
+   height: 130px;
+   border-radius: 50%;
+}
 
+@media all and (max-width: 400px){
+   .blog-top-part .bubble .blog-image {
+      width: 70px;
+      height: 70px;
+   }
+}
 
 
 

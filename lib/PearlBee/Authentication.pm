@@ -120,40 +120,50 @@ post '/register_success' => sub {
   };
 
   unless ( $params->{'username'} ) {
-    template 'signup', {
-      warning  => "Please provide a username",
-      ecaptcha => $captcha
+    return 
+    template 'register', {
+      error => "Please provide a username",  
+      email => $params->{'email'},
+      recaptcha => recaptcha_display()
     };
-    return
   }
 
   unless ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secret code
-    template 'signup', {
-      warning  => "Captcha failed",
-      ecaptcha => $captcha
-    };
-    return
+    return 
+    template 'register', {
+      error => "Make sure you introduced the captcha",  
+      email => $params->{'email'},
+      username => $params->{'username'},
+      name => $params->{'name'},
+      recaptcha => recaptcha_display()
+    }; 
   }
 
   my $existing_users =
     resultset('Users')->search({ email => $params->{'email'} })->count;
   if ($existing_users > 0) {
-    template 'signup', {
-      warning  => "An user with this email address already exists.",
-      ecaptcha => $captcha
+    return 
+    template 'register', {
+      warning => "An user with this email address already exists.",
+      email => $params->{'email'},  
+      username => $params->{'username'},
+      name => $params->{'name'},
+      recaptcha => recaptcha_display()
     };
-    return
   }
 
   $existing_users =
-    resultset('Users')->search_lc( $params->{username} )->count;
+    resultset('Users')->search( \[ 'lower(username) = ?' =>
+                                   $params->{username} ] )->count;
   if ($existing_users > 0) {
-    template 'signup', {
-      warning  => "The provided username is already in use.",
-      ecaptcha => $captcha
+    return 
+    template 'register', {
+      warning => "The provided username is already in use.",  
+      email => $params->{'email'},
+      name => $params->{'name'},
+      recaptcha => recaptcha_display()
     };
-    return
   }
 
   my $date  = DateTime->now();

@@ -31,9 +31,32 @@
             <div class="posts listings">
                <div class="blog-top-part">
                    <div class="col-xs-2 no-padding">
+                   [% FOREACH post IN posts %]
+
+                   [% LAST IF loop.count == 2 %]
                        <div class="bubble">
-                           <img class="blog-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]">
+      
+                            [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png") %]
+                            <img class="blog-image" src="[% post.user.avatar %]">
+ 
+                            [%ELSE %]
+                            [% IF (session.theme == 'dark') %]
+                            <img class="blog-image" src="/blog/img/male-user.png">
+
+                            [%ELSIF (session.theme == 'light') %]
+                            <img class="blog-image" src="/blog/img/male-user-light.png">
+
+                            [%ELSE%]
+                            <img class="blog-image" src="/blog/img/male-user.png">
+
+                            [%END%]
+                            [%END%]
+
+
+                           <!-- <img class="blog-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]"> -->
                        </div>
+
+                      [% END %]
                    </div>
 
                    <div class="col-xs-10">

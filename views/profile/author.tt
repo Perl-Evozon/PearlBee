@@ -11,7 +11,22 @@
                             <div class="description clearfix">
                                 <div class="col-xs-2">
                                     <div class="bubble">
-                                        <img class="user-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]">
+
+                                    [% IF (user.avatar != "/blog/img/male-user.png") && (user.avatar != "/blog/img/male-user-light.png") %]
+                                        <img class="user-image" src="[% user.avatar %]">
+             
+                                        [%ELSE %]
+                                        [% IF (session.theme == 'dark') %]
+                                        <img class="user-image" src="/blog/img/male-user.png">
+
+                                        [%ELSIF (session.theme == 'light') %]
+                                        <img class="user-image" src="/blog/img/male-user-light.png">
+
+                                        [%ELSE%]
+                                        <img class="user-image" src="/blog/img/male-user.png">
+
+                                        [%END%]
+                                        [%END%]
                                     </div>
                                 </div>
                                 <div class="col-xs-10">

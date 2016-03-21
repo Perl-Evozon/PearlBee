@@ -109,13 +109,13 @@
 
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
-											<a href="[%post_url%]"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
+											<a href="[% config.app_url %]/login?redirect=[% config.app_url %]/author/comments/page/1"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
 										</td>
 									</tr>
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
 											<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">or copying this link into your browser:</p>
-											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[%post_url%]</a></p>
+											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[% config.app_url %]/login?redirect=[% config.app_url %]/author/comments/page/1</a></p>
 										</td>
 									</tr>           
 									<tr><!-- START: EMAIL GRAY-ISH LINE--> 

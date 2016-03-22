@@ -109,7 +109,7 @@
 
 									<tr>
 										<td valign="top" width="720" style="padding-top:0px;">
-											<a href="[% config.app_url %]/login?redirect=[% config.app_url %]/author/comments/page/1"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold;">View comment</button></a>
+											<a href="[% config.app_url %]/login?redirect=[% config.app_url %]/author/comments/page/1"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold; cursor:pointer;">View comment</button></a>
 										</td>
 									</tr>
 									<tr>

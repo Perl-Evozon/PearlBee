@@ -368,7 +368,39 @@ $("#start-blogging").on('click', function (e) {
       }
     });
 
-    
+// Image upload perview
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('#image_upload_preview').attr('src', e.target.result);
+    }
+      reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#file-upload").change(function () {
+      readURL(this);
+  });
+
+$(".modal-footer .delete-img").on('click', function(){
+    var themeinitial = $('#cmn-toggle-4').is(':checked');
+        if (themeinitial === false){ 
+            $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
+        } else if (themeinitial === true) {
+            $('#image_upload_preview').attr('src', '/blog/img/male-user-light.png');
+        }
+});
+
+//submitting upload picture form
+
+
+$(".save-img").click(function() {
+    $("#upload-img").submit();
+});
+
+
 //  My profile password confirmation 
     
   $("#confirmNewPassword").keyup(function() {

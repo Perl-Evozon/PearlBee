@@ -284,17 +284,17 @@ sub remove_html {
 #
 sub string_to_slug {
 	my ($string) = @_;
-	$str = _xliterate_utf8( $string );
+	my $s = _xliterate_utf8( $string );
+	my $sep = '-';
+
 	$s = lc $s;            ## lower-case.
-	$str = uri_encode( $str );
+	$s = uri_encode( $s );
 	$s = remove_html($s);  ## remove HTML tags.
 	$s =~ s!&[^;\s]+;!!gs; ## remove HTML entities.
 	$s =~ s![^\w\s-]!!gs;  ## remove non-word/space chars.
-	$s =~ s!\s+!$sep!gs;   ## change space chars to underscores.
+	$s =~ s!\s+!$sep!gs;
 
-	my $slug = String::Dirify->dirify( trim($string), '-');
-
-	return $slug;
+	return $s;
 }
 
 =head2 Generate a valid slug kind name

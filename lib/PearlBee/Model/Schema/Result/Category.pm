@@ -152,9 +152,9 @@ sub safe_cascade_delete {
 
       if ( scalar ( @post_categories ) == 1 ) {
         $schema->resultset('PostCategory')->create({
-            post_id => $post->id,
+            post_id     => $post->id,
             category_id => '1'
-          });
+        });
       }
 
       $_->delete();

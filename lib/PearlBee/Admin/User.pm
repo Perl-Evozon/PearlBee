@@ -252,18 +252,17 @@ any '/admin/users/add' => sub {
 
     try {
 
-      my $hashed_password = create_password( params->{password} );
-      my $username        = params->{username};
-      my $email           = params->{email};
-      my $name            = params->{name};
-      my $role            = params->{role};
+      my $username = params->{username};
+      my $email    = params->{email};
+      my $name     = params->{name};
+      my $role     = params->{role};
 
-      resultset('Users')->create({
-        username      => $username,
-        password      => $hashed_password,
-        name          => $name,
-        role          => $role,
-        email         => $email,
+      resultset('Users')->create_hashed({
+        username => $username,
+        password => params->{password},
+        name     => $name,
+        role     => $role,
+        email    => $email,
       });
 
       Email::Template->send( config->{email_templates} . 'welcome.tt',
@@ -275,7 +274,7 @@ any '/admin/users/add' => sub {
             tt_vars => {
                 role      => $role,
                 username  => $username,
-                password  => $hashed_password,
+        	    password  => params->{password},
                 name      => $name,
                 app_url   => config->{app_url},
                 blog_name => session('blog_name'),

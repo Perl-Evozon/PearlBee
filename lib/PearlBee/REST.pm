@@ -12,18 +12,15 @@ Get an array with all tags
 
 =cut
 
-get '/api/tags.:format' => sub {
-  
+get '/api/tags.:format' => sub {  
 	my $user = session('user');
 
-    if ($user) {
-	  my @tags = resultset('Tag')->all;
-	  my @list;
+	if ($user) {
+		my @tags = resultset('Tag')->all;
+		my @list = map { $_->name } @tags;
 
-	  push @list, $_->name foreach(@tags);
-	  
-	  return \@list;
-   }
+		return \@list;
+	}
 };
 
 =head
@@ -35,14 +32,12 @@ get '/api/categories.:format' => sub {
   
 	my $user = session('user');
 
-    if ($user) {
-	  my @categories = resultset('Category')->all;
-	  my @list;
+	if ($user) {
+		my @categories = resultset('Category')->all;
+		my @list = map { $_->name } @categories;
 
-	  push @list, $_->name foreach(@categories);
-	  
-	  return \@list;
-   }
+		return \@list;
+	}
 };
 
 1;

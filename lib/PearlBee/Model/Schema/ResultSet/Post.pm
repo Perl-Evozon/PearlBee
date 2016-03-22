@@ -9,25 +9,22 @@ use PearlBee::Helpers::Util qw/string_to_slug generate_new_slug_name/;
 
 use String::Util qw(trim);
 
-=head
-
-Create a new post
+=head2 Create a new post
 
 =cut
 
 sub can_create {
   my ($self, $params) = @_;
 
-  my $title        = $params->{title};
-  my $slug         = $params->{slug};
-  my $content      = $params->{content};
-  my $user_id      = $params->{user_id};
-  my $status       = $params->{status};
-  my $cover        = $params->{cover};
+  my $title   = $params->{title};
+  my $slug    = $params->{slug};
+  my $content = $params->{content};
+  my $user_id = $params->{user_id};
+  my $status  = $params->{status};
+  my $cover   = $params->{cover};
 
-  my $post = $self->create({
+  my $post = $self->create_with_slug({
       title        => $title,
-      slug         => $slug,
       content      => $content,
       user_id      => $user_id,
       status       => $status,
@@ -37,7 +34,7 @@ sub can_create {
   return $post;
 }
 
-=item Check if the slug is already used, if so generate a new slug or return the old one
+=head2 Check if the slug is already used, if so generate a new slug or return the old one
 
 =cut
 
@@ -74,9 +71,7 @@ sub post_slug_exists {
 	return $post
 }
 
-=head
-
-Get the number of comments for this post
+=head2 Get the number of comments for this post
 
 =cut
 
@@ -89,9 +84,7 @@ sub nr_of_comments {
   return scalar @comments;
 }
 
-=head
-
-Get all tags as a string sepparated by a comma
+=head2 Get all tags as a string sepparated by a comma
 
 =cut
 
@@ -107,9 +100,7 @@ sub get_string_tags {
   return $joined_tags;
 }
 
-=head
-
-Status updates
+=head2 Status updates
 
 =cut
 
@@ -132,9 +123,7 @@ sub trash {
   $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
 
-=haed
-
-Check if the user has enough authorization for modifying
+=head2 Check if the user has enough authorization for modifying
 
 =cut
 
@@ -175,9 +164,9 @@ sub search_published {
 
 sub create_with_slug {
   my ($self, $args) = @_;
-  my $schema  = $self->result_source->schema;
-
-  my $slug = string_to_slug( $args->{description} );
+  my $schema = $self->result_source->schema;
+  my $slug   = string_to_slug( $args->{description} );
+  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
 
   $schema->resultset('Post')->create({
     title        => $args->{title},

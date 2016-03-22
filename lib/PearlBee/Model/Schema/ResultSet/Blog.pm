@@ -15,9 +15,9 @@ use base 'DBIx::Class::ResultSet';
 
 sub create_with_slug {
   my ($self, $args) = @_;
-  my $schema  = $self->result_source->schema;
-
-  my $slug = string_to_slug( $args->{description} );
+  my $schema = $self->result_source->schema;
+  my $slug   = string_to_slug( $args->{description} );
+  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
 
   $schema->resultset('Blog')->create({
     name        => $args->{name},

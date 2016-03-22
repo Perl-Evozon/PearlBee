@@ -7,6 +7,7 @@ Email: andrei.cacio@evozon.com
 
 package PearlBee::Admin::Category;
 
+use Try::Tiny;
 use Dancer2;
 
 use Dancer2::Plugin::DBIC;
@@ -24,9 +25,7 @@ get '/admin/categories' => sub {
   template 'admin/categories/list', { categories => \@categories }, { layout => 'admin' };
 };
 
-=head
-
-create method
+=head2 create method
 
 =cut
 
@@ -53,7 +52,7 @@ post '/admin/categories/add' => sub {
           name    => $name,
           slug    => $slug,
           user_id => $user->{id}
-        });
+      });
     }
     catch {
       error "Could not create category '$name'";

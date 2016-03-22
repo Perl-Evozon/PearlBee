@@ -169,4 +169,27 @@ sub search_published {
   return $self->search( @args );
 }
 
+=head2 Create post with internally-generated slug
+
+=cut
+
+sub create_with_slug {
+  my ($self, $args) = @_;
+  my $schema  = $self->result_source->schema;
+
+  my $slug = string_to_slug( $args->{description} );
+
+  $schema->resultset('Post')->create({
+    title        => $args->{title},
+    slug         => $slug,
+    description  => $args->{description},
+    cover        => $args->{cover},
+    content      => $args->{content},
+    content_more => $args->{content_more},
+    type         => $args->{type},
+    status       => $args->{status},
+    user_id      => $args->{user_id},
+  });
+}
+
 1;

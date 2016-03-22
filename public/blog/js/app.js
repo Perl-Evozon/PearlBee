@@ -386,6 +386,7 @@ $("#file-upload").change(function () {
 
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
+    $( "#file-upload" ).val("");
         if (themeinitial === false){ 
             $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
         } else if (themeinitial === true) {

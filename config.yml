@@ -86,10 +86,12 @@ blogs:
   user_posts: 10
 
 # Specifics
-email_signature:       'The Blogs.Perl.Org Team'
-default_email_sender:  'no-reply@pearlbee.com'
-welcome_email_subject: 'Welcome to Blogs.Perl.Org!'
-posts_on_page:         5
-blogs_on_page:         5
+default_blog_name:        'I Blog about Perl'
+default_blog_description: 'A blog about the Perl programming language'
+email_signature:          'The Blogs.Perl.Org Team'
+default_email_sender:     'no-reply@pearlbee.com'
+welcome_email_subject:    'Welcome to Blogs.Perl.Org!'
+posts_on_page:            5
+blogs_on_page:            5
 search:
   user_posts: 10

@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {

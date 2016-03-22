@@ -27,6 +27,7 @@
 
                                         [%END%]
                                         [%END%]
+
                                     </div>
                                 </div>
                                 <div class="col-xs-10">
@@ -82,13 +83,14 @@
                 </div>
             </div>
         </div>
-        <div class="blog">
+        <div class="blog_author">
             <div class="container">
 
                 <div class="row">
                     <div id="author-tab-content1" class="tab-content">
                         <div class="author-entries-list">
                             [% FOREACH blog in blogs %]
+                            
                             <div class="info-entry">
                                 <p class="uppercase entry-name">[% blog.name %]</p>
                                 <ul class="info-blog">
@@ -101,6 +103,7 @@
 
                             </div>
                             [% END %]
+                           
                         </div>
                         <!--button more for author profile page-->
 

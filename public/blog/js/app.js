@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -368,7 +367,7 @@ $("#start-blogging").on('click', function (e) {
       }
     });
 
-  // Image upload perview
+// Image upload perview
 
   function readURL(input) {
     if (input.files && input.files[0]) {
@@ -386,6 +385,7 @@ $("#file-upload").change(function () {
 
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
+    $( "#file-upload" ).val("");
         if (themeinitial === false){ 
             $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
         } else if (themeinitial === true) {
@@ -400,7 +400,7 @@ $(".save-img").click(function() {
     $("#upload-img").submit();
 });
 
-    
+
 //  My profile password confirmation 
     
   $("#confirmNewPassword").keyup(function() {
@@ -470,12 +470,15 @@ if ($(".no-posts").length > 0){
 //Tabs label align and tabs min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
-$('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+$('.search-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
 $(window).resize(function(){
-    $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+    $('.search-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
 });
 
-
+$('.author-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".author-page .background-bar").outerHeight(true) - $(".author-description").outerHeight(true));
+$(window).resize(function(){
+    $('.author-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".author-page .background-bar").outerHeight(true) - $(".author-description").outerHeight(true));
+});
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {

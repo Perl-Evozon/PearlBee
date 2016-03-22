@@ -163,13 +163,6 @@
 /*/pages tab*/
 
 
-footer{
-     position: absolute;
-     bottom: 0;
-     width: 100%;
-     display: none;
- }
-
 /*Media queries*/
 @media all and (max-width: 360px) {
     .author-description .author-info {

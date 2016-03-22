@@ -27,6 +27,7 @@
 
                                         [%END%]
                                         [%END%]
+
                                     </div>
                                 </div>
                                 <div class="col-xs-10">
@@ -82,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div class="blog">
+        <div class="blog_author">
             <div class="container">
 
                 <div class="row">

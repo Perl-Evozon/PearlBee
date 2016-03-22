@@ -125,6 +125,9 @@
     .author-page .text-listing-entries {
         padding-bottom: 25px;
     }
+.author-description .author-info{
+    padding-left: 0px;
+}
 
 /*avatars to user profile*/
 .author-page .description .bubble img.user-image{
@@ -168,8 +171,28 @@ footer{
  }
 
 /*Media queries*/
-@media all and (max-width: 850px) {
+@media all and (max-width: 360px) {
     .author-description .author-info {
-        padding-left: 25%;
+        padding-left: 35%;
+    }
+}
+@media screen and (min-width: 360px) and (max-width:480px){
+    .author-description .author-info {
+        padding-left: 30%;
+    }
+}
+@media screen and (min-width: 480px) and (max-width:620px){
+    .author-description .author-info {
+        padding-left: 20%;
+    }
+}
+@media screen and (min-width: 620px) and (max-width:780px){
+    .author-description .author-info {
+        padding-left: 10%;
+    }
+}
+@media screen and (min-width: 780px) and (max-width:980px){
+    .author-description .author-info {
+        padding-left: 5%;
     }
 }

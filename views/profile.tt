@@ -19,9 +19,67 @@ $(document).ready(function() {
 	if(userBiography) {
 		$("#user_biography").attr('placeholder', userBiography);
 	}
+
+// Image upload perview modal cancel button
+	$(".modal-footer .cancel-img").on('click', function(){
+			var sessionAvatar = '[% session.user.avatar %]';
+			var src = $( ".credentials .bubble" ).parent().find('img').attr('src');
+     if (src === "/blog/img/male-user.png") {
+    		$('#image_upload_preview').attr('src', "/blog/img/male-user.png");
+    	} else if (src === "/blog/img/male-user-light.png") {
+    		$('#image_upload_preview').attr('src', "/blog/img/male-user-light.png");
+    	} else {
+    		$('#image_upload_preview').attr('src', src);
+    	}
+  })
 });
 </script>
 <div class="blog">
+
+<!-- Modal -->
+<div class="modal fade" id="changeImg" tabindex="-1" role="dialog" aria-labelledby="changeImgLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="changeImgLabel">Change Photo</h4>
+      </div>
+      <div class="modal-body clearfix">
+      	<div class="col-xs-6 profile-pic">
+						<div class="bubble text-center">
+														[% IF (session.user.avatar != "/blog/img/male-user.png") && (session.user.avatar != "/blog/img/male-user-light.png")  %]
+                            <img id="image_upload_preview" class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
+                            [%ELSE %]
+                            [% IF (session.theme == 'dark') %]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">
+                            [%ELSIF (session.theme == 'light') %]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user-light.png" data-pin-nopin="true">
+                            [%ELSE%]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">                                                      
+                          [%END%]
+                          [%END%]
+                
+             </div>
+        </div>
+				<div class="col-xs-6 profile-pic">
+	        <form action="/profile-image" enctype="multipart/form-data" method="post" id="upload-img">
+									<span class="file-input btn btn-file light-button buttons-group change-pic">
+										<p>Choose picture</p> <!-- <input type="file" name="file"> -->
+									<input type="file" id="file-upload" class="form-control" name="file">
+									</span>
+					</form>
+				</div>
+
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="save-img btn btn-primary">Save</button>
+        <button type="button" class="cancel-img btn btn-default">Cancel</button>
+        <button type="button" class="delete-img btn">Delete Photo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
  
 	<div class="myprofile register sign-up">
  
@@ -42,15 +100,22 @@ $(document).ready(function() {
 				<div class="credentials">
 					<div class="col-sm-2 profile-pic">
 						<div class="bubble">
-                            <img class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
-                        </div>
+														[% IF (session.user.avatar != "/blog/img/male-user.png") && (session.user.avatar != "/blog/img/male-user-light.png")  %]
+                            <img id="image_upload_preview" class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
+                            [%ELSE %]
+                            [% IF (session.theme == 'dark') %]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">
+                            [%ELSIF (session.theme == 'light') %]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user-light.png" data-pin-nopin="true">
+                            [%ELSE%]
+                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">                                                      
+                          [%END%]
+                          [%END%]
+             </div>
 						<div>
-							<form action="/profile-image" enctype="multipart/form-data" method="post">
-								<span class="file-input btn btn-file light-button buttons-group change-pic">
-									<p>Change picture</p> <!-- <input type="file" name="file"> -->
-								<input type="file" id="file" class="form-control" name="file">
-								</span>
-							</form> 
+							 
+							<button type="button" class="btn change-pic" data-toggle="modal" data-target="#changeImg">Change photo
+							</button>
 						</div>
 				
 					</div>

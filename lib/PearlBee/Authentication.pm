@@ -169,7 +169,7 @@ post '/register_success' => sub {
   my $date  = DateTime->now();
   my $token = generate_hash( $params->{'email'} . $date );
 
-  resultset('Users')->create_hashed({
+  resultset('Users')->create_hashed_with_blog({
     username       => $params->{username},
     password       => $params->{password},
     email          => $params->{email},

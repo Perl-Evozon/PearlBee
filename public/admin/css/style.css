@@ -1228,3 +1228,41 @@ footer .copy{
       overflow: scroll;
    }
 }
+
+/*Set password style - Paul*/
+.set-password .buttons-group {
+	width: 100%;
+}
+.set-password .buttons-group .dark-button {
+   width: 25%;
+   height: 37px;    
+   border: 0;
+   border-radius: 5px;
+   background: #333;
+   color: #3BBEDC;
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.set-password .buttons-group .dark-button:hover {
+   color: #0fa6bc;
+   border: 1px solid #3BBEDC;
+}
+
+.set-password .buttons-group .light-button {
+   width: 25%;
+   height: 37px;    
+   border: 0;
+   border-radius: 5px;
+   background: #333;
+   color: #3BBEDC;
+   font-size: 14px;
+   font-weight: 700;
+   background: #ffffff;
+   border: 1px solid;
+}
+
+.set-password .buttons-group .light-button:hover {
+   color: #0fa6bc;
+   border: 1px solid #0fa6bc;
+}

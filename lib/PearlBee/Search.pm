@@ -1,8 +1,6 @@
 package PearlBee::Search;
 
-=head
-
-Search controller
+=head1 Search controller
 
 =cut
 
@@ -13,9 +11,7 @@ use PearlBee::Helpers::Util qw(map_posts);
 use PearlBee::Helpers::ElasticSearch qw(search_posts search_comments);
 use Data::Dumper;
 
-=head
-
-Search user info.
+=head2 Search user info.
 
 =cut
 
@@ -25,8 +21,8 @@ sub map_user {
     my $blog_count    = resultset('BlogOwner')->count({ user_id => $user->id });
     my $post_count    = resultset('Post')->count({ user_id => $user->id });
     my $comment_count = resultset('Comment')->count({ uid => $user->id });
+    my $user_href     = $user->as_hashref_sanitized;
 
-    my $user_href = $user->as_hashref;
     $user_href->{counts} = {
       blog    => $blog_count,
       post    => $post_count,
@@ -35,6 +31,10 @@ sub map_user {
 
     return $user_href;
 }
+
+=head2 Search for user info, return JSON
+
+=cut
 
 get '/search/user-info/:query' => sub {
     my $search_query = route_parameters->{'query'};
@@ -47,9 +47,7 @@ get '/search/user-info/:query' => sub {
       { info => [ map { map_user($_) } @user ] } );
 };
 
-=head
-
-Search user posts.
+=head2 Search user posts.
 
 =cut
 
@@ -70,9 +68,7 @@ get '/search/user-posts/:query' => sub {
     return $json->encode({ posts => [ @mapped_posts ] });
 };
 
-=head
-
-Search user tags.
+=head2 Search user tags.
 
 =cut
 
@@ -88,7 +84,7 @@ get '/search/user-tags/:query' => sub {
 };
 
 
-=item /search/posts/:query
+=head2 /search/posts/:query
 
 Search posts via ElasticSearch
 
@@ -105,9 +101,7 @@ get '/search/posts/:query/:page' => sub {
     return $json->encode({ posts => \@results });
 };
 
-=head
-
-Search users.
+=head2 Search users.
 
 =cut
 

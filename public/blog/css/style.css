@@ -4776,6 +4776,12 @@ input[readonly] {
 
 /* End */
 
+.error_ascii {
+   display: none;
+   margin-top: 15px;
+   color: red;
+}
+
 
 
 

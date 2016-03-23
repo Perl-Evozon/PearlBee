@@ -11,6 +11,7 @@
             </div>
             <div class="form-group">              
               <input type="text" class="form-control" id="usernameRegister" placeholder="Username" name="username" value="[% username ? username : ''%]">
+              <label class="error_ascii">Usernames must be composed entirely of ASCII characters.</label>
             </div>
             <div class="form-group">              
               <input type="text" class="form-control" id="displayNameRegister" placeholder="Display Name" name="name" value="[% name ? name : ''%]">
@@ -25,7 +26,6 @@
                [% recaptcha %]
             </div>
             
-
             <!--             <div class="checkbox ">
               <label>
                 <input type="checkbox" id="confirmTerms">I agree to the terms and conditions

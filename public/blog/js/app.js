@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -281,6 +283,7 @@ $("#start-blogging").on('click', function (e) {
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
       var errors = 0;
+      var ascii = /^[\x00-\x7F]*$/;
 
 //      Email validation
       $('#register_form input').css('border-color' , '#CCC').removeClass('error');
@@ -297,6 +300,12 @@ $("#start-blogging").on('click', function (e) {
 
       } else if (username.length < 3) { //      Username validation
         $('.change_error').text('Username field is necesary').css('color' , 'red');
+        $('#usernameRegister').css('border-color' , 'red');
+        errors++;
+
+      } else if (!(username).match(ascii)) { //      Username ascii validation
+        $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
+        $('.error_ascii').slideToggle( "slow" );
         $('#usernameRegister').css('border-color' , 'red');
         errors++;
 

@@ -126,3 +126,9 @@ color: #333333;
     border-bottom: 1px solid #eaeaea;
 }
 
+.author-page .blog_author {
+   background: none;
+   background-color: #ffffff;
+   background-repeat: repeat;
+}
+

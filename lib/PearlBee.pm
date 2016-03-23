@@ -277,6 +277,13 @@ post '/sign-up' => sub {
   my $response = $params->{'g-recaptcha-response'};
   my $result   = recaptcha_verify($response);
 
+  unless ( $params->{'username'} =~ m{ ^ [-_a-zA-Z0-9]+ $ }x ) {
+    $template_params->{warning}   = "Username must must consist of a-z, A-Z, 0-9, '-', '_'";
+    $template_params->{recaptcha} = recaptcha_display();
+
+    template 'signup', $template_params;
+  }
+
   if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secret code
     my $existing_users = resultset('Users')->search({ email => $params->{'email'} })->count;

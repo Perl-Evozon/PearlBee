@@ -203,6 +203,7 @@
 -->
         <div class="register-wrapper"> 
           <form id="signin_form" action="/login" method="post">
+	    <input type="hidden" name="redirect" value="[% redirect %]" />
             <div class="form-group">              
               <input type="text" class="form-control" id="usernameSingin" placeholder="Username" name="username" required>
             </div>

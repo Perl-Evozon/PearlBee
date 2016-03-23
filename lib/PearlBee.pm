@@ -252,9 +252,11 @@ get '/register_done' => sub { template 'register_done' };
 get '/password_recovery' => sub { template 'password_recovery' };
 
 get '/sign-up' => sub {
+  my $redirect = param('redirect');
 
   template 'signup', {
-    recaptcha => recaptcha_display()
+    recaptcha => recaptcha_display(),
+    redirect  => $redirect
   };
 };
 
@@ -264,6 +266,7 @@ get '/sign-up' => sub {
 
 post '/sign-up' => sub {
   my $params          = body_parameters;
+  my $redirect = body_parameters->{'redirect'};
   my $template_params = {
     username => $params->{'username'},
     email    => $params->{'email'},

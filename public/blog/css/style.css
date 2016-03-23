@@ -4748,11 +4748,6 @@ input[readonly] {
 }
 
 
-.author-page .blog_author {
-   background: url('../img/backblog.jpg');
-   background-repeat: repeat;
-}
-
 /* !!!! delete when multiple blogs feature enabled !!!!!! */
 
 .blog .info-blog {

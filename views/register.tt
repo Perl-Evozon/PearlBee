@@ -12,6 +12,7 @@
             <div class="form-group">              
               <input type="text" class="form-control" id="usernameRegister" placeholder="Username" name="username" value="[% username ? username : ''%]">
               <label class="error_ascii">Usernames must be composed entirely of ASCII characters.</label>
+              <label class="error_char">Usernames must be composed without special characters.</label>
             </div>
             <div class="form-group">              
               <input type="text" class="form-control" id="displayNameRegister" placeholder="Display Name" name="name" value="[% name ? name : ''%]">
@@ -22,7 +23,7 @@
             <div class="form-group">              
               <input type="password" class="form-control" id="confirmPasswordRegister" placeholder="Password Confirmation" name="confirm_password">
             </div>
-            <div class="captcha">              
+            <div class="captcha">
                [% recaptcha %]
             </div>
             

@@ -283,7 +283,8 @@ $("#start-blogging").on('click', function (e) {
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
       var errors = 0;
-      var ascii = /^[\x00-\x7F]*$/;
+      var ascii = /^[\x21-\x7E]+/;
+      var speciaCharacters = /[^\w\s\.@-]/g;
 
 //      Email validation
       $('#register_form input').css('border-color' , '#CCC').removeClass('error');
@@ -307,6 +308,20 @@ $("#start-blogging").on('click', function (e) {
         $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
         $('.error_ascii').slideToggle( "slow" );
         $('#usernameRegister').css('border-color' , 'red');
+          $("#usernameRegister").keyup(function() {
+              $('.error_ascii').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
+        errors++;
+
+      } else if ((username).match(speciaCharacters)) { //      Username special URL char validation
+        $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
+        $('.error_char').slideToggle( "slow" );
+        $('#usernameRegister').css('border-color' , 'red');
+        $("#usernameRegister").keyup(function() {
+              $('.error_char').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
         errors++;
 
       }
@@ -446,21 +461,22 @@ $(".save-img").click(function() {
   $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
   $(window).resize(function(){
     $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
-  });
+  }); 
+
 //Blog start overlay
   $('.blog-start').css('max-height', $(window).height()*0.99);
   $(window).resize(function(){
-  	 $('.blog-start').css('max-height', $(window).height()*0.99);
+    $('.blog-start').css('max-height', $(window).height()*0.99);
   });
-	
+ 
   $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
   $(window).resize(function(){
-  	 $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
+    $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
   });
-	
+ 
   $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
   $(window).resize(function(){
-  	 $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
+    $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
   });
 
 

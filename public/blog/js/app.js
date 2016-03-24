@@ -283,7 +283,8 @@ $("#start-blogging").on('click', function (e) {
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
       var errors = 0;
-      var ascii = /^[\x00-\x7F]*$/;
+      var ascii = /^[\x21-\x7E]+/;
+      var speciaCharacters = /[^\w\s\.@-]/g;
 
 //      Email validation
       $('#register_form input').css('border-color' , '#CCC').removeClass('error');
@@ -307,6 +308,20 @@ $("#start-blogging").on('click', function (e) {
         $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
         $('.error_ascii').slideToggle( "slow" );
         $('#usernameRegister').css('border-color' , 'red');
+          $("#usernameRegister").keyup(function() {
+              $('.error_ascii').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
+        errors++;
+
+      } else if ((username).match(speciaCharacters)) { //      Username special URL char validation
+        $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
+        $('.error_char').slideToggle( "slow" );
+        $('#usernameRegister').css('border-color' , 'red');
+        $("#usernameRegister").keyup(function() {
+              $('.error_char').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
         errors++;
 
       }
@@ -563,7 +578,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].username);
-                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
+                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.slug);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -628,7 +643,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
-                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].username);
+                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].slug);
                         newItem.find(".info-entry .date").text(userInfo[i].register_date);
 
                         newItem.find(".properties li.nr-blog span").text(userInfo[i].counts.blog);

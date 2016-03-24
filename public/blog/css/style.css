@@ -4817,7 +4817,8 @@ input[readonly] {
 
 /* End */
 
-.error_ascii {
+.error_ascii,
+.error_char {
    display: none;
    margin-top: 15px;
    color: red;

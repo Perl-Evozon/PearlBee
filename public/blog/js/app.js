@@ -578,7 +578,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             }
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
-                        newItem.find(".user a").html(posts[i].username);
+                        newItem.find(".user a").html(posts[i].user.name);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);

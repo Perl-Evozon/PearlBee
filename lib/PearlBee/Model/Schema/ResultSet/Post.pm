@@ -22,13 +22,16 @@ sub can_create {
   my $user_id = $params->{user_id};
   my $status  = $params->{status};
   my $cover   = $params->{cover};
+  my $type    = $params->{type};
 
   my $post = $self->create_with_slug({
-      title        => $title,
-      content      => $content,
-      user_id      => $user_id,
-      status       => $status,
-      cover        => $cover,
+    title   => $title,
+    content => $content,
+    user_id => $user_id,
+    status  => $status,
+    cover   => $cover,
+    type    => $type,
+    slug    => $slug,
   });
 
   return $post;

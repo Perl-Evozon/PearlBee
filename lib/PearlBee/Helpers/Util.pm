@@ -310,6 +310,7 @@ sub map_posts {
         my $el = $post->as_hashref;
         $el->{nr_of_comments}     = $post->nr_of_comments;
         $el->{created_date_human} = $post->created_date_human;
+        $el->{content_formatted}  = $post->content_formatted;
         
         # get post author
         $el->{user} = {

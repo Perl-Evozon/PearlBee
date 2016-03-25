@@ -17,6 +17,7 @@ use base 'DBIx::Class::Core';
 use DateTime;
 use DateTime::Format::MySQL;
 use Date::Period::Human;
+use PearlBee::Helpers::Markdown;
 
 =head1 TABLE: C<post>
 
@@ -443,6 +444,26 @@ sub massaged_content {
 sub massaged_content_more {
   my ($self)  = @_;
   return $self->_massage_content( $self->content_more );
+}
+
+sub content_formatted {
+  my ($self) = @_;
+
+  if ( $self->type eq 'Markdown' ) {
+    return PearlBee::Helpers::Markdown::Markdown( $self->content );
+  }
+
+  return $self->massaged_content;
+}
+
+sub content_more_formatted {
+  my ($self) = @_;
+
+  if ( $self->type eq 'Markdown' ) {
+    return PearlBee::Helpers::Markdown::Markdown( $self->content_more );
+  }
+
+  return $self->massaged_content_more;
 }
 
 1;

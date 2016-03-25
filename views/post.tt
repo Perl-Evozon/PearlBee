@@ -66,8 +66,8 @@
                         
                         <!-- Para -->
                         <p>
-                           [% post.massaged_content %]
-                           [% post.massaged_content_more %]
+                           [% post.content_formatted %]
+                           [% post.content_more_formatted %]
                         </p>
                         </div>
 

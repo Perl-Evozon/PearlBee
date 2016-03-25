@@ -55,7 +55,7 @@ sub create_hashed_with_blog {
     name        => config->{default_blog_name},
     description => config->{default_blog_description},
   });
-  $schema->resultset('BlogOwners')->create({
+  $schema->resultset('BlogOwner')->create({
     blog_id => $blog->id,
     user_id => $user->id,
   });

@@ -1,6 +1,7 @@
 requires 'Parse::CPAN::Meta';
 requires 'CPAN::Meta::Check';
 requires 'Test::Warnings';
+requires 'Term::ANSIColor';
 requires 'Dancer2'                   => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'DBIx::Class::TimeStamp';

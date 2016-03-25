@@ -22,6 +22,7 @@ WriteMakefile(
         'Parse::CPAN::Meta'          => 0,
         'CPAN::Meta::Check'          => 0,
         'Test::Warnings'             => 0,
+        'Term::ANSIColor'            => 0,
         'Dancer2'                    => 0.136000,
         'Dancer2::Plugin::DBIC'      => 0,
         'DBIx::Class::TimeStamp'     => 0,

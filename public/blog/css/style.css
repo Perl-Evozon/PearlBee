@@ -1360,24 +1360,20 @@ strong{
 .blog-start {
 
    z-index: 12;
-/*   background: url("../img/camila-blue.jpg") center center no-repeat;*/
+   background: url("../img/camila-blue.jpg") center center no-repeat;
    width: 100%;
    position: absolute;
-/*   background-size: cover;*/
-	background-color: #43C8E7;
+   background-size: cover;
    height: 37%;
    top: 0;
 }
 
 .blog-start .container {
    height: 100%;
-	background: url("../img/camila-blue.jpg") center center no-repeat;
-	background-size: cover;
 }
 
 .blog-start .row {
    height: 100%;
-	margin-top: 80px;
 }
 
 .blog-start .container-bottom {
@@ -1387,34 +1383,28 @@ strong{
 }
 
 .blog-start-wrapper {
-/*   margin-top: 10em;*/
-	padding-top: 8em;
-   margin-top: 0;
+   margin-top: 10em;
    color: #333333;
-/*   height: 80%;*/
+   height: 80%;
 }
 
 .blog-start-wrapper h1 {
    font-size: 55px;
    margin-top: 10px;
-   letter-spacing: 1px;
-	font-weight: bold;
+   letter-spacing: 1px
 }
 
 .blog-start-wrapper h4 {
-   margin: 2em auto;
+   margin: 37px auto;
    font-size: 17px;
    width: 70%;
    line-height: 1.2em;
    letter-spacing: 1px;
-	font-weight: bold;
 }
 
 .buttons-wrapper {
-/*
    margin-top: 4em;
    margin-bottom: 14em;
-*/
 }
 
 .buttons-wrapper button {
@@ -2306,17 +2296,6 @@ footer .fwidget #powered_by {
 
 
 /* Responsive CSS */
-@media (max-width: 321px) {
-	.blog-start-wrapper{
-		padding-top: 1em !important;
-	}
-	.blog-start-wrapper .buttons-wrapper {
-    	margin: 1em auto;
-	}
-	.blog-start .close-overlay {
-    margin-left: 5em !important;
-}
-}
 
 /* Mobile phones */
 @media (max-width: 381px) {
@@ -2327,11 +2306,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-		padding-top: 3em;
-/*
-      margin-top: 8em !important;
-		height: 75% !important;
-*/
+      margin-top: 4em !important;
    }
    .blog-start-wrapper h1 {
       font-size: 20px;
@@ -2446,7 +2421,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 2em;
+      margin-top: 3em !important;
    }
    .blog-start-wrapper h1 {
       font-size: 20px;
@@ -2478,7 +2453,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 0;
+      margin-top: 3em !important;
    }
    .blog-start-wrapper h1 {
       font-size: 25px;
@@ -2496,7 +2471,7 @@ footer .fwidget #powered_by {
    }
    .blog-start .close-overlay {
       position: initial;
-      margin-left: 13em;
+      margin-left: 15em;
    }
 }
 
@@ -2505,13 +2480,10 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 1em;
+      margin-top: 3em !important;
    }
    .blog-start-wrapper h1 {
       font-size: 25px;
-   }
-	.blog-start-wrapper h4 {
-      margin: 1em auto;
    }
    .buttons-wrapper {
       margin: 2em auto;
@@ -2566,7 +2538,7 @@ footer .fwidget #powered_by {
    
    /* START Home-page-overlay*/
    .blog-start-wrapper {
-/*      margin-top: 6em;*/
+      margin-top: 6em;
    }
    .blog-start-wrapper h1 {
       font-size: 33px;
@@ -2585,26 +2557,21 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 3em;
+      margin-top: 5em;
    }
    .blog-start-wrapper h1 {
       font-size: 29px;
    }
    .blog-start-wrapper h4 {
-      margin: 2em auto;
+      margin: 15px auto;
    }
    .buttons-wrapper {
-      margin: 1em auto;
+      margin: 2em auto;
    }
-	.buttons-wrapper button {
-		padding: 10px 30px;
-		min-width: 110px;
-	}
    .blog-start .close-overlay {
-/*      position: initial;*/
-      margin-left: 17em;
+      position: initial;
+      margin-left: 18em;
    }
-
 }
 
 /*only for iphone 6 plus*/
@@ -2636,7 +2603,7 @@ footer .fwidget #powered_by {
 
 @media (min-width: 960px) and (max-width: 1024px) and (orientation: landscape) {
    .blog-start-wrapper {
-/*      margin-top: 5em;*/
+      margin-top: 5em;
    }
    .blog-start-wrapper h1 {
       font-size: 29px;
@@ -2719,18 +2686,15 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start {
-/*      height: 20% !important;*/
+      height: 20% !important;
    }
    .blog-start-wrapper {
-/*      margin-top: 5em;*/
+      margin-top: 5em;
    }
    .blog-start-wrapper h1 {
-      font-size: 39px;
+      font-size: 45px;
       margin: 10px 45px;
    }
-	.blog-start-wrapper h4 {
-		font-size: 16px;
-	}
    .blog-start .close-overlay {
       margin-left: 16em;
    }
@@ -2791,22 +2755,17 @@ footer .fwidget #powered_by {
    
    /* START Home-page-overlay*/
    .blog-start {
-/*      height: 15%;*/
+      height: 15%;
    }
    .blog-start .close-overlay {
-      margin-left: 16em;
+      margin-left: 18em;
    }
    .blog-start-wrapper {
-      margin-top: 0;
-		padding-top: 2em;
-   }
-	.blog-start-wrapper h1 {
-      font-size: 42px !important;
+      margin-top: 5em;
    }
    .buttons-wrapper {
       margin: 2em auto;
    }
-
    /*END Home-page-overlay*/
 }
 /*
@@ -4818,7 +4777,8 @@ input[readonly] {
 /* End */
 
 .error_ascii,
-.error_char {
+.error_char,
+.error_file {
    display: none;
    margin-top: 15px;
    color: red;

@@ -417,10 +417,31 @@ $(".modal-footer .delete-img").on('click', function(){
         }
 });
 
+// Validation file input for img only 
+
+
+function stringEndsWithValidExtension(stringToCheck, acceptableExtensionsArray, required) {
+    if (required == false && stringToCheck.length == 0) { return true; }
+    for (var i = 0; i < acceptableExtensionsArray.length; i++) {
+        if (stringToCheck.toLowerCase().endsWith(acceptableExtensionsArray[i].toLowerCase())) { return true; }
+    }
+    return false;
+}
+
+
+String.prototype.startsWith = function (str) { return (this.match("^" + str) == str) }
+
+String.prototype.endsWith = function (str) { return (this.match(str + "$") == str) }
+
+
 //submitting upload picture form
 
 
 $(".save-img").click(function() {
+    if (!stringEndsWithValidExtension($("[id*='file-upload']").val(), [".png", ".jpeg", ".jpg", ".bmp", ".gif"], false)) {
+        $('.error_file').fadeIn().delay(3000).fadeOut(2000);  
+        return false;
+    }
     $("#upload-img").submit();
 });
 

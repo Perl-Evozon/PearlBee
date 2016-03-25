@@ -1360,20 +1360,24 @@ strong{
 .blog-start {
 
    z-index: 12;
-   background: url("../img/camila-blue.jpg") center center no-repeat;
+/*   background: url("../img/camila-blue.jpg") center center no-repeat;*/
    width: 100%;
    position: absolute;
-   background-size: cover;
+/*   background-size: cover;*/
+   background-color: #43C8E7;
    height: 37%;
    top: 0;
 }
 
 .blog-start .container {
    height: 100%;
+   background: url("../img/camila-blue.jpg") center center no-repeat;
+   background-size: cover;
 }
 
 .blog-start .row {
    height: 100%;
+   margin-top: 80px;
 }
 
 .blog-start .container-bottom {
@@ -1383,28 +1387,34 @@ strong{
 }
 
 .blog-start-wrapper {
-   margin-top: 10em;
+/*   margin-top: 10em;*/
+   padding-top: 8em;
+   margin-top: 0;
    color: #333333;
-   height: 80%;
+/*   height: 80%;*/
 }
 
 .blog-start-wrapper h1 {
    font-size: 55px;
    margin-top: 10px;
-   letter-spacing: 1px
+   letter-spacing: 1px;
+   font-weight: bold;
 }
 
 .blog-start-wrapper h4 {
-   margin: 37px auto;
+   margin: 2em auto;
    font-size: 17px;
    width: 70%;
    line-height: 1.2em;
    letter-spacing: 1px;
+   font-weight: bold;
 }
 
 .buttons-wrapper {
+/*
    margin-top: 4em;
    margin-bottom: 14em;
+*/
 }
 
 .buttons-wrapper button {
@@ -2278,12 +2288,12 @@ footer .copy{
 }
 
 footer .f-logo {
-	margin-top: 5px;
+   margin-top: 5px;
 }
 
 footer .fwidget .powered-by {
-	width: 100%;
-	float: right;
+   width: 100%;
+   float: right;
 }
 
 footer .fwidget #powered_by {
@@ -2296,6 +2306,17 @@ footer .fwidget #powered_by {
 
 
 /* Responsive CSS */
+@media (max-width: 321px) {
+   .blog-start-wrapper{
+      padding-top: 1em !important;
+   }
+   .blog-start-wrapper .buttons-wrapper {
+      margin: 1em auto;
+   }
+   .blog-start .close-overlay {
+    margin-left: 5em !important;
+}
+}
 
 /* Mobile phones */
 @media (max-width: 381px) {
@@ -2306,7 +2327,11 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      margin-top: 4em !important;
+      padding-top: 3em;
+/*
+      margin-top: 8em !important;
+      height: 75% !important;
+*/
    }
    .blog-start-wrapper h1 {
       font-size: 20px;
@@ -2326,94 +2351,94 @@ footer .fwidget #powered_by {
    .blog-start .close-overlay {
       margin-left: 6em;
    }
-	/* profile page */
-	.credentials .buttons-group {
-		width: 85% !important;
-	}
-	.credentials .change-pic {
-		margin: 10px auto !important;
-		width: auto !important;
-	}
-	.credentials .profile-pic {
-		margin-top: 80px;
-	}
-	.myprofile-head h1 {
-		font-size: 34px;
-	}
+   /* profile page */
+   .credentials .buttons-group {
+      width: 85% !important;
+   }
+   .credentials .change-pic {
+      margin: 10px auto !important;
+      width: auto !important;
+   }
+   .credentials .profile-pic {
+      margin-top: 80px;
+   }
+   .myprofile-head h1 {
+      font-size: 34px;
+   }
 }
 
 @media (max-width: 480px) {
-	footer .flinks {
-		height: 140px;
-	}
-	footer .fwidget h5 {
-		text-align: center;
-		width: 100%;
-	}
-	footer .fwidget p {
-		text-align: center;
-		margin: 0 auto;
-	}
-	footer .fwidget #copywrite_mobile {
-	display: inherit;
-	}
-	footer .fwidget #copywrite_desktop {
-	display: none;
-	}
-	footer .fwidget .footer-logo {
-		margin: 0 auto 30px auto;
-		float: initial;
-	}
-	footer .fwidget .powered-by {
-		float: initial;
-	}
-	footer .fwidget #powered_by {
-		margin: 0 auto;
-		float: initial;
-	}
-		
-/*	responsive for myprofile*/
-	.myprofile.register .container {
-		margin: 30px auto;
-	}
-	.myprofile-head h1 {
-		margin-left: 10px;
-	}
-	.myprofile-head .write-post {
-		margin-top: 5px;
-	}
-	.myprofile-head .links-group {
-		text-align: center;
-	}
-	.credentials .change-pic {
-		margin: 10px auto !important;
-		width: auto !important;
-	}
-	.credentials label {
-		display: inherit !important;
-	}
-	.credentials h2 {
-		margin: 30px 0 20px 10px !important;
-	}
-	.credentials .col-sm-2 {
-		text-align: center;
-	}
-	.credentials .col-sm-10 .input-group {
-		margin: 10px auto;
-		padding: 0 10px;
-	}
-	.credentials .buttons-group {
-		margin-left: 40px
-	}
-	.credentials .buttons-group label {
-		width: 100px;
-	}
-	.credentials .buttons-group button {
-		width: 58px !important;
-	}
-	.credentials .form-control {
-		width: 100% !important;
-	}
+   footer .flinks {
+      height: 140px;
+   }
+   footer .fwidget h5 {
+      text-align: center;
+      width: 100%;
+   }
+   footer .fwidget p {
+      text-align: center;
+      margin: 0 auto;
+   }
+   footer .fwidget #copywrite_mobile {
+   display: inherit;
+   }
+   footer .fwidget #copywrite_desktop {
+   display: none;
+   }
+   footer .fwidget .footer-logo {
+      margin: 0 auto 30px auto;
+      float: initial;
+   }
+   footer .fwidget .powered-by {
+      float: initial;
+   }
+   footer .fwidget #powered_by {
+      margin: 0 auto;
+      float: initial;
+   }
+      
+/* responsive for myprofile*/
+   .myprofile.register .container {
+      margin: 30px auto;
+   }
+   .myprofile-head h1 {
+      margin-left: 10px;
+   }
+   .myprofile-head .write-post {
+      margin-top: 5px;
+   }
+   .myprofile-head .links-group {
+      text-align: center;
+   }
+   .credentials .change-pic {
+      margin: 10px auto !important;
+      width: auto !important;
+   }
+   .credentials label {
+      display: inherit !important;
+   }
+   .credentials h2 {
+      margin: 30px 0 20px 10px !important;
+   }
+   .credentials .col-sm-2 {
+      text-align: center;
+   }
+   .credentials .col-sm-10 .input-group {
+      margin: 10px auto;
+      padding: 0 10px;
+   }
+   .credentials .buttons-group {
+      margin-left: 40px
+   }
+   .credentials .buttons-group label {
+      width: 100px;
+   }
+   .credentials .buttons-group button {
+      width: 58px !important;
+   }
+   .credentials .form-control {
+      width: 100% !important;
+   }
 }
 
 @media (max-width: 481px) and (orientation: landscape) {
@@ -2421,7 +2446,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      margin-top: 3em !important;
+      padding-top: 2em;
    }
    .blog-start-wrapper h1 {
       font-size: 20px;
@@ -2442,10 +2467,10 @@ footer .fwidget #powered_by {
       position: initial;
       margin-left: 11em;
    }
-	/* profile page */
-	.credentials .buttons-group {
-		width: 85%;
-	}
+   /* profile page */
+   .credentials .buttons-group {
+      width: 85%;
+   }
 }
 
 @media (min-width: 481px) and (max-width: 581px) and (orientation: landscape) {
@@ -2453,7 +2478,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      margin-top: 3em !important;
+      padding-top: 0;
    }
    .blog-start-wrapper h1 {
       font-size: 25px;
@@ -2471,7 +2496,7 @@ footer .fwidget #powered_by {
    }
    .blog-start .close-overlay {
       position: initial;
-      margin-left: 15em;
+      margin-left: 13em;
    }
 }
 
@@ -2480,10 +2505,13 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      margin-top: 3em !important;
+      padding-top: 1em;
    }
    .blog-start-wrapper h1 {
       font-size: 25px;
+   }
+   .blog-start-wrapper h4 {
+      margin: 1em auto;
    }
    .buttons-wrapper {
       margin: 2em auto;
@@ -2538,7 +2566,7 @@ footer .fwidget #powered_by {
    
    /* START Home-page-overlay*/
    .blog-start-wrapper {
-      margin-top: 6em;
+/*      margin-top: 6em;*/
    }
    .blog-start-wrapper h1 {
       font-size: 33px;
@@ -2557,21 +2585,26 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      margin-top: 5em;
+      padding-top: 3em;
    }
    .blog-start-wrapper h1 {
       font-size: 29px;
    }
    .blog-start-wrapper h4 {
-      margin: 15px auto;
-   }
-   .buttons-wrapper {
       margin: 2em auto;
    }
-   .blog-start .close-overlay {
-      position: initial;
-      margin-left: 18em;
+   .buttons-wrapper {
+      margin: 1em auto;
    }
+   .buttons-wrapper button {
+      padding: 10px 30px;
+      min-width: 110px;
+   }
+   .blog-start .close-overlay {
+/*      position: initial;*/
+      margin-left: 17em;
+   }
+
 }
 
 /*only for iphone 6 plus*/
@@ -2585,25 +2618,25 @@ footer .fwidget #powered_by {
 }
 
 @media (max-width: 768px) {
-	.myprofile-head .links-group {
-		text-align: center;
-	}
-	.credentials .profile-pic {
-		text-align: center;
-		padding-top: 15px;
-	}
-	.myprofile-head .links-group {
-		margin: 15px 0;
-	}
-	.credentials .change-pic {
-		margin: 10px auto !important;
-		width: auto !important;
-	}
+   .myprofile-head .links-group {
+      text-align: center;
+   }
+   .credentials .profile-pic {
+      text-align: center;
+      padding-top: 15px;
+   }
+   .myprofile-head .links-group {
+      margin: 15px 0;
+   }
+   .credentials .change-pic {
+      margin: 10px auto !important;
+      width: auto !important;
+   }
 }
 
 @media (min-width: 960px) and (max-width: 1024px) and (orientation: landscape) {
    .blog-start-wrapper {
-      margin-top: 5em;
+/*      margin-top: 5em;*/
    }
    .blog-start-wrapper h1 {
       font-size: 29px;
@@ -2686,14 +2719,17 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start {
-      height: 20% !important;
+/*      height: 20% !important;*/
    }
    .blog-start-wrapper {
-      margin-top: 5em;
+/*      margin-top: 5em;*/
    }
    .blog-start-wrapper h1 {
-      font-size: 45px;
+      font-size: 39px;
       margin: 10px 45px;
+   }
+   .blog-start-wrapper h4 {
+      font-size: 16px;
    }
    .blog-start .close-overlay {
       margin-left: 16em;
@@ -2703,34 +2739,34 @@ footer .fwidget #powered_by {
 }
 
 @media (max-width: 767px) {
-	footer .flinks {
-		height: 140px;
-	}
-	footer .fwidget h5 {
-		text-align: center;
-		width: 100%;
-	}
-	footer .fwidget p {
-		text-align: center;
-		margin: 0 auto;
-	}
-	footer .fwidget #copywrite_mobile {
-	display: inherit;
-	}
-	footer .fwidget #copywrite_desktop {
-	display: none;
-	}
-	footer .fwidget .footer-logo {
-		margin: 0 auto 30px auto;
-		float: initial;
-	}
-	footer .fwidget .powered-by {
-		float: initial;
-	}
-	footer .fwidget #powered_by {
-		margin: 0 auto;
-		float: initial;
-	}
+   footer .flinks {
+      height: 140px;
+   }
+   footer .fwidget h5 {
+      text-align: center;
+      width: 100%;
+   }
+   footer .fwidget p {
+      text-align: center;
+      margin: 0 auto;
+   }
+   footer .fwidget #copywrite_mobile {
+   display: inherit;
+   }
+   footer .fwidget #copywrite_desktop {
+   display: none;
+   }
+   footer .fwidget .footer-logo {
+      margin: 0 auto 30px auto;
+      float: initial;
+   }
+   footer .fwidget .powered-by {
+      float: initial;
+   }
+   footer .fwidget #powered_by {
+      margin: 0 auto;
+      float: initial;
+   }
 }
 
 
@@ -2755,17 +2791,22 @@ footer .fwidget #powered_by {
    
    /* START Home-page-overlay*/
    .blog-start {
-      height: 15%;
+/*      height: 15%;*/
    }
    .blog-start .close-overlay {
-      margin-left: 18em;
+      margin-left: 16em;
    }
    .blog-start-wrapper {
-      margin-top: 5em;
+      margin-top: 0;
+      padding-top: 2em;
+   }
+   .blog-start-wrapper h1 {
+      font-size: 42px !important;
    }
    .buttons-wrapper {
       margin: 2em auto;
    }
+
    /*END Home-page-overlay*/
 }
 /*
@@ -3331,7 +3372,7 @@ background-color: #ffffff; */
    margin-left: 10px;
 }
 .credentials .bubble {
-	text-align: center;
+   text-align: center;
 }
 .credentials .bubble img{
    border-radius: 50%;
@@ -4079,7 +4120,7 @@ background-size: cover;
 }
 
 .individual-post-category {
-	   margin-bottom: 50px;
+      margin-bottom: 50px;
 }
 
 .individual-post .pager-post li, 
@@ -4401,15 +4442,15 @@ input.cmn-toggle-round-flat:checked + label:after {
 #display_msg_posts,
 .no-more-posts {
     display: none;
-	text-align: center;
-	vertical-align: middle;
-	margin-top: 75px;
-	margin-bottom: 75px;
-	color: #16cbe6;
+   text-align: center;
+   vertical-align: middle;
+   margin-top: 75px;
+   margin-bottom: 75px;
+   color: #16cbe6;
 }
 #display_msg_posts h4,
 .no-more-posts h4 {
-	font-weight: bold;
+   font-weight: bold;
 }
 
 #display_msg_commments .hidden {
@@ -4492,17 +4533,17 @@ input[readonly] {
   cursor: text !important;
 }
 .change-pic {
-	background: #333;
-	color: #3BBEDC;
-	font-weight: 700;
-	margin: 10px auto;
+   background: #333;
+   color: #3BBEDC;
+   font-weight: 700;
+   margin: 10px auto;
 }
 .change-pic:hover {
-	color: #0fa6bc;
-	border: 1px solid #3BBEDC;
+   color: #0fa6bc;
+   border: 1px solid #3BBEDC;
 }
 .change-pic p {
-	font-size: 14px;
+   font-size: 14px;
 }
 
 /* pages */

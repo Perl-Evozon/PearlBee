@@ -10,6 +10,8 @@ use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
 
 use PearlBee::Helpers::Access qw( has_ability );
+use PearlBee::Helpers::ProcessImage;
+use Try::Tiny;
 
 our $VERSION = '0.1';
 
@@ -153,26 +155,47 @@ post '/profile' => sub {
 
 post '/profile-image' => sub {
 
-  my $params      = body_parameters;
+my $params      = params;
 my $file = $params->{file};
- # my $file = route_parameters->get('file');
-  my $user = session('user');
-warn "#####################\n";
-use YAML;warn Dump($params);
+my $user = session('user');
+my $res_user    = resultset('Users')->find({ id => $user->{'id'} });
 
-  if ($file) {
-warn "##################### IN\n";
-    my $upload_dir = "userpics/userpics";
-    my $filename   = "userpic-$user->{id}-100x100.png";
-    my $upload     = upload('file_input_name');
+if ($file) {
+  
+  my $upload_dir = "/userpics/userpics/";
+  my $filename   = $res_user->id;
+  my $folder_path = config->{user_pics};
 
-    $upload->copy_to("$upload_dir/$filename");
-  }
+  my $logo = PearlBee::Helpers::ProcessImage->new( 100, 100 );
 
-  template 'profile',
+    try {
+        $logo->resize( request->uploads->{file}, $folder_path, 'userpic-'.$user->{id}.'-100x100', 'png' );
+        } 
+    catch {
+        info 'There was an error editing the logo: ' . Dumper $_;
+      };
+      $res_user->update(
+      {  
+           avatar_path    => $upload_dir.'userpic-'.$user->{id}.'-100x100'.'.png',
+           }
+         );
+      template 'profile',
     {
-      success => "Everything was successfully updated.",
+      success => "Your profile picture has been changed.",
     };
+  }
+  else {
+     $res_user->update(
+      {  
+           avatar_path    => '',
+           }
+         );
+
+     template 'profile',
+    {
+      success => "Your picture has been deleted",
+    };
+  }
 };
 
 post '/profile_password' => sub  {

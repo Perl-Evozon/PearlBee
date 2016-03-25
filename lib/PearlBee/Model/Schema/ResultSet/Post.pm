@@ -178,7 +178,7 @@ sub create_with_slug {
     cover        => $args->{cover},
     content      => $args->{content},
     content_more => $args->{content_more},
-    type         => $args->{type},
+    type         => $args->{type} || 'HTML',
     status       => $args->{status},
     user_id      => $args->{user_id},
   });

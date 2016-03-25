@@ -13,6 +13,22 @@
 
                          <div class="awidget">
                            <div class="awidget-head">
+                             <h3>Choose Type</h3>
+                           </div>
+
+                           <div class="awidget-body">
+                             <select name="type">
+                               <option name="HTML">HTML</option>
+                               <option name="Markdown">Markdown</option>
+<!-- Keep these other options for later
+                               <option name="Markdown_With_Smartypants">Markdown with Smartypants</option>
+                               <option name="RichText">RichText</option>
+                               <option name="Textile2">Textile2</option>
+-->
+                             </select>
+                           </div>
+
+                           <div class="awidget-head">
                              <h3>Make Post</h3>
                            </div>
 

@@ -5,8 +5,6 @@ use warnings;
 
 use base 'DBIx::Class::ResultSet';
 
-use PearlBee::Helpers::Util qw/string_to_slug/;
-
 use String::Util qw(trim);
 
 =head
@@ -27,17 +25,13 @@ sub connect_tags {
 
 	foreach my $tag (@tags) {
 
-		# Replace all white spaces with hyphen
-		my $slug = string_to_slug( $tag );
+		my $db_tag =
+			$schema->resultset('Tag')->find_or_create_with_slug({ name => trim($tag) });
 
-		my $db_tag = $schema->resultset('Tag')->find_or_create({ name => trim($tag), slug => $slug });
-
-		$self->create(
-		    {
+		$self->create({
 		        tag_id  => $db_tag->id,
 		        post_id => $post_id
-		    }
-		);
+		});
 	}
 }
 

@@ -107,19 +107,12 @@ sub search_posts {
         if (($user_avatar eq '/blog/img/male-user.png') || ($user_avatar eq '/blog/img/male-user-light.png')){
                    $user_avatar = "";
         }                
-        push @results, {
-            #id            => $rs->id, # We shouldn't expose this.
-            title          => $rs->title,
-            slug           => $rs->slug,
-            description    => $rs->description,
-            content        => $rs->content,
-            content_more   => $rs->content_more,
-            created_date   => $rs->created_date_human,
-            nr_of_comments => $rs->nr_of_comments,
-            username       => $rs->user->username,
-            user           => { avatar => $user_avatar, slug => $rs->user->slug },
-            tags           => $result->{_source}{tags}
-        };
+	my $href = $rs->as_hashref_sanitized;
+	$href->{created_date}   = $rs->created_date_human;
+	$href->{nr_of_comments} = $rs->nr_of_comments;
+	$href->{user}           = $rs->user->as_hashref_sanitized;
+        $href->{tags}           = $result->{_source}{tags};
+	push @results, $href;
     }
 
     return @results;

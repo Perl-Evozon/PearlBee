@@ -23,9 +23,8 @@ sub can_create {
   my $status  = $params->{status};
   my $cover   = $params->{cover};
 
-  my $page = $self->create({
+  my $page = $self->create_with_slug({
     title   => $title,
-    slug    => $slug,
     content => $content,
     user_id => $user_id,
     status  => $status,
@@ -71,9 +70,7 @@ sub page_slug_exists {
   return $page
 }
 
-=head
-
-Get the number of comments for this page
+=head2 Get the number of comments for this page
 
 =cut
 
@@ -172,9 +169,9 @@ sub search_published {
 
 sub create_with_slug {
   my ($self, $args) = @_;
-  my $schema  = $self->result_source->schema;
-
-  my $slug = string_to_slug( $args->{description} );
+  my $schema = $self->result_source->schema;
+  my $slug   = string_to_slug( $args->{description} );
+  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
 
   $schema->resultset('Page')->create({
     title        => $args->{title},

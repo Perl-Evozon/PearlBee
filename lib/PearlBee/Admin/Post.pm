@@ -204,12 +204,13 @@ any '/admin/posts/add' => sub {
 
           # Next we can store the post into the database safely
           my $params = {
-              title        => params->{title},
-              slug         => $slug,
-              content      => params->{post},
-              user_id      => $user->{id},
-              status       => params->{status},
-              cover        => ( $cover_filename ) ? $cover_filename : '',
+              title   => params->{title},
+              slug    => $slug,
+              content => params->{post},
+              user_id => $user->{id},
+              status  => params->{status},
+              cover   => ( $cover_filename ) ? $cover_filename : '',
+              type    => params->{type} || 'HTML',
           };
           $post = resultset('Post')->can_create($params);
   

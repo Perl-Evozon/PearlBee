@@ -160,3 +160,8 @@ color: #ffffff;
     color: #fff;
 }
 
+.author-page .blog_author {
+   background: url('../img/backblog.jpg');
+   background-repeat: repeat;
+}
+

@@ -288,6 +288,7 @@ get '/login' => sub {
 post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
+  my $redirect = param('redirect');
 
   my $user = resultset("Users")->search( \[
     "lower(username) = ? AND (status = 'active' or status = 'inactive')",
@@ -301,7 +302,7 @@ post '/login' => sub {
       session user    => $user->as_hashref;
       session user_id => $user->id;
       
-      redirect('/');
+      redirect $redirect || '/';
     }
     else {
       template 'signup', { warning => "Login failed for the provided username/password pair." };

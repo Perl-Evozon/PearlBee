@@ -252,9 +252,11 @@ get '/register_done' => sub { template 'register_done' };
 get '/password_recovery' => sub { template 'password_recovery' };
 
 get '/sign-up' => sub {
+  my $redirect = param('redirect');
 
   template 'signup', {
-    recaptcha => recaptcha_display()
+    recaptcha => recaptcha_display(),
+    redirect  => $redirect
   };
 };
 
@@ -264,6 +266,7 @@ get '/sign-up' => sub {
 
 post '/sign-up' => sub {
   my $params          = body_parameters;
+  my $redirect = body_parameters->{'redirect'};
   my $template_params = {
     username => $params->{'username'},
     email    => $params->{'email'},
@@ -273,6 +276,13 @@ post '/sign-up' => sub {
 
   my $response = $params->{'g-recaptcha-response'};
   my $result   = recaptcha_verify($response);
+
+  unless ( $params->{'username'} =~ m{ ^ [-_a-zA-Z0-9]+ $ }x ) {
+    $template_params->{warning}   = "Username must must consist of a-z, A-Z, 0-9, '-', '_'";
+    $template_params->{recaptcha} = recaptcha_display();
+
+    template 'signup', $template_params;
+  }
 
   if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
     # The user entered the correct secret code

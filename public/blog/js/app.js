@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 
+
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -282,6 +283,8 @@ $("#start-blogging").on('click', function (e) {
       var password = $("#passwordRegister").val();
       var confirmPassword = $("#confirmPasswordRegister").val();
       var errors = 0;
+      var ascii = /^[\x21-\x7E]+/;
+      var speciaCharacters = /[^\w\s\.@-]/g;
 
 //      Email validation
       $('#register_form input').css('border-color' , '#CCC').removeClass('error');
@@ -299,6 +302,26 @@ $("#start-blogging").on('click', function (e) {
       } else if (username.length < 3) { //      Username validation
         $('.change_error').text('Username field is necesary').css('color' , 'red');
         $('#usernameRegister').css('border-color' , 'red');
+        errors++;
+
+      } else if (!(username).match(ascii)) { //      Username ascii validation
+        $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
+        $('.error_ascii').slideToggle( "slow" );
+        $('#usernameRegister').css('border-color' , 'red');
+          $("#usernameRegister").keyup(function() {
+              $('.error_ascii').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
+        errors++;
+
+      } else if ((username).match(speciaCharacters)) { //      Username special URL char validation
+        $('.change_error').text('Username characters must be in ascii table range').css('color' , 'red');
+        $('.error_char').slideToggle( "slow" );
+        $('#usernameRegister').css('border-color' , 'red');
+        $("#usernameRegister").keyup(function() {
+              $('.error_char').fadeOut( "slow" );
+              $('#usernameRegister').css('border-color' , '0');
+          })
         errors++;
 
       }
@@ -368,7 +391,7 @@ $("#start-blogging").on('click', function (e) {
       }
     });
 
-  // Image upload perview
+// Image upload perview
 
   function readURL(input) {
     if (input.files && input.files[0]) {
@@ -386,6 +409,7 @@ $("#file-upload").change(function () {
 
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
+    $( "#file-upload" ).val("");
         if (themeinitial === false){ 
             $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
         } else if (themeinitial === true) {
@@ -393,14 +417,35 @@ $(".modal-footer .delete-img").on('click', function(){
         }
 });
 
+// Validation file input for img only 
+
+
+function stringEndsWithValidExtension(stringToCheck, acceptableExtensionsArray, required) {
+    if (required == false && stringToCheck.length == 0) { return true; }
+    for (var i = 0; i < acceptableExtensionsArray.length; i++) {
+        if (stringToCheck.toLowerCase().endsWith(acceptableExtensionsArray[i].toLowerCase())) { return true; }
+    }
+    return false;
+}
+
+
+String.prototype.startsWith = function (str) { return (this.match("^" + str) == str) }
+
+String.prototype.endsWith = function (str) { return (this.match(str + "$") == str) }
+
+
 //submitting upload picture form
 
 
 $(".save-img").click(function() {
+    if (!stringEndsWithValidExtension($("[id*='file-upload']").val(), [".png", ".jpeg", ".jpg", ".bmp", ".gif"], false)) {
+        $('.error_file').fadeIn().delay(3000).fadeOut(2000);  
+        return false;
+    }
     $("#upload-img").submit();
 });
 
-    
+
 //  My profile password confirmation 
     
   $("#confirmNewPassword").keyup(function() {
@@ -439,6 +484,23 @@ $(".save-img").click(function() {
     $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
   }); 
 
+//Blog start overlay
+  $('.blog-start').css('max-height', $(window).height()*0.99);
+  $(window).resize(function(){
+    $('.blog-start').css('max-height', $(window).height()*0.99);
+  });
+ 
+  $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
+  $(window).resize(function(){
+    $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
+  });
+ 
+  $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
+  $(window).resize(function(){
+    $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
+  });
+
+
 $(window).resize(function(){
   $(".truncate").dotdotdot({
     ellipsis  : '... ',
@@ -470,12 +532,15 @@ if ($(".no-posts").length > 0){
 //Tabs label align and tabs min-height
 $( ".tabs label" ).first().css( "margin-left", "10px" );
 
-$('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+$('.search-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
 $(window).resize(function(){
-    $('.tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
+    $('.search-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".search-page .background-bar").outerHeight(true));
 });
 
-
+$('.author-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".author-page .background-bar").outerHeight(true) - $(".author-description").outerHeight(true));
+$(window).resize(function(){
+    $('.author-page .tab-content').css('min-height',$(window).height() - $("footer").outerHeight(true) - $(".author-page .background-bar").outerHeight(true) - $(".author-description").outerHeight(true));
+});
 
 //tab 1 user-posts
 function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
@@ -534,8 +599,8 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             }
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
-                        newItem.find(".user a").html(posts[i].username);
-                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.slug);
+                        newItem.find(".user a").html(posts[i].user.name);
+                        newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
                         newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<\/?[^>]+(>|$)/g, ""));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -600,7 +665,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
-                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].slug);
+                        newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].username);
                         newItem.find(".info-entry .date").text(userInfo[i].register_date);
 
                         newItem.find(".properties li.nr-blog span").text(userInfo[i].counts.blog);

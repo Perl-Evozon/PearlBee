@@ -20,6 +20,7 @@ requires 'String::Util';
 requires 'Data::Pageset';
 requires 'Search::Elasticsearch';
 
+requires 'Imager';
 requires 'IO::All';
 requires 'MIME::Lite';
 requires 'MIME::Lite::TT';

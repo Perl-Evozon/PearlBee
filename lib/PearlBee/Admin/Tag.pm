@@ -46,12 +46,15 @@ post '/admin/tags/add' => sub {
       });
     }
     catch {
-      info "Could not creatag named '$name'";
+      info "Could not create tag named '$name'";
     };
 
     @tags = resultset('Tag')->all;
 
-    template 'admin/tags/list', { success => "The cateogry was successfully added.", tags => \@tags }, { layout => 'admin' };
+    template 'admin/tags/list', {
+      success => "The cateogry was successfully added.",
+      tags => \@tags
+    }, { layout => 'admin' };
   }
 
 };

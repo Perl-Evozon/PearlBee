@@ -12,11 +12,28 @@ use PearlBee::Helpers::Util qw( string_to_slug );
 
 sub create_with_slug {
   my ($self, $args) = @_;
-  my $schema  = $self->result_source->schema;
-
-  my $slug = string_to_slug( $args->{description} );
+  my $schema = $self->result_source->schema;
+  my $slug   = string_to_slug( $args->{name} );
+  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
 
   $schema->resultset('Category')->create({
+    name    => $args->{name},
+    slug    => $slug,
+    user_id => $args->{user_id}
+  });
+}
+
+=head2 Find or create category with internally-generated slug
+
+=cut
+
+sub find_or_create_with_slug {
+  my ($self, $args) = @_;
+  my $schema = $self->result_source->schema;
+  my $slug   = string_to_slug( $args->{name} );
+  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
+
+  return $schema->resultset('Category')->find_or_create({
     name    => $args->{name},
     slug    => $slug,
     user_id => $args->{user_id}

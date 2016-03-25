@@ -69,12 +69,12 @@ sub munge_asset_file_path {
 
 ###############################################################################
 
-sub map_user {
-  my $user = shift;
-  return {
+sub map_user {          
+  my $user = shift;         
+  return {              
     id                 => $user->{author_id},
     name               => decode_utf8($user->{author_nickname}),
-    username           => $user->{author_name},
+    username           => $user->{author_basename},
     password           => $user->{author_password},
     preferred_language => $user->{author_preferred_language},
     register_date      => $user->{author_created_on},
@@ -83,8 +83,8 @@ sub map_user {
     status             => $user->{author_status} == 1 ? 'active' : 'inactive',
     biography          => decode_utf8($user->{author_meta_vclob}),
   };
-}
-
+}              
+    
 my %users;
 
 sub migrate_users {

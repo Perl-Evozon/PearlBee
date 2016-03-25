@@ -18,9 +18,7 @@ use DateTime;
 
 get '/author/posts' => sub { redirect '/author/posts/page/1'; };
 
-=head
-
-list all posts method
+=head2 list all posts method
 
 =cut
 
@@ -61,9 +59,7 @@ get '/author/posts/page/:page' => sub {
     { layout => 'admin' };
 };
 
-=head
-
-list all posts grouped by status
+=head2 list all posts grouped by status
 
 =cut
 
@@ -106,9 +102,7 @@ get '/author/posts/:status/page/:page' => sub {
     { layout => 'admin' };
 };
 
-=head
-
-publish method
+=head2 publish method
 
 =cut
 
@@ -129,9 +123,7 @@ get '/author/posts/publish/:id' => sub {
   redirect '/author/posts';
 };
 
-=head
-
-draft method
+=head2 draft method
 
 =cut
 
@@ -152,9 +144,7 @@ get '/author/posts/draft/:id' => sub {
   redirect '/author/posts';
 };
 
-=head
-
-trash method
+=head2 trash method
 
 =cut
 
@@ -169,9 +159,7 @@ get '/author/posts/trash/:id' => sub {
   redirect '/author/posts';
 };
 
-=head
-
-add method
+=head2 add method
 
 =cut
 
@@ -190,7 +178,7 @@ post '/author/posts/add' => sub {
     if ( upload('cover') ) {
       my $cover        = upload('cover');
       $cover_filename  = generate_crypted_filename();
-      my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;  #extract the extension
+      my ($ext)        = $cover->filename =~ /(\.[^.]+)$/;
       $ext             = lc($ext);
       $cover_filename .= $ext;
 
@@ -205,11 +193,13 @@ post '/author/posts/add' => sub {
       user_id => $user->{id},
       status  => params->{status},
       cover   => ( $cover_filename ) ? $cover_filename : '',
+      type    => params->{type} || 'HTML',
     };
     $post = resultset('Post')->can_create($params);
 
     # Insert the categories selected with the new post
-    resultset('PostCategory')->connect_categories( params->{categories}, $post->id, $user->{id} );
+    resultset('PostCategory')->
+      connect_categories( params->{categories}, $post->id, $user->{id} );
 
     # Connect and update the tags table
     resultset('PostTag')->connect_tags( params->{tags}, $post->id );
@@ -230,6 +220,10 @@ post '/author/posts/add' => sub {
   }
 };
 
+=head2 Display page for add method
+
+=cut
+
 get '/author/posts/add' => sub {
 
   my @categories = resultset('Category')->all();
@@ -239,9 +233,7 @@ get '/author/posts/add' => sub {
            { layout => 'admin' };
 };
 
-=head
-
-edit method
+=head2 edit method
 
 =cut
 
@@ -295,9 +287,7 @@ get '/author/posts/edit/:slug' => sub {
 
 };
 
-=head
-
-update method
+=head2 update method
 
 =cut
 

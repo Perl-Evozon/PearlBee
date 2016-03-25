@@ -68,6 +68,7 @@ $(document).ready(function() {
 									<input type="file" id="file-upload" class="form-control" name="file">
 									</span>
 					</form>
+          <label class="error_file">We only allows file types of PNG, JPG, GIF and BMP.</label>
 				</div>
 
       </div>

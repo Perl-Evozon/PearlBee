@@ -5,7 +5,7 @@
                <div class="col-md-3">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="#">[% session.blog_name %]</a></h1>  
+                     <h1><a href="[% config.app_url %]">[% session.blog_name %]</a></h1>  
                   </div>
                </div>
                

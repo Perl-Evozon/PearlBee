@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="text-listing-entries col-xs-10">
                                     <div class="bubble">
-					                    <img class="user-image" src="[% post.user.avatar %]">
+<img class="user-image" src="/avatar/[% post.user.username %]" />
                                     </div>
                                     <div class="info-entry">
                                         <div class="user">
@@ -193,7 +193,7 @@
                                 </div>
                                 <div class="user-info-entry hidden row">
                                     <div class="bubble col-xs-1">
-					                    <img class="user-image" src="[% post.user.avatar %]">
+<img class="user-image" src="/avatar/[% post.user.username %]" />
                                     </div>
                                     <div class="info-entry col-xs-5">
                                         <div class="user">

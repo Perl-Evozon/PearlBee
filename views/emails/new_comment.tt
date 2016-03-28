@@ -1,146 +1,158 @@
 <html>
 <body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" bgcolor="#06001A">
 <br>
- 
+         
+<title> BPO's Email Alert</title>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
 
-    
-      <title> BPO's Email Alert</title>
-		  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-        
-
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-        background-color: #06001A ;
-      }
-      h1 {
-        margin: 20px 0 20px 0;
-        font-size: 30px;
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+		background-color: #06001A;
+	}
+	
+	h1 {
+		margin: 20px 0 20px 0;
+		font-size: 30px;
 		line-height: 33px;
-        color: #43C8E7;
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-        font-weight: bold;
+		color: #43C8E7;
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+		font-weight: bold;
 		text-transform: uppercase;
 		width: 265px;
-      }
-	  h5 {
+	}
+	
+	h5 {
 		color: #ffffff;
-	  	font-family: 'Montserrat', 'Open sans', sans-serif;
+		font-family: 'Montserrat', 'Open sans', sans-serif;
 		font-size: 20px;
 		font-weight: initial;
 		margin-right: 15px;
 		margin-left: 10px;
-	  }
-      hr {
-        height: 1px;
-        background: #e1e1e1;
-        border: 0 none;
-      }
-      u {
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-        text-decoration: none !important;
-      }
-      p {
-        margin: 0 0 5px 10px;
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-        font-size: 15px;
-        text-align: justify;
-        line-height: 16px;
-        color: #ffffff;
-      }
-      img {
-        display: block;
-      }
-      a {
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-        text-decoration: none !important;
-      }
-      td {
-        font-family: 'Montserrat', 'Open sans', sans-serif;
-      }
-
-
-	</style>
+	}
+	
+	hr {
+		height: 1px;
+		background: #e1e1e1;
+		border: 0 none;
+	}
+	
+	u {
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+		text-decoration: none !important;
+	}
+	
+	p {
+		margin: 0 0 5px 10px;
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+		font-size: 15px;
+		text-align: justify;
+		line-height: 16px;
+		color: #ffffff;
+	}
+	
+	img {
+		display: block;
+	}
+	
+	a {
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+		text-decoration: none !important;
+	}
+	
+	td {
+		font-family: 'Montserrat', 'Open sans', sans-serif;
+	}
+</style>
   
+<table cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" bgcolor="#06001A">
+	<tbody>
+		<tr>
+			<td align="center" valign="top">
+				<table cellpadding="0" cellspacing="0" border="0" width="720" style="margin-top:50px;">
+					<tbody>
 
-  
-    <table class="bm-wrapper-table" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" bgcolor="#06001A">
-      
-      <tbody><tr>
-        <td align="center" valign="top">
-          <table cellpadding="0" cellspacing="0" border="0" width="720" style="margin-top:50px;">
+						<tr><!-- START: MAIL LAYOUT -->
+							<td width="720">
+								<table cellpadding="0" cellspacing="0" border="0" width="720">
+									<tbody>
 
-            <tbody>
+										<tr><!-- START: LOGO -->
+											<td width="720">
+												<table cellpadding="20" cellspacing="0" border="0">
+													<tbody>
+														<tr>
+															<td width="145" valign="middle">
+																<img src="[% app_url %]/blog/img/comment.png" width="145" height="145" style="margin-left:10px;" alt="">
+															</td>
+															<td width="575" valign="middle" float="right">
+																<h1 style="margin: 20px 0 20px 0; font-size: 30px; line-height: 33px; color: #43C8E7; font-family: 'Montserrat', 'Open sans', sans-serif; font-weight: bold; text-transform: uppercase; width: 265px;">A new comment was added!</h1>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+										<!-- END:   LOGO -->
 
-            <tr>  <!-- START: MAIL LAYOUT -->
-              <td width="720">
-                <table cellpadding="0" cellspacing="0" border="0" width="720">
-                  <tbody><tr>  <!-- START: LOGO -->
-                    <td width="720">
-                      <table cellpadding="20" cellspacing="0" border="0">
-                        <tbody><tr>
-                          <td width="145" valign="middle">
-                            <img src="[% app_url %]/blog/img/comment.png" width="145" height="145" style="margin-left:10px;" alt="">
-                          </td>
-                          <td width="575" valign="middle" float="right">
-                         	<h1 style="margin: 20px 0 20px 0; font-size: 30px; line-height: 33px; color: #43C8E7; font-family: 'Montserrat', 'Open sans', sans-serif; font-weight: bold; text-transform: uppercase; width: 265px;">A new comment was added!</h1>
-                          </td>
-                        </tr>
-                      </tbody></table>
-                    </td>
-                  </tr> <!-- END:   LOGO -->
+										<tr><!-- START:  EMAIL CONTENT -->
+											<td>
+												<table cellpadding="20" cellspacing="0" border="0" width="720">
+													<tbody>
+														<tr>
+															<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
+																<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hi, [%name %],</h5>
+															</td>
+														</tr>
+														<tr>
+															<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
+																<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-right: 15px; margin-left: 10px;">Looks like [% fullname %] added a comment to your post [% title %] and it's waiting for approval. You can approve or reject this comment whenever you're ready.</h5>
+															</td>
+														</tr>
+														<tr>
+															<td valign="top" width="720" style="padding-top:0px;">
+																<a href="[% app_url %]/login?redirect=[% app_url %]/author/comments/page/1">
+																	<button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold; cursor:pointer;">View comment</button>
+																</a>
+															</td>
+														</tr>
+														<tr>
+															<td valign="top" width="720" style="padding-top:0px;">
+																<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">or copying this link into your browser:</p>
+																<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[% app_url %]/login?redirect=[% app_url %]/author/comments/page/1</a></p>
+															</td>
+														</tr>
+														<tr><!-- START: EMAIL GRAY-ISH LINE-->
+															<td width="720" height="12" style="padding:0px;">
+																<hr style="margin-left:30px; margin-right:40px; height: 1px; background: #1F1A31; border: 0 none;">
+															</td>
+														</tr>
+														<!-- END: EMAIL GRAY-ISH LINE-->
+														<tr>
+															<td>
+																<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff; font-style: italic;">Copyright &copy; 2016 <a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blog.perl.org</a>. All rights reserved</p>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+										<!-- END:  EMAIL CONTENT -->
 
-					<tr><!-- START:  EMAIL CONTENT -->
-						<td>
-							<table cellpadding="20" cellspacing="0" border="0" width="720">
-								<tbody>
-									<tr>
-										<td valign="top" width="720" style="padding-top:25px; padding-bottom:0;">
-											<h5 style="color: #ffffff;font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-top:0; margin-right: 15px; margin-bottom:0; margin-left: 10px;">Hi, [%name %],</h5>
-										</td>
-									</tr>
-									<tr>
-										<td valign="top" width="720" style="padding-top:0px; padding-bottom:0;">
-											<h5 style="color: #ffffff; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 20px; font-weight: 100; margin-right: 15px; margin-left: 10px;">Looks like [% fullname %] added a comment to your post [% title %] and it's waiting for approval. You can approve or reject this comment whenever you're ready.</h5>
-										</td>
-									</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<!-- END: MAIL LAYOUT -->
 
-									<tr>
-										<td valign="top" width="720" style="padding-top:0px;">
-											<a href="[% app_url %]/login?redirect=[% app_url %]/author/comments/page/1"><button style="background-color:#152F4A; color:#43C8E7; padding:15px 25px; border:0;border-radius:5px; margin-left:10px; font-size: 15px; text-transform:uppercase; font-weight:bold; cursor:pointer;">View comment</button></a>
-										</td>
-									</tr>
-									<tr>
-										<td valign="top" width="720" style="padding-top:0px;">
-											<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;">or copying this link into your browser:</p>
-											<p style="margin: 0 0 5px 10px; color:#43C8E7 !important; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff;"><a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">[% app_url %]/login?redirect=[% app_url %]/author/comments/page/1</a></p>
-										</td>
-									</tr>           
-									<tr><!-- START: EMAIL GRAY-ISH LINE--> 
-										<td width="720" height="12" style="padding:0px;">
-											<hr style="margin-left:30px; margin-right:40px; height: 1px; background: #1F1A31; border: 0 none;">
-										</td>
-									</tr><!-- END: EMAIL GRAY-ISH LINE-->
-									<tr>
-										<td>
-											<p style="margin: 0 0 5px 10px; font-family: 'Montserrat', 'Open sans', sans-serif; font-size: 15px; text-align: justify; line-height: 16px; color: #ffffff; font-style: italic;">Copyright &copy; 2016 <a href="#" style="font-family: 'Montserrat', 'Open sans', sans-serif; text-decoration: none !important; color: #43C8E7;">blog.perl.org</a>. All rights reserved</p>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>  
-					</tr><!-- END:  EMAIL CONTENT -->
-
-      				</tbody></table>
-    			</td>
-            </tr> <!-- END: MAIL LAYOUT -->     
-
-          		</tbody></table>
-        	</td>
-    	</tr></tbody>
-	</table>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 </body>
 </html>

@@ -33,27 +33,10 @@
                    <div class="col-xs-2 no-padding">
                    [% FOREACH post IN posts %]
 
-                   [% LAST IF loop.count == 2 %]
+                      [% LAST IF loop.count == 2 %]
                        <div class="bubble">
       
-                            [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png") %]
-                            <img class="blog-image" src="[% post.user.avatar %]">
- 
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img class="blog-image" src="/blog/img/male-user.png">
-
-                            [%ELSIF (session.theme == 'light') %]
-                            <img class="blog-image" src="/blog/img/male-user-light.png">
-
-                            [%ELSE%]
-                            <img class="blog-image" src="/blog/img/male-user.png">
-
-                            [%END%]
-                            [%END%]
-
-
-                           <!-- <img class="blog-image" src="[% IF user.avatar %][% user.avatar %][% ELSE %]/blog/img/male-user.png[% END %]"> -->
+<img class="blog-image" src="/avatar/[% post.user.username %]" />
                        </div>
 
                       [% END %]
@@ -99,17 +82,7 @@
 
                     <div class="text-listing-entries col-xs-12">
                         <div class="bubble">
-                             [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                             <img class="user-image" src="[%post.user.avatar%]">
-                             [%ELSE %]
-                             [% IF (session.theme == 'dark') %]
-                             <img class="user-image" src="/blog/img/male-user.png">
-                             [%ELSIF (session.theme == 'light') %]
-                             <img class="user-image" src="/blog/img/male-user-light.png">
-                             [%ELSE%]
-                             <img class="user-image" src="/blog/img/male-user.png">                                                      
-                             [%END%]
-                             [%END%]
+<img class="user-image" src="/avatar/[% post.user.username %]" />
                          </div>
                           <div class="info-entry">
                             <div class="user">

@@ -31,19 +31,8 @@
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
                      <div class="bubble"> 
-                            [% IF (session.user.avatar != "/blog/img/male-user.png") && (session.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img class="user-image" src="[%session.user.avatar%]">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img class="user-image" src="/blog/img/male-user.png">
-                            [%ELSIF (session.theme == 'light')%]
-                            <img class="user-image" src="/blog/img/male-user-light.png">
-                            [%ELSE%]
-                            <img class="user-image" src="/blog/img/male-user.png">   
-                            [%END%]
-                            [%END%]
+<img class="user-image" src="/avatar/[% session.user.username %]" />
                      </div> 
-	       <!--  <img class="user-image" src="[% session.user.avatar %]"> -->
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
               <div class="links-group header-menu-links write-post">
@@ -61,16 +50,9 @@
             </div>
 [% ELSE %]
             <form id="register_head" action="/login" method="post">
-  <!--                <span class="male-user icon icon-toggle"></span>-->
             <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="bubble">
-                  [% IF (session.theme == 'dark') %]
-                            <img class="user-image" src="/blog/img/male-user.png">
-                  [%ELSIF (session.theme == 'light')%]
-                            <img class="user-image" src="/blog/img/male-user-light.png">
-                  [%ELSE%]
-                            <img class="user-image" src="/blog/img/male-user.png">                  
-                  [%END%]
+<img class="user-image" src="/avatar/" />
               </div>
             </div>
             <div class="dropdown-menu dropdown-login">

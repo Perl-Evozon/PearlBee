@@ -46,19 +46,8 @@ $(document).ready(function() {
       </div>
       <div class="modal-body clearfix">
       	<div class="col-xs-6 profile-pic">
-						<div class="bubble text-center">
-														[% IF (session.user.avatar != "/blog/img/male-user.png") && (session.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img id="image_upload_preview" class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">
-                            [%ELSIF (session.theme == 'light') %]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user-light.png" data-pin-nopin="true">
-                            [%ELSE%]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">                                                      
-                          [%END%]
-                          [%END%]
-                
+		<div class="bubble text-center">
+<img class="avatar" src="/avatar/[% session.user.username %]" />
              </div>
         </div>
 				<div class="col-xs-6 profile-pic">
@@ -101,17 +90,7 @@ $(document).ready(function() {
 				<div class="credentials">
 					<div class="col-sm-2 profile-pic">
 						<div class="bubble">
-														[% IF (session.user.avatar != "/blog/img/male-user.png") && (session.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img id="image_upload_preview" class="user-image" src="[% session.user.avatar%]" data-pin-nopin="true">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">
-                            [%ELSIF (session.theme == 'light') %]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user-light.png" data-pin-nopin="true">
-                            [%ELSE%]
-                            <img id="image_upload_preview" class="user-image" src="/blog/img/male-user.png" data-pin-nopin="true">                                                      
-                          [%END%]
-                          [%END%]
+<img class="avatar" src="/avatar/[% session.user.username %]" />
              </div>
 						<div>
 							 

@@ -12,22 +12,7 @@
                                 <div class="col-xs-2">
                                     <div class="bubble">
 
-                                    [% IF (user.avatar != "/blog/img/male-user.png") && (user.avatar != "/blog/img/male-user-light.png") %]
-                                        <img class="user-image" src="[% user.avatar %]">
-             
-                                        [%ELSE %]
-                                        [% IF (session.theme == 'dark') %]
-                                        <img class="user-image" src="/blog/img/male-user.png">
-
-                                        [%ELSIF (session.theme == 'light') %]
-                                        <img class="user-image" src="/blog/img/male-user-light.png">
-
-                                        [%ELSE%]
-                                        <img class="user-image" src="/blog/img/male-user.png">
-
-                                        [%END%]
-                                        [%END%]
-
+<img class="user-image" src="/avatar/[% user.username %]" />
                                     </div>
                                 </div>
                                 <div class="col-xs-10">

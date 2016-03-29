@@ -174,11 +174,10 @@ if ($file) {
     catch {
         info 'There was an error editing the logo: ' . Dumper $_;
       };
-      $res_user->update(
-      {  
-           avatar_path    => $upload_dir.'userpic-'.$user->{id}.'-100x100'.'.png',
-           }
-         );
+      $res_user->update({  
+        avatar_path => $upload_dir .
+          sprintf( config->{'avatar'}{'format'}, $user->id )
+      });
       template 'profile',
     {
       success => "Your profile picture has been changed.",

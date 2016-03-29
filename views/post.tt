@@ -17,7 +17,11 @@
                         <div class="meta">
                             <div class="img-wrapper">
                               <div class="bubble">
-<img class="user-image" src="/avatar/[% session.user.username %]" />
+                                          [% IF post.user.avatar_path %]
+                                        <img class="user-image" src="/avatar/[% post.user.username %]" />
+                                          [% ELSE %]
+                                        <img class="user-image defaultAvatar" src="/avatar/" />
+                                          [% END %]
                               </div>
                             </div>
                              <div class="info-entry">

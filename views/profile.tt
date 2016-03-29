@@ -47,7 +47,15 @@ $(document).ready(function() {
       <div class="modal-body clearfix">
       	<div class="col-xs-6 profile-pic">
 		<div class="bubble text-center">
-<img class="avatar" src="/avatar/[% session.user.username %]" />
+
+                [% IF session.user.avatar_path %]
+                      <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
+                [% ELSE %]
+                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/" />
+                [% END %]
+               
+
+
              </div>
         </div>
 				<div class="col-xs-6 profile-pic">
@@ -90,7 +98,11 @@ $(document).ready(function() {
 				<div class="credentials">
 					<div class="col-sm-2 profile-pic">
 						<div class="bubble">
-<img class="avatar" src="/avatar/[% session.user.username %]" />
+                [% IF session.user.avatar_path %]
+                      <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
+                [% ELSE %]
+                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/" />
+                [% END %]
              </div>
 						<div>
 							 

@@ -73,7 +73,7 @@ get '/avatar/:combo_breaker/:username' => sub {
 
 get '/avatar/' => sub {
   my $avatar_path = config->{'avatar'}{'default'}{'dark'};
-  my $theme       = session( 'theme' ) || 'light';
+  my $theme       = session( 'theme' ) || 'dark';
 
   if ( $theme eq 'light' ) {
     $avatar_path = config->{'avatar'}{'default'}{'light'}

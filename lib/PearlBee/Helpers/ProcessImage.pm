@@ -103,7 +103,7 @@ sub resize {
 #     $pic->write( file => "$save_path/$save_name.$extension" );
 $extension = 'png';
 
-    $pic->write( file => "$save_path/$save_name.$extension" );
+    $pic->write( file => "$save_path/$save_name" );
 
     return 1;
 }

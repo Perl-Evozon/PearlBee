@@ -11,8 +11,11 @@
                             <div class="description clearfix">
                                 <div class="col-xs-2">
                                     <div class="bubble">
-
-<img class="user-image" src="/avatar/[% user.username %]" />
+                                      [% IF user.avatar_path %]
+                                        <img class="user-image" src="/avatar/[% user.username %]" />
+                                      [% ELSE %]
+                                        <img class="user-image defaultAvatar" src="/avatar/" />
+                                      [% END %]
                                     </div>
                                 </div>
                                 <div class="col-xs-10">

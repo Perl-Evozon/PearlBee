@@ -174,6 +174,12 @@ $("#start-blogging").on('click', function (e) {
                     if (src !== undefined) { 
                         var defaultAvatar = (src.match(/\/blog\/img/g)||[]).length;
 
+                        if (themeq === "light") {
+                            $(".defaultAvatar").attr("src", "/blog/img/male-user-light.png");
+                        } else if (themeq === "dark") {
+                            $(".defaultAvatar").attr("src", "/blog/img/male-user.png");
+                        }
+
                         if (themeq === "light" && defaultAvatar === 1) {
                             $("#theme").attr("href", "/blog/css/light.css");
                             $("#cmn-toggle-4").attr('checked', true);

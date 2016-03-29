@@ -31,7 +31,11 @@
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
                      <div class="bubble"> 
-<img class="user-image" src="/avatar/[% session.user.username %]" />
+                          [% IF session.user.avatar_path %]
+                            <img class="user-image" src="/avatar/[% session.user.username %]" />
+                          [% ELSE %]
+                            <img class="user-image defaultAvatar" src="/avatar/" />
+                          [% END %]
                      </div> 
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
@@ -52,7 +56,11 @@
             <form id="register_head" action="/login" method="post">
             <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="bubble">
-<img class="user-image" src="/avatar/" />
+                          [% IF session.user.avatar_path %]
+                            <img class="user-image" src="/avatar/[% session.user.username %]" />
+                          [% ELSE %]
+                            <img class="user-image defaultAvatar" src="/avatar/" />
+                          [% END %]
               </div>
             </div>
             <div class="dropdown-menu dropdown-login">

@@ -50,17 +50,7 @@
                   </div>
                     <div class="text-listing-entries col-xs-10">
                        <div class="bubble">
-                            [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                            <img class="user-image" src="[%post.user.avatar%]">
-                            [%ELSE %]
-                            [% IF (session.theme == 'dark') %]
-                            <img class="user-image" src="/blog/img/male-user.png">
-                            [%ELSIF (session.theme == 'light') %]
-                            <img class="user-image" src="/blog/img/male-user-light.png">
-                            [%ELSE%]
-                            <img class="user-image" src="/blog/img/male-user.png">                                                      
-                            [%END%]
-                            [%END%]
+<img class="user-image" src="/avatar/[% post.user.username %]" />
                         </div>
                          <div class="info-entry">
                            <div class="user">

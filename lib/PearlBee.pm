@@ -65,17 +65,45 @@ hook before => sub {
 
 =cut
 
-get '/avatars/**' => sub {
-    my ( $file ) = splat;
-
-    send_file $file;
+get '/avatar/:combo_breaker/:username' => sub {
+  my $username = route_parameters('username');
+  redirect "/avatar/$username"
 };
 
-get '/userpics/**' => sub {
-    my ( $file ) = splat;
-
-    send_file $file;
+get '/avatar/' => sub {
+  my $avatar_path;
+  my $theme = session( 'theme' ) || '';
+  if ( $theme eq 'light' ) {
+    $avatar_path = config->{'default_avatar_light'};
+  }
+  else {
+    $avatar_path = config->{'default_avatar'};
+  }
+  send_file $avatar_path;
 };
+
+get '/avatar/:username' => sub {
+  my $username = route_parameters->{'username'};
+  my $user = resultset('Users')->
+    find({ username => $username });
+  my $id = $user->id;
+
+  my $avatar_path;
+  my $theme = session( 'theme' );
+  if ( $user->avatar_path ne '' ) {
+    $avatar_path = "/userpics/userpics/userpic-$id-100x100.png";
+  }
+  elsif ( $theme eq 'light' ) {
+    $avatar_path = config('default_avatar_light');
+  }
+  else {
+    $avatar_path = config('default_avatar');
+  }
+  send_file $avatar_path;
+};
+
+get '/avatar-light' => sub { '/path/to/light' };
+get '/avatar-dark' => sub { '/path/to/dark' };
 
 =item /theme
 

@@ -17,17 +17,7 @@
                         <div class="meta">
                             <div class="img-wrapper">
                               <div class="bubble">
-                              [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-  				                      <img class="user-image hey" src="[% post.user.avatar %]">
-                              [%ELSE %]
-                              [% IF (session.theme == 'dark') %]
-                              <img class="user-image" src="/blog/img/male-user.png">
-                              [%ELSIF (session.theme == 'light') %]
-                              <img class="user-image" src="/blog/img/male-user-light.png">
-                              [%ELSE%]
-                              <img class="user-image" src="/blog/img/male-user.png">                                                      
-                              [%END%]
-                              [%END%]
+<img class="user-image" src="/avatar/[% session.user.username %]" />
                               </div>
                             </div>
                              <div class="info-entry">
@@ -66,8 +56,8 @@
                         
                         <!-- Para -->
                         <p>
-                           [% post.massaged_content %]
-                           [% post.massaged_content_more %]
+                           [% post.content_formatted %]
+                           [% post.content_more_formatted %]
                         </p>
                         </div>
 

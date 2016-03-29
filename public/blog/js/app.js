@@ -172,25 +172,25 @@ $("#start-blogging").on('click', function (e) {
                   
                     var userImg = $( this ).parent().find('img');
                     if (src !== undefined) { 
-                        var avatar = (src.match(/\avatars/g)||[]).length;
-         
-                        if (themeq === "light" && avatar === 0) {
-                        $("#theme").attr("href", "/blog/css/light.css");
-                        $("#cmn-toggle-4").attr('checked', true);
-                        userImg.attr('src', "/blog/img/male-user-light.png");
+                        var defaultAvatar = (src.match(/\/blog\/img/g)||[]).length;
+
+                        if (themeq === "light" && defaultAvatar === 1) {
+                            $("#theme").attr("href", "/blog/css/light.css");
+                            $("#cmn-toggle-4").attr('checked', true);
+                            userImg.attr('src', "/blog/img/male-user-light.png");
                         } 
-                         else if (themeq === "light" && avatar === 1) {
+                         else if (themeq === "light" && defaultAvatar === 0) {
                             $("#theme").attr("href", "/blog/css/light.css");
                             $("#cmn-toggle-4").attr('checked', true);
                         }
-                         else if (themeq === "dark" && avatar === 0) {
-                         $("#theme").attr("href", "/blog/css/dark.css"); 
-                         $("#cmn-toggle-4").attr('checked', false);
-                         userImg.attr('src', "/blog/img/male-user.png");
+                         else if (themeq === "dark" && defaultAvatar === 1) {
+                             $("#theme").attr("href", "/blog/css/dark.css"); 
+                             $("#cmn-toggle-4").attr('checked', false);
+                             userImg.attr('src', "/blog/img/male-user.png");
                         }
-                         else if (themeq === "dark" && avatar === 1) {
-                            $("#theme").attr("href", "/blog/css/dark.css");
-                            $("#cmn-toggle-4").attr('checked', false);
+                         else if (themeq === "dark" && defaultAvatar === 0) {
+                              $("#theme").attr("href", "/blog/css/dark.css");
+                              $("#cmn-toggle-4").attr('checked', false);
                         }
                     }
              });

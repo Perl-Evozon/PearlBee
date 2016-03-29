@@ -313,11 +313,7 @@ sub map_posts {
         $el->{content_formatted}  = $post->content_formatted;
         
         # get post author
-        $el->{user} = {
-            username => $post->user->username,
-            avatar   => $post->user->avatar,
-            id       => $post->user->id,
-        };
+        $el->{user} = $post->user->as_hashref;
         
         # add post categories
         foreach my $category ($post->post_categories) {

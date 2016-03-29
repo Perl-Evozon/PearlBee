@@ -13,8 +13,8 @@ use PearlBee::Helpers::Util qw( string_to_slug );
 sub create_with_slug {
   my ($self, $args) = @_;
   my $schema = $self->result_source->schema;
-  my $slug   = string_to_slug( $args->{name} );
-  $slug      = $args->{slug} if $args->{slug} and $args->{slug} ne '';
+  my $slug   = $args->{slug} || $args->{name};
+  $slug      = string_to_slug( $slug );
 
   $schema->resultset('Category')->create({
     name    => $args->{name},

@@ -64,22 +64,26 @@ plugins:
           type:  'image'
           size:  'normal'
 
-# Constants
-covers_folder:        'public/uploads/covers/'
-import_folder:        'public/uploads/import/'
-images_folder:        'public/uploads/images/'
-images_path:          '/uploads/images' 
-default_avatar:       '/blog/img/male-user.png'
-default_avatar_light: '/blog/img/male-user-light.png'
-theme:                'light'
+# Avatars
+avatar:
+  path:    'userpics/userpics'
+  format:  'userpic-%d-100x100.png'
+  default:
+    dark:  'blog/img/male-user.png'
+    light: 'blog/img/male-user-light.png'
 
-app_url:          'http://localhost:5000'
-email_templates:  'views/emails/'
+# Constants
+covers_folder: 'public/uploads/covers/'
+import_folder: 'public/uploads/import/'
+images_folder: 'public/uploads/images/'
+images_path:   '/uploads/images' 
+theme:         'light'
+
+app_url:         'http://localhost:5000'
+email_templates: 'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
-user_assets:      '/home/jgoff/'
-user_avatars:     '/home/jgoff/'
 user_pics:        '/home/jgoff/userpics/userpics'
 
 # number of items to display per page

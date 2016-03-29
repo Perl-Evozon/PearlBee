@@ -67,43 +67,41 @@ hook before => sub {
 
 get '/avatar/:combo_breaker/:username' => sub {
   my $username = route_parameters('username');
+
   redirect "/avatar/$username"
 };
 
 get '/avatar/' => sub {
-  my $avatar_path;
-  my $theme = session( 'theme' ) || '';
+  my $avatar_path = config->{'avatar'}{'default'}{'dark'};
+  my $theme       = session( 'theme' ) || 'light';
+
   if ( $theme eq 'light' ) {
-    $avatar_path = config->{'default_avatar_light'};
+    $avatar_path = config->{'avatar'}{'default'}{'light'}
   }
-  else {
-    $avatar_path = config->{'default_avatar'};
-  }
+
   send_file $avatar_path;
 };
 
 get '/avatar/:username' => sub {
-  my $username = route_parameters->{'username'};
-  my $user = resultset('Users')->
-    find({ username => $username });
-  my $id = $user->id;
+  my $username      = route_parameters->{'username'};
+  my $user          = resultset( 'Users' )->find({ username => $username });
+  my $avatar_config = config->{'avatar'};
+  my $avatar_path   = $avatar_config->{'default'}{'dark'};
+  my $theme         = session( 'theme' );
 
-  my $avatar_path;
-  my $theme = session( 'theme' );
   if ( $user->avatar_path ne '' ) {
-    $avatar_path = "/userpics/userpics/userpic-$id-100x100.png";
+    my $path = $user->avatar_path;
+    $avatar_path = $path if -e "public/$path";
   }
   elsif ( $theme eq 'light' ) {
-    $avatar_path = config('default_avatar_light');
+    $avatar_path = $avatar_config->{'default'}{'light'}
   }
-  else {
-    $avatar_path = config('default_avatar');
-  }
-  send_file $avatar_path;
+
+  return send_file $avatar_path;
 };
 
-get '/avatar-light' => sub { '/path/to/light' };
-get '/avatar-dark' => sub { '/path/to/dark' };
+get '/avatar-light' => sub { config->{'avatar'}{'default'}{'light'} };
+get '/avatar-dark' => sub { config->{'avatar'}{'default'}{'dark'} };
 
 =item /theme
 

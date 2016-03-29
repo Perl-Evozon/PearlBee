@@ -163,7 +163,6 @@ post '/profile-image' => sub {
   if ($file) {
   
     my $upload_dir  = "/" . config->{'avatar'}{'path'};
-    my $filename    = $res_user->id;
     my $folder_path = config->{user_pics};
     my $logo        = PearlBee::Helpers::ProcessImage->new( 100, 100 );
     my $filename    = sprintf( config->{'avatar'}{'format'}, $user->{'id'} );

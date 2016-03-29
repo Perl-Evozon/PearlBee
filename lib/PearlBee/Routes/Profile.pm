@@ -155,46 +155,39 @@ post '/profile' => sub {
 
 post '/profile-image' => sub {
 
-my $params      = params;
-my $file = $params->{file};
-my $user = session('user');
-my $res_user    = resultset('Users')->find({ id => $user->{'id'} });
+  my $params   = params;
+  my $file     = $params->{file};
+  my $user     = session('user');
+  my $res_user = resultset('Users')->find({ id => $user->{'id'} });
 
-if ($file) {
+  if ($file) {
   
-  my $upload_dir = "/userpics/userpics/";
-  my $filename   = $res_user->id;
-  my $folder_path = config->{user_pics};
-
-  my $logo = PearlBee::Helpers::ProcessImage->new( 100, 100 );
+    my $upload_dir  = "/" . config->{'avatar'}{'path'};
+    my $filename    = $res_user->id;
+    my $folder_path = config->{user_pics};
+    my $logo        = PearlBee::Helpers::ProcessImage->new( 100, 100 );
+    my $filename    = sprintf( config->{'avatar'}{'format'}, $user->{'id'} );
 
     try {
-        $logo->resize( request->uploads->{file}, $folder_path, 'userpic-'.$user->{id}.'-100x100', 'png' );
-        } 
+      $logo->resize( request->uploads->{file}, $folder_path, $filename );
+    } 
     catch {
-        info 'There was an error editing the logo: ' . Dumper $_;
-      };
-      $res_user->update({  
-        avatar_path => $upload_dir .
-          sprintf( config->{'avatar'}{'format'}, $user->id )
-      });
-      template 'profile',
-    {
-      success => "Your profile picture has been changed.",
+      info 'There was an error editing the logo: ' . Dumper $_;
     };
+    $res_user->update({ avatar_path => $upload_dir . $filename });
+    template 'profile',
+      {
+        success => "Your profile picture has been changed.",
+      };
   }
   else {
-     $res_user->update(
-      {  
-           avatar_path    => '',
-           }
-         );
+    $res_user->update({ avatar_path => '' });
 
-     template 'profile',
-    {
-      success => "Your picture has been deleted",
-    };
-  }
+    template 'profile',
+      {
+        success => "Your picture has been deleted",
+      };
+   }
 };
 
 post '/profile_password' => sub  {

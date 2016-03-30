@@ -21,7 +21,7 @@
                                 <div class="col-xs-10">
                                     <div class="author-info">
                                         <div class="author-name">
-                                            <a href="/profile/author/[% user.username | uri %]">[% user.username %]</a>
+                                            <a href="/profile/author/[% user.username | uri %]">[% user.name %]</a>
                                         </div>
 
                                         <div class="profile-description">

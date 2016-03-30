@@ -29,7 +29,7 @@
 [% IF session.user.id %]
 
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="user_name">[% session.user.username %]</span> <!-- change name with actual user session -->
+              <span class="user_name">[% session.user.name %]</span> <!-- change name with actual user session -->
                      <div class="bubble"> 
                           [% IF session.user.avatar_path %]
                             <img class="user-image" src="/avatar/[% session.user.username %]" />

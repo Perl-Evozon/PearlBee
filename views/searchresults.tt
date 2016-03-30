@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="info-entry">
                                         <div class="user">
-                                            <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
+                                            <a href="/profile/author/[% post.user.username | uri %]">[% post.user.name %]</a>
                                         </div>
                                         <div class="date">
                                             [% post.created_date_human %]

@@ -24,7 +24,7 @@
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                         <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.username %]<b></b></a>
+                         <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.name %]<b></b></a>
                     </div>
                 [% END %]
                 

@@ -37,7 +37,7 @@
 									[% IF comment.fullname %]
 									   <b> [% comment.fullname %] </b>
 									[% ELSE %]
-									   <b> <i class="icon-user"></i> <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.username %]</a></b>
+									   <b> <i class="icon-user"></i> <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.name %]</a></b>
 									[% END %]
 									<br />
 									[% IF comment.email %]

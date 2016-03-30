@@ -14,7 +14,7 @@
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
                           <li>
-                              <a href="/admin"> Welcome <b>[% session.user.username %]</b> !</a>
+                              <a href="/admin"> Welcome <b>[% session.user.name %]</b> !</a>
                           </li>
                           <li class="dropdown"> 
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" class="my_account">My Account <b class="caret"></b></a>

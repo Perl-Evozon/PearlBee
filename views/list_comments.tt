@@ -10,17 +10,11 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                        [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                                    <img class="user-image" src="[% comment.uid.avatar %]">
-                              [%ELSE %]
-                              [% IF (session.theme == 'dark') %]
-                              <img class="user-image" src="/blog/img/male-user.png">
-                              [%ELSIF (session.theme == 'light') %]
-                              <img class="user-image" src="/blog/img/male-user-light.png">
-                              [%ELSE%]
-                              <img class="user-image" src="/blog/img/male-user.png">                                                      
-                              [%END%]
-                              [%END%]
+                              [% IF comment.uid.avatar_path %]
+                                <img class="user-image" src="/avatar/[% comment.uid.username %]" />
+                              [% ELSE %]
+                                <img class="user-image defaultAvatar" src="/avatar/" />
+                              [% END %]
                         
                     </div>
                 [% IF comment.fullname %]
@@ -30,7 +24,7 @@
                     </div>
                 [% ELSE %]
                     <div class="comment-author comment-author-registered">
-                         <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.username %]<b></b></a>
+                         <a href="/profile/author/[% comment.uid.username | uri %]">[% comment.uid.name %]<b></b></a>
                     </div>
                 [% END %]
                 
@@ -52,18 +46,11 @@
                 </div>
                 <div class="col-xs-10 content-comment">
                     <div class="bubble">
-                              [% IF (post.user.avatar != "/blog/img/male-user.png") && (post.user.avatar != "/blog/img/male-user-light.png")  %]
-                                    <img class="user-image" src="[% comment.uid.avatar %]">
-                              [%ELSE %]
-                              [% IF (session.theme == 'dark') %]
-                              <img class="user-image" src="/blog/img/male-user.png">
-                              [%ELSIF (session.theme == 'light') %]
-                              <img class="user-image" src="/blog/img/male-user-light.png">
-                              [%ELSE%]
-                              <img class="user-image" src="/blog/img/male-user.png">                                                      
-                              [%END%]
-                              [%END%]
-                       
+                              [% IF comment.uid.avatar_path %]
+                                <img class="user-image" src="/avatar/[% comment.uid.username %]" />
+                              [% ELSE %]
+                                <img class="user-image defaultAvatar" src="/avatar/" />
+                              [% END %]
                     </div>
                 [% IF comment.fullname %]
                     <div class="comment-author">

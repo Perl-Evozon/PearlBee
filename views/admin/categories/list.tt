@@ -119,7 +119,7 @@
 							<tr>
 								<td> [% category.name %] 		  </td>	
 								<td> [% category.slug %] 		  </td>	
-								<td> [% category.user.username %] </td>						
+								<td> [% category.user.name %] </td>						
 								<td style="width: 5%"> 
 									<a href="/admin/categories/edit/[% category.id %]"> <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i> </button> </a>
 									<a href="/admin/categories/delete/[% category.id %]"> <button class="btn btn-xs btn-danger"><i class="icon-remove"></i> </button> </a>

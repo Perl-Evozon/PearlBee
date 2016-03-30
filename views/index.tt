@@ -50,11 +50,15 @@
                   </div>
                     <div class="text-listing-entries col-xs-10">
                        <div class="bubble">
-<img class="user-image" src="/avatar/[% post.user.username %]" />
+                         [% IF post.user.avatar_path %]
+                            <img class="user-image" src="/avatar/[% post.user.username %]" />
+                          [% ELSE %]
+                            <img class="user-image defaultAvatar" src="/avatar/" />
+                          [% END %]
                         </div>
                          <div class="info-entry">
                            <div class="user">
-                             <a href="/profile/author/[% post.user.username %]">[% post.user.username %]</a>
+                             <a href="/profile/author/[% post.user.username %]">[% post.user.name %]</a>
                            </div>
                            <div class="date">
                              [% post.created_date_human %]

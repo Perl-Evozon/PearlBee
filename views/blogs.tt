@@ -1,28 +1,7 @@
 <link href="/blog/css/blogs.css" rel="stylesheet">
 
 <div class="blog">
- 
-     <div class="blog-start show">
-     	<div class="container">
-     		<div class="row">
-     			<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 text-center blog-start-wrapper">
-     				<h1>There is more than one way to blog it.</h1>
-     				<h4>blog.perl.org is a common blogging platform for the Perl community.</h4>
-                        <div class="buttons-wrapper">
-                                <a href="/sign-up"><button type="button" class="btn btn-signin" id="signin">Sign in</button></a>
-                                <a href="/register"><button type="button" class="btn btn-register" id="register">Register</button></a>
-                        </div>
-     				<div class="close-overlay" id="close_overlay">
-     					<span class="icon-close"></span>
-     					<span class="close-overlay-text ">close and go to listings</span>
-     				</div>
-     			</div>
-     		</div>
-     	</div>
-     	<div class="container-bottom">
-     	</div>
-     </div>
- 
+
    <div class="container">
      <div class="row">
        <div class="content clearfix">
@@ -35,8 +14,11 @@
 
                       [% LAST IF loop.count == 2 %]
                        <div class="bubble">
-      
-<img class="blog-image" src="/avatar/[% post.user.username %]" />
+                          [% IF post.user.avatar_path %]
+                            <img class="blog-image" src="/avatar/[% post.user.username %]" />
+                          [% ELSE %]
+                            <img class="blog-image defaultAvatar" src="/avatar/" />
+                          [% END %]
                        </div>
 
                       [% END %]
@@ -86,7 +68,7 @@
                          </div>
                           <div class="info-entry">
                             <div class="user">
-                              <a href="/profile/author/[% post.user.username | uri %]">[% post.user.username %]</a>
+                              <a href="/profile/author/[% post.user.username | uri %]">[% post.user.name %]</a>
                                <!--<a href="/feed/author/[% post.user.username | uri %]" target="_blank">RSS</a>-->
                             </div>
                             <div class="date">

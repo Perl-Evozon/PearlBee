@@ -26,7 +26,7 @@
       				</a>
                 <div class="btn-group right-icon">
       					<div class="user header-icon hidden" style="display:inline-block">
-[% IF session.user.id %]
+[% IF session.user.username %]
 
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.name %]</span> <!-- change name with actual user session -->
@@ -78,7 +78,7 @@
               </div>
             </div>
             </form>
-[% END # IF session.user.id %]
+[% END # IF session.user.username %]
       					</div>
       				</div>
             </div>

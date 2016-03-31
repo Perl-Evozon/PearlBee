@@ -590,7 +590,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 							avatarPath;
 
                         if (posts[i].nr_of_comments == 1) {
-                            commentsText = "Comment";
+                            commentsText = "Comment (" + posts[i].nr_of_comments + ")";
                         } else {
                             commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                         }
@@ -833,7 +833,7 @@ if (newURL == userURL) {
                         commentsText;
 
                     if(posts[i].nr_of_comments ==  1){
-                        commentsText = "Comment";
+                        commentsText = "Comment (" + posts[i].nr_of_comments + ")";
                     } else{
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
@@ -911,7 +911,7 @@ if (newURL == userURL) {
                         avatarPath;
 
                     if(posts[i].nr_of_comments ==  1){
-                        commentsText = "Comment";
+                        commentsText = "Comment (" + posts[i].nr_of_comments + ")";
                     } else{
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
@@ -998,7 +998,7 @@ if (newURL == userURL) {
                         avatarPath;
 
                     if(posts[i].nr_of_comments ==  1){
-                        commentsText = "Comment";
+                        commentsText = "Comment (" + posts[i].nr_of_comments + ")";
                     } else{
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
@@ -1075,7 +1075,7 @@ $('#more-posts').click(function() {
                     avatarPath;
 
                 if(posts[i].nr_of_comments ==  1){
-                    commentsText = "Comment";
+                    commentsText = "Comment (" + posts[i].nr_of_comments + ")";
                 } else{
                     commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                 }
@@ -1193,7 +1193,7 @@ function getAuthorEntries (button) {
                         commentsText;
 
                     if (posts[i].nr_of_comments == 1) {
-                        commentsText = "Comment";
+                        commentsText =  "Comment (" + posts[i].nr_of_comments + ")";
                     } else {
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }
@@ -1381,7 +1381,7 @@ $('#more-blog-posts').click(function() {
                         commentsText;
 
                     if (posts[i].nr_of_comments == 1) {
-                        commentsText = "Comment";
+                        commentsText =  "Comment (" + posts[i].nr_of_comments + ")";
                     } else {
                         commentsText = "Comments (" + posts[i].nr_of_comments + ")";
                     }

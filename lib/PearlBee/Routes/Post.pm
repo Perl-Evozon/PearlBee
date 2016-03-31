@@ -291,7 +291,7 @@ get '/posts/user/:username/page/:page' => sub {
     # we did not identify the user
     error "No such user '$username'";
   }
-  my @posts       = resultset('Post')->search_published({ 'user_id' => $user->id }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my @posts       = resultset('Post')->search_published({ 'user_id' => $user->id }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page+1 });
   my $nr_of_posts = resultset('Post')->search_published({ 'user_id' => $user->id })->count;
   my @tags        = map { $_->as_hashref_sanitized }
                     map { $_->tag_objects } @posts;

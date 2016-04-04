@@ -284,14 +284,26 @@ sub is_active {
   return 0;
 }
 
-=head1 Check if the user is deactived
+=head1 Check if the user is inactive
 
 =cut
 
-sub is_deactive {
+sub is_inactive {
   my ($self) = @_;
 
   return 1 if ( $self->role eq 'inactive' );
+
+  return 0;
+}
+
+=head1 Check if the user is pending
+
+=cut
+
+sub is_pending {
+  my ($self) = @_;
+
+  return 1 if ( $self->status eq 'pending' );
 
   return 0;
 }

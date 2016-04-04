@@ -57,7 +57,6 @@
 
                 <h2 id="latest_posts" class="page-heading-blog">Latest posts</h2>
  
-               [% USE HTML.Strip 'strip'%]
                [% FOREACH post in posts %]
          
                  <div class="entry clearfix">
@@ -91,8 +90,8 @@
                           <div class="post_preview truncate">
                            <div class="post_preview_wrapper">
                              <p>
-                               [% post.content | strip %]
-                               [% post.content_more | strip %]
+                               [% post.content %]
+                               [% post.content_more %]
                              </p>
                            </div>
                           </div>

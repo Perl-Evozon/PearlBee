@@ -84,33 +84,35 @@ get '/feed/:uid' => sub {
 get '/feed/post/:slug' => sub {
     my $feed;
     my $post = resultset('Post')->find({slug => route_parameters->{slug}});
-    my $post_id = $post->id;
-    my @comments = reverse resultset('Comment')->search(
-        { status => 'approved', post_id => $post_id },
-        { order_by => { -desc => "comment_date" }, rows => 10 }
-    );
-    try {
-        $feed = create_feed(
-            format  => params->{format} ||
-                       config->{plugins}{feed}{format},
-            title   => config->{plugins}{feed}{title},
-            entries => [ map { title => $_->fullname. " commented on " . $post->title,
-                               link => '/post/' . route_parameters->{slug} . "#comment_" . $_->id }, @comments ],
-        );
+    if ( $post ) {
+      my $post_id = $post->id;
+      my @comments = reverse resultset('Comment')->search(
+          { status => 'approved', post_id => $post_id },
+          { order_by => { -desc => "comment_date" }, rows => 10 }
+      );
+      try {
+          $feed = create_feed(
+              format  => params->{format} ||
+                         config->{plugins}{feed}{format},
+              title   => config->{plugins}{feed}{title},
+              entries => [ map { title => $_->fullname. " commented on " . $post->title,
+                                 link => '/post/' . route_parameters->{slug} . "#comment_" . $_->id }, @comments ],
+          );
+      }
+      catch {
+          my ( $exception ) = @_;
+ 
+          if ( $exception->does('FeedInvalidFormat') ) {
+              return $exception->message;
+          }
+          elsif ( $exception->does('FeedNoFormat') ) {
+              return $exception->message;
+          }
+          else {
+              $exception->rethrow;
+          }
+      };
     }
-    catch {
-        my ( $exception ) = @_;
-
-        if ( $exception->does('FeedInvalidFormat') ) {
-            return $exception->message;
-        }
-        elsif ( $exception->does('FeedNoFormat') ) {
-            return $exception->message;
-        }
-        else {
-            $exception->rethrow;
-        }
-    };
 
     return $feed;
 };

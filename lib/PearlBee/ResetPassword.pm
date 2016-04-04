@@ -20,7 +20,8 @@ get '/activation' => sub {
 
     my $user_reset_token =
          resultset('Users')->search({ activation_key => $token })->first();
-    if ($user_reset_token->status eq 'pending' ) 
+    if ($user_reset_token and
+        $user_reset_token->status eq 'pending' ) 
     {
         $user_reset_token->update({ 
         status         => 'active',

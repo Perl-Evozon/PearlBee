@@ -3782,7 +3782,7 @@ background-size: cover;
 }
 
 .tabs .loading-posts {
-   margin-bottom: 115px;
+   margin-bottom: 0;
 }
 
 .tabs .view-more {
@@ -3886,9 +3886,9 @@ background-size: cover;
 .no-posts {
    font-family: 'Open Sans', sans-serif;
    font-size: 36px;
-    padding: 8%;
+    /*padding: 8%;*/
 }
-    .no-posts2, .no-posts3 {
+    .no-posts2, .no-posts3, .no-posts-found1 {
         font-family: 'Open Sans', sans-serif;
         font-size: 36px;
         padding: 8%;
@@ -4040,11 +4040,15 @@ background-size: cover;
      }
 
 /* end people */
-
 /*end search page fumy */
 
+   .no-tags{
+      left: 0;
+      position: absolute;
+      top: -105px;
+      padding: 0;
+    }
 /*individual posts page fumy */
-
 .individual-post .meta .bubble img {
    border-radius: 50%;
    height: 120px;
@@ -4053,10 +4057,6 @@ background-size: cover;
    position: absolute;
    left: -155px;
 }
-
-
-
-
 .individual-post .info-entry .user {
    font-family: 'Montserrat', 'Open Sans', sans-serif;
    font-size: 18px;
@@ -4278,6 +4278,7 @@ background-size: cover;
     #tab-content1 .loading-posts {
         padding-top: 0;
     }
+
     /*/display message for no posts*/
 
 

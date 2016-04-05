@@ -121,8 +121,8 @@
                 <!-- Each posts should be enclosed inside "entry" class" -->
                 <!-- Post one -->
               [% ELSE %]
-                  <br />
-                  <h5 class="no-posts">No posts found.</h5>
+               <h5 class="no-posts no-tags" style="display: block;">
+                   We're sorry, no posts were found for this tag.
               [% END %]
            </div>
         </div>

@@ -111,7 +111,7 @@ sub migrate_users {
   my $in_sth = $in_dbh->prepare( <<'EOS' );
    SELECT a.author_id,
           a.author_nickname,
-          a.author_name,
+          a.author_basename,
           a.author_password,
           a.author_preferred_language,
           a.author_created_on,

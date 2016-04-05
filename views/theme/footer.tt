@@ -18,7 +18,8 @@
                           <div class="powered-by">
                           	<p id="powered_by">Powered by</p>
                           </div>
-                           <div class="footer-logo"></div>
+                          <a href="http://pearlbee.org">
+                           <div class="footer-logo"></div> </a>
 				   <p id="copywrite_mobile">[% copyright_year %] blogs.perl.org. All rights reserved</p>
                          </div>
                        </div>

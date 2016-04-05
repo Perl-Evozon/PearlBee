@@ -383,9 +383,13 @@ strong{
    vertical-align: top;
 }
 
+.header .pull-right.head-icons {
+	line-height: initial;
+}
 
- .header .right-icon {
+.header .right-icon {
    max-height: 80px;
+	 line-height: 80px;
 } 
 
 .header .header-icon {
@@ -3498,6 +3502,7 @@ background-size: cover;
 .posts.listings .post-heading h2 {
    margin-top: 10px;
    margin-bottom: 15px;
+	 overflow-wrap: break-word;
 }
 
 .posts.listings .post_preview p {
@@ -4294,7 +4299,7 @@ background-size: cover;
         }
 
         #tab-content1 .loading-posts .more-posts {
-            left: -110px;
+            left: -50px;
         }
 
         #tab-content2 .people .bubble img {
@@ -4306,6 +4311,12 @@ background-size: cover;
         #tab-content2 .people .info-entry{
             padding-left: 10px;
         }
+				#tag-list .btn-tag {
+					max-width: 100%;
+				}
+				.search-page #tag-list li {
+					max-width: 100%;
+				}
     }
     @media all and (max-width: 360px){
         #tab-content2 .info-entry{
@@ -4476,6 +4487,8 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 .posts .post-content p {
    margin-bottom: 10px;
+   word-break: break-word;
+		-ms-word-break: break-word;
 }
 
 /* Overwrites all img/gif/iframe/etc to match full size of grid and remain responsive */
@@ -4774,6 +4787,10 @@ input[readonly] {
       padding-right: 0;
       padding-left: 0;
    }
+	.posts.listings .col-xs-10 h2 {
+		margin-top: 30px;
+		margin-bottom: 20px;
+	}
 }
 
 .blog-top-part .bubble .blog-image {

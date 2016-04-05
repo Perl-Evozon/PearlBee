@@ -513,6 +513,7 @@ $(window).resize(function(){
   });
 });
 
+
 });
 
 //Back to top at refresh
@@ -717,8 +718,11 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                             newItem = $(entryItem).clone();
 
                         newItem.find("a.btn-tag").attr("href", "/posts/tag/" + tags[i].slug);
+											if(tags[i].name.length < 30) {
                         newItem.find("a.btn-tag").html(tags[i].name);
-
+											} else {
+												newItem.find("a.btn-tag").html(tags[i].name.slice(0,30)+"...");
+											}
                         newItem.appendTo($("#tag-list"));
                         newItem.removeClass('hidden');
                     }

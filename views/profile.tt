@@ -51,7 +51,7 @@ $(document).ready(function() {
                 [% IF session.user.avatar_path %]
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
-                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/" />
+                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
                 [% END %]
                
 
@@ -101,7 +101,7 @@ $(document).ready(function() {
                 [% IF session.user.avatar_path %]
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
-                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/" />
+                      <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
                 [% END %]
              </div>
 						<div>

@@ -34,7 +34,7 @@
                           [% IF session.user.avatar_path %]
                             <img class="user-image" src="/avatar/[% session.user.username %]" />
                           [% ELSE %]
-                            <img class="user-image defaultAvatar" src="/avatar/" />
+                            <img class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
                           [% END %]
                      </div> 
             </div>
@@ -59,7 +59,7 @@
                           [% IF session.user.avatar_path %]
                             <img class="user-image" src="/avatar/[% session.user.username %]" />
                           [% ELSE %]
-                            <img class="user-image defaultAvatar" src="/avatar/" />
+                            <img class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
                           [% END %]
               </div>
             </div>

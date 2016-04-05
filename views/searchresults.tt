@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                             [% END %]
-                            <div class="loading-posts">
+                            <div class="loading-posts no-posts-messages">
                                 <div class="col-xs-2">
                                 </div>
                                 <div class="view-more col-xs-10">
@@ -173,7 +173,7 @@
 
                             [% ELSE %]
                             <br />
-                            <h5 class="no-posts" hidden>We're sorry, no results were found for your <br />search criteria</h5>
+                            <h5 class="no-posts no-posts-found1" hidden>We're sorry, no results were found for your <br />search criteria</h5>
                             [% END %]
                         </div>
 
@@ -210,7 +210,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <h5 class="no-posts2" hidden >We're sorry, no results were found for your <br />search criteria</h5>
+                                <h5 class="no-posts2 no-posts-found" hidden >We're sorry, no results were found for your <br />search criteria</h5>
                             </div>
                         </div>
 
@@ -229,7 +229,7 @@
                         <ul id="tag-list" class="cf">
                             <li class="hidden"><a class="btn btn-tag" href="/posts/tag/perlgithub">perlgithub</a></li>
                         </ul>
-                        <h5 class="no-posts3" hidden>We're sorry, no results were found for your <br />search criteria</h5>
+                        <h5 class="no-posts3 no-posts-found" hidden>We're sorry, no results were found for your <br />search criteria</h5>
                     </div>
 
 

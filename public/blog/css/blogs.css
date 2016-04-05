@@ -49,7 +49,6 @@
     text-transform: uppercase;
 }
 
-
 /*Media queries*/
 @media all and (max-width: 768px) {
     .blog .info-blog {

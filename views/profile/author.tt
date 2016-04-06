@@ -9,7 +9,7 @@
                     <div class="content clearfix">
                         <div class="col-md-12">
                             <div class="description clearfix">
-                                <div class="col-xs-2">
+                                <div class="col-md-2 col-xs-5">
                                     <div class="bubble">
                                       [% IF user.avatar_path %]
                                         <img class="user-image" src="/avatar/[% user.username %]" />
@@ -18,7 +18,7 @@
                                       [% END %]
                                     </div>
                                 </div>
-                                <div class="col-xs-10">
+                                <div class="col-md-10 col-xs-7">
                                     <div class="author-info">
                                         <div class="author-name">
                                             <a href="/profile/author/[% user.username | uri %]">[% user.name %]</a>

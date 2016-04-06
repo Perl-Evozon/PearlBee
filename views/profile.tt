@@ -48,7 +48,7 @@ $(document).ready(function() {
       	<div class="col-xs-6 profile-pic">
 		<div class="bubble text-center">
 
-                [%# IF session.user.avatar_path %]
+                [% IF session.user.avatar_path %]
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
@@ -99,7 +99,7 @@ $(document).ready(function() {
 				<div class="credentials">
 					<div class="col-sm-2 profile-pic">
 						<div class="bubble">
-                [%# IF session.user.avatar_path %]
+                [% IF session.user.avatar_path %]
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />

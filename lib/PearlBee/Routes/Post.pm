@@ -36,6 +36,8 @@ get '/post/:slug' => sub {
   my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
   my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
+  session redirect => "/post/$slug";
+
   my ($next_post, $previous_post, @post_tags, @comments);
   if ( $post and $post->id ) {
     $next_post     = $post->next_post;
@@ -63,6 +65,8 @@ get '/posts/category/:slug' => sub {
 
   my $slug     = route_parameters->{'slug'};
   my $category = resultset('Category')->find({ 'slug' => $slug });
+
+  session redirect => "/posts/category/$slug";
 
   my $template_data;
   if ( $category ) {
@@ -129,6 +133,8 @@ get '/posts/category/:slug/page/:page' => sub {
   my $slug        = route_parameters->{'slug'};
   my $category    = resultset('Category')->find({ 'slug' => $slug });
   my $template_data;
+
+  session redirect => "/posts/category/$slug/page/$page";
 
   if ( $category ) {
     my @posts       = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
@@ -213,6 +219,8 @@ get '/posts/page/:page' => sub {
   my $movable_type_url = config->{movable_type_url};
   my $app_url          = config->{app_url};
 
+  session redirect => "/posts/page/$page";
+
   for my $post ( @mapped_posts ) {
     $post->{massaged_content}      =~ s{$movable_type_url}{$app_url}g;
     $post->{massaged_content_more} =~ s{$movable_type_url}{$app_url}g;
@@ -262,14 +270,15 @@ get '/posts/user/:username' => sub {
                     map { $_->category_objects } @posts;
 
   # extract demo posts info
-  my @mapped_posts = map_posts(@posts);
+  my @mapped_posts     = map_posts(@posts);
   my $movable_type_url = config->{movable_type_url};
-  my $app_url = config->{app_url};
+  my $app_url          = config->{app_url};
+
+  session redirect => "/posts/user/$username";
 
   for my $post ( @mapped_posts ) {
     $post->{content} =~ s{$movable_type_url}{$app_url}g;
   }
-
 
   # Calculate the next and previous page link
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
@@ -319,6 +328,8 @@ get '/posts/user/:username/page/:page' => sub {
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/posts/user/' . $username);
 
+  session redirect => "/posts/user/$username/page/$page";
+
   my $template_data =
     {
       posts          => \@mapped_posts,
@@ -347,9 +358,11 @@ get '/posts/user/:username/page/:page' => sub {
 
 get '/posts/tag/:slug' => sub {
 
-  my $slug        = route_parameters->{'slug'};
-  my $tag         = resultset('Tag')->find({ slug => $slug });
+  my $slug = route_parameters->{'slug'};
+  my $tag  = resultset('Tag')->find({ slug => $slug });
   my $template_data;
+
+  session redirect => "/posts/tag/$slug";
 
   if ( $tag ) {
     my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
@@ -434,6 +447,8 @@ get '/posts/tag/:slug/page/:page' => sub {
   my @mapped_posts     = map_posts(@posts);
   my $movable_type_url = config->{movable_type_url};
   my $app_url          = config->{app_url};
+
+  session redirect => "/posts/tag/$slug/page/$page";
 
   for my $post ( @mapped_posts ) {
     $post->{content} =~ s{$movable_type_url}{$app_url}g;

@@ -57,28 +57,6 @@ $|++;
 my $AVATAR_PATH   = '/avatars';
 my $PER_USER_PATH = '/users';
 
-sub break_tag {
-  my $tag = shift;
-
-  my @name;
-  while ( $tag ) {
-    if ( $tag =~ s/^\#?("[^"]+"),?\s*// ) {
-      push @name, $1;
-    }
-    if ( $tag =~ s/^\#?('[^']+'),?\s*// ) {
-      push @name, $1;
-    }
-    elsif ( $tag =~ s/^\#?([^,]+),?\s*// ) {
-      push @name, $1;
-    }
-    else {
-      push @name, $1;
-    }
-  }
-
-  return @name;
-}
-
 sub munge_asset_file_path {
   my $in_asset = shift;
   $in_asset->{asset_file_path} =~ s{^\%s}{$AVATAR_PATH};
@@ -149,6 +127,11 @@ EOS
     print '.' if $count++ % 100 == 0;
 
     my $out_user = map_user($in_user);
+    if ( !$out_user->{username} and $out_user->{name} ) {
+      warn "### OpenID user ID $out_user->{id} found, defaulting username\n";
+      $out_user->{username} = $out_user->{name};
+    }
+
     try {
       $out_sth->execute( @{$out_user}{@fields} ) unless $dry_run;
       $users{$out_user->{id}} = 1;
@@ -236,7 +219,7 @@ INSERT INTO blog(id,name,slug,description,created_date,edited_date)
           VALUES(?,?,?,?,?,?)
 EOS
 
-  my @fields = qw( id user_id );
+  my @fields_owner = qw( id user_id );
   my $out_owner_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO blog_owners(blog_id,user_id)
           VALUES(?,?)
@@ -264,7 +247,7 @@ EOS
     $out_sth->execute( @{$out_blog}{@fields} ) unless $dry_run;
 
     $blog_user{$out_blog->{id}} = $out_blog->{user_id};
-    $out_owner_sth->execute( @{$out_blog}{@fields} ) unless $dry_run;
+    $out_owner_sth->execute( @{$out_blog}{@fields_owner} ) unless $dry_run;
   }
   print "\n";
 }
@@ -310,11 +293,9 @@ sub map_post {
 
 my %user_post; #key $user_id, value @{ $post_id }
 my %blog_post; #key $blog_id, value @{ $post }
-my %tag;
-my %post_keyword; #key $post_id, value @{ $tag_name }
-my %page_keyword; #key $page_id, value @{ $tag_name }
-my %keyword_post; #key $keyword_name, value @{ $post_id }
-my %keyword_page; #key $keyword_name, value @{ $page_id }
+my %tag; #key $tag_name, value ... will be tag ID eventually.
+my %post_keyword; #key $post_id, value $tag_name
+my %page_keyword; #key $page_id, value $tag_name
 
 sub migrate_posts {
   my ( $tag ) = @_;
@@ -361,10 +342,8 @@ EOS
     push @{ $user_post{ $out_post->{user_id} } }, $out_post->{id};
     push @{ $blog_post{ $out_post->{blog_id} } }, $out_post->{id};
     if ( $out_post->{keywords} ) {
-        my @tag = break_tag( $out_post->{keywords} );
-        $tag->{$_} = 1 for @tag;
-        $post_keyword{$out_post->{id}} = \@tag;
-        push @{ $keyword_post{$_} }, $out_post->{id} for @tag;
+        $tag->{$out_post->{keywords}} = 1;
+        $post_keyword{$out_post->{id}} = $out_post->{keywords};
     }
     $out_sth->execute( @{$out_post}{@fields} ) unless $dry_run;
   }
@@ -449,10 +428,8 @@ EOS
     push @{ $user_page{ $out_page->{user_id} } }, $out_page->{id};
     push @{ $blog_page{ $out_page->{blog_id} } }, $out_page->{id};
     if ( $out_page->{keywords} ) {
-        my @tag = break_tag( $out_page->{keywords} );
-        $tag->{$_} = 1 for @tag;
-        $page_keyword{$out_page->{id}} = \@tag;
-        push @{ $keyword_page{$_} }, $out_page->{id} for @tag;
+        $tag->{$out_page->{keywords}} = 1;
+        $page_keyword{$out_page->{id}} = $out_page->{keywords};
     }
     $out_sth->execute( @{$out_page}{@fields} ) unless $dry_run;
   }
@@ -465,22 +442,20 @@ sub migrate_some_tags {
   my ( $tag ) = @_;
   print "migrating some posts: ";
   my $in_sth = $in_dbh->prepare( <<'EOS' );
-    SELECT objecttag_id, t.tag_name
+    SELECT ot.objecttag_id,
+           t.tag_name
       FROM mt_objecttag ot
       JOIN mt_tag t
         ON t.tag_id = ot.objecttag_tag_id
   ORDER BY objecttag_id
 EOS
 
-  my %post_tag;
-
   $in_sth->execute;
 
   my $count = 0;
   while ( my $in_category = $in_sth->fetchrow_hashref ) {
     print '.' if $count++ % 100 == 0;
-    my @tag = break_tag( $in_category->{tag_name} );
-    $tag->{$_} = 1 for @tag;
+#    $tag->{$in_category->{tag_name}} = 1;
   }
   print "\n";
 }
@@ -520,21 +495,19 @@ EOS
   my $count = 0;
   for my $post_id ( keys %post_keyword ) {
 
-    unless ( $post_keyword{$post_id} and @{ $post_keyword{$post_id} } ) {
+    unless ( $post_keyword{$post_id} ) {
       warn "*** Skipping post ID $post_id: no tags\n";
       next;
     }
 
-    for my $keyword_name ( @{ $post_keyword{$post_id} } ) {
-      print '.' if $count++ % 100 == 0;
-
-      my @keyword = break_tag( $keyword_name );
-      for my $keyword_name ( @keyword ) {
-        my $tag_id = $tag->{$keyword_name};
-
-        $out_sth->execute($post_id, $tag_id) unless $dry_run;
-      }
+    my $keyword = $post_keyword{$post_id};
+    unless ( $tag->{$keyword} ) {
+      warn "*** Skipping post ID $post_id: no keyword found\n";
+      next;
     }
+
+    $out_sth->execute($post_id, $tag->{$keyword})
+      unless $dry_run;
   }
   print "\n";
 }
@@ -551,18 +524,20 @@ EOS
   my $count = 0;
   for my $page_id ( keys %page_keyword ) {
 
-    unless ( $page_keyword{$page_id} and @{ $page_keyword{$page_id} } ) {
+    unless ( $page_keyword{$page_id} ) {
       warn "*** Skipping page ID $page_id: no tags\n";
       next;
     }
 
-    for my $keyword_name ( @{ $page_keyword{$page_id} } ) {
-      print '.' if $count++ % 100 == 0;
-
-      my $tag_id = $tag->{$keyword_name};
-
-      $out_sth->execute($page_id, $tag_id) unless $dry_run;
+    my $keyword = $page_keyword{$page_id};
+    unless ( $tag->{$keyword} ) {
+      warn "*** Skipping page ID $page_id: no keyword found\n";
+      next;
     }
+
+    my $keyword_id = $page_keyword{$page_id};
+    $out_sth->execute($page_id, $tag->{$page_keyword{$page_id}})
+      unless $dry_run;
   }
   print "\n";
 }

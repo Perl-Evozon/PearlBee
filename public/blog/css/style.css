@@ -4844,6 +4844,25 @@ input[readonly] {
 }
 
 
+/* No script msg */
+
+.noscriptmsg {
+   height: calc(100% - 136px);
+   text-align: center;
+   color: #43C8E7;
+}
+.noscriptmsg h1 {
+   margin:0;
+   font-size: 18px;
+   line-height: 300px 
+}
+
+.noscriptmsg h2 {
+   font-size: 27px;
+   margin: -50px 0 0;
+}
+
+
 
 
 

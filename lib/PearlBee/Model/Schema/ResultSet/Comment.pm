@@ -5,11 +5,7 @@ use warnings;
 
 use base 'DBIx::Class::ResultSet';
 
-use Gravatar::URL;
-use DateTime;
-use Encode qw( decode_utf8 );
-
-use HTML::Strip;
+use HTML::Scrubber::StripScripts;
 
 sub can_create {
 	my ($self, $params, $user) = @_;
@@ -22,10 +18,17 @@ sub can_create {
 
 	# Filter the input data (avoid js injection)
 	#
-	my $hs = HTML::Strip->new();
-        $text = $hs->parse( $text );
+	my $hs = HTML::Scrubber::StripScripts->new(
+		Allow_src      => 1,
+		Allow_href     => 1,
+		Allow_a_mailto => 1,
+		Whole_document => 1,
+		Block_tags     => ['hr'],
+	);
+	$text = $hs->scrub( $text );
+	$user = $schema->resultset('Users')->find( $user->{id} );
 
-	$user 	 = $schema->resultset('Users')->find( $user->{id} );
+
 	my $fullname = $user->name;
 	my $email    = $user->email;
 

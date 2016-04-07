@@ -32,7 +32,7 @@ requires 'Moose';
 requires 'XML::Simple';
 
 requires 'Gravatar::URL';
-requires 'HTML::Strip';
+requires 'HTML::Scrubber::StripScripts';
 requires 'Text::Markdown';
 
 requires 'DBD::Pg';

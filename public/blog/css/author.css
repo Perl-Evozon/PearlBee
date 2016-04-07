@@ -110,7 +110,7 @@
         font-size: 36px;
         font-family: "Montserrat","Open Sans",sans-serif;
         color: #444;
-        padding: 8% 8% 8% 0;
+        /*padding: 8% 8% 8% 0;*/
         line-height: 1.1;
     }
 
@@ -171,7 +171,7 @@
 }
 @media screen and (min-width: 360px) and (max-width:480px){
     .author-description .author-info {
-        padding-left: 30%;
+        padding-left: 10%;
     }
 }
 @media screen and (min-width: 480px) and (max-width:620px){

@@ -23,7 +23,7 @@ hook before => sub {
   }
   elsif ( request->dispatch_path =~ m{ ^/profile }x ) {
     unless ( PearlBee::Helpers::Access::has_ability( $user, 'update profile' )
-             or $user->is_pending ) {
+             or ( $user and $user->is_pending ) ) {
       forward '/', { requested_path => request->dispatch_path };
     }
   }

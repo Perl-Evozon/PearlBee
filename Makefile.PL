@@ -55,10 +55,9 @@ WriteMakefile(
 
         # Dynamically loaded dependencies now
 
-        'Gravatar::URL'              => 0,
-        'HTML::Strip'                => 0,
-
-        'DBD::Pg'                    => 0,
+        'Gravatar::URL'                => 0,
+        'HTML::Scrubber::StripScripts' => 0,
+        'DBD::Pg'                      => 0,
 
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

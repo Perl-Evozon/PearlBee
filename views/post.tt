@@ -6,9 +6,9 @@
             [% INCLUDE components/alerts.tt %]
             <br><br><br><br><br>
             <div class="col-md-12 individual-post">
-                <div class="col-xs-2">
+                <div class="col-md-2">
                 </div>
-                <div class="col-xs-10">
+                <div class="col-md-10 col-xs-12">
                 <div class="posts">
                     <!-- Each posts should be enclosed inside "entry" class" -->
                     <!-- Post one -->

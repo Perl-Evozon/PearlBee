@@ -52,6 +52,7 @@ $(document).ready(function() {
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
+
                 [% END %]
                
 
@@ -102,6 +103,7 @@ $(document).ready(function() {
                       <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
+
                 [% END %]
              </div>
 						<div>

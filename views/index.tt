@@ -42,7 +42,6 @@
           		[% END %]
               </div>
 
-              [% USE HTML.Strip 'strip'%]
               [% FOREACH post in posts %]
         
                 <div class="entry clearfix">
@@ -80,8 +79,8 @@
                          <div class="post_preview truncate">
                           <div class="post_preview_wrapper">
                             <p>
-                              [% post.content | strip %]
-                              [% post.content_more | strip %]
+                              [% post.content %]
+                              [% post.content_more %]
                             </p>
                           </div>
                          </div>
@@ -122,8 +121,8 @@
                 <!-- Each posts should be enclosed inside "entry" class" -->
                 <!-- Post one -->
               [% ELSE %]
-                  <br />
-                  <h5 class="no-posts">No posts found.</h5>
+               <h5 class="no-posts no-tags" style="display: block;">
+                   We're sorry, no posts were found for this tag.
               [% END %]
            </div>
         </div>

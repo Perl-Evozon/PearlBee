@@ -53,7 +53,7 @@
               </div>
             </div>
 [% ELSE %]
-            <form id="register_head" action="/login" method="post">
+            <form id="register_head" action="/login?redirect=[% IF session.redirect %][% session.redirect | uri %][% END %]" method="post">
             <div class="male-user icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="bubble">
                           [% IF session.user.avatar_path %]

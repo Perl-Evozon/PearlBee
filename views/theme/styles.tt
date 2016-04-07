@@ -53,6 +53,9 @@
     <noscript>
         <style type="text/css">
             .blog,
+            .author-page,
+            .blog-post,
+            .search-page,
             .header .search,
             .switch {display:none;}
             .header {top: 0;}

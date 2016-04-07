@@ -7,10 +7,15 @@ use base 'DBIx::Class::ResultSet';
 
 use HTML::Scrubber::StripScripts;
 
+use utf8;
+
 sub can_create {
 	my ($self, $params, $user) = @_;
 	my $schema  = $self->result_source->schema;
 	my $text    = $params->{comment};
+	#The is_utf8 method does not return true.
+	#As a consequence, we need to decode the content so that the database will not contain spurious data.
+	utf8::decode($text);
 	my $post_id = $params->{id};
 	my $uid     = $params->{uid};
 	my $post    = $schema->resultset('Post')->find( $post_id );

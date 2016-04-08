@@ -28,12 +28,10 @@
                                <p class="entry-name">[% blog.name %]</p>
                                <ul class="info-blog">
                                    <li class="information-blog"> [% blog.description %] </li>
-                                   [% FOREACH post IN posts %]
-                                   [% LAST IF loop.count == 2 %]
-                                   <a href="/feed/author/[% post.user.username | uri %]" target="_blank">
+                                   <a href="/feed/author/[% user.username  %]/blog/[%blog.slug%]" target="_blank">
                                        <button id="rss" class="btn btn-primary btn-xs" type="button" >RSS</button>
                                    </a>
-                                   [% END %]
+
 
                                </ul>
 

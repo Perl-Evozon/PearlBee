@@ -151,4 +151,11 @@ get '/feed/author/:username' => sub {
     return $feed;
 };
 
+get '/feed/author/:username/blog/:slug' => sub { 
+  my $username = route_parameters->{username};
+  
+  redirect "/feed/author/$username";
+
+};
+
 1;

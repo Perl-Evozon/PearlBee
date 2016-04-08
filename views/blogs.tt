@@ -1,6 +1,6 @@
 <link href="/blog/css/blogs.css" rel="stylesheet">
 
-<div class="blog">
+<div class="blog blogs">
 
    <div class="container">
      <div class="row">
@@ -10,24 +10,20 @@
             <div class="posts listings">
                <div class="blog-top-part">
                    <div class="col-xs-2 no-padding">
-                   [% FOREACH post IN posts %]
-
-                      [% LAST IF loop.count == 2 %]
                        <div class="bubble">
-                          [% IF post.user.avatar_path %]
-                            <img class="blog-image" src="/avatar/[% post.user.username %]" />
+                          [% IF user.avatar_path %]
+                            <img class="blog-image" src="/avatar/[% user.username %]" />
                           [% ELSE %]
                             <img class="blog-image defaultAvatar" src="/avatar/" />
                           [% END %]
                        </div>
-
-                      [% END %]
                    </div>
 
                    <div class="col-xs-10">
                        <div class="blog-info">
 
                            [% FOREACH blog in blogs %]
+
                            <div class="info-blog">
                                <p class="entry-name">[% blog.name %]</p>
                                <ul class="info-blog">
@@ -124,7 +120,7 @@
                     </div>
                </div>
                [% END %]
-               <div class="col-xs-10 no-more-posts" [% IF posts.size < 10 %] style="display: block;" [% END %]>
+               <div class="col-xs-12 no-more-posts" [% IF posts.size < 10 %] style="display: block;" [% END %]>
                     <h4>No more posts</h4>
                </div>
 
@@ -136,7 +132,7 @@
                  <!-- Post one -->
                [% ELSE %]
                    <br />
-                   <h5 class="no-posts">No posts found.</h5>
+                   <h5 class="no-posts text-center">No posts found.</h5>
                [% END %]
             </div>
          </div>

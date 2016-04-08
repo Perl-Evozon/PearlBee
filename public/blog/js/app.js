@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-
-
     //  Blog start overlay
     function getCookie(c_name) {
         if (document.cookie.length>0) {
@@ -608,7 +606,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].user.name);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                        newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                        newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
                         newItem.find(".comments-listings a").text(commentsText);
@@ -843,7 +841,7 @@ if (newURL == userURL) {
                     }
 
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -930,7 +928,7 @@ if (newURL == userURL) {
 
                     newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1017,7 +1015,7 @@ if (newURL == userURL) {
 
                     newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1095,7 +1093,7 @@ $('#more-posts').click(function() {
 
                 newItem.find(".bubble img.user-image").attr("src", avatarPath);
                 newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                 newItem.find(".user a").html(posts[i].user.name);
                 newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1199,7 +1197,7 @@ function getAuthorEntries (button) {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1264,7 +1262,7 @@ function getAuthorPages (button){
                             newItem = $(entryItem).clone();
 
                         newItem.find(".info-entry .page").html(pages[i].title);
-                        newItem.find(".page-preview-wrapper").html(pages[i].content.replace(/<img[^>]*>/g,""));
+                        newItem.find(".page-preview-wrapper").html(pages[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                         newItem.find(".read-more").attr("href", '/pages/' + pages[i].slug);
 
                         newItem.removeClass('hidden');
@@ -1387,7 +1385,7 @@ $('#more-blog-posts').click(function() {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1425,6 +1423,10 @@ $('#more-blog-posts').click(function() {
             });
         });
     });
+
+ if ($(".blog.blogs .no-posts").length > 0) {
+    $(".blog.blogs .no-more-posts").hide();
+ }
 
 
 

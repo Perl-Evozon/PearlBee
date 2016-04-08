@@ -71,7 +71,8 @@ get '/blogs/user/:username/slug/:slug' => sub {
         next_link      => $next_link,
         previous_link  => $previous_link,
         posts_for_user => $username,
-        blogs          => \@blogs
+        blogs          => \@blogs,
+        user           => $user
     };
 };
 

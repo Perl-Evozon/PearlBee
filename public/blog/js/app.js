@@ -1424,6 +1424,10 @@ $('#more-blog-posts').click(function() {
         });
     });
 
+ if ($(".blog.blogs .no-posts").length > 0) {
+    $(".blog.blogs .no-more-posts").hide();
+ }
+
 
 
 

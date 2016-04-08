@@ -31,11 +31,11 @@
               </div>
               <div class="col-xs-10 no-padding">
                 <h2 id="latest_posts" class="page-heading">Latest posts</h2>
-                [% IF posts_for_tag %]
-                	<h2 class="page-heading"> Posts tagged as <a href="/posts/tag/[% posts_for_tag %]">[% posts_for_tag %]</a></h2>
+                [% IF tag.name %]
+                	<h2 class="page-heading"> Posts tagged as <a href="/posts/tag/[% tag.slug %]">[% tag.name %]</a></h2>
           		[% END %]
-          		[% IF posts_for_category %]
-              		<h2 class="page-heading"> Category Name <a href="/posts/category/[% posts_for_category %]">[% category_name %]</a></h2>
+          		[% IF category %]
+              		<h2 class="page-heading"> Category Name <a href="/posts/category/[% category.slug %]">[% category.name %]</a></h2>
           		[% END %]
           		[% IF posts_for_user %]
               		<h2 class="page-heading"> User </i> <a href="/profile/author/[% posts_for_user | uri %]">[% posts_for_user %]</a></h2>

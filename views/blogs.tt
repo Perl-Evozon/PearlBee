@@ -10,9 +10,6 @@
             <div class="posts listings">
                <div class="blog-top-part">
                    <div class="col-xs-2 no-padding">
-                   [%# FOREACH post IN posts %]
-
-                      [%# LAST IF loop.count == 2 %]
                        <div class="bubble">
                           [% IF user.avatar_path %]
                             <img class="blog-image" src="/avatar/[% user.username %]" />
@@ -20,8 +17,6 @@
                             <img class="blog-image defaultAvatar" src="/avatar/" />
                           [% END %]
                        </div>
-
-                      [%# END %]
                    </div>
 
                    <div class="col-xs-10">

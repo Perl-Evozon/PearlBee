@@ -14,6 +14,7 @@ use Digest::SHA;
 # Included controllers
 use PearlBee::Blogs;
 
+use PearlBee::Routes::Avatar;
 use PearlBee::Routes::Profile;
 use PearlBee::Routes::Post;
 use PearlBee::Routes::Pages;
@@ -42,7 +43,7 @@ use PearlBee::Password;
 our $VERSION = '0.1';
 use Data::Dumper;
 
-=item Add items such as the copyright info here, globally.
+=head2 Add items such as the copyright info here, globally.
 
 =cut
 
@@ -51,7 +52,7 @@ hook before_template_render => sub {
   $tokens->{copyright_year} = ((localtime)[5]+1900);
 };
   
-=item Prepare the blog path
+=head2 Prepare the blog path
 
 =cut
 
@@ -61,54 +62,11 @@ hook before => sub {
   session multiuser => resultset('Setting')->first->multiuser;
 };
 
-=head1 Blog assets - XXX this should be managed by nginx or something.
-
-=cut
-
-get '/avatar/:combo_breaker/:username' => sub {
-  my $username = route_parameters('username');
-
-  redirect "/avatar/$username"
-};
-
-get '/avatar/' => sub {
-  my $avatar_path = config->{'avatar'}{'default'}{'dark'};
-  my $theme       = session( 'theme' ) || 'dark';
-
-  if ( $theme eq 'light' ) {
-    $avatar_path = config->{'avatar'}{'default'}{'light'}
-  }
-
-  send_file $avatar_path;
-};
-
-get '/avatar/:username' => sub {
-  my $username      = route_parameters->{'username'};
-  my $user          = resultset( 'Users' )->find({ username => $username });
-  my $avatar_config = config->{'avatar'};
-  my $avatar_path   = $avatar_config->{'default'}{'dark'};
-  my $theme         = session( 'theme' );
-
-  if ( $user->avatar_path ne '' ) {
-    my $path = $user->avatar_path;
-    $avatar_path = $path if -e "public/$path";
-  }
-  elsif ( $theme eq 'light' ) {
-    $avatar_path = $avatar_config->{'default'}{'light'}
-  }
-
-  return send_file $avatar_path;
-};
-
-get '/avatar-light' => sub { config->{'avatar'}{'default'}{'light'} };
-get '/avatar-dark' => sub { config->{'avatar'}{'default'}{'dark'} };
-
-=item /theme
+=head2 /theme
 
 Set user's theme (assuming they're logged in) to the given name.
 
 =cut
-
 
 post '/theme' => sub {
 
@@ -129,7 +87,7 @@ post '/theme' => sub {
   return to_json([$theme]);
 };
 
-=item /
+=head2 /
 
 Home page
 
@@ -166,7 +124,7 @@ get '/' => sub {
 
 get '/search' => sub { template 'searchresults' };
 
-=item Add a comment method
+=head2 Add a comment method
 
 =cut
 
@@ -247,7 +205,7 @@ post '/comments' => sub {
   return $json->encode(\%result); 
 };
 
-=item /register
+=head2 /register
 
 =cut
 
@@ -259,7 +217,7 @@ get '/register' => sub {
 
 };
 
-=item /passwordSignin
+=head2 /passwordSignin
 
 =cut
 
@@ -269,7 +227,7 @@ get '/passwordSignin' => sub {
 
 };
 
-=item /register_done
+=head2 /register_done
 
 =cut
 
@@ -286,7 +244,7 @@ get '/sign-up' => sub {
   };
 };
 
-=item /sign-up
+=head2 /sign-up
 
 =cut
 

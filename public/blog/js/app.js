@@ -47,6 +47,32 @@ if (document.cookie.indexOf("visited") >= 0) {
 }
 //  END- Blog start overlay
 
+//  cookie for "cookie bar"
+
+function cookiesAccept(){
+   days=60;
+   myDate = new Date();
+   myDate.setTime(myDate.getTime()+(days*24*60*60*1000));
+   document.cookie = 'cookies=Accepted; expires=' + myDate.toGMTString();
+}
+
+var cookie = document.cookie.split(';')
+    .map(function(x){ return x.trim().split('='); })
+    .filter(function(x){ return x[0]==='cookies'; })
+    .pop();
+
+if (!(cookie && cookie[1]==='Accepted')) {
+    $(".cookies").css("display", "block");
+   // $(".header").css("transition","none");
+   $(".header").css("top","31px");
+}
+
+$('.closeCookie').on('click', function(){
+    cookiesAccept();
+    return false;
+});
+
+
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
     });
@@ -1402,7 +1428,10 @@ $('#more-blog-posts').click(function() {
     $(".blog.blogs .no-more-posts").hide();
  }
 
-
+$("button.closeCookie").click(function(){
+     $(".cookies").css("top","-31px").css("box-shadow","none");
+     $(".header").css("transition","top 0.8s ease-in").css("top","0px");
+});
 
 
 

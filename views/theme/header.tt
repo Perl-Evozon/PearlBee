@@ -1,3 +1,10 @@
+<div class="cookies">
+  <div class="container">
+    <div class="cookie"><button type="button" class="closeCookie">×</button>This site uses cookies. By continuing to browse the site you are agreeing to our use of cookies.
+    </div>
+  </div>
+</div>
+
 <div class="header">
     <div class="container header-container">
       <div class="row">

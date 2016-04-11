@@ -4862,6 +4862,82 @@ input[readonly] {
    margin: -50px 0 0;
 }
 
+/* Cookie bar */
+
+.cookies {
+   background-color:#f1f1f1; 
+   display:none;
+   position:fixed;
+   top:0;
+   width:100%;
+   z-index:99999;
+   margin:0;
+   box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.8);
+   transition: all 0.8s ease-in;
+}
+
+.header {
+   top:0px;
+}
+
+.cookie {
+   width: 100%;
+   font-size: 14px;
+   font-weight: normal;
+   font-family: 'Montserrat';
+   padding:3px 20px;
+}
+
+.cookie button.closeCookie {
+   padding: 0;
+   margin:2px 20px 2px 0;
+   cursor: pointer;
+   background: 0 0;
+   border: 0;
+   -webkit-appearance: none;
+}
+
+.closeCookie {
+   float: right;
+   font-size: 21px;
+   font-weight: 700;
+   line-height: 1;
+   color: #000;
+   text-shadow: 0 1px 0 #fff;
+   opacity: .5;
+}
+
+.closeCookie:hover, .closeCookie:focus {
+   color: #000;
+   text-decoration: none;
+   cursor: pointer;
+   opacity: 1;
+}
+
+@media all and (max-width: 720px) {
+   .cookie {
+      font-size: 10px;
+      padding: 3px 0;
+   }
+}
+
+@media all and (max-width: 460px) {
+   .cookie {
+      font-size: 8px;
+   }
+}
+
+@media all and (max-width: 381px) {
+   .cookie button.closeCookie {
+      margin: 2px 0px 2px 0;
+   }
+
+   .cookies .container {
+      padding: 0;
+   }
+}
+
+
 
 
 

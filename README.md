@@ -1,7 +1,7 @@
 PearlBee
 ========
 
-An open source blogging platform written in Perl. <a href="http://pearlbee.org/">pearlbee.org</a>
+An open source blogging platform written in Perl. [pearlbee.org|http://pearlbee.org/]
 ### Version
 1.0
 
@@ -30,7 +30,10 @@ You will also need:
 
 or, if cpanm is available (App::cpanminus on CPAN)
 run 
-<pre><blockquote>cpanm --installdeps . </blockquote></pre>
+
+```
+cpanm --installdeps .
+```
 in the folder where PearlBee was checked out and the Makefile.PL is.
 
 
@@ -73,7 +76,7 @@ And your blog is now running!
 
 ### Post-installation
 
-blogs.perl.org uses ElasticSearch for full-text searching of its database. To enable this, please install <a href="https://www.elastic.co/">ElasticSearch</a> and configure it.
+blogs.perl.org uses ElasticSearch for full-text searching of its database. To enable this, please install [ElasticSearch|https://www.elastic.co/] and configure it.
 
 On Linux, 'chkconfig --add elasticsearch' will add ElasticSearch on startup.
 
@@ -87,15 +90,16 @@ Open your browser and go to the url http:://<YOUR_IP>:5000/admin
 Use the default login / password to enter, you should change them before starting using the blog!
 via "My Account -> Profile".
 
-<pre><blockquote>http://127.0.0.1:5000/admin/
+```
+http://127.0.0.1:5000/admin/
 
 user:     $admin_username
 password: $admin_password
-</blockquote></pre>
+```
 
 In the News
 ===========
 
-<a href="http://perltricks.com/article/69/2014/2/17/Is-PearlBee-Perl-s-next-great-blogging-platform-">Is PearlBee Perl's next great blogging platform?</a> -Perl Tricks
+[Is PearlBee Perl's next great blogging platform?|http://perltricks.com/article/69/2014/2/17/Is-PearlBee-Perl-s-next-great-blogging-platform-] - Perl Tricks
 
 Thank you for using PearlBee!

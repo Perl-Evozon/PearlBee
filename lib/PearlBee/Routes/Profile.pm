@@ -17,14 +17,16 @@ our $VERSION = '0.1';
 
 hook before => sub {
   my $user = session('user');
+  my $user_obj = resultset('Users')->find({ username => $user->{username} });
 
   if ( request->dispatch_path =~ m{ ^/profile/author }x ) {
     # Do nothing, /profile/author can be viewed by anyone.
   }
   elsif ( request->dispatch_path =~ m{ ^/profile }x ) {
-    unless ( PearlBee::Helpers::Access::has_ability( $user, 'update profile' )
-             or ( $user and $user->is_pending ) ) {
-      forward '/', { requested_path => request->dispatch_path };
+    if ( $user ) {
+      if ( !PearlBee::Helpers::Access::has_ability( $user, 'update profile' ) ) {
+        forward '/', { requested_path => request->dispatch_path };
+      }
     }
   }
 };
@@ -48,9 +50,11 @@ get '/profile/author/:username' => sub {
   my $nr_of_rows = config->{blogs_on_page} || 5; # Number of posts per page
   my $username   = route_parameters->{'username'};
   my ( $user )   = resultset('Users')->search_lc( $username );
+
   unless ($user) {
     error "No such user '$username'";
   }
+
   my @blog_owners = resultset('BlogOwner')->search({ user_id => $user->id });
   my @blogs;
   for my $blog_owner ( @blog_owners ) {
@@ -159,14 +163,14 @@ post '/profile-image' => sub {
   my $params   = params;
   my $file     = $params->{file};
   my $user     = session('user');
-  my $res_user = resultset('Users')->find({ id => $user->{'id'} });
+  my $res_user = resultset('Users')->find({ username => $user->{'username'} });
 
   if ($file) {
   
     my $upload_dir  = "/" . config->{'avatar'}{'path'};
     my $folder_path = config->{user_pics};
     my $logo        = PearlBee::Helpers::ProcessImage->new( 100, 100 );
-    my $filename    = sprintf( config->{'avatar'}{'format'}, $user->{'id'} );
+    my $filename    = sprintf( config->{'avatar'}{'format'}, $res_user->id );
 
     try {
       $logo->resize( request->uploads->{file}, $folder_path, $filename );

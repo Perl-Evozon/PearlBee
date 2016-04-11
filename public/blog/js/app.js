@@ -1,77 +1,82 @@
 $(document).ready(function() {
 
-    //  Blog start overlay
-    function getCookie(c_name) {
-        if (document.cookie.length>0) {
-             c_start=document.cookie.indexOf(c_name + "=");
-             if (c_start!=-1) {
-                c_start=c_start + c_name.length+1 ;
-                c_end=document.cookie.indexOf(";",c_start);
-                if (c_end==-1) c_end=document.cookie.length
-                        return unescape(document.cookie.substring(c_start,c_end));
-            }
-        }
-        return ""
-    }
+//  Blog start overlay
+if (document.cookie.indexOf("visited") >= 0) {
+	//	if they have been visited this site before
+	$(".blog-start").removeClass("show");
+	$(".blog-start").addClass("hide");
+	$("body").removeClass("active-overlay");
 
-    if ( getCookie('first_visit') != 1) {
-        if ($(".blog-start").hasClass("show") ) {
-//            console.log('>>>>>>' + getCookie('first_visit'));
-            $("body").addClass("active-overlay");
-        }
-    } else {
-        $(".blog-start").removeClass("show");
-        $(".blog-start").addClass("hide");
-        $("body").removeClass("active-overlay");
-    }
-    $("#close_overlay").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#signin").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#register").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-//  END Blog start overlay
-    
-//  Header
-   // if ($(window).width() <= 800){
-     //   $("body").removeClass("active-overlay");
-     //   $(".search-label").addClass("hidden");
-     //   $(".header .user").removeClass("hidden");
-     //   $(".blog-start").addClass("hidden");
-     //   $(".header .user").click(function(){
-      //      event.preventDefault();
-      //      $(".blog-start").toggleClass("hidden");
-      //      $("body").toggleClass("active-overlay");
-      //  });
-    //}
-   // else {
-   //     $(".header .user").addClass("hidden");
-   //     $(".blog-start").removeClass("hidden");
-   // }
+	if ($(".blog-start").hasClass("show")) {
+		$(".user").addClass("hidden");
+	} else {
+		$(".user").removeClass("hidden");
+	}
+
+} else {
+	expiry_date = new Date();
+	expiry_date.setTime(expiry_date.getTime() + (12 * 4 * 7 * 24 * 60 * 60 * 1000));
+	// Date()'s toUTCSting() method will format the date correctly for a cookie 
+	// 12month * 4weeks * 7days ...so on
+	document.cookie = "visited=yes; expires=" + expiry_date.toUTCString();
+
+	$(".blog-start").addClass("show");
+	$(".blog-start").removeClass("hide");
+	$("body").addClass("active-overlay");
+	
+	$("#close_overlay").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+		$(".user").removeClass("hidden");
+	});
+	$("#signin").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+	});
+	$("#register").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+	});
+
+	if ($(".blog-start").hasClass("show")) {
+		$("body").addClass("active-overlay");
+		$(".user").addClass("hidden");
+	} else {
+		$(".user").removeClass("hidden");
+	}
+
+}
+//  END- Blog start overlay
+
+//  cookie for "cookie bar"
+
+function cookiesAccept(){
+   days=60;
+   myDate = new Date();
+   myDate.setTime(myDate.getTime()+(days*24*60*60*1000));
+   document.cookie = 'cookies=Accepted; expires=' + myDate.toGMTString();
+}
+
+var cookie = document.cookie.split(';')
+    .map(function(x){ return x.trim().split('='); })
+    .filter(function(x){ return x[0]==='cookies'; })
+    .pop();
+
+if (!(cookie && cookie[1]==='Accepted')) {
+    $(".cookies").css("display", "block");
+   // $(".header").css("transition","none");
+   $(".header").css("top","31px");
+}
+
+$('.closeCookie').on('click', function(){
+    cookiesAccept();
+    return false;
+});
 
 
-   // if ($(window).width() >= 801){
-        $("#close_overlay").click(function(){
-            $(".user").removeClass("hidden");
-        });
-        if( $(".blog-start").hasClass("show")) {
-            $(".user").addClass("hidden");
-        } else {
-            $(".user").removeClass("hidden");
-        }
-   // }
 
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
@@ -621,7 +626,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".user a").html(posts[i].user.name);
                         newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                        newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                        newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                         newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                         newItem.find(".post-heading h2 a").html(posts[i].title);
                         newItem.find(".comments-listings a").text(commentsText);
@@ -856,7 +861,7 @@ if (newURL == userURL) {
                     }
 
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -943,7 +948,7 @@ if (newURL == userURL) {
 
                     newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1030,7 +1035,7 @@ if (newURL == userURL) {
 
                     newItem.find(".bubble img.user-image").attr("src", avatarPath);
                     newItem.find(".user a").attr("href", "/posts/user/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1108,7 +1113,7 @@ $('#more-posts').click(function() {
 
                 newItem.find(".bubble img.user-image").attr("src", avatarPath);
                 newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                 newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                 newItem.find(".user a").html(posts[i].user.name);
                 newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1212,7 +1217,7 @@ function getAuthorEntries (button) {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].title);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1277,7 +1282,7 @@ function getAuthorPages (button){
                             newItem = $(entryItem).clone();
 
                         newItem.find(".info-entry .page").html(pages[i].title);
-                        newItem.find(".page-preview-wrapper").html(pages[i].content.replace(/<img[^>]*>/g,""));
+                        newItem.find(".page-preview-wrapper").html(pages[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                         newItem.find(".read-more").attr("href", '/pages/' + pages[i].slug);
 
                         newItem.removeClass('hidden');
@@ -1400,7 +1405,7 @@ $('#more-blog-posts').click(function() {
                     }
 
                     newItem.find(".user a").attr("href", "/profile/author/" + posts[i].user.username);
-                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]*>/g,""));
+                    newItem.find(".post_preview_wrapper").html(posts[i].content.replace(/<img[^>]+>(<\/img>)?|<iframe.+?<\/iframe>|<video[^>]+>(<\/video>)?/g, ''));
                     newItem.find(".post-heading h2 a").attr("href", "/post/" + posts[i].slug);
                     newItem.find(".user a").html(posts[i].user.name);
                     newItem.find(".post-heading h2 a").html(posts[i].title);
@@ -1439,7 +1444,14 @@ $('#more-blog-posts').click(function() {
         });
     });
 
+ if ($(".blog.blogs .no-posts").length > 0) {
+    $(".blog.blogs .no-more-posts").hide();
+ }
 
+$("button.closeCookie").click(function(){
+     $(".cookies").css("top","-31px").css("box-shadow","none");
+     $(".header").css("transition","top 0.8s ease-in").css("top","0px");
+});
 
 
 

@@ -51,5 +51,23 @@
   ga('send', 'pageview');
 
  
-
 </script>
+
+    <noscript>
+        <style type="text/css">
+            .blog,
+            .author-page,
+            .blog-post,
+            .search-page,
+            .header .search,
+            .switch {display:none;}
+            .header {top: 0;}
+            html, body {height:100%;}
+
+        </style>
+        <div class="noscriptmsg">
+          <h1>This site requires JavaScript. Please enable it to view site content, log in, and post your blog entries.</h1>
+          <h2>Thank you!</h2>
+        </div>
+    </noscript>
+

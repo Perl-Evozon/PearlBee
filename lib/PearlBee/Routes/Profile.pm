@@ -23,10 +23,10 @@ hook before => sub {
     # Do nothing, /profile/author can be viewed by anyone.
   }
   elsif ( request->dispatch_path =~ m{ ^/profile }x ) {
-    unless ( $user_obj and
-             ( PearlBee::Helpers::Access::has_ability( $user_obj, 'update profile' )
-             or $user_obj->is_pending ) ) {
-      forward '/', { requested_path => request->dispatch_path };
+    if ( $user ) {
+      if ( !PearlBee::Helpers::Access::has_ability( $user, 'update profile' ) ) {
+        forward '/', { requested_path => request->dispatch_path };
+      }
     }
   }
 };
@@ -163,14 +163,14 @@ post '/profile-image' => sub {
   my $params   = params;
   my $file     = $params->{file};
   my $user     = session('user');
-  my $res_user = resultset('Users')->find({ id => $user->{'id'} });
+  my $res_user = resultset('Users')->find({ username => $user->{'username'} });
 
   if ($file) {
   
     my $upload_dir  = "/" . config->{'avatar'}{'path'};
     my $folder_path = config->{user_pics};
     my $logo        = PearlBee::Helpers::ProcessImage->new( 100, 100 );
-    my $filename    = sprintf( config->{'avatar'}{'format'}, $user->{'id'} );
+    my $filename    = sprintf( config->{'avatar'}{'format'}, $res_user->id );
 
     try {
       $logo->resize( request->uploads->{file}, $folder_path, $filename );

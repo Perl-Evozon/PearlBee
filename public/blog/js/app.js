@@ -16,10 +16,14 @@ if (document.cookie.indexOf("visited") >= 0) {
 } else {
 	expiry_date = new Date();
 	expiry_date.setTime(expiry_date.getTime() + (12 * 4 * 7 * 24 * 60 * 60 * 1000));
-	// Date()'s toGMTSting() method will format the date correctly for a cookie 
-	// 12month * 4weks * 7days ...so on
+	// Date()'s toUTCSting() method will format the date correctly for a cookie 
+	// 12month * 4weeks * 7days ...so on
 	document.cookie = "visited=yes; expires=" + expiry_date.toUTCString();
 
+	$(".blog-start").addClass("show");
+	$(".blog-start").removeClass("hide");
+	$("body").addClass("active-overlay");
+	
 	$("#close_overlay").on('click', function () {
 		$(".blog-start").slideToggle("slow");
 		$(".blog-start").removeClass("show");

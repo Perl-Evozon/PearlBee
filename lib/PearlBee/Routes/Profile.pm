@@ -17,14 +17,15 @@ our $VERSION = '0.1';
 
 hook before => sub {
   my $user = session('user');
+  my $user_obj = resultset('Users')->find({ username => $user->{username} });
 
   if ( request->dispatch_path =~ m{ ^/profile/author }x ) {
     # Do nothing, /profile/author can be viewed by anyone.
   }
   elsif ( request->dispatch_path =~ m{ ^/profile }x ) {
-    unless ( $user and
-             ( PearlBee::Helpers::Access::has_ability( $user, 'update profile' )
-               or $user->is_pending ) ) {
+    unless ( $user_obj and
+             ( PearlBee::Helpers::Access::has_ability( $user_obj, 'update profile' )
+             or $user_obj->is_pending ) ) {
       forward '/', { requested_path => request->dispatch_path };
     }
   }
@@ -49,9 +50,11 @@ get '/profile/author/:username' => sub {
   my $nr_of_rows = config->{blogs_on_page} || 5; # Number of posts per page
   my $username   = route_parameters->{'username'};
   my ( $user )   = resultset('Users')->search_lc( $username );
+
   unless ($user) {
     error "No such user '$username'";
   }
+
   my @blog_owners = resultset('BlogOwner')->search({ user_id => $user->id });
   my @blogs;
   for my $blog_owner ( @blog_owners ) {

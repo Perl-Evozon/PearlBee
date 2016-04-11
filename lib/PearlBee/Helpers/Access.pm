@@ -22,7 +22,7 @@ sub has_ability {
   my ($user, $ability) = @_;
   my $role = 'visitor';
 
-  if ( $user->{id} ) {
+  if ( $user->{role} ) {
     $role = $user->{role};
   }
 
@@ -31,7 +31,7 @@ sub has_ability {
     return;
   }
 
-  my $acl  = resultset('Acl')->find({ name => $role, ability => $ability });
+  my $acl = resultset('Acl')-> find({ name => $role, ability => $ability });
   return $acl ? 1 : 0;
 }
 

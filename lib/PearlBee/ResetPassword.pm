@@ -35,7 +35,8 @@ get '/activation' => sub {
         
         template 'register_done' ;
     }  
-    elsif ($user_reset_token->status eq 'active') {
+    elsif ($user_reset_token and
+           $user_reset_token->status eq 'active') {
         template 'set-password' => {
             show_input => 1,
             token      => $token,

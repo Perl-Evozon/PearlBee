@@ -294,11 +294,12 @@ sub map_post {
 my %user_post; #key $user_id, value @{ $post_id }
 my %blog_post; #key $blog_id, value @{ $post }
 my %tag; #key $tag_name, value ... will be tag ID eventually.
+my %tag_split;
 my %post_keyword; #key $post_id, value $tag_name
 my %page_keyword; #key $page_id, value $tag_name
 
 sub migrate_posts {
-  my ( $tag ) = @_;
+  my ( $tag, $tag_split ) = @_;
   print "migrating posts: ";
   my $in_sth = $in_dbh->prepare( <<'EOS' );
   SELECT entry_title,
@@ -342,8 +343,8 @@ EOS
     push @{ $user_post{ $out_post->{user_id} } }, $out_post->{id};
     push @{ $blog_post{ $out_post->{blog_id} } }, $out_post->{id};
     if ( $out_post->{keywords} ) {
-        $tag->{$out_post->{keywords}} = 1;
-        $post_keyword{$out_post->{id}} = $out_post->{keywords};
+      $tag_split->{$_} = 1 for split( /\s*,\s*/, $out_post->{keywords} );
+      $post_keyword{$out_post->{id}} = $out_post->{keywords};
     }
     $out_sth->execute( @{$out_post}{@fields} ) unless $dry_run;
   }
@@ -384,7 +385,7 @@ my %user_page; #key $user_id, value @{ $page_id }
 my %blog_page; #key $blog_id, value @{ $page }
 
 sub migrate_pages {
-  my ( $tag ) = @_;
+  my ( $tag, $tag_split ) = @_;
   print "migrating pages ";
   my $in_sth = $in_dbh->prepare( <<'EOS' );
   SELECT entry_title,
@@ -428,8 +429,8 @@ EOS
     push @{ $user_page{ $out_page->{user_id} } }, $out_page->{id};
     push @{ $blog_page{ $out_page->{blog_id} } }, $out_page->{id};
     if ( $out_page->{keywords} ) {
-        $tag->{$out_page->{keywords}} = 1;
-        $page_keyword{$out_page->{id}} = $out_page->{keywords};
+      $tag_split->{$_} = 1 for split( /\s*,\s*/, $out_page->{keywords} );
+      $page_keyword{$out_page->{id}} = $out_page->{keywords};
     }
     $out_sth->execute( @{$out_page}{@fields} ) unless $dry_run;
   }
@@ -463,7 +464,7 @@ EOS
 ###############################################################################
 
 sub synthesize_tags {
-  my ( $tag ) = @_;
+  my ( $tag, $tag_split ) = @_;
   print "synthesizing tags ";
   my $out_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO tag( id, name, slug )
@@ -473,12 +474,12 @@ EOS
   my $count = 0;
 
   my $index = 1;
-  for my $name ( sort keys %{ $tag } ) {
+  for my $name ( sort keys %{ $tag_split } ) {
     print '.' if $count++ % 100 == 0;
 
-    $tag->{$name} = $index++;
+    $tag_split->{$name} = $index++;
     my $slug = string_to_slug( $name );
-    $out_sth->execute($tag->{$name}, $name, $slug) unless $dry_run;
+    $out_sth->execute($tag_split->{$name}, $name, $slug) unless $dry_run;
   }
   print "\n";
 }
@@ -486,7 +487,7 @@ EOS
 ###############################################################################
 
 sub synthesize_post_tags {
-  my ( $tag ) = @_;
+  my ( $tag, $tag_split ) = @_;
   print "synthesizing post tags ";
   my $out_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO post_tag( post_id, tag_id ) VALUES( ?, ? )
@@ -501,13 +502,13 @@ EOS
     }
 
     my $keyword = $post_keyword{$post_id};
-    unless ( $tag->{$keyword} ) {
-      warn "*** Skipping post ID $post_id: no keyword found\n";
-      next;
+    for my $word ( split /\s*,\s*/, $keyword ) {
+      unless ( $tag_split->{$word} ) {
+        warn "*** Couldn't find a tag for '$word'\n";
+      }
+      $out_sth->execute($post_id, $tag_split->{$word})
+        unless $dry_run;
     }
-
-    $out_sth->execute($post_id, $tag->{$keyword})
-      unless $dry_run;
   }
   print "\n";
 }
@@ -515,7 +516,7 @@ EOS
 ###############################################################################
 
 sub synthesize_page_tags {
-  my ( $tag ) = @_;
+  my ( $tag, $tag_split ) = @_;
   print "synthesizing page tags ";
   my $out_sth = $out_dbh->prepare( <<'EOS' );
 INSERT INTO page_tag( page_id, tag_id ) VALUES( ?, ? )
@@ -530,14 +531,13 @@ EOS
     }
 
     my $keyword = $page_keyword{$page_id};
-    unless ( $tag->{$keyword} ) {
-      warn "*** Skipping page ID $page_id: no keyword found\n";
-      next;
+    for my $word ( split /\s*,\s*/, $keyword ) {
+      unless ( $tag_split->{$word} ) {
+        warn "*** Couldn't find a tag for '$word'\n";
+      }
+      $out_sth->execute($page_id, $tag_split->{$word})
+        unless $dry_run;
     }
-
-    my $keyword_id = $page_keyword{$page_id};
-    $out_sth->execute($page_id, $tag->{$page_keyword{$page_id}})
-      unless $dry_run;
   }
   print "\n";
 }
@@ -803,12 +803,12 @@ EOS
 migrate_users;
 create_avatars;
 migrate_blogs( \%users );
-migrate_posts( \%tag );
-migrate_pages( \%tag );
+migrate_posts( \%tag, \%tag_split );
+migrate_pages( \%tag, \%tag_split );
 migrate_some_tags( \%tag );
-synthesize_tags( \%tag );
-synthesize_post_tags( \%tag );
-synthesize_page_tags( \%tag );
+synthesize_tags( \%tag, \%tag_split );
+synthesize_post_tags( \%tag, \%tag_split );
+synthesize_page_tags( \%tag, \%tag_split );
 migrate_comments( \%users );
 migrate_categories( \%blog, \%users );
 synthesize_post_categories( \%category, \%blog );

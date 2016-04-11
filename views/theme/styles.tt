@@ -16,6 +16,9 @@
 <link href="/blog/css/bootstrap.min.css" rel="stylesheet">
 <!-- Animate css -->
 <link href="/blog/css/animate.min.css" rel="stylesheet">
+<!--User-image cropper-->
+<link href="/blog/css/cropper.css" rel="stylesheet">
+
 <!-- Font awesome CSS -->
 <link href="/blog/css/font-awesome.min.css" rel="stylesheet">
 <!-- Custom CSS -->

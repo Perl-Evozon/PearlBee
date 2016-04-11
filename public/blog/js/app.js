@@ -77,6 +77,7 @@ $('.closeCookie').on('click', function(){
 });
 
 
+
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
     });
@@ -399,13 +400,17 @@ $("#start-blogging").on('click', function (e) {
       }
     });
 
-// Image upload perview
+// Image upload preview
 
   function readURL(input) {
     if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $('#image_upload_preview').attr('src', e.target.result);
+        $('#image_upload_preview').cropper('destroy').cropper({
+            minContainerWidth: 250,
+            minContainerHeight: 250
+        });
     }
       reader.readAsDataURL(input.files[0]);
     }
@@ -418,11 +423,13 @@ $("#file-upload").change(function () {
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
     $( "#file-upload" ).val("");
-        if (themeinitial === false){ 
-            $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
-        } else if (themeinitial === true) {
-            $('#image_upload_preview').attr('src', '/blog/img/male-user-light.png');
-        }
+    if (themeinitial === false){
+        $('#image_upload_preview').attr('src', '/blog/img/male-user.png');
+    } else if (themeinitial === true) {
+        $('#image_upload_preview').attr('src', '/blog/img/male-user-light.png');
+    }
+    $('#image_upload_preview').cropper('destroy');
+    //$('#image_upload_preview').removeClass('cropper');
 });
 
 // Validation file input for img only 
@@ -450,6 +457,15 @@ $(".save-img").click(function() {
         $('.error_file').fadeIn().delay(3000).fadeOut(2000);  
         return false;
     }
+    var cropData = $('#image_upload_preview').cropper('getData');
+
+    var form = $('#upload-img');
+
+    form.find('[name=width]').val(cropData.width);
+    form.find('[name=height]').val(cropData.height);
+    form.find('[name=top]').val(cropData.y);
+    form.find('[name=left]').val(cropData.x);
+
     $("#upload-img").submit();
 });
 

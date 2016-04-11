@@ -21,7 +21,7 @@ get '/pages/:slug' => sub {
   my $page = resultset('Page')->find({ slug => $slug });
 
   unless ( $page ) {
-    error "No page found by that slug";
+    error "No page found for this slug";
     return;
   }
 

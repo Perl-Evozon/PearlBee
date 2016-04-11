@@ -1,77 +1,51 @@
 $(document).ready(function() {
 
-    //  Blog start overlay
-    function getCookie(c_name) {
-        if (document.cookie.length>0) {
-             c_start=document.cookie.indexOf(c_name + "=");
-             if (c_start!=-1) {
-                c_start=c_start + c_name.length+1 ;
-                c_end=document.cookie.indexOf(";",c_start);
-                if (c_end==-1) c_end=document.cookie.length
-                        return unescape(document.cookie.substring(c_start,c_end));
-            }
-        }
-        return ""
-    }
+//  Blog start overlay
+if (document.cookie.indexOf("visited") >= 0) {
+	//	if they have been visited this site before
+	$(".blog-start").removeClass("show");
+	$(".blog-start").addClass("hide");
+	$("body").removeClass("active-overlay");
 
-    if ( getCookie('first_visit') != 1) {
-        if ($(".blog-start").hasClass("show") ) {
-//            console.log('>>>>>>' + getCookie('first_visit'));
-            $("body").addClass("active-overlay");
-        }
-    } else {
-        $(".blog-start").removeClass("show");
-        $(".blog-start").addClass("hide");
-        $("body").removeClass("active-overlay");
-    }
-    $("#close_overlay").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#signin").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-    $("#register").on('click', function() {
-        $(".blog-start").slideToggle( "slow" );
-        $(".blog-start").removeClass("show");
-        $("body").removeClass("active-overlay");
-        document.cookie='first_visit' + "=" + 1;
-    });
-//  END Blog start overlay
-    
-//  Header
-   // if ($(window).width() <= 800){
-     //   $("body").removeClass("active-overlay");
-     //   $(".search-label").addClass("hidden");
-     //   $(".header .user").removeClass("hidden");
-     //   $(".blog-start").addClass("hidden");
-     //   $(".header .user").click(function(){
-      //      event.preventDefault();
-      //      $(".blog-start").toggleClass("hidden");
-      //      $("body").toggleClass("active-overlay");
-      //  });
-    //}
-   // else {
-   //     $(".header .user").addClass("hidden");
-   //     $(".blog-start").removeClass("hidden");
-   // }
+	if ($(".blog-start").hasClass("show")) {
+		$(".user").addClass("hidden");
+	} else {
+		$(".user").removeClass("hidden");
+	}
 
+} else {
+	expiry_date = new Date();
+	expiry_date.setTime(expiry_date.getTime() + (12 * 4 * 7 * 24 * 60 * 60 * 1000));
+	// Date()'s toGMTSting() method will format the date correctly for a cookie 
+	// 12month * 4weks * 7days ...so on
+	document.cookie = "visited=yes; expires=" + expiry_date.toUTCString();
 
-   // if ($(window).width() >= 801){
-        $("#close_overlay").click(function(){
-            $(".user").removeClass("hidden");
-        });
-        if( $(".blog-start").hasClass("show")) {
-            $(".user").addClass("hidden");
-        } else {
-            $(".user").removeClass("hidden");
-        }
-   // }
+	$("#close_overlay").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+		$(".user").removeClass("hidden");
+	});
+	$("#signin").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+	});
+	$("#register").on('click', function () {
+		$(".blog-start").slideToggle("slow");
+		$(".blog-start").removeClass("show");
+		$("body").removeClass("active-overlay");
+	});
+
+	if ($(".blog-start").hasClass("show")) {
+		$("body").addClass("active-overlay");
+		$(".user").addClass("hidden");
+	} else {
+		$(".user").removeClass("hidden");
+	}
+
+}
+//  END- Blog start overlay
 
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();

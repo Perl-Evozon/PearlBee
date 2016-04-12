@@ -29,17 +29,18 @@ It Will receive the desired maximum width and height of the new image to be crea
 =cut
 
 sub new {
-    my ( $class, $max_width, $max_height ) = @_;
-
-    if ( !defined($max_width) ) {
-        die 'Please give in a max width';
+    my ( $class, $args ) = @_;
+ 
+    my @fields = qw( height width top left );
+    for my $name ( @fields ) {
+        die "Missing field '$name'\n" unless exists $args->{$name};
     }
-    elsif ( !defined($max_height) ) {
-        die 'Please give in a max height';
-    }
+ 
     my $self = bless {
-        max_width  => $max_width,
-        max_height => $max_height,
+        top    => int( $args->{top}    ),
+        left   => int( $args->{left}   ),
+        height => int( $args->{height} ),
+        width  => int( $args->{width}  ),
     }, $class;
     return $self;
 }
@@ -61,48 +62,19 @@ sub resize {
         'PNG'  => 'png',
     };
 
-    if ( !defined($file) ) {
-        die 'Please give a file';
-    }
-    elsif ( !defined($save_path) ) {
-        die 'Please give a saving path for the file';
-    }
-    elsif ( !defined($save_name) ) {
-        die 'Please give a saving name for the file';
-    }
+    die 'Specify a file'              unless defined($file);
+    die 'Specify a path for the file' unless defined($save_path);
+    die 'Specify a name for the file' unless defined($save_name);
 
-    my $pict = $file;
-    my $pic = Imager->new( file => $pict->tempname );
+    my $pic = Imager->new( file => $file->tempname );
+    $pic = $pic->crop(
+        top    => $self->{top},
+        left   => $self->{left},
+        height => $self->{height},
+        width  => $self->{width},
+    );
 
-    my $width  = $pic->getwidth;
-    my $height = $pic->getheight;
-
-    #resize the file according to the specified max width and max height
-    my ( $tw, $th );
-
-    if ( $height / $width < 1 ) {
-        $th = $self->{max_width} * ( $height / $width );
-        $tw = $self->{max_width};
-    }
-    else {
-        $tw = $self->{max_height} * ( $width / $height );
-        $th = $self->{max_height};
-    }
-
-    #creating the small images for the startup page
-    $pic = $pic->scale( xpixels => $tw, ypixels => $th, type => 'nonprop' );
-#        $pic = $pic->Montage( geometry => $tw . 'x' . $th, background => 'transparent', fill => 'transparent' );
-
-#        $pic->Set( quality => 60 );
-
-#    unless ($extension) {
-#        $extension = $extensions->{$image_extension};
-#    }
-# $extension = 'jpg';
-
-#     $pic->write( file => "$save_path/$save_name.$extension" );
-$extension = 'png';
-
+    $extension = 'png';
     $pic->write( file => "$save_path/$save_name" );
 
     return 1;

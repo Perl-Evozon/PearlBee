@@ -164,12 +164,13 @@ post '/profile-image' => sub {
   my $file     = $params->{file};
   my $user     = session('user');
   my $res_user = resultset('Users')->find({ username => $user->{'username'} });
+  my $message;
 
   if ($file) {
   
     my $upload_dir  = "/" . config->{'avatar'}{'path'};
     my $folder_path = config->{user_pics};
-    my $logo        = PearlBee::Helpers::ProcessImage->new( 100, 100 );
+    my $logo        = PearlBee::Helpers::ProcessImage->new( $params );
     my $filename    = sprintf( config->{'avatar'}{'format'}, $res_user->id );
 
     try {
@@ -179,25 +180,26 @@ post '/profile-image' => sub {
       info 'There was an error editing the logo: ' . Dumper $_;
     };
     $res_user->update({ avatar_path => $upload_dir . $filename });
-    template 'profile',
-      {
-        success => "Your profile picture has been changed.",
-      };
+
+    $message = "Your profile picture has been changed.";
   }
   else {
     $res_user->update({ avatar_path => '' });
 
-    template 'profile',
-      {
-        success => "Your picture has been deleted",
-      };
-   }
+    $message = "Your picture has been deleted";
+  }
+
+  template 'profile',
+    {
+      success => $message
+    };
 };
 
 post '/profile_password' => sub  {
   my $params   = body_parameters;
   my $user     = session('user');
   my $res_user = resultset('Users')->find({ id => $user->{id} });
+  my $template_data;
 
   if (defined($res_user) && ($params->{'new_password'} ne '')) {
     
@@ -211,34 +213,29 @@ post '/profile_password' => sub  {
           password => $hashed_password,
         });
 
-        template 'profile',
-          {
-            success => "You can now use your new password",
-          };
+        $template_data = { success => "You can now use your new password" };
 
       }
       else {
-        template 'profile',
+        $template_data =
           {
-            warning => "Please insert correctly your old password",
+            warning => "Please enter your old password correctly",
           };
       }
     }
     else {
-      template 'profile',
+      $template_data =
         {
-          warning => "Confirmation password was wrongly introduced",
+          warning => "Confirmation password was entered incorrectly",
         };
     }
 
   }
   else {
-    template 'profile',
-      {
-        warning => "No new password was inserted ",
-      };
- }
+    $template_data = { warning => "No new password was entered" };
+  }
  
+  template 'profile', $template_data;
 };
 
 get '/profile_password' => sub  {

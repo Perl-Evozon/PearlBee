@@ -10,7 +10,7 @@ use PearlBee::Password;
 use PearlBee::Helpers::Email qw( send_email_complete );
 use PearlBee::Helpers::Util qw( create_password generate_hash );
 
-=head
+=head2 /admin route
 
 index
 
@@ -23,7 +23,7 @@ get '/admin' => sub {
   template 'login', {}, { layout => 'admin' };
 };
 
-=head
+=head2 /recover-password route
 
 login method
 
@@ -104,7 +104,15 @@ post '/recover-password' => sub {
   }
 };
 
+=head2 /register_success route
+
+=cut
+
 get '/register_success' => sub { template 'register_success' };
+
+=head2 /register_success route
+
+=cut
 
 post '/register_success' => sub {
   my $params   = body_parameters;
@@ -227,7 +235,7 @@ post '/register_success' => sub {
   template 'register_success';
 };
 
-=head1 Add OpenAuth ID to an existing user
+=head2 Add OpenAuth ID to an existing user
 
 =cut
 
@@ -255,7 +263,7 @@ post '/oauth/:username/service/:service/service_id/:service_id' => sub {
   };
 };
 
-=head1 Validate OpenAuth ID for an existing user
+=head2 Validate OpenAuth ID for an existing user
 
 =cut
 
@@ -280,10 +288,17 @@ get '/oauth/:service/service_id/:service_id' => sub {
   return to_json({ username => $user->{username} });
 };
 
+=head2 /login route
+
+=cut
+
 get '/login' => sub {
       template 'signup'
 };
 
+=head2 /login route
+
+=cut
 
 post '/login' => sub {
   my $password = params->{password};
@@ -313,7 +328,7 @@ post '/login' => sub {
   }
 };
 
-=head
+=head2 /logout route
 
 logout method
 

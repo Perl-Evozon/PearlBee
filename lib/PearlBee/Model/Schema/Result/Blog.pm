@@ -158,6 +158,12 @@ __PACKAGE__->add_unique_constraint("name", ["name"]);
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
+=head2 as_hashref
+
+Return a non-blessed version of a blog database row
+
+=cut
+
 sub as_hashref {
   my ($self)       = @_;
   my $blog_as_href = {
@@ -172,6 +178,12 @@ sub as_hashref {
               
   return $blog_as_href;
 }             
+
+=head2 as_hashref_sanitized
+
+Remove ID from the blog database row
+
+=cut
 
 sub as_hashref_sanitized {
   my ($self) = @_;

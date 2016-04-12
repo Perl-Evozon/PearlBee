@@ -24,13 +24,13 @@ get '/activation' => sub {
         $user_reset_token->status eq 'pending' ) 
     {
         $user_reset_token->update({ 
-        status         => 'active',
-        activation_key => ''          
+            status         => 'active',
+            activation_key => ''          
         });
 
-        my $user_obj = $user_reset_token->as_hashref_sanitized;
+        my $user = $user_reset_token->as_hashref_sanitized;
 
-        session user    => $user_obj;
+        session user    => $user;
         session user_id => $user_reset_token->id;
         
         template 'register_done' ;
@@ -83,9 +83,9 @@ any ['post', 'get'] => '/set-password' => sub {
         status         => 'active'
     });
 
-    my $user_obj = $user->as_hashref_sanitized;
+    my $user_hashref = $user->as_hashref_sanitized;
 
-    session user    => $user_obj;
+    session user    => $user_hashref;
     session user_id => $user->id;
 
     session success => 'Your password was sucessfuly changed';

@@ -19,7 +19,9 @@ use POSIX qw(tzset);
 use XML::Simple qw(:strict);
 
 
-=head2 Index of settings page
+=head2 /admin/settings route
+
+Index of settings page
 
 =cut
 
@@ -35,6 +37,10 @@ get '/admin/settings' => sub {
 		}, 
 		{ layout => 'admin' };
 };
+
+=head2 /admin/settings/save
+
+=cut
 
 post '/admin/settings/save' => sub {
 	
@@ -70,11 +76,19 @@ post '/admin/settings/save' => sub {
 		{ layout => 'admin' };
 };
 
+=head2 /admin/settings/import route
+
+=cut
+
 get '/admin/settings/import' => sub {
     template 'admin/settings/import.tt', 
 		{}, 
 		{ layout => 'admin' };    
 };
+
+=head2 /admin/settings/wp_import route
+
+=cut
 
 post '/admin/settings/wp_import' => sub {
     if ( upload('source') ) {

@@ -231,7 +231,7 @@ __PACKAGE__->many_to_many("tags", "page_tags", "tag");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head
+=head2 nr_of_comments
 
 Get the number of comments for this page
 
@@ -246,7 +246,7 @@ sub nr_of_comments {
   return scalar @comments;
 }
 
-=head
+=head2 get_string_tags
 
 Get all tags as a string sepparated by a comma
 
@@ -264,9 +264,9 @@ sub get_string_tags {
   return $joined_tags;
 }
 
-=head 
+=head2 publish
 
-Status updates
+Publish a page
 
 =cut
 
@@ -276,12 +276,23 @@ sub publish {
   $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 draft
+
+Mark a page as draft
+
+=cut
+
 sub draft {
   my ($self, $user) = @_;
 
   $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 trash
+
+Trash a page
+
+=cut
 
 sub trash {
   my ($self, $user) = @_;
@@ -289,7 +300,9 @@ sub trash {
   $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
 
-=head1 Check if the user has enough authorization for modifying
+=head2 is_authorized
+
+Check if the user has enough authorization for modifying
 
 =cut
 
@@ -305,7 +318,7 @@ sub is_authorized {
   return $authorized;
 }
 
-=head1 Return the tag
+=head2 tag_objects
 
 Check if the user has enough authorization for modifying
 
@@ -319,7 +332,9 @@ sub tag_objects {
          $schema->resultset('PageTag')->search({ page_id => $self->id });
 }
 
-=head1 Return the category
+=head2 category_objects
+
+Return the category
 
 =cut
 
@@ -331,7 +346,9 @@ sub category_objects {
          $schema->resultset('PageCategory')->search({ page_id => $self->id });
 }
 
-=head1 Return the next page by this user in ID sequence, if any.
+=head2 next_page
+
+Return the next page by this user in ID sequence, if any.
 
 =cut
 
@@ -349,7 +366,9 @@ sub next_page {
   return $page[0] || undef;
 }
 
-=head1 Return the previous page by this user in ID sequence, if any.
+=head2 previous_page
+
+Return the previous page by this user in ID sequence, if any.
 
 =cut
 
@@ -367,19 +386,31 @@ sub previous_page {
   return $page[0] || undef;
 }
 
+=head2 created_date_human
+
+Return a human-readable version of the duration
+
+=cut
+
 sub created_date_human {
 
   my ($self) = @_;
   my $yesterday =
       DateTime->today( time_zone => 'UTC' )->subtract( days => 1 );
   if ( DateTime->compare( $self->created_date, $yesterday ) == 1 ) {
-          my $dph = Date::Period::Human->new({ lang => 'en' });
-          return $dph->human_readable( $self->created_date );
+    my $dph = Date::Period::Human->new({ lang => 'en' });
+    return $dph->human_readable( $self->created_date );
   }
   else {
-          return $self->created_date->strftime('%b %d, %Y %l:%m%p');
+    return $self->created_date->strftime('%b %d, %Y %l:%m%p');
   }
 }
+
+=head2 as_hashref
+
+Return a non-blessed version of a page database row
+
+=cut
 
 sub as_hashref {
   my ($self)   = @_;
@@ -400,6 +431,12 @@ sub as_hashref {
   return $page_obj;
 }             
 
+=head2 as_hashref_sanitized
+
+Remove ID from the page database row
+
+=cut
+
 sub as_hashref_sanitized {
   my ($self) = @_;
   my $href   = $self->as_hashref;
@@ -408,6 +445,12 @@ sub as_hashref_sanitized {
   delete $href->{user_id};
   return $href;
 }
+
+=head2 massage_content
+
+Remove text, counting the <pre/> and <code/> tags
+
+=cut
 
 sub _massage_content {
   my ($self,$content) = @_;

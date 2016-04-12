@@ -430,6 +430,8 @@ $(".modal-footer .delete-img").on('click', function(){
     }
     $('#image_upload_preview').cropper('destroy');
     //$('#image_upload_preview').removeClass('cropper');
+
+    $('[name=action_form]').val('delete');
 });
 
 // Validation file input for img only 
@@ -465,6 +467,15 @@ $(".save-img").click(function() {
     form.find('[name=height]').val(cropData.height);
     form.find('[name=top]').val(cropData.y);
     form.find('[name=left]').val(cropData.x);
+
+    var widthCrop = $('#upload-img').find('input[name="width"]').val();
+    var heighthCrop = $('#upload-img').find('input[name="height"]').val();
+    var top = $('#upload-img').find('input[name="top"]').val();
+    var left = $('#upload-img').find('input[name="left"]').val();
+
+    if (widthCrop !== '0' || heighthCrop !== '0' || top !== '0' || left !== '0') {
+      form.find('[name=action_form]').val("cropped");
+    }
 
     $("#upload-img").submit();
 });

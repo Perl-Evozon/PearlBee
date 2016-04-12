@@ -31,7 +31,7 @@ get '/blogs/user/:username/slug/:slug' => sub {
   my $num_user_posts = config->{blogs}{user_posts} || 10;
 
   my $username    = route_parameters->{'username'};
-  my ( $user )    = resultset('Users')->search_lc( $username );
+  my ( $user )    = resultset('Users')->match_lc( $username );
   unless ($user) {
     error "No such user '$username'";
   }
@@ -86,7 +86,7 @@ get '/blogs/user/:username/slug/:slug/page/:page' => sub {
 
   my $username    = route_parameters->{'username'};
   my $page        = route_parameters->{'page'};
-  my ( $user )    = resultset('Users')->search_lc( $username );
+  my ( $user )    = resultset('Users')->match_lc( $username );
   unless ($user) {
     # we did not identify the user
     error "No such user '$username'";

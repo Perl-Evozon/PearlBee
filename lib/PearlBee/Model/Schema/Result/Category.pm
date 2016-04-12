@@ -135,7 +135,7 @@ __PACKAGE__->many_to_many("posts", "post_categories", "post");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head
+=head2 safe_cascade_delete
 
 Safely cascade delete a category
 
@@ -163,6 +163,12 @@ sub safe_cascade_delete {
     $self->delete();
 }
 
+=head2 as_hashref
+
+Return a non-blessed version of a category database row
+
+=cut
+
 sub as_hashref {
   my ($self)        = @_;
   my $category_href = {
@@ -174,6 +180,12 @@ sub as_hashref {
               
   return $category_href;
 }             
+
+=head2 as_hashref_sanitized
+
+Remove ID from the category database row
+
+=cut
 
 sub as_hashref_sanitized {
   my ($self) = @_;

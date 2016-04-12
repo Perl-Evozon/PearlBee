@@ -251,7 +251,9 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head1 Check if the user has administration authority
+=head2 is_admin
+
+Check if the user has administration authority
 
 =cut
 
@@ -262,7 +264,9 @@ sub is_admin {
   return 0;
 }
 
-=head1 Check if the user has author authority
+=head2 is_author
+
+Check if the user has author authority
 
 =cut
 
@@ -273,7 +277,9 @@ sub is_author {
   return 0;
 }
 
-=head1 Check if the user is active
+=head2 is_active
+
+Check if the user is active
 
 =cut
 
@@ -284,7 +290,9 @@ sub is_active {
   return 0;
 }
 
-=head1 Check if the user is inactive
+=head2 is_inactive
+
+Check if the user is inactive
 
 =cut
 
@@ -296,7 +304,9 @@ sub is_inactive {
   return 0;
 }
 
-=head1 Check if the user is pending
+=head2 is_pending
+
+Check if the user is pending
 
 =cut
 
@@ -308,7 +318,9 @@ sub is_pending {
   return 0;
 }
 
-=head1 Status changes
+=head2 deactivate
+
+Deactivate a user
 
 =cut
 
@@ -318,17 +330,35 @@ sub deactivate {
   $self->update({ status => 'inactive' });
 }
 
+=head2 activate
+
+Activate a user
+
+=cut
+
 sub activate {
   my ($self) = @_;
 
   $self->update({ status => 'active' });
 }
 
+=head2 suspend
+
+Suspend a user
+
+=cut
+
 sub suspend {
   my ($self) = @_;
 
   $self->update({ status => 'suspended' });
 }
+
+=head2 allow
+
+Allow a user
+
+=cut
 
 sub allow {
   my ($self) = @_;
@@ -339,6 +369,12 @@ sub allow {
 
   $self->update({ status => 'inactive' });
 }
+
+=head2 avatar
+
+Return an avatar based on the path
+
+=cut
 
 sub avatar {
   my ($self)       = @_;
@@ -355,6 +391,12 @@ sub avatar {
   }
   return config->{default_avatar};
 }
+
+=head2 as_hashref
+
+Return a non-blessed version of a users database row
+
+=cut
 
 sub as_hashref {
   my ($self)   = @_;
@@ -382,6 +424,12 @@ sub as_hashref {
 
 }
 
+=head2 as_hashref_sanitized
+
+Remove ID from the users database row
+
+=cut
+
 sub as_hashref_sanitized {
   my ($self) = @_;
   my $href   = $self->as_hashref;
@@ -391,11 +439,23 @@ sub as_hashref_sanitized {
   return $href;
 }
 
+=head2 slug
+
+Get a user's "slug", this shouldn't actually be used.
+
+=cut
+
 sub slug {
   my ($self) = @_;
 
   return string_to_slug( $self->username );
 }
+
+=head2 validate
+
+Validate a user's password
+
+=cut
 
 sub validate {
   my ($self, $password) = @_;

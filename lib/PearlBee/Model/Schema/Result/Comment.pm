@@ -195,31 +195,55 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
+=head2 approve
+
+Approve a comment
+
+=cut
+
 sub approve {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'approved'}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'approved' }) if ( $self->is_authorized( $user ) );
 }
+
+=head2 trash
+
+Trash a comment
+
+=cut
 
 sub trash {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'trash'}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
+
+=head2 spam
+
+Mark a comment as spam
+
+=cut
 
 sub spam {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'spam'}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'spam' }) if ( $self->is_authorized( $user ) );
 }
+
+=head2 pending
+
+Mark a comment as pending
+
+=cut
 
 sub pending {
   my ($self, $user) = @_;
 
-  $self->update({ status => 'pending'}) if ( $self->is_authorized( $user ) );
+  $self->update({ status => 'pending' }) if ( $self->is_authorized( $user ) );
 }
 
-=haed
+=head2 is_authorized
 
 Check if the user has enough authorization for modifying
 
@@ -237,6 +261,12 @@ sub is_authorized {
   return $authorized;
 }
 
+=head2 comment_date_human
+
+Return a human-readable duration
+
+=cut
+
 sub comment_date_human {
 
         my ($self) = @_;
@@ -250,6 +280,12 @@ sub comment_date_human {
                 return $self->comment_date->strftime('%b %d, %Y %l:%m%p');
         }
 }
+
+=head2 as_hashref
+
+Return a non-blessed version of a comment database row
+
+=cut
 
 sub as_hashref {
   my $self = shift;
@@ -272,6 +308,12 @@ sub as_hashref {
   return $user_obj;
               
 }             
+
+=head2 as_hashref_sanitized
+
+Remove ID from the comment database row
+
+=cut
 
 sub as_hashref_sanitized {
   my ($self) = @_;

@@ -232,7 +232,7 @@ __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-=head
+=head2 nr_of_comments
 
 Get the number of comments for this post
 
@@ -247,7 +247,7 @@ sub nr_of_comments {
   return scalar @comments;
 }
 
-=head
+=head2 get_string_tags
 
 Get all tags as a string sepparated by a comma
 
@@ -265,9 +265,9 @@ sub get_string_tags {
   return $joined_tags;
 }
 
-=head 
+=head2 publish
 
-Status updates
+Publish a post
 
 =cut
 
@@ -277,12 +277,23 @@ sub publish {
   $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 draft
+
+Mark a post as draft
+
+=cut
+
 sub draft {
   my ($self, $user) = @_;
 
   $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 trash
+
+Trash a post
+
+=cut
 
 sub trash {
   my ($self, $user) = @_;
@@ -290,23 +301,24 @@ sub trash {
   $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
 
-=head1 Check if the user has enough authorization for modifying
+=head2 is_authorized
+
+Check if the user has enough authorization for modifying
 
 =cut
 
 sub is_authorized {
   my ($self, $user) = @_;
+  my $schema        = $self->result_source->schema;
+  my $user_obj      = $schema->resultset('Users')->
+                      find({ username => $user->{username} });
 
-  my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('Users')->find( $user->{id} );
-  my $authorized = 0;
-  $authorized    = 1 if ( $user->is_admin );
-  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
-
-  return $authorized;
+  return 1 if $user_obj->is_admin;
+  return 1 if $self->user_id and $self->user_id == $user_obj->id;
+  return 0;
 }
 
-=head1 Return the tag
+=head2 tag_objects
 
 Check if the user has enough authorization for modifying
 
@@ -320,7 +332,9 @@ sub tag_objects {
          $schema->resultset('PostTag')->search({ post_id => $self->id });
 }
 
-=head1 Return the category
+=head2 category_objects
+
+Return the category
 
 =cut
 
@@ -332,7 +346,9 @@ sub category_objects {
          $schema->resultset('PostCategory')->search({ post_id => $self->id });
 }
 
-=head1 Return the next post by this user in ID sequence, if any.
+=head2 next_post
+
+Return the next post by this user in ID sequence, if any.
 
 =cut
 
@@ -350,7 +366,9 @@ sub next_post {
   return $post[0] || undef;
 }
 
-=head1 Return the previous post by this user in ID sequence, if any.
+=head2 previous_post
+
+Return the previous post by this user in ID sequence, if any.
 
 =cut
 
@@ -368,6 +386,12 @@ sub previous_post {
   return $post[0] || undef;
 }
 
+=head2 created_date_human
+
+A human-readable version of the period
+
+=cut
+
 sub created_date_human {
 
   my ($self) = @_;
@@ -381,6 +405,12 @@ sub created_date_human {
           return $self->created_date->strftime('%b %d, %Y %l:%m%p');
   }
 }
+
+=head2 as_hashref
+
+Return a non-blessed version of a post database row
+
+=cut
 
 sub as_hashref {
   my ($self)   = @_;
@@ -403,6 +433,12 @@ sub as_hashref {
   return $post_obj;
 }             
 
+=head2 as_hashref_sanitized
+
+Remove ID from the post database row
+
+=cut
+
 sub as_hashref_sanitized {
   my ($self) = @_;
   my $href   = $self->as_hashref;
@@ -411,6 +447,12 @@ sub as_hashref_sanitized {
   delete $href->{user_id};
   return $href;
 }
+
+=head2 _massage_comtent
+
+Ignoring nested <pre/> and <code/> tags, remove tags.
+
+=cut
 
 sub _massage_content {
   my ($self,$content) = @_;
@@ -436,15 +478,31 @@ sub _massage_content {
   return join "\n", @content;
 }
 
+=head2 massaged_content
+
+Massage the content before displaying
+
+=cut
+
 sub massaged_content {
   my ($self)  = @_;
   return $self->_massage_content( $self->content );
 }
 
+=head2 massaged_content_more
+
+Massage the content_more column before displaying
+
+=cut
+
 sub massaged_content_more {
   my ($self)  = @_;
   return $self->_massage_content( $self->content_more );
 }
+
+=head2 content_formatted
+
+=cut
 
 sub content_formatted {
   my ($self) = @_;
@@ -455,6 +513,10 @@ sub content_formatted {
 
   return $self->massaged_content;
 }
+
+=head2 content_more_formatted
+
+=cut
 
 sub content_more_formatted {
   my ($self) = @_;

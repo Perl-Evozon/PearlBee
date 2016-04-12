@@ -21,6 +21,16 @@ sub search_lc {
                   search( \[ "lower(username) like '\%$lc_username\%'" ] );
 }
 
+sub match_lc {
+  my ($self, $username) = @_;
+  my $schema            = $self->result_source->schema;
+  
+  my $lc_username = lc $username;
+  return $schema->resultset('Users')->
+                  search( \[ "lower(username) like '$lc_username'" ] );
+}
+
+
 =head1 Create user with pre-hashed password
 
 =cut

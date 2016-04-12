@@ -20,12 +20,15 @@ SubMan::Helpers::Import Helpers for PearlBee import functionality
 
 =cut
 
-=head2
+=head2 _wp_import
+
     Arguments necessary to create the object:
-        args => {
-            parsed_file => $parsed_file, #the data gathered from the xml file
-            session     => $args->{session}
-        }
+
+    args => {
+        parsed_file => $parsed_file, #the data gathered from the xml file
+        session     => $args->{session}
+    }
+
 =cut
 
 has args => (

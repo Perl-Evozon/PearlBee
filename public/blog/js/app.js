@@ -401,16 +401,14 @@ $("#start-blogging").on('click', function (e) {
     });
 
 // Image upload preview
-
   function readURL(input) {
     if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function (e) {
-      $('#image_upload_preview').attr('src', e.target.result);
-        $('#image_upload_preview').cropper('destroy').cropper({
-            minContainerWidth: 250,
-            minContainerHeight: 250
-        });
+      $('#image_upload_preview').attr('src', e.target.result).addClass('hidden');
+        $('#croppie-avatars').croppie('bind', {
+            url: e.target.result
+        }).removeClass('hidden');
     }
       reader.readAsDataURL(input.files[0]);
     }
@@ -419,7 +417,7 @@ $("#start-blogging").on('click', function (e) {
 $("#file-upload").change(function () {
       readURL(this);
   });
-
+//delete image
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
     $( "#file-upload" ).val("");
@@ -428,15 +426,15 @@ $(".modal-footer .delete-img").on('click', function(){
     } else if (themeinitial === true) {
         $('#image_upload_preview').attr('src', '/blog/img/male-user-light.png');
     }
-    $('#image_upload_preview').cropper('destroy');
-    //$('#image_upload_preview').removeClass('cropper');
 
     $('[name=action_form]').val('delete');
+
+    $('#image_upload_preview').removeClass('hidden');
+    $('#croppie-avatars').addClass('hidden');
 });
 
-// Validation file input for img only 
 
-
+// Validation file input for img only
 function stringEndsWithValidExtension(stringToCheck, acceptableExtensionsArray, required) {
     if (required == false && stringToCheck.length == 0) { return true; }
     for (var i = 0; i < acceptableExtensionsArray.length; i++) {
@@ -453,20 +451,23 @@ String.prototype.endsWith = function (str) { return (this.match(str + "$") == st
 
 //submitting upload picture form
 
-
 $(".save-img").click(function() {
     if (!stringEndsWithValidExtension($("[id*='file-upload']").val(), [".png", ".jpeg", ".jpg", ".bmp", ".gif"], false)) {
         $('.error_file').fadeIn().delay(3000).fadeOut(2000);  
         return false;
     }
-    var cropData = $('#image_upload_preview').cropper('getData');
+    //croppie avatars
+    var cropData= $('#croppie-avatars').croppie('get');
+    var topLeftX = cropData.points[0];
+    var topLeftY = cropData.points[1];
+    var bottomRightX = cropData.points[2];
+    var bottomRightY = cropData.points[3];
 
-    var form = $('#upload-img');
-
-    form.find('[name=width]').val(cropData.width);
-    form.find('[name=height]').val(cropData.height);
-    form.find('[name=top]').val(cropData.y);
-    form.find('[name=left]').val(cropData.x);
+    $('#upload-img [name=top]').val(topLeftY);
+    $('#upload-img [name=left]').val(topLeftX);
+    $('#upload-img [name=width]').val(bottomRightX - topLeftX);
+    $('#upload-img [name=height]').val(bottomRightY - topLeftY);
+    $('#upload-img [name=zoom]').val(cropData.zoom);
 
     var widthCrop = $('#upload-img').find('input[name="width"]').val();
     var heighthCrop = $('#upload-img').find('input[name="height"]').val();

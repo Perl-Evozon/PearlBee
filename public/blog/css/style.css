@@ -3898,6 +3898,9 @@ background-size: cover;
         font-size: 36px;
         padding: 8%;
     }
+    .search-page .no-posts2, .search-page .no-posts3, .search-page .no-posts-found1{
+       padding-left: 0;
+    }
 
 .search-page .row.search-top {
    margin-top: 80px;
@@ -4756,6 +4759,23 @@ input[readonly] {
     border-radius: 50%;
     width: 140px !important;
     height: 140px !important;
+}
+
+#changeImg.modal .modal-body {
+   min-height: 230px;
+}
+#changeImg.modal .modal-body .profile-pic .bubble {
+   position: relative;
+}
+#changeImg.modal .modal-body #image_upload_preview {
+   left: 50px;
+   position: absolute;
+   top: 5px;
+}
+#croppie-avatars {
+   left: -60px;
+   position: absolute;
+   top: -45px;
 }
 
 .modal-content {

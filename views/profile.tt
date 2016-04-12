@@ -73,6 +73,7 @@ $(document).ready(function() {
 					<input type="text" class="form-control hidden" name="height">
 					<input type="text" class="form-control hidden" name="top">
 					<input type="text" class="form-control hidden" name="left">
+          <input type="text" class="form-control hidden" name="action_form">
 				</span>
 			</form>
           <label class="error_file">We only allows file types of PNG, JPG, GIF and BMP.</label>

@@ -1,4 +1,4 @@
-[% IF session.user.id %]
+[% IF session.user.username%]
     <div class="respond">
             <form id="reply_post_comment_form" class="comment_form" role="form">
                 <div class="form-group">

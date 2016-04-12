@@ -83,14 +83,7 @@ any ['post', 'get'] => '/set-password' => sub {
         status         => 'active'
     });
 
-    my $user_obj = {
-      is_admin  => $user->is_admin,
-      role      => $user->role,
-      id        => $user->id,
-      username  => $user->username,
-      avatar    => $user->avatar,
-      biography => $user->biography,
-    };
+    my $user_obj = $user->as_hashref_sanitized;
 
     session user    => $user_obj;
     session user_id => $user->id;

@@ -49,7 +49,7 @@ get '/profile/author/:username' => sub {
 
   my $nr_of_rows = config->{blogs_on_page} || 5; # Number of posts per page
   my $username   = route_parameters->{'username'};
-  my ( $user )   = resultset('Users')->search_lc( $username );
+  my ( $user )   = resultset('Users')->match_lc( $username );
 
   unless ($user) {
     error "No such user '$username'";

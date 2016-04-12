@@ -309,14 +309,13 @@ Check if the user has enough authorization for modifying
 
 sub is_authorized {
   my ($self, $user) = @_;
+  my $schema        = $self->result_source->schema;
+  my $user_obj      = $schema->resultset('Users')->
+                      find({ username => $user->{username} });
 
-  my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('Users')->find( $user->{id} );
-  my $authorized = 0;
-  $authorized    = 1 if ( $user->is_admin );
-  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
-
-  return $authorized;
+  return 1 if $user_obj->is_admin;
+  return 1 if $self->user_id and $self->user_id == $user_obj->id;
+  return 0;
 }
 
 =head2 tag_objects

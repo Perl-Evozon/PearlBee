@@ -355,7 +355,7 @@ Return the next post by this user in ID sequence, if any.
 sub next_post {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post   = $schema->resultset('Post')->search(
+  my @post   = $schema->resultset('Post')->search_published(
     { user_id => $self->user_id,
       id => { '>' => $self->id }
     },
@@ -375,7 +375,7 @@ Return the previous post by this user in ID sequence, if any.
 sub previous_post {
   my ($self) = @_;
   my $schema = $self->result_source->schema;
-  my @post   = $schema->resultset('Post')->search(
+  my @post   = $schema->resultset('Post')->search_published(
     { user_id => $self->user_id,
       id => { '<' => $self->id }
     },

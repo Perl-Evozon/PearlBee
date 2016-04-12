@@ -61,7 +61,7 @@ get '/profile/author/:username' => sub {
     push @blogs, map { $_->as_hashref_sanitized }
                  resultset('Blog')->find({ id => $blog_owner->blog_id });
   }
-  my @posts = resultset('Post')->search({ user_id => $user->id, status => 'published' });
+  my @posts = resultset('Post')->search_published({ user_id => $user->id });
   my @post_tags;
   for my $post ( @posts ) {
     push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;

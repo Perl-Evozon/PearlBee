@@ -19,7 +19,7 @@ sub map_user {
     my ($user) = @_;
 
     my $blog_count    = resultset('BlogOwner')->count({ user_id => $user->id });
-    my $post_count    = resultset('Post')->count({ user_id => $user->id });
+    my $post_count    = resultset('Post')->count({ user_id => $user->id, status=>'published' });
     my $comment_count = resultset('Comment')->count({ uid => $user->id });
     my $user_href     = $user->as_hashref_sanitized;
 

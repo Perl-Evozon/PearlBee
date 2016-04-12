@@ -1,4 +1,5 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/blog/js/cropper.js"></script>
 
 <script type="text/javascript">
 
@@ -20,18 +21,21 @@ $(document).ready(function() {
 		$("#user_biography").attr('placeholder', userBiography);
 	}
 
-// Image upload perview modal cancel button
+// Image upload preview modal cancel button
 	$(".modal-footer .cancel-img").on('click', function(){
 			var sessionAvatar = '[% session.user.avatar %]';
 			var src = $( ".credentials .bubble" ).parent().find('img').attr('src');
-     if (src === "/blog/img/male-user.png") {
-    		$('#image_upload_preview').attr('src', "/blog/img/male-user.png");
-    	} else if (src === "/blog/img/male-user-light.png") {
-    		$('#image_upload_preview').attr('src', "/blog/img/male-user-light.png");
-    	} else {
-    		$('#image_upload_preview').attr('src', src);
-    	}
+
+		$('#image_upload_preview').attr('src', src);
+		$('#image_upload_preview').cropper('destroy');
   })
+//crop image
+    $(".cropper").cropper({
+		minContainerWidth: 250,
+		minContainerHeight: 200
+	});
+
+
 });
 </script>
 <div class="blog">
@@ -49,7 +53,8 @@ $(document).ready(function() {
 		<div class="bubble text-center">
 
                 [% IF session.user.avatar_path %]
-                      <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
+                    <img id="image_upload_preview" class="user-image cropper" src="/avatar/[% session.user.username %]" />
+
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
 
@@ -61,11 +66,15 @@ $(document).ready(function() {
         </div>
 				<div class="col-xs-6 profile-pic">
 	        <form action="/profile-image" enctype="multipart/form-data" method="post" id="upload-img">
-									<span class="file-input btn btn-file light-button buttons-group change-pic">
-										<p>Choose picture</p> <!-- <input type="file" name="file"> -->
-									<input type="file" id="file-upload" class="form-control" name="file">
-									</span>
-					</form>
+				<span class="file-input btn btn-file light-button buttons-group change-pic">
+					<p>Choose picture</p> <!-- <input type="file" name="file"> -->
+					<input type="file" id="file-upload" class="form-control" name="file">
+					<input type="text" class="form-control hidden" name="width">
+					<input type="text" class="form-control hidden" name="height">
+					<input type="text" class="form-control hidden" name="top">
+					<input type="text" class="form-control hidden" name="left">
+				</span>
+			</form>
           <label class="error_file">We only allows file types of PNG, JPG, GIF and BMP.</label>
 				</div>
 
@@ -107,7 +116,7 @@ $(document).ready(function() {
                 [% END %]
              </div>
 						<div>
-							 
+
 							<button type="button" class="btn change-pic" data-toggle="modal" data-target="#changeImg">Change photo
 							</button>
 						</div>

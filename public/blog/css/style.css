@@ -4751,7 +4751,7 @@ input[readonly] {
    margin-top: 50px;
 }
 
-.modal .modal-body .profile-pic .bubble img {
+.modal .modal-body .profile-pic .bubble>img {
     border: 5px solid #444;
     border-radius: 50%;
     width: 140px !important;

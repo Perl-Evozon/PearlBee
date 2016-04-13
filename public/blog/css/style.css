@@ -4795,6 +4795,11 @@ input[readonly] {
    top: 22%;
    overflow-y: auto;
 }
+@media screen and (max-width: 500px) /* Mobile */ {
+   .modal .modal-body .profile-pic .btn-file {
+      margin-top: 230px;
+   }
+}
 
 @media all and (max-width: 380px) {
    .modal-body .col-xs-6 {

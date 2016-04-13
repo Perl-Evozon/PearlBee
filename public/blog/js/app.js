@@ -1304,13 +1304,16 @@ function getAuthorPages (button){
                         newItem.appendTo($(".author-pages"));
                     }
 
+										$(".text-listing-pages").find('*').removeAttr("style");
                     button.attr("data-page-number", pageNumber + 1);
                 }
                 $(".truncate").dotdotdot({
                     ellipsis: '... ',
                 });
-        })
+        });
+
 }
+
 //Author pages
 $('#more-author-pages').click(function (){
     getAuthorPages($(this));
@@ -1330,6 +1333,9 @@ $('input[name=author-tabs]').on('change', function () {
             $('#more-author-pages').addClass('hidden');
             getAuthorPages($('#more-author-pages'));
         }
+				$(".truncate").dotdotdot({
+					ellipsis: '... ',
+				});
     }
 });
 // Get author entries when the page starts on tab 2

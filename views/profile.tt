@@ -105,7 +105,7 @@ $(document).ready(function() {
       </div>
       <div class="modal-footer">
       	<button type="button" class="save-img btn btn-primary">Save</button>
-        <button type="button" class="cancel-img btn btn-default">Cancel</button>
+        <button type="button" class="cancel-img btn btn-default">Undo</button>
         <button type="button" class="delete-img btn">Delete Photo</button>
       </div>
     </div>

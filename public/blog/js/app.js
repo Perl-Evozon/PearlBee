@@ -474,8 +474,11 @@ $(".save-img").click(function() {
     var top = $('#upload-img').find('input[name="top"]').val();
     var left = $('#upload-img').find('input[name="left"]').val();
 
+    console.log(widthCrop);
+    console.log(heighthCrop);
+
     if (widthCrop !== '0' || heighthCrop !== '0' || top !== '0' || left !== '0') {
-      form.find('[name=action_form]').val("cropped");
+      $('[name=action_form]').val('crop');
     }
 
     $("#upload-img").submit();

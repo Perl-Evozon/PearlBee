@@ -1,5 +1,5 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="/blog/js/cropper.js"></script>
+<script src="/blog/js/croppie.js"></script>
 
 <script type="text/javascript">
 
@@ -25,18 +25,39 @@ $(document).ready(function() {
 	$(".modal-footer .cancel-img").on('click', function(){
 			var sessionAvatar = '[% session.user.avatar %]';
 			var src = $( ".credentials .bubble" ).parent().find('img').attr('src');
+			$('#image_upload_preview').attr('src', src);
 
-		$('#image_upload_preview').attr('src', src);
-		$('#image_upload_preview').cropper('destroy');
+		if (!$('#image_upload_preview').hasClass('defaultAvatar')) {
+			$('#image_upload_preview').addClass('hidden');
+			$('#croppie-avatars').croppie('bind', {
+				url: src
+			});
+		} else {
+			$('#croppie-avatars').addClass('hidden');
+			$('#image_upload_preview').removeClass('hidden');
+		}
   })
-//crop image
-    $(".cropper").cropper({
-		minContainerWidth: 250,
-		minContainerHeight: 200
+	$('#croppie-avatars').croppie({
+		url: $('#image_upload_preview').attr('src'),
+		viewport: {
+			width: 140,
+			height: 140,
+			type: 'circle'
+		},
+		boundary: {
+			width: 180,
+			height: 180
+		}
 	});
 
+	 if (!$('#image_upload_preview').hasClass('defaultAvatar')){
+		 $('#image_upload_preview').addClass('hidden');
+	 } else {
+		 $('#croppie-avatars').addClass('hidden');
+	 }
 
 });
+
 </script>
 <div class="blog">
 
@@ -53,13 +74,14 @@ $(document).ready(function() {
 		<div class="bubble text-center">
 
                 [% IF session.user.avatar_path %]
-                    <img id="image_upload_preview" class="user-image cropper" src="/avatar/[% session.user.username %]" />
+                    <img id="image_upload_preview" class="user-image" src="/avatar/[% session.user.username %]" />
 
                 [% ELSE %]
                       <img id="image_upload_preview" class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
 
                 [% END %]
-               
+               <div id="croppie-avatars">
+			   </div>
 
 
              </div>
@@ -73,7 +95,8 @@ $(document).ready(function() {
 					<input type="text" class="form-control hidden" name="height">
 					<input type="text" class="form-control hidden" name="top">
 					<input type="text" class="form-control hidden" name="left">
-          <input type="text" class="form-control hidden" name="action_form">
+					<input type="text" class="form-control hidden" name="zoom">
+                    <input type="text" class="form-control hidden" name="action_form">
 				</span>
 			</form>
           <label class="error_file">We only allows file types of PNG, JPG, GIF and BMP.</label>

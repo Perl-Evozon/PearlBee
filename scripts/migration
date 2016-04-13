@@ -266,7 +266,6 @@ my %post_type = (
 sub map_post {
   my $post         = shift;
   my $post_type    = 'HTML';
-  my $slug         = string_to_slug( $post->{entry_title} );
   my $content      = $post->{entry_text};
   my $content_more = $post->{entry_text_more};
 
@@ -276,7 +275,7 @@ sub map_post {
   return {
     id           => $post->{entry_id},
     title        => decode_utf8($post->{entry_title}),
-    slug         => decode_utf8($slug),
+    slug         => $post->{entry_basename},
     description  => $post->{entry_basename}, # XXX ?
     #cover varchar(300) NOT NULL,
     content      => decode_utf8($content),

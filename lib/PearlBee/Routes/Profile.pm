@@ -166,27 +166,46 @@ post '/profile-image' => sub {
   my $res_user = resultset('Users')->find({ username => $user->{'username'} });
   my $message;
 
-  if ($file) {
-  
-    my $upload_dir  = "/" . config->{'avatar'}{'path'};
-    my $folder_path = config->{user_pics};
-    my $logo        = PearlBee::Helpers::ProcessImage->new( $params );
-    my $filename    = sprintf( config->{'avatar'}{'format'}, $res_user->id );
+  my $upload_dir  = "/" . config->{'avatar'}{'path'};
+  my $folder_path = config->{user_pics};
+  my $filename    = sprintf( config->{'avatar'}{'format'}, $res_user->id );
 
-    try {
-      $logo->resize( request->uploads->{file}, $folder_path, $filename );
-    } 
-    catch {
-      info 'There was an error editing the logo: ' . Dumper $_;
-    };
+  if ( $params->{action_form} eq 'crop' ) {
+    if ( $params->{width} > 0 ) {
+      if ( $params->{file} ) {
+        my $logo = PearlBee::Helpers::ProcessImage->new(
+          request->uploads->{file}->tempname
+        );
+        try {
+          $logo->resize( $params, $folder_path, $filename );
+        } 
+        catch {
+          info 'There was an error resizing your avatar: ' . Dumper $_;
+        };
+      }
+      else {
+        my $logo = PearlBee::Helpers::ProcessImage->new(
+          $folder_path . '/' . $filename
+        );
+warn "$folder_path/$filename\n";
+#      try {
+        $logo->resize( $params, $folder_path, $filename );
+#      } 
+#      catch {
+#        info 'There was an error resizing your avatar: ' . Dumper $_;
+#      };
+      }
+    }
+
     $res_user->update({ avatar_path => $upload_dir . $filename });
-
     $message = "Your profile picture has been changed.";
   }
-  else {
+  elsif ( $params->{action_form} eq 'delete' ) {
     $res_user->update({ avatar_path => '' });
 
     $message = "Your picture has been deleted";
+  }
+  else {
   }
 
   template 'profile',

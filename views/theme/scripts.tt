@@ -11,6 +11,7 @@
     <script src="/blog/js/jquery.dotdotdot.js"></script>
     <!--User-image cropper-->
     <script src="/blog/js/cropper.js"></script>
+    <script src="/blog/js/croppie.min.js"></script>
     <!-- App JS -->
     <script src="/blog/js/app.js"></script>
     <!-- Google code syntax highlighter -->

@@ -6,7 +6,7 @@ require Exporter;
 our @ISA 	= qw(Exporter);
 our @EXPORT_OK	= qw/get_total_pages get_previous_next_link generate_pagination_numbering/;
 
-=head
+=head2 get_total_pages
 
 Return the total number of pages
 
@@ -20,7 +20,7 @@ sub get_total_pages {
 	return $total_pages;
 }
 
-=head
+=head2 get_previous_next_link
 
 Generate the urls for the next and previous buttons
 
@@ -37,7 +37,7 @@ sub get_previous_next_link {
   	return ($previous_link, $next_link);
 }
 
-=head
+=head2 generate_pagination_numbering
 
 Generate the pagination numbering for the UI
 

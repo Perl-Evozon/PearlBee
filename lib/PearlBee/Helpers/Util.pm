@@ -25,7 +25,9 @@ our @EXPORT_OK 	= qw(
 );
 
 
-=head2 Generate a unique filename using GUID
+=head2 generate_crypted_filename
+
+Generate a unique filename using GUID
 
 =cut
 
@@ -36,7 +38,9 @@ sub generate_crypted_filename {
   	return $filename;
 }
 
-=head2 Generate a new slug name based on existing slug names
+=head2 generate_new_slug_name
+
+Generate a new slug name based on existing slug names
 
 =cut
 
@@ -59,7 +63,9 @@ sub generate_new_slug_name {
     return $new_slug_name;
 }
 
-=head2 Generate a valid slug kind name
+=head2 xliterate_utf8
+
+Generate a valid slug kind name
 
 =cut
 
@@ -265,6 +271,10 @@ sub _xliterate_utf8 {
     $str;
 }
 
+=head2 remove_html
+
+=cut
+
 sub remove_html {
 	my ($text) = @_;
 	return '' unless defined $text;    # suppress warnings
@@ -277,11 +287,14 @@ sub remove_html {
 	$text;
 }
 
-#
-# Properly encode a UTF-8 text string to an ASCII slug.
-# Well, 'properly' in the sense that it should match MovableType out to Latin-1
-# But I'm guessing 
-#
+=head2 string_to_slug
+
+Properly encode a UTF-8 text string to an ASCII slug.
+Well, 'properly' in the sense that it should match MovableType out to Latin-1
+But I'm guessing 
+
+=cut
+
 sub string_to_slug {
 	my ($string) = @_;
 	my $s = _xliterate_utf8( $string );
@@ -297,7 +310,9 @@ sub string_to_slug {
 	return $s;
 }
 
-=head2 Generate a valid slug kind name
+=head2 map_posts
+
+Generate a valid slug kind name
 
 =cut
 
@@ -329,7 +344,9 @@ sub map_posts {
     return @mapped_posts;
 }
 
-=head2 Generate a valid slug kind name
+=head2 map_pages
+
+Generate a valid slug kind name
 
 =cut
 
@@ -364,7 +381,9 @@ sub map_pages {
     return @mapped_pages;
 }
 
-=head2 Create a password
+=head2 create_password
+
+Create a password
 
 =cut
 
@@ -379,7 +398,9 @@ sub create_password {
     '$6$' . $salt . '$' . Digest::SHA::sha512_base64( $salt . $plaintext );
 }
 
-=head2 Create an authentication token
+=head2 generate_hash
+
+Create an authentication token
 
 =cut
 

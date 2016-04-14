@@ -6,7 +6,9 @@ use warnings;
 use base 'DBIx::Class::ResultSet';
 use PearlBee::Helpers::Util qw( string_to_slug );
 
-=head2 Create category with internally-generated slug
+=head2 create_with_slug
+
+Create category with internally-generated slug
 
 =cut
 
@@ -23,7 +25,9 @@ sub create_with_slug {
   });
 }
 
-=head2 Find or create category with internally-generated slug
+=head2 find_or_create_with_slug
+
+Find or create category with internally-generated slug
 
 =cut
 

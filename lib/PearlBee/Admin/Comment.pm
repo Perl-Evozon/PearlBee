@@ -15,13 +15,13 @@ use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-get '/admin/comments' => sub { redirect '/admin/comments/page/1' };
-
-=head
+=head2 /admin/comments ; /admin/comments/page/:page route
 
 List all comments
 
 =cut
+
+get '/admin/comments' => sub { redirect '/admin/comments/page/1' };
 
 get '/admin/comments/page/:page' => sub {
 
@@ -61,7 +61,9 @@ get '/admin/comments/page/:page' => sub {
 
 };
 
-=head2 List all spam comments
+=head2 /admin/comments/:status/page/:page
+
+List all spam comments
 
 =cut
 
@@ -106,7 +108,9 @@ get '/admin/comments/:status/page/:page' => sub {
 
 };
 
-=head2 Accept comment
+=head2 /admin/comments/approve/:id
+
+Accept comment
 
 =cut
 
@@ -127,7 +131,9 @@ get '/admin/comments/approve/:id' => sub {
   redirect request()->{headers}->{referer};
 };
 
-=head2 Trash a comment
+=head2 /admin/comments/trash/:id
+
+Trash a comment
 
 =cut
 
@@ -148,7 +154,7 @@ get '/admin/comments/trash/:id' => sub {
   redirect request()->{headers}->{referer};
 };
 
-=haed
+=head2 /admin/comments/spam/:id
 
 Spam a comment
 
@@ -171,7 +177,9 @@ get '/admin/comments/spam/:id' => sub {
   redirect request()->{headers}->{referer};
 };
 
-=head2 Pending a comment
+=head2 /admin/comments/pending/:id
+
+Pending a comment
 
 =cut
 

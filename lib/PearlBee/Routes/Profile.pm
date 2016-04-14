@@ -15,6 +15,10 @@ use Try::Tiny;
 
 our $VERSION = '0.1';
 
+=head2 hook 'before'
+
+=cut
+
 hook before => sub {
   my $user = session('user');
   my $user_obj = resultset('Users')->find({ username => $user->{username} });
@@ -31,7 +35,9 @@ hook before => sub {
   }
 };
 
-=head2 Display profile page
+=head2 /profile route
+
+Display profile page
 
 =cut
 
@@ -41,7 +47,9 @@ get '/profile' => sub {
 
 };
 
-=head2 Display profile for a given author
+=head2 /profile/author/:username route
+
+Display profile for a given author
 
 =cut
   
@@ -92,6 +100,10 @@ get '/profile/author/:username' => sub {
   }
 
 };
+
+=head2 /profile route
+
+=cut
 
 post '/profile' => sub {
 
@@ -158,6 +170,10 @@ post '/profile' => sub {
   }
 };
 
+=head2 /profile-image route
+
+=cut
+
 post '/profile-image' => sub {
 
   my $params   = params;
@@ -214,7 +230,11 @@ warn "$folder_path/$filename\n";
     };
 };
 
-post '/profile_password' => sub  {
+=head2 /profile_password route
+
+=cut
+
+post '/profile_password' => sub {
   my $params   = body_parameters;
   my $user     = session('user');
   my $res_user = resultset('Users')->find({ id => $user->{id} });
@@ -257,7 +277,11 @@ post '/profile_password' => sub  {
   template 'profile', $template_data;
 };
 
-get '/profile_password' => sub  {
+=head2 /profile_password route
+
+=cut
+
+get '/profile_password' => sub {
 
    template 'profile';
 

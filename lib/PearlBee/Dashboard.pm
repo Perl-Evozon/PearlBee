@@ -4,7 +4,7 @@ use Dancer2;
 use Dancer2::Plugin::DBIC;
 use PearlBee::Password;
 
-=head
+=head2 hook 'before'
 
 Check if the user has authorization for this part of the web site
 
@@ -16,7 +16,7 @@ hook 'before' => sub {
   redirect session('app_url') . '/'  if ( !$user );
 };
 
-=head
+=head2 /dashboard route
 
 Dashboard index
 
@@ -57,7 +57,7 @@ any '/dashboard' => sub {
 
 };
 
-=head
+=head2 /profile route
 
 Edit profile
 

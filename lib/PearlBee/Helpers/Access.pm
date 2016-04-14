@@ -12,7 +12,7 @@ use Dancer2::Plugin::DBIC;
 use base qw( Exporter );
 our @EXPORT_OK = qw( has_ability );
 
-=item has_ability( $user, $ability )
+=head2 has_ability( $user, $ability )
 
 Does user $user have ability $ability?
 

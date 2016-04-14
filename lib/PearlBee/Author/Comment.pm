@@ -6,11 +6,13 @@ use Dancer2::Plugin::DBIC;
 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
-get '/author/comments' => sub { redirect '/author/comments/page/1'; };
+=head2 /author/comments ; /author/comments/page/:page
 
-=item List all comments
+List all comments
 
 =cut
+
+get '/author/comments' => sub { redirect '/author/comments/page/1'; };
 
 get '/author/comments/page/:page' => sub {
 
@@ -52,7 +54,9 @@ get '/author/comments/page/:page' => sub {
 
 };
 
-=item List all comments grouped by status
+=head2 /author/comments/:status/page/:page
+
+List all comments grouped by status
 
 =cut
 
@@ -98,7 +102,9 @@ get '/author/comments/:status/page/:page' => sub {
 
 };
 
-=item Accept comment
+=head2 /author/comments/approve/:id
+
+Accept comment
 
 =cut
 
@@ -119,7 +125,9 @@ get '/author/comments/approve/:id' => sub {
   redirect '/author/comments';
 };
 
-=item Trash a comment
+=head2 /author/comments/trash/:id
+
+Trash a comment
 
 =cut
 
@@ -140,7 +148,9 @@ get '/author/comments/trash/:id' => sub {
   redirect '/author/comments';
 };
 
-=item Spam a comment
+=head2 /author/comments/spam/:id
+
+Spam a comment
 
 =cut
 
@@ -161,7 +171,9 @@ get '/author/comments/spam/:id' => sub {
   redirect '/author/comments';
 };
 
-=item Pending a comment
+=head2 /author/comments/pending/:id
+
+Pending a comment
 
 =cut
 

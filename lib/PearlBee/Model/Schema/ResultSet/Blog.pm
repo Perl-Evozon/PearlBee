@@ -9,7 +9,9 @@ use PearlBee::Model::Schema;
 use PearlBee::Helpers::Util qw( string_to_slug );
 use base 'DBIx::Class::ResultSet';
 
-=head2 Create blog with internally-generated slug
+=head2 create_with_slug
+
+Create blog with internally-generated slug
 
 =cut
 

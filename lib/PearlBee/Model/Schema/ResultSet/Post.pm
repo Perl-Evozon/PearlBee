@@ -9,7 +9,9 @@ use PearlBee::Helpers::Util qw/string_to_slug generate_new_slug_name/;
 
 use String::Util qw(trim);
 
-=head2 Create a new post
+=head2 can_create
+
+Create a new post
 
 =cut
 
@@ -37,7 +39,9 @@ sub can_create {
   return $post;
 }
 
-=head2 Check if the slug is already used, if so generate a new slug or return the old one
+=head2 check_slug
+
+Check if the slug is already used, if so generate a new slug or return the old one
 
 =cut
 
@@ -65,6 +69,10 @@ sub check_slug {
 	return ($slug, $slug_changed);
 }
 
+=head2 post_slug_exists
+
+=cut
+
 sub post_slug_exists {
 	my ($self, $slug, $user_id) = @_;
 
@@ -74,7 +82,9 @@ sub post_slug_exists {
 	return $post
 }
 
-=head2 Get the number of comments for this post
+=head2 nr_of_comments
+
+Get the number of comments for this post
 
 =cut
 
@@ -87,7 +97,9 @@ sub nr_of_comments {
   return scalar @comments;
 }
 
-=head2 Get all tags as a string sepparated by a comma
+=head2 get_string_tags
+
+Get all tags as a string sepparated by a comma
 
 =cut
 
@@ -103,7 +115,9 @@ sub get_string_tags {
   return $joined_tags;
 }
 
-=head2 Status updates
+=head2 publish
+
+Status updates
 
 =cut
 
@@ -113,12 +127,19 @@ sub publish {
   $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 draft
+
+=cut
+
 sub draft {
   my ($self, $user) = @_;
 
   $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
 }
 
+=head2 trash
+
+=cut
 
 sub trash {
   my ($self, $user) = @_;
@@ -126,7 +147,9 @@ sub trash {
   $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
 }
 
-=head2 Check if the user has enough authorization for modifying
+=head2 is_authorized
+
+Check if the user has enough authorization for modifying
 
 =cut
 
@@ -142,6 +165,10 @@ sub is_authorized {
   return $authorized;
 }
 
+=head2 get_recent_posts
+
+=cut
+
 sub get_recent_posts {
   my ($self) = @_;
 
@@ -154,6 +181,10 @@ sub get_recent_posts {
 	});
 }
 
+=head2 search_published
+
+=cut
+
 sub search_published {
   my ( $self, @args ) = @_;
 
@@ -161,7 +192,9 @@ sub search_published {
   return $self->search( @args );
 }
 
-=head2 Create post with internally-generated slug
+=head2 create_with_slug
+
+Create post with internally-generated slug
 
 =cut
 

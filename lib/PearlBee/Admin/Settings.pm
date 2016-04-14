@@ -81,6 +81,7 @@ post '/admin/settings/save' => sub {
 =cut
 
 get '/admin/settings/import' => sub {
+
     template 'admin/settings/import.tt', 
 		{}, 
 		{ layout => 'admin' };    
@@ -91,6 +92,7 @@ get '/admin/settings/import' => sub {
 =cut
 
 post '/admin/settings/wp_import' => sub {
+
     if ( upload('source') ) {
         my $import          = upload('source');
         my $import_filename = generate_crypted_filename();

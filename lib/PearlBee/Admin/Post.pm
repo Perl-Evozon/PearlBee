@@ -19,13 +19,14 @@ use PearlBee::Helpers::Util qw/generate_crypted_filename generate_new_slug_name 
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link generate_pagination_numbering);
 
 use DateTime;
-use String::Util qw(trim);
 
-get '/admin/posts' => sub { redirect '/admin/posts/page/1'; };
+=head2 /admin/posts; /admin/posts/page/:page
 
-=head2 list all posts method per page
+list all posts method per page
 
 =cut
+
+get '/admin/posts' => sub { redirect '/admin/posts/page/1'; };
 
 get '/admin/posts/page/:page' => sub {
 

@@ -33,11 +33,19 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 0 },
 );
 
+=head2 get_all_status_counts
+
+=cut
+
 sub get_all_status_counts {
   my ($self) = @_;
 
   return ( $self->total, $self->published, $self->draft, $self->trash );
 }
+
+=head2 get_status_count
+
+=cut
 
 sub get_status_count {
   my ($self, $status) = @_;

@@ -14,7 +14,9 @@ our $VERSION = '0.1';
 get '/avatar-light' => sub { config->{'avatar'}{'default'}{'light'} };
 get '/avatar-dark'  => sub { config->{'avatar'}{'default'}{'dark'}  };
 
-=head2 Blog assets - XXX this should be managed by nginx or something.
+=head2 /avatar/:combo-breaker/:username
+
+Blog assets - XXX this should be managed by nginx or something.
 
 =cut
 
@@ -24,7 +26,9 @@ get '/avatar/:combo_breaker/:username' => sub {
   redirect "/avatar/$username"
 };
 
-=head2 Avatar route that just returns the theme-based image
+=head2 /avatar/ route
+
+Avatar route that just returns the theme-based image
 
 =cut
 
@@ -39,7 +43,9 @@ get '/avatar/' => sub {
   send_file $avatar_path;
 };
 
-=head2 Avatar username
+=head2 /avatar/:username route
+
+Avatar username
 
 =cut
 

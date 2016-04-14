@@ -22,6 +22,10 @@ require Exporter;
 our @ISA       = qw( Exporter );
 our @EXPORT_OK = qw( send_email send_email_complete );
 
+=head2 send_email
+
+=cut
+
 sub send_email {
     my ( $template, $from, $to, $subject, $body ) = @_;
 
@@ -44,7 +48,7 @@ sub send_email {
     );
 }
 
-=head1 send_email_complete( $params )
+=head2 send_email_complete( $params )
 
 Note: from can have this format: 'This is my name <myname@test.com>'
 
@@ -137,7 +141,7 @@ sub send_email_complete {
     return 1;
 }
 
-=head1 check_attachment( $path_to_file )
+=head2 check_attachment( $path_to_file )
 
     This function tests if an attachment is safe to send.
 

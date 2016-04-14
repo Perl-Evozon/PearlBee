@@ -6,7 +6,7 @@ use warnings;
 use base 'DBIx::Class::ResultSet';
 use String::Util qw(trim);
 
-=head
+=head2 connect_categories
 
 Associate categories with the new post
 
@@ -35,7 +35,7 @@ sub connect_categories {
     }
 }
 
-=head
+=head2 bind_categories
 
 Used in import
 

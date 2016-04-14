@@ -15,7 +15,9 @@ use PearlBee::Dancer2::Plugin::Admin;
 
 use PearlBee::Helpers::Util qw(string_to_slug);
 
-=head2 list all categories
+=head2 /admin/categories
+
+list all categories
 
 =cut
 
@@ -25,7 +27,9 @@ get '/admin/categories' => sub {
   template 'admin/categories/list', { categories => \@categories }, { layout => 'admin' };
 };
 
-=head2 create method
+=head2 /admin/categories/add
+
+create method
 
 =cut
 
@@ -68,7 +72,9 @@ post '/admin/categories/add' => sub {
 
 };
 
-=head2 delete method
+=head2 /admin/categories/delete/:id
+
+delete method
 
 =cut
 
@@ -92,7 +98,9 @@ get '/admin/categories/delete/:id' => sub {
 
 };
 
-=head2 edit method
+=head2 /admin/categories/edit/:id
+
+edit method
 
 =cut
 

@@ -15,7 +15,7 @@ our @ISA 	= qw(Exporter);
 our @EXPORT_OK 	= qw/search_posts search_comments/;
 
 
-=item index_comment( $comment )
+=head2 index_comment( $comment )
 
 Index a Post object
 
@@ -43,7 +43,7 @@ sub index_post {
     };
 }
 
-=item index_comment( $comment )
+=head2 index_comment( $comment )
 
 Index a Comment object
 
@@ -71,7 +71,7 @@ sub index_comment {
     };
 }
 
-=item search_posts( $text, $page )
+=head2 search_posts( $text, $page )
 
 Search for posts by fulltext
 
@@ -118,7 +118,7 @@ sub search_posts {
     return @results;
 }
 
-=item search_comments( $text )
+=head2 search_comments( $text )
 
 Search comments by fulltext
 
@@ -160,7 +160,7 @@ sub search_comments {
     return @results;
 }
 
-=item indexDB()
+=head2 indexDB()
 
 Index the DB for elastic
 

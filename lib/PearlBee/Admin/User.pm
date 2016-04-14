@@ -19,7 +19,9 @@ use DateTime;
 
 get '/admin/users' => sub { redirect '/admin/users/page/1'; };
 
-=item List all users
+=head2 /admin/users/page/:page
+
+List all users
 
 =cut
 
@@ -73,7 +75,9 @@ get '/admin/users/page/:page' => sub {
 
 };
 
-=item List all users grouped by status
+=head2 /admin/users/:status/page/:page
+
+List all users grouped by status
 
 =cut
 
@@ -124,7 +128,9 @@ get '/admin/users/:status/page/:page' => sub {
 
 };
 
-=item Activate user
+=head2 /admin/users/activate/:id
+
+Activate user
 
 =cut
 
@@ -144,7 +150,9 @@ any '/admin/users/activate/:id' => sub {
   redirect '/admin/users';
 };
 
-=item Deactivate user
+=head2 /admin/users/deactivate/:id
+
+Deactivate user
 
 =cut
 
@@ -171,7 +179,9 @@ any '/admin/users/deactivate/:id' => sub {
   redirect '/admin/users';
 };
 
-=item Suspend user
+=head2 /admin/users/suspend/:id
+
+Suspend user
 
 =cut
 
@@ -198,7 +208,9 @@ any '/admin/users/suspend/:id' => sub {
   redirect '/admin/users';
 };
 
-=item Allow pending user
+=head2 /admin/users/allow/:id
+
+Allow pending user
 
 =cut
 
@@ -242,7 +254,9 @@ any '/admin/users/allow/:id' => sub {
   redirect '/admin/users';
 };
 
-=item Add a new user
+=head2 /admin/users/add
+
+Add a new user
 
 =cut
 

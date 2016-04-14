@@ -3,7 +3,7 @@ package PearlBee::Authorization;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 
-=head
+=head2 hook 'before'
 
 Check if the user has authorization
 

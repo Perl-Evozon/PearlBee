@@ -9,7 +9,9 @@ use PearlBee::Helpers::Util qw/string_to_slug generate_new_slug_name/;
 
 use String::Util qw(trim);
 
-=head2 Create a new page
+=head2 can_create
+
+Create a new page
 
 =cut
 
@@ -34,7 +36,9 @@ sub can_create {
   return $page;
 }
 
-=item Check if the slug is already used, if so generate a new slug or return the old one
+=item check_slug
+
+Check if the slug is already used, if so generate a new slug or return the old one
 
 =cut
 
@@ -61,6 +65,10 @@ sub check_slug {
   return ($slug, $slug_changed);
 }
 
+=head2 page_slug_exists
+
+=cut
+
 sub page_slug_exists {
   my ($self, $slug, $user_id) = @_;
 
@@ -70,7 +78,9 @@ sub page_slug_exists {
   return $page
 }
 
-=head2 Get the number of comments for this page
+=head2 nr_of_comments
+
+Get the number of comments for this page
 
 =cut
 
@@ -82,7 +92,7 @@ sub nr_of_comments {
   return scalar @comments;
 }
 
-=head
+=head2 get_string_tags
 
 Get all tags as a string sepparated by a comma
 
@@ -98,7 +108,7 @@ sub get_string_tags {
   return $joined_tags;
 }
 
-=head
+=head2 publish
 
 Status updates
 
@@ -111,6 +121,10 @@ sub publish {
     $self->is_authorized( $user );
 }
 
+=head2 draft
+
+=cut
+
 sub draft {
   my ($self, $user) = @_;
 
@@ -118,6 +132,9 @@ sub draft {
     $self->is_authorized( $user );
 }
 
+=head2 trash
+
+=cut
 
 sub trash {
   my ($self, $user) = @_;
@@ -126,7 +143,7 @@ sub trash {
     $self->is_authorized( $user );
 }
 
-=haed
+=head2 is_authorized
 
 Check if the user has enough authorization for modifying
 
@@ -144,6 +161,10 @@ sub is_authorized {
   return $authorized;
 }
 
+=head2 get_recent_pages
+
+=cut
+
 sub get_recent_pages {
   my ($self) = @_;
 
@@ -156,6 +177,10 @@ sub get_recent_pages {
 	});
 }
 
+=head2 search_published
+
+=cut
+
 sub search_published {
   my ( $self, @args ) = @_;
 
@@ -163,7 +188,9 @@ sub search_published {
   return $self->search( @args );
 }
 
-=head2 Create page with internally-generated slug
+=head2 create_with_slug
+
+Create page with internally-generated slug
 
 =cut
 

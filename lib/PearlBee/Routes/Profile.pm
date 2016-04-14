@@ -109,7 +109,7 @@ post '/profile' => sub {
 
   my $params      = body_parameters;
   my $user        = session('user');
-  my $res_user    = resultset('Users')->find({ id => $user->{'id'} });
+  my $res_user    = resultset('Users')->find({ username => $user->{username} });
   my $new_columns = { };
   my @message;
 

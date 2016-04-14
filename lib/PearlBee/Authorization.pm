@@ -12,7 +12,7 @@ Check if the user has authorization
 hook 'before' => sub {
   my $user = session('user');
 
-  $user = resultset('Users')->find( $user->{id} ) if ( $user );
+  $user = resultset('Users')->find({ username => $user->{username} }) if ( $user );
 
   # Check if the user is logged in
   my $request = request->path_info;

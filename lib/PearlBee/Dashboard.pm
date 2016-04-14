@@ -25,7 +25,7 @@ Dashboard index
 any '/dashboard' => sub {
 
   my $user = session('user');
-  $user    = resultset('Users')->find({ username => $user->{username} });
+     $user = resultset('Users')->find({ username => $user->{username} });
 
   if ( $user->status eq 'inactive' ) {
 
@@ -66,7 +66,7 @@ Edit profile
 any '/profile' => sub {
 
   my $user = session('user');
-  $user    = resultset('Users')->find( $user->{id} );
+  $user    = resultset('Users')->find({ username => $user->{username} });
 
   my $name  = params->{name};
   my $email = params->{email};

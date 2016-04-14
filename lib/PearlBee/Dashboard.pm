@@ -25,7 +25,7 @@ Dashboard index
 any '/dashboard' => sub {
 
   my $user = session('user');
-     $user = resultset('Users')->find( $user->{id} );
+  $user    = resultset('Users')->find({ username => $user->{username} });
 
   if ( $user->status eq 'inactive' ) {
 

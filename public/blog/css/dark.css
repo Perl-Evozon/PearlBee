@@ -6,6 +6,9 @@
 .posts.listings .post-heading h2 a {
     color: #ffffff;
 }
+.author-entries .post-heading a {
+    color: #fff;
+}
 
 .posts.listings .post_preview {
     color: #ffffff;

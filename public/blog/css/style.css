@@ -3807,7 +3807,7 @@ background-size: cover;
     padding-right: 10px;
     padding-left: 10px;
 /*     width: 33.3333%; */
-    color: #ccc;
+    color: #838383; 
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
@@ -4794,6 +4794,11 @@ input[readonly] {
 .blog .modal {
    top: 22%;
    overflow-y: auto;
+}
+@media screen and (max-width: 500px) /* Mobile */ {
+   .modal .modal-body .profile-pic .btn-file {
+      margin-top: 230px;
+   }
 }
 
 @media all and (max-width: 380px) {

@@ -14,67 +14,48 @@ An easy way to resize uploaded images with ImageMagick.
 
 use strict;
 use warnings;
-use Exporter qw(import);
-
-our @EXPORT_OK = qw(new resize);
 
 use Imager;
 
-use Data::Dumper;
 =head2 new
 
-The new method;
-It Will receive the desired maximum width and height of the new image to be created and returns a new object;
+Process an existing image or newly uploaded image.
 
 =cut
 
 sub new {
-    my ( $class, $args ) = @_;
+    my ( $class, $file ) = @_;
+    die 'Specify a file' unless defined($file);
  
-    my @fields = qw( height width top left );
-    for my $name ( @fields ) {
-        die "Missing field '$name'\n" unless exists $args->{$name};
-    }
- 
-    my $self = bless {
-        top    => int( $args->{top}    ),
-        left   => int( $args->{left}   ),
-        height => int( $args->{height} ),
-        width  => int( $args->{width}  ),
-    }, $class;
+    my $self = bless { file => $file }, $class;
     return $self;
 }
 
 =head2 resize
 
-The resizing method;
-It Will receive the uploaded file, where to save the new image, under what name and if desired,
-the new extension of the image( in the eventuality that you desire to save a .jpg file as a .png).
+Resize the image to a given bounding box, specifying the path and name.
 
 =cut
 
 sub resize {
-    my ( $self, $file, $save_path, $save_name, $extension ) = @_;
+    my ( $self, $bounds, $save_path, $save_name ) = @_;
 
-    my $extensions = {
-        'JPEG' => 'jpg',
-        'JPG'  => 'jpg',
-        'PNG'  => 'png',
-    };
-
-    die 'Specify a file'              unless defined($file);
+    my @fields = qw( height width top left );
+    for my $name ( @fields ) {
+        die "Missing field '$name'\n" unless exists $bounds->{$name};
+    }
+ 
     die 'Specify a path for the file' unless defined($save_path);
     die 'Specify a name for the file' unless defined($save_name);
 
-    my $pic = Imager->new( file => $file->tempname );
+    my $pic = Imager->new( file => $self->{file} );
     $pic = $pic->crop(
-        top    => $self->{top},
-        left   => $self->{left},
-        height => $self->{height},
-        width  => $self->{width},
+        top    => int( $bounds->{top}    ),
+        left   => int( $bounds->{left}   ),
+        height => int( $bounds->{height} ),
+        width  => int( $bounds->{width}  ),
     );
 
-    $extension = 'png';
     $pic->write( file => "$save_path/$save_name" );
 
     return 1;

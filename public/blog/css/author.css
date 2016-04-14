@@ -116,6 +116,13 @@
     .author-messages{
         padding: 8% 8% 8% 0;
     }
+		#author-tab-content3 p {
+				line-height: 2.5;
+				font-size: 18px;
+		}
+		#author-tab-content3 .page-preview-wrapper ul {
+			padding-left: 20px;
+		}
 
 /*/tabs for author*/
 

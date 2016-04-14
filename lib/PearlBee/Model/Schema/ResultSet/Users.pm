@@ -8,6 +8,23 @@ use Dancer2::Plugin::DBIC;
 use PearlBee::Model::Schema;
 use base 'DBIx::Class::ResultSet';
 
+=head2 find_by_session(session)
+
+Search for a user via session
+
+=cut
+
+sub find_by_session {
+  my ($self,$session) = @_;
+  my $schema          = $self->result_source->schema;
+  if ( $session->{data}{user} ) {
+    my $user            = $session->{'data'}{'user'};
+  
+    return $schema->resultset('Users')->find({ username => $user->{username} });
+  }
+  return;
+}
+
 =head2 search_lc
 
 Search for a username case-insensitive

@@ -74,7 +74,7 @@ post '/theme' => sub {
   my $theme        = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
   if ($session_user) {
      return unless $session_user->{id}; 
-     my $user = resultset('Users')->find({ username => $session_user->{username} });
+     my $user = resultset('Users')->find_by_session(session);
      $user->update({ theme => $theme });
   } 
   my $json = JSON->new;

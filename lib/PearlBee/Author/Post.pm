@@ -178,8 +178,7 @@ add method
 post '/author/posts/add' => sub {
 
   my $user             = session('user');
-  my $user_obj         = resultset('Users')->
-                         find({ username => $user->{username} });
+  my $user_obj         = resultset('Users')->find_by_session(session);
   my @categories       = resultset('Category')->all();
   my ($slug, $changed) = resultset('Post')->check_slug( params->{slug} );
   my $post;
@@ -267,8 +266,8 @@ get '/author/posts/edit/:slug' => sub {
   
   # Check if the author has enough permissions for editing this post
   my $user     = session('user');
-  my $user_obj = resultset('Users')->find({ username => $user->{username} });
-  $user->{id}  = $user_obj->{id};
+  my $user_obj = resultset('Users')->find_by_session(session);
+  $user->{id}  = $user_obj->id;
   redirect '/author/posts' if ( !$post->is_authorized( $user ) );
   
   # Prepare tags for the UI

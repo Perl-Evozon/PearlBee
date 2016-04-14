@@ -21,7 +21,7 @@ our $VERSION = '0.1';
 
 hook before => sub {
   my $user = session('user');
-  my $user_obj = resultset('Users')->find({ username => $user->{username} });
+  my $user_obj = resultset('Users')->find_by_session(session);
 
   if ( request->dispatch_path =~ m{ ^/profile/author }x ) {
     # Do nothing, /profile/author can be viewed by anyone.
@@ -109,7 +109,7 @@ post '/profile' => sub {
 
   my $params      = body_parameters;
   my $user        = session('user');
-  my $res_user    = resultset('Users')->find({ username => $user->{username} });
+  my $res_user    = resultset('Users')->find_by_session(session);
   my $new_columns = { };
   my @message;
 
@@ -179,7 +179,7 @@ post '/profile-image' => sub {
   my $params   = params;
   my $file     = $params->{file};
   my $user     = session('user');
-  my $res_user = resultset('Users')->find({ username => $user->{'username'} });
+  my $res_user = resultset('Users')->find_by_session(session);
   my $message;
 
   my $upload_dir  = "/" . config->{'avatar'}{'path'};
@@ -237,7 +237,7 @@ warn "$folder_path/$filename\n";
 post '/profile_password' => sub {
   my $params   = body_parameters;
   my $user     = session('user');
-  my $res_user = resultset('Users')->find({ id => $user->{id} });
+  my $res_user = resultset('Users')->find_by_session(session);
   my $template_data;
 
   if (defined($res_user) && ($params->{'new_password'} ne '')) {

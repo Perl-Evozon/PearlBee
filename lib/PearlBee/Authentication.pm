@@ -311,7 +311,7 @@ get '/login' => sub {
 post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
-  my $redirect = param('redirect');
+  my $redirect = param('redirect') || session('redirect');
 
   my $user = resultset("Users")->search( \[
     "lower(username) = ? AND (status = 'active' or status = 'inactive')",

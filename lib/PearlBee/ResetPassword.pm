@@ -15,6 +15,12 @@ use PearlBee::Password;
 
 use DateTime;
 
+=head2 /activation
+
+Activate your account
+
+=cut
+
 get '/activation' => sub {
     my $token = params->{'token'};
 
@@ -48,6 +54,12 @@ get '/activation' => sub {
         template 'login';
     }
 };
+
+=head2 /set-pasword route
+
+Reset user password
+
+=cut
 
 any ['post', 'get'] => '/set-password' => sub {
     my $params = params;
@@ -91,6 +103,12 @@ any ['post', 'get'] => '/set-password' => sub {
     session success => 'Your password was sucessfuly changed';
     redirect('/');
 };
+
+=head2 /forgot-password route
+
+Forgot password?
+
+=cut
 
 any ['get', 'post'] => '/forgot-password' => sub {
     my $params = params;

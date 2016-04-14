@@ -7,7 +7,7 @@ use base 'DBIx::Class::ResultSet';
 
 use String::Util qw(trim);
 
-=head
+=head2 connect_tags
 
 Associate categories with the new post
 

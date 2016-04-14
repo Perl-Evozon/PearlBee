@@ -37,6 +37,10 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("id");
 
+=head2 as_hashref
+
+=cut
+
 sub as_hashref {
   my ($self) = @_;
   my $href   = {
@@ -48,6 +52,10 @@ sub as_hashref {
 
   return $href;
 }             
+
+=head2 as_hashref_sanitized
+
+=cut
 
 sub as_hashref_sanitized {
   my ($self) = @_;

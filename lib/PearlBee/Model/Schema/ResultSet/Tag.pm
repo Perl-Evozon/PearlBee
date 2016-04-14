@@ -6,7 +6,9 @@ use warnings;
 use base 'DBIx::Class::ResultSet';
 use PearlBee::Helpers::Util qw( string_to_slug );
 
-=head2 Search for a tag case-insensitive
+=head2 search_lc
+
+Search for a tag case-insensitive
 
 =cut
 
@@ -18,7 +20,9 @@ sub search_lc {
                   search( \[ "lower(name) like '\%$lc_tag\%'" ] );
 }
 
-=head2 Find or create tag with internally-generated slug
+=head2 find_or_create_with_slug
+
+ Find or create tag with internally-generated slug
 
 =cut
 
@@ -34,7 +38,9 @@ sub find_or_create_with_slug {
   });
 }
 
-=head2 Create tag with internally-generated slug
+=head2 create_with_slug
+
+Create tag with internally-generated slug
 
 =cut
 

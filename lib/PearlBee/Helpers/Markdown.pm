@@ -59,6 +59,14 @@ my %g_html_blocks;
 # (see _ProcessListItems() for details):
 my $g_list_level = 0;
 
+=head2 Markdown
+
+Main function. The order in which other subs are called here is
+essential. Link and image substitutions need to happen before
+_EscapeSpecialChars(), so that any *'s or _'s in the <a>
+and <img> tags get encoded.
+
+=cut
 
 sub Markdown {
 

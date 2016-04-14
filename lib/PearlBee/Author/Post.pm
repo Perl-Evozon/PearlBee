@@ -18,7 +18,9 @@ use DateTime;
 
 get '/author/posts' => sub { redirect '/author/posts/page/1'; };
 
-=head2 list all posts method
+=head2 /author/posts/page/:page
+
+list all posts method
 
 =cut
 
@@ -59,7 +61,9 @@ get '/author/posts/page/:page' => sub {
     { layout => 'admin' };
 };
 
-=head2 list all posts grouped by status
+=head2 /author/posts/:status/page/:page route
+
+list all posts grouped by status
 
 =cut
 
@@ -102,7 +106,9 @@ get '/author/posts/:status/page/:page' => sub {
     { layout => 'admin' };
 };
 
-=head2 publish method
+=head2 /author/posts/publish/:id
+
+publish method
 
 =cut
 
@@ -123,7 +129,9 @@ get '/author/posts/publish/:id' => sub {
   redirect '/author/posts';
 };
 
-=head2 draft method
+=head2 /author/posts/draft/:id
+
+draft method
 
 =cut
 
@@ -144,7 +152,9 @@ get '/author/posts/draft/:id' => sub {
   redirect '/author/posts';
 };
 
-=head2 trash method
+=head2 /author/posts/trash/:id
+
+trash method
 
 =cut
 
@@ -159,7 +169,9 @@ get '/author/posts/trash/:id' => sub {
   redirect '/author/posts';
 };
 
-=head2 add method
+=head2 /author/posts/add
+
+add method
 
 =cut
 
@@ -224,7 +236,9 @@ post '/author/posts/add' => sub {
   }
 };
 
-=head2 Display page for add method
+=head2 /author/posts/add
+
+Display page for add method
 
 =cut
 
@@ -237,7 +251,9 @@ get '/author/posts/add' => sub {
            { layout => 'admin' };
 };
 
-=head2 edit method
+=head2 /author/posts/edit/:slug
+
+edit method
 
 =cut
 
@@ -295,7 +311,9 @@ get '/author/posts/edit/:slug' => sub {
 
 };
 
-=head2 update method
+=head2 /author/posts/update/:id
+
+update method
 
 =cut
 

@@ -235,7 +235,9 @@ post '/register_success' => sub {
   template 'register_success';
 };
 
-=head2 Add OpenAuth ID to an existing user
+=head2 /oauth/:username/service/:service/service_id/:service_id route
+
+Add OpenAuth ID to an existing user
 
 =cut
 
@@ -263,7 +265,9 @@ post '/oauth/:username/service/:service/service_id/:service_id' => sub {
   };
 };
 
-=head2 Validate OpenAuth ID for an existing user
+=head2 /oauth/:service/service_id/:service_id
+
+Validate OpenAuth ID for an existing user
 
 =cut
 

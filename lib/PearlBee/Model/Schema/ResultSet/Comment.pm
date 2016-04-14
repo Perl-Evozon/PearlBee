@@ -9,6 +9,10 @@ use HTML::Scrubber::StripScripts;
 
 use utf8;
 
+=head2 can_create
+
+=cut
+
 sub can_create {
 	my ($self, $params, $user) = @_;
 	my $schema  = $self->result_source->schema;
@@ -51,6 +55,10 @@ sub can_create {
 
 	return $comment;
 }
+
+=head2 get_approved_comments_by_post_id
+
+=cut
 
 sub get_approved_comments_by_post_id {
 	my ($self, $post_id) = @_;

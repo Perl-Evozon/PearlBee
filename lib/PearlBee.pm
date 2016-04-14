@@ -124,7 +124,9 @@ get '/' => sub {
 
 get '/search' => sub { template 'searchresults' };
 
-=head2 Add a comment method
+=head2 /comments
+
+Add a comment method
 
 =cut
 
@@ -207,6 +209,8 @@ post '/comments' => sub {
 
 =head2 /register
 
+Register for the site.
+
 =cut
 
 get '/register' => sub {
@@ -219,6 +223,8 @@ get '/register' => sub {
 
 =head2 /passwordSignin
 
+Sign in to the site
+
 =cut
 
 get '/passwordSignin' => sub {
@@ -229,11 +235,19 @@ get '/passwordSignin' => sub {
 
 =head2 /register_done
 
+Finish registering
+
 =cut
 
 get '/register_done' => sub { template 'register_done' };
 
 get '/password_recovery' => sub { template 'password_recovery' };
+
+=head2 /sign-up
+
+Sign up to the site (this is also signing in.)
+
+=cut
 
 get '/sign-up' => sub {
   my $redirect = param('redirect');
@@ -249,15 +263,15 @@ get '/sign-up' => sub {
 =cut
 
 post '/sign-up' => sub {
+
   my $params          = body_parameters;
-  my $redirect = body_parameters->{'redirect'};
+  my $redirect        = body_parameters->{'redirect'};
   my $template_params = {
     username => $params->{'username'},
     email    => $params->{'email'},
     name     => $params->{'name'},
   };
-  my $err = "Invalid secret code.";
-
+  my $err      = "Invalid secret code.";
   my $response = $params->{'g-recaptcha-response'};
   my $result   = recaptcha_verify($response);
 

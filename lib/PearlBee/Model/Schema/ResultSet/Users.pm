@@ -8,7 +8,9 @@ use Dancer2::Plugin::DBIC;
 use PearlBee::Model::Schema;
 use base 'DBIx::Class::ResultSet';
 
-=head2 Search for a username case-insensitive
+=head2 search_lc
+
+Search for a username case-insensitive
 
 =cut
 
@@ -21,6 +23,10 @@ sub search_lc {
                   search( \[ "lower(username) like '\%$lc_username\%'" ] );
 }
 
+=head2 match_lc
+
+=cut
+
 sub match_lc {
   my ($self, $username) = @_;
   my $schema            = $self->result_source->schema;
@@ -31,7 +37,9 @@ sub match_lc {
 }
 
 
-=head1 Create user with pre-hashed password
+=head2 create_hashed
+
+Create user with pre-hashed password
 
 =cut
 
@@ -53,6 +61,10 @@ sub create_hashed {
     activation_key => $args->{activation_key}
   });
 }
+
+=head2 create_hashed_with_blog
+
+=cut
 
 sub create_hashed_with_blog {
   my ($self, $args) = @_;

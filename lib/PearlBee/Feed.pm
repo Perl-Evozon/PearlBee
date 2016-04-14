@@ -76,7 +76,6 @@ get '/feed/:uid' => sub {
     return $feed;
 };
 
-
 =head2 Get XML feed of all current comments for a given blogpost
 
 =cut
@@ -117,6 +116,12 @@ get '/feed/post/:slug' => sub {
     return $feed;
 };
 
+=head2 /feed/author/:username
+
+Feed for author by username
+
+=cut
+
 get '/feed/author/:username' => sub {
     my $feed;
     my $username = route_parameters->{username};
@@ -150,6 +155,12 @@ get '/feed/author/:username' => sub {
 
     return $feed;
 };
+
+=head2 /feed/author/:username/blog/:slug route
+
+Blog ID
+
+=cut
 
 get '/feed/author/:username/blog/:slug' => sub { 
   my $username = route_parameters->{username};

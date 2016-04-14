@@ -11,7 +11,9 @@ our $VERSION = '0.1';
 # Given the history of the application anything added here will be replicated
 # all over h*ll.
 
-=head2 View a given page
+=head2 /pages/:slug
+
+View a given page
 
 =cut
 
@@ -44,7 +46,9 @@ get '/pages/:slug' => sub {
   };
 };
 
-=head2 View page by username
+=head2 /pages/user/:username
+
+View page by username
 
 =cut
 
@@ -90,7 +94,9 @@ get '/pages/user/:username' => sub {
   };
 };
 
-=head2 View pages for username by page
+=head2 '/pages/user/:username/page/:page route
+
+View pages for username by page
 
 =cut
 
@@ -139,7 +145,9 @@ get '/pages/user/:username/page/:page' => sub {
   }
 };
 
-=head2 Vew pages by username
+=head2 /pages/page/:page route
+
+Vew pages by username
 
 =cut
 

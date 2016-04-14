@@ -11,7 +11,9 @@ use PearlBee::Helpers::Util qw(map_posts);
 use PearlBee::Helpers::ElasticSearch qw(search_posts search_comments);
 use Data::Dumper;
 
-=head2 Search user info.
+=head2 map_user
+
+Search user info.
 
 =cut
 
@@ -32,7 +34,9 @@ sub map_user {
     return $user_href;
 }
 
-=head2 Search for user info, return JSON
+=head2 /search/user-info/:query route
+
+Search for user info, return JSON
 
 =cut
 
@@ -47,7 +51,9 @@ get '/search/user-info/:query' => sub {
       { info => [ map { map_user($_) } @user ] } );
 };
 
-=head2 Search user posts.
+=head2 /search/user-posts/:query route
+
+Search user posts.
 
 =cut
 
@@ -68,7 +74,9 @@ get '/search/user-posts/:query' => sub {
     return $json->encode({ posts => [ @mapped_posts ] });
 };
 
-=head2 Search user tags.
+=head2 /search/user-tags/:query
+
+Search user tags.
 
 =cut
 
@@ -101,7 +109,9 @@ get '/search/posts/:query/:page' => sub {
     return $json->encode({ posts => \@results });
 };
 
-=head2 Search users.
+=head2 /search/users/:query
+
+Search users.
 
 =cut
 

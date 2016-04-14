@@ -13,7 +13,9 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 
 our $VERSION = '0.1';
 
-=head2 View a given post
+=head2 /users/:username/:year/:month/:slug ; /post/:slug routes
+
+View a given post
 
 =cut
 
@@ -57,7 +59,9 @@ get '/post/:slug' => sub {
   };
 };
 
-=head2 View posts by category
+=head2 /posts/category/:slug
+
+View posts by category
 
 =cut
 
@@ -122,7 +126,9 @@ get '/posts/category/:slug' => sub {
   }
 };
 
-=head2 View pages by category
+=head2 /posts/category/:slug/page/:page
+
+View pages by category
 
 =cut
 
@@ -192,7 +198,9 @@ get '/posts/category/:slug/page/:page' => sub {
 
 };
 
-=head2 Vew posts by username
+=head2 /posts/page/:page
+
+Vew posts by username
 
 =cut
 
@@ -248,7 +256,9 @@ get '/posts/page/:page' => sub {
   }
 };
 
-=head2 Vew posts by username
+=head2 /posts/user/:username
+
+View posts by username
 
 =cut
 
@@ -300,7 +310,9 @@ get '/posts/user/:username' => sub {
     };
 };
 
-=head2 View posts for username by page
+=head2 /posts/user/:username/page/:page route
+
+View posts for username by page
 
 =cut
 
@@ -352,7 +364,9 @@ get '/posts/user/:username/page/:page' => sub {
   }
 };
 
-=head2 View posts by tag
+=head2 /posts/tag/:slug
+
+View posts by tag
 
 =cut
 
@@ -422,7 +436,9 @@ get '/posts/tag/:slug' => sub {
   }
 };
 
-=head2 View posts by tag by page
+=head2 /posts/tag/:slug/page/:page
+
+View posts by tag by page
 
 =cut
 

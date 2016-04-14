@@ -13,13 +13,16 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 
 our $VERSION = '0.1';
 
-=head2 View blog posts by username and blog slug
+=head2 /blogs/user/:username/slug/:slug ; /users/:username
+
+View blog posts by username and blog slug
 
 =cut
 
 #http://139.162.204.109:5030/blogs/user/pmurias/slug/a_blog_about_the_perl_programming_language
 
 get '/users/:username' => sub {
+
   my $username = route_parameters->{'username'};
   my $slug     = 'foo';
 
@@ -76,7 +79,9 @@ get '/blogs/user/:username/slug/:slug' => sub {
     };
 };
 
-=head View posts for username by page
+=head2 /blogs/user/:username/slug/:slug/page/:page route
+
+ View posts for username by page
 
 =cut
 

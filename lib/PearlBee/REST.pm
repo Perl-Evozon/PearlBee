@@ -6,7 +6,7 @@ use Dancer2::Plugin::REST;
 
 prepare_serializer_for_format;
 
-=haed
+=head2 /api/tags.:format route
 
 Get an array with all tags
 
@@ -23,11 +23,12 @@ get '/api/tags.:format' => sub {
 	}
 };
 
-=head
+=head2 /api/categories.:format route
 
 Get an array with all categories
 
 =cut
+
 get '/api/categories.:format' => sub {
   
 	my $user = session('user');

@@ -8,12 +8,9 @@ use Dancer2::Plugin::DBIC;
 use PearlBee::Model::Schema;
 use Search::Elasticsearch;
 
-use Data::Dumper;
-
 require Exporter;
 our @ISA 	= qw(Exporter);
 our @EXPORT_OK 	= qw/search_posts search_comments/;
-
 
 =head2 index_comment( $comment )
 
@@ -23,15 +20,16 @@ Index a Post object
 
 sub index_post {
     my ($post) = @_;
+    my $e      = Search::ElasticSearch->new;
+
     return unless $post->status eq 'published';
-    my $e = Search::ElasticSearch->new;
 
     try {
         $e->index(
-            index   => 'posts',
-            type    => 'published_blog_posts',
-            id      => $post->id,
-            body    => {
+            index => 'posts',
+            type  => 'published_blog_posts',
+            id    => $post->id,
+            body  => {
                 title       => $post->title,
                 description => $post->description,
                 date        => $post->created_date
@@ -51,15 +49,16 @@ Index a Comment object
 
 sub index_comment {
     my ($comment) = @_;
+    my $e         = Search::ElasticSearch->new;
+
     return unless $comment->status eq 'approved';
-    my $e = Search::ElasticSearch->new;
 
     try {
         $e->index(
-            index   => 'comments',
-            type    => 'published_comments',
-            id      => $comment->id,
-            body    => {
+            index => 'comments',
+            type  => 'published_comments',
+            id    => $comment->id,
+            body  => {
                 title       => $comment->title,
                 description => $comment->description,
                 date        => $comment->created_date
@@ -67,7 +66,9 @@ sub index_comment {
         );
     }
     catch {
-        info 'ElasticSearch index of comment ID ' . $comment->id . " failed: $_";
+        info 'ElasticSearch index of comment ID ' .
+             $comment->id .
+             " failed: $_";
     };
 }
 
@@ -79,8 +80,8 @@ Search for posts by fulltext
 
 sub search_posts {
     my ($text,$page) = @_;
-    my $page_size = config->{search}{user_posts} || 10;
-    my $es = Search::Elasticsearch->new;
+    my $page_size    = config->{search}{user_posts} || 10;
+    my $es           = Search::Elasticsearch->new;
 
     my $start = $page * $page_size;
     my $elastic_results = $es->search(
@@ -104,8 +105,8 @@ sub search_posts {
         my $rs = resultset('Post')->find({ id => $result->{_id} });
         next unless $rs and $rs->id;
         my $user_avatar = $rs->user->avatar;
-        if (($user_avatar eq '/blog/img/male-user.png') || ($user_avatar eq '/blog/img/male-user-light.png')){
-                   $user_avatar = "";
+        if ( $user_avatar and $user_avatar =~ m{ ^/blog }x ) {
+            $user_avatar = "";
         }                
 	my $href = $rs->as_hashref_sanitized;
 	$href->{created_date}   = $rs->created_date_human;
@@ -126,15 +127,13 @@ Search comments by fulltext
 
 sub search_comments {
     my ($text) = @_;
-    my $es = Search::Elasticsearch->new;
+    my $es     = Search::Elasticsearch->new;
 
     my $elastic_results = $es->search(
         index => 'comments',
         body => {
             query => {
-                match_phrase_prefix => {
-                    title => $text
-                }
+                match_phrase_prefix => { title => $text }
             }
         }
     );
@@ -143,18 +142,7 @@ sub search_comments {
     for my $result ( @{ $elastic_results->{hits}{hits} } ) {
         my $rs = resultset('Post')->find({ id => $result->{_id} });
         next unless $rs->status eq 'approved';
-        push @results, {
-            id            => $rs->id,
-            content       => $rs->content,
-            fullname      => $rs->fullname,
-            email         => $rs->email,
-            website       => $rs->website,
-            avatar        => $rs->avatar,
-            comment_date  => $rs->comment_date,
-            type          => $rs->type,
-            post_id       => $rs->post_id,
-            uid           => $rs->uid,
-        };
+        push @results, $rs->as_hashref;
     }
 
     return @results;
@@ -168,31 +156,31 @@ Index the DB for elastic
 
 sub indexDB {
     my $es = Search::Elasticsearch->new(
-        trace_to => 'Stderr'    # Trace to stderr
+        trace_to => 'Stderr' # Trace to stderr
     );
     print "Indexing DB...\n";
 
     try {
         # $es->indices->delete(index => '*');     # <<< More risky option. Clears whole elastic!
-        $es->indices->delete(index=>'posts');
-        $es->indices->delete(index=>'users');
-        $es->indices->delete(index=>'tags');
+        $es->indices->delete( index => 'posts' );
+        $es->indices->delete( index => 'users' );
+        $es->indices->delete( index => 'tags' );
     } catch {
         warn "Indexes were probably not yet created before, so nothing to delete.\n"
     };
 
-    $es->indices->create(index=>'posts');
-    $es->indices->create(index=>'users');
-    $es->indices->create(index=>'tags');
+    $es->indices->create( index => 'posts' );
+    $es->indices->create( index => 'users' );
+    $es->indices->create( index => 'tags' );
 
     my $posts = resultset('Post')->search({});
     while ( my $post = $posts->next()) {
         if($post->status eq 'published') {
             $es->index(
-                index   => 'posts',
-                type    => 'published_blog_posts',
-                id      => $post->id,
-                body    => {
+                index => 'posts',
+                type  => 'published_blog_posts',
+                id    => $post->id,
+                body  => {
                     title       => $post->title,
                     description => $post->description,
                     date        => $post->created_date
@@ -205,13 +193,13 @@ sub indexDB {
     while ( my $user = $users->next()) {
         if($user->status eq 'active') {
             $es->index(
-                index   => 'users',
-                type    => 'active_users',
-                id      => $user->id,
-                body    => {
-                    email   => $user->email,
-                    name    => $user->name,
-                    date    => $user->register_date
+                index => 'users',
+                type  => 'active_users',
+                id    => $user->id,
+                body  => {
+                    email => $user->email,
+                    name  => $user->name,
+                    date  => $user->register_date
                 }
             );
         }
@@ -220,10 +208,10 @@ sub indexDB {
     my $tags = resultset('Tag')->search({});
     while ( my $tag = $tags->next()) {
         $es->index(
-            index   => 'tag',
-            type    => 'post_tag',
-            id      => $tag->id,
-            body    => {
+            index => 'tag',
+            type  => 'post_tag',
+            id    => $tag->id,
+            body  => {
                 name => $tag->name,
                 slug => $tag->slug
             }

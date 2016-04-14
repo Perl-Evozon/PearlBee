@@ -4,11 +4,8 @@ use URI::Encode qw(uri_encode);
 use Data::GUID;
 use String::Dirify;
 use String::Random;
-use String::Util 'trim';
 
 use Digest::Bcrypt;
-use Data::Entropy::Algorithms qw(rand_bits);
-use MIME::Base64 qw(encode_base64 decode_base64);
 
 use PearlBee::Password;
 

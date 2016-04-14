@@ -2,8 +2,6 @@ package PearlBee::Password;
 
 use Digest;
 use Digest::Bcrypt;
-use Data::Entropy::Algorithms qw(rand_bits);
-use MIME::Base64 qw(encode_base64 decode_base64);
 
 require Exporter;
 our @ISA    = qw(Exporter);

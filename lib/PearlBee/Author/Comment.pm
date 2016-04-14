@@ -23,7 +23,6 @@ get '/author/comments/page/:page' => sub {
   $user->{id}  = $user_obj->id;
   my @comments   = resultset('View::UserComments')->search({}, { bind => [ $user->{id} ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count      = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->{id} ] })->first;
-
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
 
   # Calculate the next and previous page link

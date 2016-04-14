@@ -293,7 +293,11 @@ get '/oauth/:service/service_id/:service_id' => sub {
 =cut
 
 get '/login' => sub {
-      template 'signup'
+    my $template_data = { };
+    if ( query_parameters->get('redirect' ) ) {
+        $template_data->{redirect} =query_parameters->get('redirect' );
+    }
+    template 'signup', $template_data;
 };
 
 =head2 /login route

@@ -219,7 +219,7 @@
             </div>
             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
           </form>          
-          <div class="social_register">
+       <!--   <div class="social_register">
             <p>You can register using the following accounts:</p>
             <div class="separator"></div>
           <div class="row">
@@ -227,7 +227,7 @@
               <div class="social">
                 <a href="#" class="github"><i class="icon-github"></i></a>
                 <a href="#" class="facebook" id="face"><i class="icon-facebook"></i></a>
-<!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"></div>-->
+<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"></div>
 
 
 
@@ -236,7 +236,7 @@
               </div>                           
              </div>
             </div>
-          </div>          
+          </div>  -->        
         </div> 
        </div> 
      </div> 

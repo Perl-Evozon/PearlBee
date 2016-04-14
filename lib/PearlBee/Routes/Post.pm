@@ -143,6 +143,7 @@ get '/posts/category/:slug/page/:page' => sub {
   session redirect => "/posts/category/$slug/page/$page";
 
   if ( $category ) {
+    my $category_href = $category->as_hashref_sanitized;
     my @posts       = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
     my $nr_of_posts = resultset('Post')->search_published({ 'category.slug' => $slug }, { join => { 'post_categories' => 'category' } })->count;
     my @tags        = map { $_->as_hashref_sanitized }
@@ -179,7 +180,7 @@ get '/posts/category/:slug/page/:page' => sub {
       total_pages   => $total_pages,
       next_link     => $next_link,
       previous_link => $previous_link,
-      category      => $category->as_hashref_serialized
+      category      => $category_href
       };
   }
   else {

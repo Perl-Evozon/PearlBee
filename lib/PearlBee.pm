@@ -73,7 +73,7 @@ post '/theme' => sub {
   my $session_user = session('user');
   my $theme        = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
   if ($session_user) {
-     return unless $session_user->{id}; 
+     return unless $session_user->{username}; 
      my $user = resultset('Users')->find_by_session(session);
      $user->update({ theme => $theme });
   } 

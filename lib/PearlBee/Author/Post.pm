@@ -224,7 +224,7 @@ post '/author/posts/add' => sub {
   };
 
   # If the post was added successfully, store a success message to show on the view
-  session success => 'The post was added successfully' if ( !$@ && $post );
+  session success => "The <a href='/post/$slug'>post</a> was added successfully" if ( !$@ && $post );
 
   # If the user created a new post redirect him to the post created
   if ( $post ) {
@@ -366,7 +366,8 @@ post '/author/posts/update/:id' => sub {
 
   error $@ if ($@);
 
-  session success => 'The post was updated successfully!';
+  session success => "The <a href='/post/$slug'>post</a> was updated successfully!";
+
 
   redirect '/author/posts/edit/' . $post->slug;
 

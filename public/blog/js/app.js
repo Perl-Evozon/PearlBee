@@ -243,7 +243,8 @@ $("#start-blogging").on('click', function (e) {
 
                     if (posts.status === 'approved') {
                     if (posts.user.avatar_path) {
-                        avatarPath = posts.user.avatar_path;
+                        avatarPath = '/avatar/'+ posts.user.username;
+                        newItem.find(".bubble img.user-image").attr("class", "user-image");
                         } else if (themeinitial === false){ 
                             avatarPath = "/blog/img/male-user.png";
                         } else if (themeinitial === true) {

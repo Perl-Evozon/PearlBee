@@ -50,12 +50,12 @@ get '/admin/users/page/:page' => sub {
   my $total_pages                 = get_total_pages($all, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link($page, $total_pages, '/admin/users');
 
-  # Generating the pagination navigation
-  my $total_users     = $all;
-  my $posts_per_page  = $nr_of_rows;
-  my $current_page    = $page;
-  my $pages_per_set   = 7;
-  my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
+  # Generation of the pagination navigation
+  my $total_users    = $all;
+  my $posts_per_page = $nr_of_rows;
+  my $current_page   = $page;
+  my $pages_per_set  = 7;
+  my $pagination     = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
   template 'admin/users/list',
     {
@@ -83,14 +83,16 @@ List all users grouped by status
 
 get '/admin/users/:status/page/:page' => sub {
 
-  my $nr_of_rows  = 5; # Number of posts per page
-  my $page        = params->{page} || 1;
-  my $status      = params->{status};
-  my @users       = resultset('Users')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
-  my $count       = resultset('View::Count::StatusUser')->first;
+  my $nr_of_rows = 5; # Number of posts per page
+  my $page       = params->{page} || 1;
+  my $status     = params->{status};
+  my @users      = resultset('Users')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  my $count      = resultset('View::Count::StatusUser')->first;
   
-  my ($all, $active, $inactive, $suspended, $pending) = $count->get_all_status_counts;
-  my $status_count                                = $count->get_status_count($status);
+  my ($all, $active, $inactive, $suspended, $pending) =
+    $count->get_all_status_counts;
+  my $status_count =
+    $count->get_status_count($status);
   
   if (! session('multiuser')) {
     # do not count 'pending' users
@@ -217,7 +219,7 @@ Allow pending user
 any '/admin/users/allow/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('Users')->find( $user_id );
+  my $user    = resultset('Users')->find( $user_id );
   
   if ($user) {
     try {
@@ -288,7 +290,7 @@ any '/admin/users/add' => sub {
             tt_vars => {
                 role      => $role,
                 username  => $username,
-        	    password  => params->{password},
+        	password  => params->{password},
                 name      => $name,
                 app_url   => config->{app_url},
                 blog_name => session('blog_name'),

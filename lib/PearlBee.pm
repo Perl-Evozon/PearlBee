@@ -136,13 +136,13 @@ post '/comments' => sub {
   my $comment_text = $parameters->{comment};
   my $post         = resultset('Post')->find({ slug => $post_slug });
   my $user         = session('user');
+  my $user_obj     = resultset('Users')->find_by_session(session);
 
-  my $username   = $user->{username};
-  my $poster_id  = $user->{id};
+  my $username   = $user_obj->username;
   my ($owner_id) = $post->user_id;
 
   $parameters->{id}  = $post->id;
-  $parameters->{uid} = $poster_id;
+  $parameters->{uid} = $user_obj->id;
   
 #  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
 #  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });

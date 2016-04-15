@@ -25,7 +25,7 @@ get '/activation' => sub {
     my $token = params->{'token'};
 
     my $user_reset_token =
-         resultset('Users')->search({ activation_key => $token })->first();
+         resultset('Users')->find({ activation_key => $token });
     if ($user_reset_token and
         $user_reset_token->status eq 'pending' ) 
     {

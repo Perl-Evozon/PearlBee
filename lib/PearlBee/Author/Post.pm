@@ -29,8 +29,9 @@ get '/author/posts/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page};
   my $user        = session('user');
-  my @posts       = resultset('Post')->search({ user_id => $user->{id} }, { order_by => \'created_date DESC', rows => $nr_of_rows, page => $page });
-  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
+  my $user_obj    = resultset('Users')->find_by_session(session);
+  my @posts       = resultset('Post')->search({ user_id => $user_obj->id }, { order_by => \'created_date DESC', rows => $nr_of_rows, page => $page });
+  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user_obj->id ] })->first;
 
   my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
 
@@ -73,8 +74,9 @@ get '/author/posts/:status/page/:page' => sub {
   my $page        = params->{page};
   my $status      = params->{status};
   my $user        = session('user');
-  my @posts       = resultset('Post')->search({ user_id => $user->{id}, status => $status }, { order_by => \'created_date DESC' });
-  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user->{id} ] })->first;
+  my $user_obj    = resultset('Users')->find_by_session(session);
+  my @posts       = resultset('Post')->search({ user_id => $user_obj->id, status => $status }, { order_by => \'created_date DESC' });
+  my $count       = resultset('View::Count::StatusPostAuthor')->search({}, { bind => [ $user_obj->id ] })->first;
 
   my ($all, $publish, $draft, $trash) = $count->get_all_status_counts;
   my $status_count                    = $count->get_status_count($status);

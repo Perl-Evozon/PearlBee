@@ -5,7 +5,7 @@
 
                         <div class="col-md-8 col-sm-8 col-xs-12">
                            <div class="fwidget flinks">
-				  <a href="mailto:support@pearlbee.com?Subject=Feedback" target="_top"><h5>Feedback</h5></a>
+				  <a href="mailto:support@pearlbee.org?Subject=Feedback" target="_top"><h5>Feedback</h5></a>
 				  <a href="https://www.perl.org/"><h5>perl.org</h5></a>
 				  <a href="http://www.cpan.org/"><h5>cpan.org</h5></a>
 				  <a href="http://www.pm.org/"><h5>pm.org</h5></a>

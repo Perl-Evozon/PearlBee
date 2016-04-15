@@ -4962,6 +4962,10 @@ input[readonly] {
    }
 }
 
+.search-page .tabs .loading-posts {
+   margin-bottom: 115px;
+}
+
 
 
 

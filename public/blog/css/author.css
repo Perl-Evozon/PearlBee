@@ -92,7 +92,6 @@
         font-size: 24px;
         font-weight: bold;
         text-transform: uppercase;
-        color: #555;
         text-decoration: none;
     }
     #author-tab-content2 .entry{
@@ -116,10 +115,10 @@
     .author-messages{
         padding: 8% 8% 8% 0;
     }
-		#author-tab-content3 p {
-				line-height: 2.5;
-				font-size: 18px;
-		}
+		/*#author-tab-content3 p {*/
+				/*line-height: 2.5;*/
+				/*font-size: 18px;*/
+		/*}*/
 		#author-tab-content3 .page-preview-wrapper ul {
 			padding-left: 20px;
 		}

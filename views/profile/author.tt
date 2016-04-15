@@ -117,7 +117,7 @@
                     </div>
 
                     <div id="author-tab-content2" class="tab-content">
-                        <p class="no-posts hidden author-messages">We're sorry, no entries associated with this user have been found</p>
+                        <p class="no-posts hidden author-messages error-author-messages">We're sorry, no entries associated with this user have been found</p>
                         <div class="author-entries">
                             <div class="entry clearfix hidden">
                                 <div class="text-listing-entries col-xs-12">
@@ -182,7 +182,7 @@
                         </div>
                     </div>
                     <div id="author-tab-content3" class="tab-content">
-                        <p class="no-pages hidden author-messages">We're sorry, no pages associated with this user have been found</p>
+                        <p class="no-pages hidden author-messages error-author-messages">We're sorry, no pages associated with this user have been found</p>
                         <div class="author-pages">
                             <div class="entry clearfix hidden">
                                 <div class="text-listing-pages col-xs-12">

@@ -78,6 +78,8 @@ $('.closeCookie').on('click', function(){
 
 
 
+
+
     $(".input-group, .links-group:first").on('click',function(event){
         event.stopPropagation();
     });
@@ -417,6 +419,7 @@ $("#start-blogging").on('click', function (e) {
 $("#file-upload").change(function () {
       readURL(this);
   });
+
 //delete image
 $(".modal-footer .delete-img").on('click', function(){
     var themeinitial = $('#cmn-toggle-4').is(':checked');
@@ -660,6 +663,11 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
                   $(".truncate").dotdotdot({
                     ellipsis  : '... ',
                   });
+
+                  if ($(".search-page .tabs .no-posts.no-posts-found1").css("display") == "block") {
+                      $(".search-page .tabs .loading-posts").css("margin-bottom", "0");
+                  }
+
             })
             .fail(function () {
                 $('#tab-content1 .entry:not(.hidden)').remove();

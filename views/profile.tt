@@ -32,9 +32,11 @@ $(document).ready(function() {
 			$('#croppie-avatars').croppie('bind', {
 				url: src
 			});
+			$('#croppie-avatars').removeClass('hidden');
 		} else {
 			$('#croppie-avatars').addClass('hidden');
 			$('#image_upload_preview').removeClass('hidden');
+			$('#image_upload_preview').hasClass('defaultAvatar').show();
 		}
   })
 	$('#croppie-avatars').croppie({

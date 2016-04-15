@@ -48,6 +48,9 @@ get '/activation' => sub {
             token      => $token,
         }, { layout => 'admin' };
     }
+    elsif ( session('user') ) {
+        redirect '/'
+    }
     else {
         session error => 'Your activation token is invalid, please try the forgot password option again.';
 

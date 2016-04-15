@@ -1167,6 +1167,12 @@ $('#more-posts').click(function() {
 
             $('.progressloader').hide();
             button.attr("data-page-number", pageNumber);
+
+            $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                var content = $(this).contents();
+                $(this).replaceWith(content);
+            });
+
         });
     });
 }
@@ -1260,6 +1266,12 @@ function getAuthorEntries (button) {
             $(".truncate").dotdotdot({
                 ellipsis: '... ',
             });
+
+            $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                var content = $(this).contents();
+                $(this).replaceWith(content);
+            });
+
         })
         .always(function () {
             $('.loading-author-entries .progressloader').hide();
@@ -1318,6 +1330,11 @@ function getAuthorPages (button){
                 $(".truncate").dotdotdot({
                     ellipsis: '... ',
                 });
+
+                $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                var content = $(this).contents();
+                $(this).replaceWith(content);
+            });
         });
 
 }
@@ -1482,5 +1499,10 @@ $("button.closeCookie").click(function(){
      $(".header").css("transition","top 0.8s ease-in").css("top","0px");
 });
 
+
+$(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+    var content = $(this).contents();
+    $(this).replaceWith(content);
+});
 
 

@@ -3,12 +3,20 @@ An open source blogging platform written in Perl. <a href="http://pearlbee.org/"
 <h3>Version</h3>
 1.0
 
+<h3>Prerequisite</h3>
+<ul>
+<li>GD : 'yum install libgd2-xpm-dev', 'yum install gd-devel', 'yum install gd'</li>
+<li>libxml : 'yum install libxml2', 'yum install libxml2-devel'</li>
+<li>You will need a MySQL/MariaDB server for the blog's database.</li>
+<li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
+</ul>
+
 <h3>Setup</h3>
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
 <ul>
-<li>Authen::Captcha ( needs GD, which neeeds libgd2-xpm-dev package : 'yum install libgd2-xpm-dev', 'yum install gd-devel', 'yum install gd')</li>
-<li>XML::Simple ( needs libxml : 'yum install libxml2', 'yum install libxml2-devel')</li>
+<li>Authen::Captcha</li>
+<li>XML::Simple</li>
 <li>Crypt::RandPasswd</li>
 <li>Dancer2</li>
 <li>Dancer2::Plugin::DBIC</li>
@@ -41,8 +49,6 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Text::Unidecode</li>
 <li>Time::HiRes</li>
 
-<li>You will need a MySQL/MariaDB server for the blog's database.</li>
-<li>You will need a SMTP Server for sending messages. Email are sent automatically by PearlBee in different scenarios like adding a new user </li> 
 </ul>
 
 <h4>Installing / Updating perl modules</h4>

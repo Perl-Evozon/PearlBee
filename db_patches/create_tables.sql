@@ -118,4 +118,4 @@ INSERT INTO `user` VALUES (1,'Default','Admin','admin','ddd8f33fbc8fd3ff70ea1d37
 	
 INSERT INTO `category` VALUES (1,'Uncategorized','uncategorized',1);
 
-INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'','/','PearlBee',1,0);
+INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'/','PearlBee',1,0);

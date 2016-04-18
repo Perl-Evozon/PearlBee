@@ -1011,6 +1011,11 @@ if (newURL == userURL) {
               $(".truncate").dotdotdot({
                 ellipsis  : '... ',
               });
+
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                  var content = $(this).contents();
+                  $(this).replaceWith(content);
+              });
             });
     });
     
@@ -1096,6 +1101,11 @@ if (newURL == userURL) {
 
               $(".truncate").dotdotdot({
                 ellipsis  : '... ',
+              });
+
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                  var content = $(this).contents();
+                  $(this).replaceWith(content);
               });
             });
     });

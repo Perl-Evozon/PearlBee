@@ -215,16 +215,17 @@ $("#start-blogging").on('click', function (e) {
     $("#reply_post_comment_button").on('click', function (e){
         var comment = $("#reply_post_comment_form #comment").val();
         var slug = $("#reply_post_comment_form #slug").val();
+        var isEmpty = $.trim($("#reply_post_comment_form #comment").val());
         $("#reply_post_comment_form").trigger('reset');
         var themeinitial = $('#cmn-toggle-4').is(':checked');
 
-
         console.log(comment);
         console.log(slug);
-
+      if (isEmpty == "") {
        // e.preventDefault();
        // e.stopPropagation();
-
+        return false; 
+      } else {
         $.ajax({
             method: "POST",
             url: "/comments",
@@ -264,6 +265,7 @@ $("#start-blogging").on('click', function (e) {
                     $(".display_msg").addClass("show");
                 }
         });
+      }
     });
 
     /* Strip image tags from post preview*/

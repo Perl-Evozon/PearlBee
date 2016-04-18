@@ -413,6 +413,8 @@ $("#start-blogging").on('click', function (e) {
       $('#image_upload_preview').attr('src', e.target.result).addClass('hidden');
         $('#croppie-avatars').croppie('bind', {
             url: e.target.result
+        }, function() {
+            $('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2.5);
         }).removeClass('hidden');
     }
       reader.readAsDataURL(input.files[0]);

@@ -16,6 +16,7 @@ use strict;
 use warnings;
 
 use Imager;
+use Dancer2;
 
 =head2 new
 
@@ -54,6 +55,10 @@ sub resize {
         left   => int( $bounds->{left}   ),
         height => int( $bounds->{height} ),
         width  => int( $bounds->{width}  ),
+    );
+    $pic = $pic->scale(
+        xpixels => config->{avatar}{bounds}{width},
+        ypixels => config->{avatar}{bounds}{height},
     );
 
     $pic->write( file => "$save_path/$save_name" );

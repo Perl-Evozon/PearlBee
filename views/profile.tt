@@ -38,7 +38,7 @@ $(document).ready(function() {
 					'width': '140px',
 					'height': '140px'
 				});
-				$('#croppie-avatars .cr-slider').attr('min', 0.01).attr('max', 2).val(1);
+				$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2).val(1);
 			});
 
 			$('#croppie-avatars').removeClass('hidden');
@@ -62,7 +62,6 @@ $(document).ready(function() {
 			height: 180
 		}
 	});
-	$('#croppie-avatars .cr-slider').attr('min', 0.01).attr('max', 2);
 
 	$('#changeImg').on('show.bs.modal', function() {
 		$('#croppie-avatars .cr-image').css({
@@ -71,6 +70,7 @@ $(document).ready(function() {
 			'width': 140,
 			'height': 140
 		});
+		$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2);
 	});
 
 	 if (!$('#image_upload_preview').hasClass('defaultAvatar')){

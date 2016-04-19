@@ -420,7 +420,15 @@ $("#start-blogging").on('click', function (e) {
         $('#croppie-avatars').croppie('bind', {
             url: e.target.result
         }, function() {
-            $('#croppie-avatars .cr-slider').attr('min', 0.01).attr('max', 2);
+            var minZoom = +$('#croppie-avatars .cr-image')[0].style['transform']
+                .split(")")
+                .find(function(item) {
+                    return item.indexOf('scale') >=0
+                }).replace("scale(", '');
+
+            minZoom = (minZoom < 1) ? minZoom : 1;
+
+            $('#croppie-avatars .cr-slider').attr('min', minZoom).attr('max', 2);
         }).removeClass('hidden');
     }
       reader.readAsDataURL(input.files[0]);

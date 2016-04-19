@@ -411,10 +411,16 @@ $("#start-blogging").on('click', function (e) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $('#image_upload_preview').attr('src', e.target.result).addClass('hidden');
+        var imageStyle = $('#croppie-avatars .cr-image').get(0).style;
+        imageStyle.removeProperty('transform-origin');
+        imageStyle.removeProperty('transform');
+        imageStyle.removeProperty('width');
+        imageStyle.removeProperty('height');
+
         $('#croppie-avatars').croppie('bind', {
             url: e.target.result
         }, function() {
-            $('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2.5);
+            $('#croppie-avatars .cr-slider').attr('min', 0.01).attr('max', 2);
         }).removeClass('hidden');
     }
       reader.readAsDataURL(input.files[0]);

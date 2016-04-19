@@ -38,7 +38,7 @@ $(document).ready(function() {
 					'width': '140px',
 					'height': '140px'
 				});
-				$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2.5).val(1);
+				$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2).val(1);
 			});
 
 			$('#croppie-avatars').removeClass('hidden');
@@ -48,7 +48,8 @@ $(document).ready(function() {
 			$('#image_upload_preview').hasClass('defaultAvatar').show();
 		}
 		$('#upload-img').get(0).reset();
-  })
+  	});
+
 	$('#croppie-avatars').croppie({
 		url: $('#image_upload_preview').attr('src'),
 		viewport: {
@@ -62,13 +63,15 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#croppie-avatars .cr-image').css({
-		'transform-origin': '20px 20px 0',
-		'-webkit-transform-origin': '20px 20px 0',
-		'transform': 'translate3d(20px, 20px, 0)'
+	$('#changeImg').on('show.bs.modal', function() {
+		$('#croppie-avatars .cr-image').css({
+			'transform-origin': '20px 20px 0',
+			'transform': 'translate3d(20px, 20px, 0)',
+			'width': 140,
+			'height': 140
+		});
+		$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2);
 	});
-
-	$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2.5);
 
 	 if (!$('#image_upload_preview').hasClass('defaultAvatar')){
 		 $('#image_upload_preview').addClass('hidden');

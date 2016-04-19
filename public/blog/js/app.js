@@ -412,6 +412,8 @@ $("#start-blogging").on('click', function (e) {
       $('#image_upload_preview').attr('src', e.target.result).addClass('hidden');
         $('#croppie-avatars').croppie('bind', {
             url: e.target.result
+        }, function() {
+            $('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2.5);
         }).removeClass('hidden');
     }
       reader.readAsDataURL(input.files[0]);
@@ -1008,6 +1010,11 @@ if (newURL == userURL) {
               $(".truncate").dotdotdot({
                 ellipsis  : '... ',
               });
+
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                  var content = $(this).contents();
+                  $(this).replaceWith(content);
+              });
             });
     });
     
@@ -1093,6 +1100,11 @@ if (newURL == userURL) {
 
               $(".truncate").dotdotdot({
                 ellipsis  : '... ',
+              });
+
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                  var content = $(this).contents();
+                  $(this).replaceWith(content);
               });
             });
     });

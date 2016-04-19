@@ -4777,7 +4777,11 @@ input[readonly] {
    position: absolute;
    top: -45px;
 }
-
+#croppie-avatars .cr-image {
+   opacity: 1 !important;
+   width: 140px;
+   height: 140px;
+}
 .modal-content {
    background-color: #dadada;
 }

@@ -68,6 +68,9 @@ plugins:
 avatar:
   path:    'userpics/userpics/'
   format:  'userpic-%d-100x100.png'
+  bounds:
+    height: 100
+    width:  100
   default:
     dark:  'blog/img/male-user.png'
     light: 'blog/img/male-user-light.png'

@@ -4513,7 +4513,7 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 .individual-post .meta .post-content img {
    max-width: 100% !important;
-   height: 100% !important;
+   height: auto !important;
 }
 
 

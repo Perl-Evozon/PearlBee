@@ -6,6 +6,7 @@ Profile routes from the old PearlBee main file
 
 =cut
 
+use Encode qw( decode_utf8 );
 use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
 
@@ -147,7 +148,7 @@ post '/profile' => sub {
   }
 
   if ($params->{'about'}) {
-    $new_columns->{'biography'} = $params->{'about'};
+    $new_columns->{'biography'} = decode_utf8($params->{'about'});
   }
 
   if (keys %$new_columns) {
@@ -203,7 +204,6 @@ post '/profile-image' => sub {
         my $logo = PearlBee::Helpers::ProcessImage->new(
           $folder_path . '/' . $filename
         );
-warn "$folder_path/$filename\n";
 #      try {
         $logo->resize( $params, $folder_path, $filename );
 #      } 

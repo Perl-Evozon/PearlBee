@@ -56,7 +56,7 @@ get '/avatar/:username' => sub {
   my $avatar_path   = $avatar_config->{'default'}{'dark'};
   my $theme         = session( 'theme' );
 
-  if ( $user->avatar_path ne '' ) {
+  if ( $user and $user->avatar_path ne '' ) {
     my $path = $user->avatar_path;
     $avatar_path = $path if -e "public/$path";
   }

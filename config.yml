@@ -69,8 +69,8 @@ avatar:
   path:    'userpics/userpics/'
   format:  'userpic-%d-100x100.png'
   bounds:
-    height: 100
-    width:  100
+    height: 140
+    width:  140
   default:
     dark:  'blog/img/male-user.png'
     light: 'blog/img/male-user-light.png'

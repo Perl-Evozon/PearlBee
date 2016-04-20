@@ -35,8 +35,6 @@ sub can_create {
 		Block_tags     => ['hr'],
 	);
 	$text = $hs->scrub( $text );
-	$user = $schema->resultset('Users')->find( $user->{id} );
-
 
 	my $fullname = $user->name;
 	my $email    = $user->email;

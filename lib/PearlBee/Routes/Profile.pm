@@ -204,7 +204,6 @@ post '/profile-image' => sub {
         my $logo = PearlBee::Helpers::ProcessImage->new(
           $folder_path . '/' . $filename
         );
-warn "$folder_path/$filename\n";
 #      try {
         $logo->resize( $params, $folder_path, $filename );
 #      } 

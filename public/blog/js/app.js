@@ -732,6 +732,11 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.find(".bubble img.user-image").attr("src", avatarPath);
                         newItem.find(".info-entry a").text(userInfo[i].name);
+
+                        if((userInfo[i].name.length > 18) && ($(window).width() < 600)) {
+                            newItem.find(".info-entry a").html(userInfo[i].name.slice(0,18)+"...");
+                        }
+
                         newItem.find(".info-entry a").attr("href", "/profile/author/" + userInfo[i].username);
                         newItem.find(".info-entry .date").text(userInfo[i].register_date);
 
@@ -742,6 +747,7 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
 
                         newItem.appendTo($(".user-info-listing"));
                         newItem.removeClass('hidden');
+
                     }
                 }
             })

@@ -135,14 +135,13 @@ post '/comments' => sub {
   my $post_slug    = $parameters->{slug};
   my $comment_text = $parameters->{comment};
   my $post         = resultset('Post')->find({ slug => $post_slug });
-  my $user         = session('user');
-  my $user_obj     = resultset('Users')->find_by_session(session);
+  my $user         = resultset('Users')->find_by_session(session);
 
-  my $username   = $user_obj->username;
+  my $username   = $user->username;
   my ($owner_id) = $post->user_id;
 
   $parameters->{id}  = $post->id;
-  $parameters->{uid} = $user_obj->id;
+  $parameters->{uid} = $user->id;
   
 #  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
 #  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
@@ -176,12 +175,10 @@ post '/comments' => sub {
       );
 #    }
      }
-    my %expurgated_user = %$user;
-    delete $expurgated_user{id};
-    delete $expurgated_user{password};
-    delete $expurgated_user{email};    
+    my $expurgated_user = $user->as_hashref_sanitized;
+    delete $expurgated_user->{email};       
     %result = (
-        user => \%expurgated_user,
+        user => $expurgated_user,
         comment_date => $comment->comment_date,
         comment_date_human => $comment->comment_date_human,
         status => $comment->status,

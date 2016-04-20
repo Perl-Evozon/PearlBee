@@ -18,11 +18,10 @@ get '/author/comments/page/:page' => sub {
 
   my $nr_of_rows = 5; # Number of posts per page
   my $page       = params->{page} || 1;
-  my $user       = session('user');
-  my $user_obj = resultset('Users')->search( {username=>$user->{username}} )->first;
-  $user->{id}  = $user_obj->id;
-  my @comments   = resultset('View::UserComments')->search({}, { bind => [ $user->{id} ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
-  my $count      = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->{id} ] })->first;
+  my $user       = resultset('Users')->find_by_session(session);
+  my @comments   = resultset('View::UserComments')->search({}, { bind => [ $user->id ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
+  my $count      = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
+
   my ($all, $approved, $trash, $spam, $pending) = $count->get_all_status_counts;
 
   # Calculate the next and previous page link
@@ -65,8 +64,7 @@ get '/author/comments/:status/page/:page' => sub {
   my $nr_of_rows = 5; # Number of posts per page
   my $page       = params->{page} || 1;
   my $status     = params->{status};
-  my $user       = session('user');
-  $user          = resultset('Users')->find( $user->{id} );
+  my $user       = resultset('Users')->find_by_session(session);
   my @comments   = resultset('View::UserComments')->search({ status => $status },  { bind => [ $user->id ], order_by => \"comment_date DESC", rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusCommentAuthor')->search({}, { bind => [ $user->id ] })->first;
 

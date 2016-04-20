@@ -40,14 +40,12 @@ $(document).ready(function() {
 				});
 				$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2).val(1);
 			});
-<<<<<<< HEAD
-=======
 
 			$('#croppie-avatars').removeClass('hidden');
->>>>>>> refs/remotes/drforr/master
 		} else {
 			$('#croppie-avatars').addClass('hidden');
 			$('#image_upload_preview').removeClass('hidden');
+			$('#image_upload_preview').hasClass('defaultAvatar').show();
 		}
 		$('#upload-img').get(0).reset();
   	});

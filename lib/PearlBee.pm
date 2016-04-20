@@ -73,8 +73,8 @@ post '/theme' => sub {
   my $session_user = session('user');
   my $theme        = body_parameters->get('theme') eq 'true' ? 'light' : 'dark';
   if ($session_user) {
-     return unless $session_user->{id}; 
-     my $user = resultset('Users')->find({ id => $session_user->{id} });
+     return unless $session_user->{username}; 
+     my $user = resultset('Users')->find_by_session(session);
      $user->update({ theme => $theme });
   } 
   my $json = JSON->new;
@@ -135,14 +135,14 @@ post '/comments' => sub {
   my $post_slug    = $parameters->{slug};
   my $comment_text = $parameters->{comment};
   my $post         = resultset('Post')->find({ slug => $post_slug });
-  my $user         = resultset('Users')->find_by_session(session);
+  my $user         = session('user');
+  my $user_obj     = resultset('Users')->find_by_session(session);
 
-  my $username   = $user->username;
-  my $poster_id  = $user->id;
+  my $username   = $user_obj->username;
   my ($owner_id) = $post->user_id;
 
   $parameters->{id}  = $post->id;
-  $parameters->{uid} = $poster_id;
+  $parameters->{uid} = $user_obj->id;
   
 #  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
 #  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
@@ -176,10 +176,12 @@ post '/comments' => sub {
       );
 #    }
      }
-    my $expurgated_user = $user->as_hashref_sanitized;
+    my %expurgated_user = %$user;
+    delete $expurgated_user{id};
+    delete $expurgated_user{password};
     delete $expurgated_user{email};    
     %result = (
-        user => $expurgated_user,
+        user => \%expurgated_user,
         comment_date => $comment->comment_date,
         comment_date_human => $comment->comment_date_human,
         status => $comment->status,

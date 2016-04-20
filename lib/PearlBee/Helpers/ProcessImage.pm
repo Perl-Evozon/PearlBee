@@ -16,7 +16,7 @@ use strict;
 use warnings;
 
 use Imager;
-use App::PNGCrush;
+use Dancer2;
 
 =head2 new
 
@@ -56,16 +56,10 @@ sub resize {
         height => int( $bounds->{height} ),
         width  => int( $bounds->{width}  ),
     );
-    
-    my $crush = App::PNGCrush->new;
-
-    $crush->set_options(
-        qw( -d OUT_DIR -brute 1 ),
-        remove  => [ qw( gAMA cHRM sRGB iCCP ) ],
+    $pic = $pic->scale(
+        xpixels => config->{avatar}{bounds}{width},
+        ypixels => config->{avatar}{bounds}{height},
     );
-
-    my $out_ref = $crush->run($pic)
-        or die "Error: " . $crush->error;
 
     $pic->write( file => "$save_path/$save_name" );
 

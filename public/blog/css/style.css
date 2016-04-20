@@ -2331,7 +2331,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 3em;
+      padding-top: 1em;
 /*
       margin-top: 8em !important;
       height: 75% !important;
@@ -2589,7 +2589,7 @@ footer .fwidget #powered_by {
       margin-left: 15px;
    }
    .blog-start-wrapper {
-      padding-top: 3em;
+      padding-top: 1em;
    }
    .blog-start-wrapper h1 {
       font-size: 29px;
@@ -2802,10 +2802,10 @@ footer .fwidget #powered_by {
    }
    .blog-start-wrapper {
       margin-top: 0;
-      padding-top: 2em;
+      padding-top: 5em;
    }
    .blog-start-wrapper h1 {
-      font-size: 42px !important;
+      font-size: 29px !important;
    }
    .buttons-wrapper {
       margin: 2em auto;

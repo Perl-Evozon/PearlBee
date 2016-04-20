@@ -98,7 +98,8 @@ $('.closeCookie').on('click', function(){
     $('pre').each(function(){ 
         var class_name = $(this).attr('class');
         if (class_name != undefined) {
-            $(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
+          $( "pre" ).removeClass().addClass( "prettyprint lang-" );
+            //$(this).className = $(this).attr('class', class_name.replace(/brush:/,'prettyprint lang-').replace(/;$/,''));
         } else {
           $( "pre" ).removeClass().addClass( "prettyprint lang-" );
 
@@ -1032,7 +1033,7 @@ if (newURL == userURL) {
                 ellipsis  : '... ',
               });
 
-              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
                   var content = $(this).contents();
                   $(this).replaceWith(content);
               });
@@ -1123,7 +1124,7 @@ if (newURL == userURL) {
                 ellipsis  : '... ',
               });
 
-              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+              $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
                   var content = $(this).contents();
                   $(this).replaceWith(content);
               });
@@ -1203,7 +1204,7 @@ $('#more-posts').click(function() {
             $('.progressloader').hide();
             button.attr("data-page-number", pageNumber);
 
-            $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+            $(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
                 var content = $(this).contents();
                 $(this).replaceWith(content);
             });
@@ -1302,7 +1303,7 @@ function getAuthorEntries (button) {
                 ellipsis: '... ',
             });
 
-            $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+            $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
                 var content = $(this).contents();
                 $(this).replaceWith(content);
             });
@@ -1366,7 +1367,7 @@ function getAuthorPages (button){
                     ellipsis: '... ',
                 });
 
-                $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+                $(".author-page .author-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
                 var content = $(this).contents();
                 $(this).replaceWith(content);
             });
@@ -1535,7 +1536,7 @@ $("button.closeCookie").click(function(){
 });
 
 
-$(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, bold, strong, em, italic, strike, s, a, blockquote, ul, ol, li").each(function() {
+$(".posts.listings .text-listing-entries .post_preview_wrapper *").not("p, pre, code, b, strong, em, i, strike, s, a, blockquote, ul, ol, li").each(function() {
     var content = $(this).contents();
     $(this).replaceWith(content);
 });

@@ -37,7 +37,9 @@ sub search_lc {
   
   my $lc_username = lc $username;
   return $schema->resultset('Users')->
-                  search( \[ "lower(username) like '\%$lc_username\%'" ] );
+                  search( \[ "lower(username) like '\%$lc_username\%' or
+                              lower(name) like '\%$lc_username\%'" ] );
+
 }
 
 =head2 match_lc

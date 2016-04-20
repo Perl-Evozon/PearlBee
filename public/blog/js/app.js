@@ -68,7 +68,7 @@ var cookie = document.cookie.split(';')
 if (!(cookie && cookie[1]==='Accepted')) {
     $(".cookies").css("display", "block");
    // $(".header").css("transition","none");
-   $(".header").css("top","31px");
+   $(".header").css("top","0px");
 }
 
 $('.closeCookie').on('click', function(){

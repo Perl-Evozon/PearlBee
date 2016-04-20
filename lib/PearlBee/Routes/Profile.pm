@@ -225,6 +225,7 @@ post '/profile-image' => sub {
   else {
   }
 
+  session( 'user', $res_user->as_hashref_sanitized );
   template 'profile',
     {
       success => $message

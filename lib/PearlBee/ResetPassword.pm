@@ -25,7 +25,7 @@ get '/activation' => sub {
     my $token = params->{'token'};
 
     my $user_reset_token =
-         resultset('Users')->find({ activation_key => $token });
+         resultset('Users')->search({ activation_key => $token })->first();
     if ($user_reset_token and
         $user_reset_token->status eq 'pending' ) 
     {
@@ -47,9 +47,6 @@ get '/activation' => sub {
             show_input => 1,
             token      => $token,
         }, { layout => 'admin' };
-    }
-    elsif ( session('user') ) {
-        redirect '/'
     }
     else {
         session error => 'Your activation token is invalid, please try the forgot password option again.';

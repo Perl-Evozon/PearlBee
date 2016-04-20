@@ -386,6 +386,9 @@ sub avatar {
        -e "public/" . $self->avatar_path ) {
     return $self->avatar_path;
   }
+  if ( -e $userpic_path ) {
+    return $userpic_path;
+  }
   return config->{default_avatar};
 }
 

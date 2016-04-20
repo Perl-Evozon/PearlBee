@@ -1,4 +1,4 @@
-=head1
+=head
 
 Author: Andrei Cacio
 Email: andrei.cacio@evozon.com

@@ -16,7 +16,7 @@ on_plugin_import {
 
                 my $user = $context->session->{'data'}->{'user'};
 
-                $user = $dsl->resultset('Users')->find({ username => $user->{username} }) if ($user);
+                $user = $dsl->resultset('Users')->find( $user->{id} ) if ($user);
                 my $request = $context->request->path_info;
                 my $app_url = $context->config->{'app_url'};
                 # Check if the user is logged in

@@ -10,7 +10,9 @@ Check if the user has authorization
 =cut
 
 hook 'before' => sub {
-  my $user = resultset('Users')->find_by_session(session);
+  my $user = session('user');
+
+  $user = resultset('Users')->find( $user->{id} ) if ( $user );
 
   # Check if the user is logged in
   my $request = request->path_info;

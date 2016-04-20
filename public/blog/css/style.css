@@ -4508,11 +4508,11 @@ input.cmn-toggle-round-flat:checked + label:after {
 
 
 .individual-post .meta .post-content iframe {
-   max-width: 100% !important;
+   width: 100% !important;
 }
 
 .individual-post .meta .post-content img {
-   max-width: 100% !important;
+   width: 100% !important;
    height: 100% !important;
 }
 
@@ -4779,6 +4779,8 @@ input[readonly] {
 }
 #croppie-avatars .cr-image {
    opacity: 1 !important;
+   width: 140px;
+   height: 140px;
 }
 .modal-content {
    background-color: #dadada;

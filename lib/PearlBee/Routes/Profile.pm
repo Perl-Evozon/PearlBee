@@ -214,6 +214,7 @@ post '/profile-image' => sub {
     }
 
     $res_user->update({ avatar_path => $upload_dir . $filename });
+    $user->{avatar_path} = $upload_dir . $filename;
     $message = "Your profile picture has been changed.";
   }
   elsif ( $params->{action_form} eq 'delete' ) {

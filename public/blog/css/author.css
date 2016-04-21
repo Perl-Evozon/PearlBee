@@ -105,7 +105,7 @@
 
     /*author-tab 3*/
     #author-tab-content2 p.no-posts,
-    #author-tab-content3 p {
+    #author-tab-content3 p.no-pages {
         font-size: 36px;
         font-family: "Montserrat","Open Sans",sans-serif;
         color: #444;

@@ -143,7 +143,7 @@ post '/profile' => sub {
       push @message, "A user with this displayname already exists.";
     }
     else {
-      $new_columns->{'name'} = $params->{'displayname'};
+      $new_columns->{'name'} = decode_utf8($params->{'displayname'});
     }
   }
 

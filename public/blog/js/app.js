@@ -807,6 +807,8 @@ function getUserPosts(searchTerm, pageNumber, removeExistingPosts) {
     }
 
 //search - for first tab : posts
+    $('input[name=search_term]').focus();
+
     $('input[name=search_term]').on('keyup', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which),
             searchTerm,

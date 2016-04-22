@@ -101,12 +101,12 @@ Admin
 =====
 
 Once you have started your web server.
-Open your browser and go to the url http:://<YOUR_IP>:5000/admin
+Open your browser and go to the url http://localhost:5000/admin
 Use the default login / password to enter, you should change them before starting using the blog!
 via "My Account -> Profile".
 
 ```
-http://127.0.0.1:5000/admin/
+http://localhost:5000/admin/
 
 user:     $admin_username
 password: $admin_password

@@ -24,7 +24,22 @@ You will also need:
 
 * PostgreSQL version 8.4.20 or higher
 * ElasticSearch
-* An SMTP database
+* An SMTP email server
+
+Recommended:
+
+* Memcached
+(Use the config.yml fragment below to configure it)
+
+```
+session: Memcached
+
+engines:
+  ...
+  session:
+    Memcached:
+      memcached_servers: localhost:11211
+```
 
 # Installing / Updating perl modules
 

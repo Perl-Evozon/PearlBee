@@ -19,7 +19,7 @@ charset: "UTF-8"
 # simple: default and very basic template engine
 # template_toolkit: TT
 
-session: "YAML"
+session: YAML
 
 #Logging
 #logger: "file"
@@ -54,7 +54,7 @@ plugins:
             pg_enable_utf8: 1
       feed:
         title:     'blogs.perl.org'
-        format:    'atom'
+        format:    'Atom'
         max_posts: 10
       reCAPTCHA:
         site_key:
@@ -76,17 +76,18 @@ avatar:
     light: 'blog/img/male-user-light.png'
 
 # Constants
-covers_folder: 'public/uploads/covers/'
-import_folder: 'public/uploads/import/'
-images_folder: 'public/uploads/images/'
-images_path:   '/uploads/images' 
-theme:         'light'
+covers_folder:    'public/uploads/covers/'
+import_folder:    'public/uploads/import/'
+images_folder:    'public/uploads/images/'
+images_path:      '/uploads/images' 
 
 app_url:         'http://localhost:5000'
 email_templates: 'views/emails/'
 
 # Images from MovableType
 movable_type_url: 'http://blogs.perl.org'
+user_assets:      '/home/jgoff/'
+user_avatars:     '/home/jgoff/'
 user_pics:        '/home/jgoff/userpics/userpics'
 
 # number of items to display per page

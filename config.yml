@@ -26,11 +26,6 @@ session: YAML
 #log: "error"
 template: "template_toolkit"
 engines:
-  template:
-    template_toolkit:
-      encoding: 'utf8'
-      start_tag: '[%'
-      end_tag:   '%]'
   session:
     YAML:
       session_dir: "sessions"

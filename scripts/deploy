@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin qw($Bin);
+use File::Find qw( find );
+
+my $public_dir    = "$Bin/../public";
+my $yuicompressor = "$ENV{HOME}/yuicompressor-2.4.8.jar";
+
+my @css;
+my @js;
+
+find( sub { push @css, $File::Find::name if m{ \.css $ }x }, $public_dir );
+find( sub { push @js,  $File::Find::name if m{ \.js  $ }x }, $public_dir );
+
+for my $name ( @css ) {
+  next if $name =~ m{ \.min\. }x;
+  my $input = $name;
+  $name =~ s{ \.css $ }{.min.css}x;
+  `java -jar $yuicompressor $input -o $name`;
+}
+
+for my $name ( @js ) {
+  next if $name =~ m{ \.min\. }x;
+  my $input = $name;
+  $name =~ s{ \.js $ }{.min.js}x;
+  `java -jar $yuicompressor $input -o $name`;
+}

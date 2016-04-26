@@ -4793,7 +4793,7 @@ input[readonly] {
    background-color: #fff;
 }
 
-.blog .modal {
+.profile-modal .modal {
    top: 22%;
    overflow-y: auto;
 }
@@ -4801,6 +4801,9 @@ input[readonly] {
    .modal .modal-body .profile-pic .btn-file {
       margin-top: 230px;
    }
+	.profile-modal .modal {
+		top: 5%;
+	}
 }
 
 @media all and (max-width: 380px) {

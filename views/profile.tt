@@ -82,7 +82,7 @@ $(document).ready(function() {
 });
 
 </script>
-<div class="blog">
+<div class="profile-modal">
 
 <!-- Modal -->
 <div class="modal fade" id="changeImg" tabindex="-1" role="dialog" aria-labelledby="changeImgLabel">
@@ -134,7 +134,7 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
-
+</div>
  
 	<div class="myprofile register sign-up">
  
@@ -225,3 +225,5 @@ $(document).ready(function() {
 		</div>
    
 	</div> 
+	
+	</div>

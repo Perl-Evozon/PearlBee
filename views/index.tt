@@ -1,4 +1,6 @@
- <div class="blog">
+[% SET global.template_name = 'homepage' %]
+
+<div class="blog">
 
 	<div class="blog-start hide">
 		<div class="container">

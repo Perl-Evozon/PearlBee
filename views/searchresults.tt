@@ -1,4 +1,4 @@
-
+[% SET global.template_name = 'search' %]
 <div class="search-page">
 
     <div class="container-fluid">

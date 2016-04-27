@@ -1,87 +1,5 @@
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="/blog/js/croppie.js"></script>
+[% SET global.template_name = 'profile' %]
 
-<script type="text/javascript">
-
-$(document).ready(function() {
-	var userEmail = '[% session.user.email %]',
-		userUserName = '[% session.user.username | uri %]',
-		userDisplayName = '[% session.user.name %]',
-		userBiography = '[% session.user.biography %]';
-	if(userEmail){
-		$("#user_email").attr('placeholder', userEmail);
-	}
-	if(userUserName){
-		$("#user_username").attr('placeholder', userUserName);
-	}
-	if(userDisplayName){
-		$("#user_display_name").attr('placeholder', userDisplayName);
-	}
-	if(userBiography) {
-		$("#user_biography").attr('placeholder', userBiography);
-	}
-
-// Image upload preview modal cancel button
-	$(".modal-footer .cancel-img").on('click', function(){
-			var src = $( ".credentials .bubble" ).parent().find('img').attr('src');
-			$('#image_upload_preview').attr('src', src);
-
-		if (!$('#image_upload_preview').hasClass('defaultAvatar')) {
-			$('#image_upload_preview').addClass('hidden');
-			$('#croppie-avatars').croppie('bind', {
-				url: src
-			}, function() {
-				$('#croppie-avatars .cr-image').css({
-					'transform-origin': '20px 20px 0',
-					'-webkit-transform-origin': '20px 20px 0',
-					'transform': 'translate3d(20px, 20px, 0)',
-					'width': '140px',
-					'height': '140px'
-				});
-				$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2).val(1);
-			});
-
-			$('#croppie-avatars').removeClass('hidden');
-		} else {
-			$('#croppie-avatars').addClass('hidden');
-			$('#image_upload_preview').removeClass('hidden');
-			$('#image_upload_preview').hasClass('defaultAvatar').show();
-		}
-		$('#upload-img').get(0).reset();
-  	});
-
-	$('#croppie-avatars').croppie({
-		url: $('#image_upload_preview').attr('src'),
-		viewport: {
-			width: 140,
-			height: 140,
-			type: 'circle'
-		},
-		boundary: {
-			width: 180,
-			height: 180
-		}
-	});
-
-	$('#changeImg').on('show.bs.modal', function() {
-		$('#croppie-avatars .cr-image').css({
-			'transform-origin': '20px 20px 0',
-			'transform': 'translate3d(20px, 20px, 0)',
-			'width': 140,
-			'height': 140
-		});
-		$('#croppie-avatars .cr-slider').attr('min', 1).attr('max', 2);
-	});
-
-	 if (!$('#image_upload_preview').hasClass('defaultAvatar')){
-		 $('#image_upload_preview').addClass('hidden');
-	 } else {
-		 $('#croppie-avatars').addClass('hidden');
-	 }
-
-});
-
-</script>
 <div class="blog">
 
 <!-- Modal -->
@@ -175,19 +93,19 @@ $(document).ready(function() {
 							<h2>Personal Information</h2>
 							<div class="input-group">
 								<label>Email</label>
-								<input type="text" id="user_email" class="form-control" placeholder="user@example.com" name="email">
+								<input type="text" id="user_email" class="form-control" placeholder="[% IF session.user.email %] [% session.user.email %] [% ELSE %]user@example.com [% END %]" name="email">
 							</div>
 							<div class="input-group">
 								<label>Username</label>
-								<input type="text" id="user_username" class="form-control" placeholder="username" name="username">
+								<input type="text" id="user_username" class="form-control" placeholder="[% IF session.user.username %] [% session.user.username %] [% ELSE %]username [% END %]" name="username">
 							</div>
 							<div class="input-group">
 								<label>Display Name</label>
-								<input type="text" id="user_display_name" class="form-control" placeholder="Name + Surname" name="displayname">
+								<input type="text" id="user_display_name" class="form-control" placeholder="[% IF session.user.name %] [% session.user.name %] [% ELSE %]Name + Surname [% END %]" name="displayname">
 							</div>
 							<div class="input-group">
 								<label>About</label>
-								<textarea rows="4" id="user_biography" class="form-control" placeholder="ex: I blog about Perl" name="about">[% session.user.biography %]</textarea>
+								<textarea rows="4" id="user_biography" class="form-control" placeholder="[% IF session.user.biography %] [% session.user.biography %] [% ELSE %]ex: I blog about Perl [% END %]" name="about">[% session.user.biography %]</textarea>
 							</div>
 							<div class="input-group links-group buttons-group">
 								<label></label>
@@ -223,5 +141,5 @@ $(document).ready(function() {
 			</div> 
 
 		</div>
-   
-	</div> 
+
+	</div>

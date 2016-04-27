@@ -1,3 +1,5 @@
+[% SET global.template_name = 'author' %]
+
 <link href="/blog/css/author.css" rel="stylesheet">
 
 <div class="author-page">

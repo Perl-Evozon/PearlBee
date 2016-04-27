@@ -1,18 +1,36 @@
 <!-- Javascript files -->
+
+<!--Vendor javascript -->
     <!-- jQuery -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="/blog/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- Respond JS for IE8 -->
-    <script src="/blog/js/respond.min.js"></script>
+    <script src="/js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
-    <script src="/blog/js/html5shiv.js"></script>
+    <script src="/js/html5shiv.js"></script>
     <!-- Truncate -->
-    <script src="/blog/js/jquery.dotdotdot.js"></script>
-    <!--User-image cropper-->
-    <script src="/blog/js/croppie.js"></script>
-    <!-- App JS -->
-    <script src="/blog/js/app.js"></script>
+    <script src="/js/jquery.dotdotdot.js"></script>
     <!-- Google code syntax highlighter -->
-	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
+
+<!-- Page specific javascript -->
+    [% IF  global.template_name == 'profile' %]
+        <script src="/js/croppie.js"></script>
+        <script src="/blog/js/profile.js"></script>
+    [% ELSIF global.template_name == 'search' %]
+        <script src="/blog/js/search.js"></script>
+    [% ELSIF global.template_name == 'post' %]
+        <script src="/blog/js/post.js"></script>
+    [% ELSIF global.template_name == 'register' %]
+        <script src="/blog/js/register.js"></script>
+    [% ELSIF global.template_name == 'author' %]
+        <script src="/blog/js/author.js"></script>
+    [% ELSIF global.template_name == 'homepage' %]
+        <script src="/blog/js/home.js"></script>
+    [% END %]
+
+
+<!-- App JS - Common javascript for entire application -->
+    <script src="/blog/js/app.js"></script>

@@ -27,7 +27,7 @@
 
 						</div>
 					</div>
-					<div class="col-xs-6 profile-pic">
+					<div class="col-xs-6 picture-btn">
 						<form action="/profile-image" enctype="multipart/form-data" method="post" id="upload-img">
 				<span class="file-input btn btn-file light-button buttons-group change-pic">
 					<p>Choose picture</p> <!-- <input type="file" name="file"> -->

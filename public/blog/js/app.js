@@ -1,5 +1,53 @@
 $(document).ready(function() {
+    //  Blog start overlay
+    if (document.cookie.indexOf("visited") >= 0) {
+        //	if they have been visited this site before
+        $(".blog-start").removeClass("show");
+        $(".blog-start").addClass("hide");
+        $("body").removeClass("active-overlay");
 
+        if ($(".blog-start").hasClass("show")) {
+            $(".user").addClass("hidden");
+        } else {
+            $(".user").removeClass("hidden");
+        }
+
+    } else {
+        expiry_date = new Date();
+        expiry_date.setTime(expiry_date.getTime() + (12 * 4 * 7 * 24 * 60 * 60 * 1000));
+        // Date()'s toUTCSting() method will format the date correctly for a cookie
+        // 12month * 4weeks * 7days ...so on
+        document.cookie = "visited=yes; expires=" + expiry_date.toUTCString();
+
+        $(".blog-start").addClass("show");
+        $(".blog-start").removeClass("hide");
+        $("body").addClass("active-overlay");
+
+        $("#close_overlay").on('click', function () {
+            $(".blog-start").slideToggle("slow");
+            $(".blog-start").removeClass("show");
+            $("body").removeClass("active-overlay");
+            $(".user").removeClass("hidden");
+        });
+        $("#signin").on('click', function () {
+            $(".blog-start").slideToggle("slow");
+            $(".blog-start").removeClass("show");
+            $("body").removeClass("active-overlay");
+        });
+        $("#register").on('click', function () {
+            $(".blog-start").slideToggle("slow");
+            $(".blog-start").removeClass("show");
+            $("body").removeClass("active-overlay");
+        });
+
+        if ($(".blog-start").hasClass("show")) {
+            $("body").addClass("active-overlay");
+            $(".user").addClass("hidden");
+        } else {
+            $(".user").removeClass("hidden");
+        }
+    }
+    //  END - Blog start overlay
     //  cookie for "cookie bar"
     function cookiesAccept(){
        days=60;
@@ -187,6 +235,21 @@ $(document).ready(function() {
     $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
     $(window).resize(function(){
         $('.pages').css('min-height', $(window).height()-$('footer').height()-45);
+    });
+    //Blog start overlay
+    $('.blog-start').css('max-height', $(window).height()*0.99);
+    $(window).resize(function(){
+        $('.blog-start').css('max-height', $(window).height()*0.99);
+    });
+
+    $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
+    $(window).resize(function(){
+        $('.blog-start .row').css('max-height', $('.blog-start').height()-$('.header').height());
+    });
+
+    $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
+    $(window).resize(function(){
+        $('.blog-start-wrapper').css('height', $('.blog-start .row').height());
     });
 
     //  Sign up

@@ -4767,12 +4767,12 @@ input[readonly] {
 #changeImg.modal .modal-body .profile-pic .bubble {
    position: relative;
 }
+/*
 #changeImg.modal .modal-body #image_upload_preview {
    left: 50px;
    position: absolute;
    top: 5px;
 }
-/*
 #croppie-avatars {
    left: -60px;
    position: absolute;
@@ -4800,11 +4800,10 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
    top: 22%;
    overflow-y: auto;
 }
-/*
 .modal-body .picture-btn {
-	float: none;
-} 
-*/
+	margin-top: 20px;
+}
+
 @media screen and (max-width: 500px) /* Mobile */ {
 /*
    .modal .modal-body .profile-pic .btn-file {
@@ -4817,6 +4816,7 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
 	.modal-body .picture-btn {
 		float: none;
 		text-align: center;
+		margin-top: initial;
 	}
 	.profile-modal .modal {
 		top: 5%;

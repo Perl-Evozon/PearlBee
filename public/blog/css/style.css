@@ -4800,15 +4800,24 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
    top: 22%;
    overflow-y: auto;
 }
+/*
 .modal-body .picture-btn {
 	float: none;
-}
+} 
+*/
 @media screen and (max-width: 500px) /* Mobile */ {
 /*
    .modal .modal-body .profile-pic .btn-file {
       margin-top: 230px;
    }
 */
+	.modal-body .profile-pic {
+		float: none;
+	}
+	.modal-body .picture-btn {
+		float: none;
+		text-align: center;
+	}
 	.profile-modal .modal {
 		top: 5%;
 	}

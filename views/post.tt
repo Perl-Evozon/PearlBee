@@ -1,3 +1,5 @@
+[% SET global.template_name = 'post' %]
+
 <!-- Page content -->
 <div class="blog-post">
     <div class="container">

@@ -1,4 +1,6 @@
- <div class="register-done">
+[% SET global.template_name = 'register' %]
+
+<div class="register-done">
    <div class="container">
      <div class="row"> 
        <div class="col-sm-6 col-sm-offset-3 text-center"> 

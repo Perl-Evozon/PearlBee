@@ -11,7 +11,7 @@
 					<h4 class="modal-title" id="changeImgLabel">Change Photo</h4>
 				</div>
 				<div class="modal-body clearfix">
-					<div class="col-xs-6 profile-pic">
+					<div class="col-xs-12 col-sm-6 profile-pic">
 						<div class="bubble text-center">
 
 							[% IF session.user.avatar_path %]
@@ -27,7 +27,7 @@
 
 						</div>
 					</div>
-					<div class="col-xs-6 picture-btn">
+					<div class="col-xs-12 col-sm-6 picture-btn">
 						<form action="/profile-image" enctype="multipart/form-data" method="post" id="upload-img">
 				<span class="file-input btn btn-file light-button buttons-group change-pic">
 					<p>Choose picture</p> <!-- <input type="file" name="file"> -->

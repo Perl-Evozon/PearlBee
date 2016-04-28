@@ -1,4 +1,5 @@
 [% SET global.template_name = 'register' %]
+<link href="/blog/css/register.css" rel="stylesheet">
 
 <div class="register-done">
    <div class="container">

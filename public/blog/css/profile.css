@@ -1,0 +1,86 @@
+/*START My profile page*/
+.myprofile-head .write_post {
+    display: block;
+}
+.myprofile-head .write-post {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    max-width: 215px;
+}
+.myprofile-head .write-post:hover {
+    color: #0fa6bc;
+}
+.myprofile-head {
+    height: 50px;
+    margin-bottom: 60px;
+}
+.myprofile-head .col-sm-5{
+    margin-top: 10px;
+}
+.myprofile-head h1 {
+    display: inline;
+}
+.myprofile-head h5 {
+    display: inline;
+    margin-left: 10px;
+}
+.credentials .bubble {
+    text-align: center;
+}
+.credentials .bubble img{
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    z-index: 2;
+    border: 5px solid #444;
+}
+.credentials h2 {
+    margin: 0 0 30px 30px;
+}
+.credentials .input-group {
+    margin: 10px 0 0 70px;
+    width: 85%;
+}
+.credentials label {
+    display: table-cell;
+    padding-right: 20px;
+    width: 200px;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: normal;
+}
+.credentials .form-control {
+    height: 50px;
+    width: 100%;
+    padding: 6px 20px;
+    display: table-cell;
+}
+.credentials textarea.form-control {
+    height: initial;
+    resize: vertical;
+}
+.credentials textarea#user_biography {
+    color: #9F9F9F;
+}
+.credentials textarea#user_biography:focus {
+    color: #000000;
+}
+
+.credentials .buttons-group {
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+.credentials .buttons-group .light-button {
+    width: 15%;
+    min-width: 58px;
+}
+.credentials .buttons-group .dark-button {
+    width: 15%;
+    min-width: 58px;
+}
+.credentials .confirmNewPassword.error:focus {
+    border-color: red;
+}
+/*END My profile page*/

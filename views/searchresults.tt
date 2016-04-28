@@ -1,4 +1,6 @@
 [% SET global.template_name = 'search' %]
+<link href="/blog/css/search.css" rel="stylesheet">
+
 <div class="search-page">
 
     <div class="container-fluid">

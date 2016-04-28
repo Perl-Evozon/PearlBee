@@ -1,0 +1,323 @@
+/* Search page */
+.tabs {
+    float: none;
+    list-style: none;
+    padding: 0;
+    /*     margin: 75px auto; */
+    /*     border-bottom: 4px solid #ccc; */
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    /*    background-color: #dadada; */
+}
+.tabs:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.tabs .tabs-head h2 {
+    font-family: 'Open Sans', sans-serif;
+    color: #666666;
+    font-size: 18px;
+    font-weight: 200;
+    margin-top: 30px;
+    margin-bottom: 18px;
+}
+.tabs .tabs-head h2 span {
+    font-size: 26px;
+    color: #333333;
+}
+.tabs .tabs-head {
+    padding: 0 20px;
+    position: relative;
+}
+.search-page #close_search {
+    cursor: pointer;
+    position: absolute;
+    top: 35px;
+    right: 35px;
+    z-index: 11;
+}
+.tabs .loading-posts {
+    margin-bottom: 0;
+}
+.tabs .view-more {
+    height: 50px;
+}
+.tabs input[type=radio] {
+    display:none;
+}
+.tabs label {
+    display: block;
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #838383;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-transition: all 0.5s; /* Safari 3.1 to 6.0 */
+    transition: all 0.5s;
+}
+.tabs label span {
+    display: none;
+}
+.tabs label i {
+    padding: 5px;
+    margin-right: 0;
+}
+.tabs label:hover {
+    color: #333333;
+    border-bottom: 3px solid #333333;
+}
+.tab-content {
+    display: none;
+    width: 100%;
+    float: left;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.tab-content * {
+    -webkit-animation: scale 0.7s ease-in-out;
+    -moz-animation: scale 0.7s ease-in-out;
+    animation: scale 0.7s ease-in-out;
+}
+@keyframes scale {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.01);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/*.tabs [id^="tab"]:checked + label,*/
+/*.tabs [id^="author-tab"]:checked + label {*/
+    /*border-bottom: 4px solid #333333;*/
+    /*color: #333333;*/
+/*}*/
+.search-page #close_search {
+    cursor: pointer;
+}
+#tab1:checked ~ #tab-content1,
+#tab2:checked ~ #tab-content2,
+#tab3:checked ~ #tab-content3 {
+    display: block;
+}
+.no-posts2, .no-posts3, .no-posts-found1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 36px;
+    padding: 8%;
+}
+.search-page .no-posts2, .search-page .no-posts3, .search-page .no-posts-found1{
+    padding-left: 0;
+}
+.search-page .row.search-top {
+    margin-top: 80px;
+    position: relative;
+}
+
+.search-page .close-search .icon-remove {
+    font-size: 18px;
+}
+.search-page .background-bar {
+    /*    z-index: -1; */
+    position: absolute;
+    top:0px;
+    width: 100%;
+    background-color: #dadada;
+    height: 195px;
+}
+@media all and (min-width: 768px) {
+
+    .tabs label span {
+        display: inline-block;
+    }
+    .tabs {
+        /*    max-width: 750px; */
+        margin: 0;
+    }
+}
+@media all and (max-width: 768px) {
+    .tabs label span {
+        display: block;
+    }
+}
+@media all and (max-width: 368px) {
+    .tabs label {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+/* people */
+.people .info-entry,
+.people .properties,
+.people .properties ul li {
+    display: inline-block;
+}
+.people .properties {
+    padding: 0;
+}
+.people .bubble img {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    z-index: 2;
+    position: absolute;
+    top: -14px;
+    left: -15%;
+}
+.people .info-entry {
+    padding: 0;
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #43c8e7;
+}
+.people .info-entry .date{
+    font-size: 14px;
+}
+.people .properties ul li {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 14px;
+    padding: 0 13px;
+}
+.people {
+    padding: 25px 0;
+}
+.search-page .people .user a {
+    font-weight: bold;
+}
+@media all and (max-width: 991px) {
+    .people .col-sm-5 {
+        width: 25%
+    }
+    .people .col-sm-7 {
+        width: 75%
+    }
+}
+
+@media all and (max-width: 756px) {
+    .people .properties ul li {
+        padding: 0 2px;
+    }
+}
+
+@media all and (max-width: 574px) {
+    .people .properties {
+        display: none;
+    }
+    .people .info-entry {
+        margin-left: 15%;
+    }
+}
+/*search page input*/
+.search-input{
+    background: #dadada;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+}
+.search-input input{
+    background: #dadada none repeat scroll 0 0;
+    border: medium none;
+    color: #666666;
+    font-size: 36px;
+    margin-top: 100px;
+    padding: 10px;
+    height: 100px;
+}
+.search-input p{
+    color: #666;
+    font-size: 18px;
+    opacity: 0.4;
+    padding-left: 10px;
+}
+.search-page #tab-content3 ul {
+    padding-top: 25px;
+}
+/*/search page input*/
+
+/*display message for no posts*/
+#tab-content1 .loading-posts {
+    padding-top: 0;
+}
+/* Search input modifications  */
+.search-input input {
+    width: 90%;
+    line-height: normal;
+}
+
+@media all and (max-width: 483px) {
+    .search-input input {
+        font-size: 23px;
+    }
+}
+/* Tags */
+#tag-list .btn-tag {
+    border-radius: 2px;
+    padding: 12px 20px;
+}
+.search-page #tag-list {
+    padding-top: 60px;
+}
+.search-page #tag-list li {
+    /*float: none;*/
+    /*margin-bottom: 20px;*/
+    padding: 2%;
+}
+.search-page #tag-list li a:hover {
+    border: 1px solid transparent;
+    color: #16cbe6;
+}
+.user-info-entry{
+    margin: 25px 0;
+}
+/* end third tab */
+
+/*Media query for search result tabs*/
+@media all and (max-width: 768px) {
+    #tab-content1 .entry .text-listing-entries::before {
+        display: none;
+    }
+
+    #tab-content1 .loading-posts .view-more::before {
+        display: none;
+    }
+    #tab-content1 .loading-posts .more-posts {
+        left: -50px;
+    }
+    #tab-content2 .people .bubble img {
+        left: 0;
+        width: 50px;
+        height: 50px;
+        top: 0;
+    }
+    #tab-content2 .people .info-entry{
+        padding-left: 10px;
+    }
+    #tag-list .btn-tag {
+        max-width: 100%;
+    }
+    .search-page #tag-list li {
+        max-width: 100%;
+    }
+}
+@media all and (max-width: 360px){
+    #tab-content2 .info-entry{
+        width: 70%;
+    }
+}

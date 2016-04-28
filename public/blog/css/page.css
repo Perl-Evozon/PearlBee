@@ -1,0 +1,51 @@
+/* pages */
+.pages .page-heading h2 {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+.pages .page {
+    clear: both;
+}
+.pages .info-page {
+    float: right;
+    margin-bottom: 35px;
+}
+.pages .info-page .user {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #43c8e7;
+    margin-bottom: 5px;
+}
+.pages .info-page .date {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #8a8a8d;
+}
+.pages .post-content {
+    padding-top: 30px;
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+.pages .individual-post-tags {
+    font-family: 'Montserrat', 'Open Sans', sans-serif;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+.pages .post-content p {
+    margin: 0 0 10px;
+}
+.pages .post-content p img {
+    display: block;
+    margin: 0 auto 15px auto;
+    max-width: 100%;
+    height: auto;
+}
+.pages .post-content code {
+    white-space: normal;
+}
+.pages .pager-post li a {
+    font-size: 18px;
+}

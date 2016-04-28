@@ -1,3 +1,5 @@
+<link href="/blog/css/register.css" rel="stylesheet">
+
 <script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -116,6 +118,7 @@
     });
     } 
 </script>
+
 
 
 <div id="fb-root"></div>

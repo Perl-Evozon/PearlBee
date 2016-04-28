@@ -1,4 +1,6 @@
 [% SET global.template_name = 'profile' %]
+<link href="/blog/css/profile.css" rel="stylesheet">
+<link href="/blog/css/register.css" rel="stylesheet">
 
 <div class="profile-modal">
 

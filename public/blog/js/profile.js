@@ -3,6 +3,11 @@
  */
 
 $(document).ready(function() {
+	
+//	if ($("#image_upload_preview").attr('src') == "/blog/img/male-user.png") {
+//    $(".picture-btn").css("margin-top", "170px");
+//	}
+//	
 // Image upload preview modal cancel button
     $(".modal-footer .cancel-img").on('click', function(){
         var src = $( ".credentials .bubble" ).parent().find('img').attr('src');

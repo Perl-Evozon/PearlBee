@@ -14,6 +14,7 @@ use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
+use HTML::Entities;
 use DateTime;
 use DateTime::Format::MySQL;
 use Date::Period::Human;
@@ -457,6 +458,7 @@ Ignoring nested <pre/> and <code/> tags, remove tags.
 sub _massage_content {
   my ($self,$content) = @_;
   return '' unless $content;
+  encode_entities( $content );
   my @content = split '\n', $content;
   
   my $in_pre  = 0;

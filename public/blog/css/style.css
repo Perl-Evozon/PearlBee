@@ -4804,7 +4804,7 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
 	margin-top: 20px;
 }
 
-@media screen and (max-width: 500px) /* Mobile */ {
+@media screen and (max-width: 767px) /* Mobile */ {
 /*
    .modal .modal-body .profile-pic .btn-file {
       margin-top: 230px;

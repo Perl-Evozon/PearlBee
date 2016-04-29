@@ -458,7 +458,6 @@ Ignoring nested <pre/> and <code/> tags, remove tags.
 sub _massage_content {
   my ($self,$content) = @_;
   return '' unless $content;
-  encode_entities( $content );
   my @content = split '\n', $content;
   
   my $in_pre  = 0;

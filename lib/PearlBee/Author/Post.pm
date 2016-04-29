@@ -210,6 +210,10 @@ post '/author/posts/add' => sub {
     cover   => ( $cover_filename ) ? $cover_filename : '',
     type    => params->{type} || 'HTML',
   };
+  my $count = () = $params->{content} =~ m{ <p> }gx;
+  if ( $count == 1 ) {
+    $params->{content} =~ s{ ^ <p> (.+) </p>\r $ }{$1}msx;
+  }
 
   try {
     $post = resultset('Post')->can_create($params);

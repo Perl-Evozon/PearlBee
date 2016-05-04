@@ -151,6 +151,7 @@ CREATE TABLE post (
   created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   type varchar(255) NOT NULL DEFAULT 'HTML' REFERENCES post_format (name),
   status post_status DEFAULT 'draft',
+  user_id integer NOT NULL REFERENCES users (id),
   PRIMARY KEY (id)
 );
 
@@ -168,13 +169,6 @@ CREATE TABLE page (
   status post_status DEFAULT 'draft',
   user_id integer NOT NULL REFERENCES users (id),
   PRIMARY KEY (id)
-);
-
-
-CREATE TABLE blog_post (
-  blog_id integer NOT NULL REFERENCES blog (id),
-  post_id integer NOT NULL REFERENCES post (id),
-  PRIMARY KEY (blog_id,post_id)
 );
 
 

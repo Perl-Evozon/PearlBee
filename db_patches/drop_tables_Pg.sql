@@ -14,7 +14,6 @@ DROP TABLE post_category;
 DROP TABLE page_category;
 DROP TABLE blog_categories;
 DROP TABLE category;
-DROP TABLE blog_post;
 DROP TABLE asset;
 DROP TABLE post;
 DROP TABLE page;

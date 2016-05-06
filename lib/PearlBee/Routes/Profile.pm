@@ -60,44 +60,46 @@ get '/profile/author/:username' => sub {
   my $username   = route_parameters->{'username'};
   my ( $user )   = resultset('Users')->match_lc( $username );
 
-  unless ($user) {
-    error "No such user '$username'";
-  }
+  if ($user) {
 
-  my @blog_owners = resultset('BlogOwner')->search({ user_id => $user->id });
-  my @blogs;
-  for my $blog_owner ( @blog_owners ) {
-    push @blogs, map { $_->as_hashref_sanitized }
-                 resultset('Blog')->find({ id => $blog_owner->blog_id });
+    my @blog_owners = resultset('BlogOwner')->search({ user_id => $user->id });
+    my @blogs;
+    for my $blog_owner ( @blog_owners ) {
+      push @blogs, map { $_->as_hashref_sanitized }
+                   resultset('Blog')->find({ id => $blog_owner->blog_id });
+    }
+    my @posts = resultset('Post')->search_published({ user_id => $user->id });
+    my @post_tags;
+    for my $post ( @posts ) {
+      push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;
+    }
+    for my $blog ( @blogs ) {
+      $blog->{count} = {
+        owners => 1,
+        post   => scalar @posts,
+        tag    => scalar @post_tags,
+      };
+      $blog->{post_tags} = \@post_tags;
+    }
+ 
+    my $template_data = {
+      blogs      => \@blogs,
+      blog_count => scalar @blogs,
+      user       => $user->as_hashref_sanitized,
+    }; 
+ 
+    if (param('format')) {
+      my $json = JSON->new;
+      $json->allow_blessed(1);
+      $json->convert_blessed(1);
+      $json->encode( $template_data );
+    }     
+    else {
+      template 'profile/author', $template_data;
+    }
   }
-  my @posts = resultset('Post')->search_published({ user_id => $user->id });
-  my @post_tags;
-  for my $post ( @posts ) {
-    push @post_tags, map { $_->as_hashref_sanitized } $post->tag_objects;
-  }
-  for my $blog ( @blogs ) {
-    $blog->{count} = {
-      owners => 1,
-      post   => scalar @posts,
-      tag    => scalar @post_tags,
-    };
-    $blog->{post_tags} = \@post_tags;
-  }
-
-  my $template_data = {
-    blogs      => \@blogs,
-    blog_count => scalar @blogs,
-    user       => $user->as_hashref_sanitized,
-  }; 
-
-  if (param('format')) {
-    my $json = JSON->new;
-    $json->allow_blessed(1);
-    $json->convert_blessed(1);
-    $json->encode( $template_data );
-  }     
   else {
-    template 'profile/author', $template_data;
+    template 'profile/author';
   }
 
 };

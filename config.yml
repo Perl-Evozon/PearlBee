@@ -42,7 +42,7 @@ plugins:
           dsn: dbi:Pg:database=blogs_perl_org;host=139.162.204.109
           schema_class: PearlBee::Model::Schema
           user: jgoff
-          password: 
+          password:
           options:
             RaiseError:     1
             PrintError:     1
@@ -52,8 +52,8 @@ plugins:
         format:    'Atom'
         max_posts: 10
       reCAPTCHA:
-        site_key:
-        secret:
+        site_key: '6LdQmhITAAAAAP7enD0cWGnmfVkzTTcV1d6r6vkp'
+        secret: '6LdQmhITAAAAANf8ueWfMzWmhWBfaJlQuEMNjc83'
         options:
           theme: 'light'
           type:  'image'
@@ -74,9 +74,9 @@ avatar:
 covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
-images_path:      '/uploads/images' 
+images_path:      '/uploads/images'
 
-app_url:         'http://localhost:5000'
+app_url:         'http://localhost:5051'
 email_templates: 'views/emails/'
 
 # Images from MovableType

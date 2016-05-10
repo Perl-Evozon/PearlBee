@@ -37,21 +37,21 @@
 
   window.fbAsyncInit = function() {
   FB.init({
-    appId      : '790918171012883',
-    cookie     : true,  // enable cookies to allow the server to access 
+    appId      : '561229140719641',
+    cookie     : true,  // enable cookies to allow the server to access
                         // the session
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.5' // use graph api version 2.5
   });
 
-  FB.Event.subscribe('auth.login', function(response) {
-      window.location.reload();
-    });
-    FB.Event.subscribe('auth.logout', function(response) {
-      window.location.reload();
-    });
+  // FB.Event.subscribe('auth.login', function(response) {
+  //     window.location.reload();
+  //   });
+    // FB.Event.subscribe('auth.logout', function(response) {
+    //   window.location.reload();
+    // });
 
-  // Now that we've initialized the JavaScript SDK, we call 
+  // Now that we've initialized the JavaScript SDK, we call
   // FB.getLoginStatus().  This function gets the state of the
   // person visiting this page and can return one of three states to
   // the callback you provide.  They can be:
@@ -89,7 +89,7 @@
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
-  } 
+  }
 
 
     function openWin() {
@@ -104,19 +104,47 @@
           var userName = '[% session.user.username | uri %]';
           console.log("username is " + userName);
           console.log("userID is " + useid);
-          
+
           $.ajax({
                 url: "/oauth" ,
                 method: "POST",
                 contentType: "application/x-www-form-urlencoded",
-               data: { 
+               data: {
                   username: userName,
                   service: "Facebook",
                   service_id: useid
                 }
-            })
+            });
     });
-    } 
+    }
+
+
+
+
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0];
+
+      if(!d.getElementById(id)) {
+        js=d.createElement(s);js.id=id;
+        js.src="http://platform.twitter.com/anywhere.js?id="+gTWApplicationId;
+        fjs.parentNode.insertBefore(js,fjs);
+        }
+      }(document, "script",'twitter-anywhere');
+
+    //describe the login actions
+    twttr.anywhere(function (T) {
+    T.bind("authComplete", function (e, user) {
+            var token = user.attributes._identity;
+            //define the login function on your client through Twitter
+        });
+    });
+    //function we link to the click on the custom login button through Twitter
+    function doTWSignIn() {
+        twttr.anywhere(function (T) {
+            T.signIn();
+        });
+    }
+
 </script>
 
 
@@ -124,9 +152,9 @@
 <div id="fb-root"></div>
 
 <div class="blog">
- 
+
   <div class="register sign-up">
- 
+
   <div class="container">
 
 
@@ -135,42 +163,42 @@
          <h2><i class="icon-user color"></i> Sign-up <small> as an author </small></h2>
          <hr />
       </div>
-      
+
       [% INCLUDE components/alerts.tt %]
-      
+
       <div class="row">
          <div class="col-md-12">
             <div class="awidget">
                <div class="awidget-body">
-      
+
                   <form class="form-horizontal" role="form" method="post" action>
-                  
+
                     <div class="form-group">
                       <label class="col-lg-2 control-label">Username</label>
                       <div class="col-lg-10">
                         <input type="text" class="form-control" name="username" placeholder="Username" value="[% username | uri %]" required>
                       </div>
                     </div>
-      
+
                     <div class="form-group">
                       <label class="col-lg-2 control-label">Email</label>
                       <div class="col-lg-10">
                         <input type="email" class="form-control" name="email" placeholder="Email" value="[% email %]" required>
                       </div>
                     </div>
-      
+
                     <div class="form-group">
                       <label class="col-lg-2 control-label">Name</label>
                       <div class="col-lg-10">
                         <input type="text" class="form-control" name="name" placeholder="Name" value="[% name %]" required>
                       </div>
                     </div>
-      
+
                      <div class="cf">
                         <label class="col-lg-2 control-label"> </label>
                         [% recaptcha %]
                      </div>
-                    
+
                     <div class="form-group">
                       <div class="col-lg-offset-2 col-lg-10">
                         <hr />
@@ -186,8 +214,8 @@
 -->
 
   [% INCLUDE components/alerts.tt %]
-       <div class="row"> 
-       <div class="col-sm-6 col-sm-offset-3 text-center"> 
+       <div class="row">
+       <div class="col-sm-6 col-sm-offset-3 text-center">
 
 <!--
 <div
@@ -202,54 +230,59 @@
          <h3>Welcome back!</h3>
          <h4>Please enter your credentials:</h4>
 <!--
-         <p class="change_error">(or register using the social links below)</p> 
+         <p class="change_error">(or register using the social links below)</p>
 -->
-        <div class="register-wrapper"> 
+        <div class="register-wrapper">
           <form id="signin_form" action="/login" method="post">
 	    <input type="hidden" name="redirect" value="[% redirect %]" />
-            <div class="form-group">              
+            <div class="form-group">
               <input type="text" class="form-control" id="usernameSingin" placeholder="Username" name="username" required>
             </div>
-            <div class="form-group">              
+            <div class="form-group">
               <input type="password" class="form-control" id="passwordSignin" placeholder="Password" name="password" required>
             </div>
 
-            
+
             <div class="checkbox ">
               <label>
                 <a href="/password_recovery">Forgot your password?</a>
               </label>
             </div>
             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
-          </form>          
-       <!--   <div class="social_register">
+          </form>
+         <div class="social_register">
             <p>You can register using the following accounts:</p>
             <div class="separator"></div>
           <div class="row">
-            <div class="col-sm-12">                                                    
+            <div class="col-sm-12">
               <div class="social">
                 <a href="#" class="github"><i class="icon-github"></i></a>
-                <a href="#" class="facebook" id="face"><i class="icon-facebook"></i></a>
-<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true"></div>
+                <a href="#" class="facebook" id="face" onclick="fb-login-button" ><i class="icon-facebook"></i></a>
+<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true">meh</div>
+<fb:login-button size="xlarge"
+                 onlogin="Log.info.bind('onlogin callback')" class="facebook">
+  Jon Snow Dies
+</fb:login-button>
 
 
-
-                <a href="#" class="twitter"><i class="icon-twitter"></i></a>
+                <div onclick="doTWSignIn()">
+                  <a href="#" class="twitter"><i class="icon-twitter"></i></a>
+                </div>
                 <a href="#" class="linkedin"><i class="icon-linkedin"></i></a>
-              </div>                           
+              </div>
              </div>
             </div>
-          </div>  -->        
-        </div> 
-       </div> 
-     </div> 
-  
-  
-  
-  
-  
+          </div>
+        </div>
+       </div>
+     </div>
+
+
+
+
+
    </div>
-   
-  </div>  
-   
-</div> 
+
+  </div>
+
+</div>

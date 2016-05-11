@@ -4,11 +4,13 @@ use Try::Tiny;
 use JSON qw//;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use Dancer2::Plugin::reCAPTCHA;
+use Captcha::reCAPTCHA::V2;
 
 use PearlBee::Password;
 use PearlBee::Helpers::Email qw( send_email_complete );
 use PearlBee::Helpers::Util qw( create_password generate_hash );
+
+use URI::Encode qw(uri_encode uri_decode);
 
 =head2 /admin route
 
@@ -117,8 +119,9 @@ get '/register_success' => sub { template 'register_success' };
 post '/register_success' => sub {
   my $params   = body_parameters;
   my $response = $params->{'g-recaptcha-response'};
-  my $result   = recaptcha_verify($response);
-  my $captcha  = recaptcha_display();
+  my $rc       = Captcha::reCAPTCHA::V2->new;
+  my $result   = $rc->verify(config->{plugins}{reCAPTCHA}{secret} || $ENV{bpo_recaptcha_secret}, $response);
+  my $captcha  = $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key});
   my $err;
 
   my $template_params = {
@@ -132,7 +135,7 @@ post '/register_success' => sub {
     template 'register', {
       error => "Please provide a username",  
       email => $params->{'email'},
-      recaptcha => recaptcha_display()
+      recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key})
     };
   }
 
@@ -144,7 +147,7 @@ post '/register_success' => sub {
       email => $params->{'email'},
       username => $params->{'username'},
       name => $params->{'name'},
-      recaptcha => recaptcha_display()
+      recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key})
     }; 
   }
 
@@ -157,7 +160,7 @@ post '/register_success' => sub {
       email => $params->{'email'},  
       username => $params->{'username'},
       name => $params->{'name'},
-      recaptcha => recaptcha_display()
+      recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key})
     };
   }
 
@@ -170,7 +173,7 @@ post '/register_success' => sub {
       warning => "The provided username is already in use.",  
       email => $params->{'email'},
       name => $params->{'name'},
-      recaptcha => recaptcha_display()
+      recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key})
     };
   }
 
@@ -343,14 +346,94 @@ logout method
 =cut
 
 get '/logout' => sub {
-  
+
   context->destroy_session;
-  
+
   session blog_name => resultset('Setting')->first->blog_name
     unless ( session('blog_name') );
   session app_url   => config->{app_url};
 
   redirect "/";
+};
+
+=head2 /smlogin route
+
+Route handler for login with various social media services
+
+=cut
+
+get '/smlogin' => sub {
+  my $sm_service = params->{socialMediaService};
+
+
+  if (defined $sm_service) {
+    my $base_uri = config->{plugins}->{social_media}->{callback_base_uri} || config->{app_url} ||'http://localhost:5000/';
+    my $callback_handler = 'smcallback/'.$sm_service;
+
+    if ($sm_service eq 'facebook') {
+      my $facebook_client_id = config->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
+
+      my $query_string = 'https://www.facebook.com/dialog/oauth?';
+      $query_string .= 'client_id='.$facebook_client_id;
+      $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
+
+      redirect $query_string;
+
+    } elsif ($sm_service eq 'twitter') {
+      # body...
+    } elsif ($sm_service eq 'google') {
+      # body...
+    } elsif ($sm_service eq 'linkedin') {
+      # body...
+    } elsif ($sm_service eq 'github') {
+      # body...
+    } elsif ($sm_service eq 'openid') {
+      # body...
+    } else {
+      return "Unsupported social media service.";
+    }
+
+  } else {
+    return "No social media service specified.";
+  }
+
+};
+
+=head2 /smcallback/:sm_service
+
+Route handler for callbacks originating from social media services
+
+=cut
+
+get '/smcallback/:sm_service' => sub {
+  my $sm_service = params->{sm_service};
+
+  if ($sm_service eq 'facebook') {
+    my $code = query_parameters->get('code');
+    my $facebook_client_id = config->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
+    my $facebook_client_secret = config->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
+
+# https://graph.facebook.com/v2.3/oauth/access_token?client_id=561229140719641&redirect_uri=http://localhost:5000/smcallback/facebook/&client_secret=76a4673d554bccc603e9fdc9416db685&code=AQAME1qW03oJLWy3WIlJIYu1UDuVwFSaX4wPZLyLAbFYobolkBkjUR7lI2THCiOsTUyErciiVNP2F5nddASBfZ21VyP_wwIZJg0oe3dr4uPFE5u9RqPl5iYjbvE4a2dV9hJFJ0RPGQIKtP2aftW_abO--bFiH-zzAjVekeCzbwCe5HyZ_ATCxiQ5KGz41EMDHv2207xB8nP7zc3YhXexBv9GTeJLyBqoPB6sxmDyZooeX4GkKGPkNgzay5gbMPVHWI1COz13JFssXnxofvpwC2QHL-x1wfOw_p7WO2p5V3jPqFvFs4xxvXAD00aE_GqYHiLMq-oFyFfnXyWC3REm3qJI
+
+
+    return to_json({
+        code => $code,
+        service => $sm_service
+      })
+  } elsif ($sm_service eq 'twitter') {
+    # body...
+  } elsif ($sm_service eq 'google') {
+    # body...
+  } elsif ($sm_service eq 'linkedin') {
+    # body...
+  } elsif ($sm_service eq 'github') {
+    # body...
+  } elsif ($sm_service eq 'openid') {
+    # body...
+  } else {
+    return "Unsupported social media service.";
+  }
+
 };
 
 true;

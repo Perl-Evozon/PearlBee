@@ -9,6 +9,7 @@ chdir("$FindBin::Bin/../");
 
 use PearlBee;
 
+# Read config
 my $cfg = Config::Any->load_stems({
   stems   => [ 'config' ],
   use_ext => 1
@@ -16,41 +17,44 @@ my $cfg = Config::Any->load_stems({
 $cfg = $cfg->[0];
 $cfg = $cfg->{(keys %$cfg)[0]};
 
-my $error = 0;
-$error++ unless -e 'public/avatars';
-$error++ unless -e 'public/userpics';
-$error++ unless $cfg->{mail_server}{user};
-$error++ unless $cfg->{mail_server}{password};
-$error++ unless $cfg->{mail_server}{host};
+# Needed for mail server
+my $mail_server_host = $cfg->{mail_server}{host};
+my $mail_server_user = $cfg->{mail_server}{user};
+my $mail_server_password = $cfg->{mail_server}{password} || $ENV{bpo_mail_server_password};
 
-if ( $error ) {
-  my $color = 'white on_red';
-  warn colored("###################################",$color)."\n";
+# Needed for captcha
+my $recaptcha_site_key = $cfg->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key};
+my $recaptcha_secret = $cfg->{plugins}{reCAPTCHA}{secret} || $ENV{bpo_recaptcha_secret};
 
-  -e 'public/avatars' or
-    warn colored("Missing public/avatars/ symlink - run '",$color) .
-      q{ln -s ~/avatars public/avatars'} .
-      colored(q{'},$color);
-  -e 'public/userpics' or
-    warn colored("Missing public/userpics/ symlink - run '",$color) .
-      q{ln -s ~/userpics public/userpics'} .
-      colored(q{'},$color);
-  
-  my $mail_server = $cfg->{mail_server};
-  $mail_server->{user} or
-    warn colored("Missing mail server user",$color)."\n";
-  $mail_server->{password} or
-    warn colored("Missing mail server password",$color)."\n";
-  $mail_server->{host} or
-    warn colored("Missing mail server host",$color)."\n";
+# Needed for login with facebook
+my $facebook_client_id = $cfg->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
+my $facebook_client_secret = $cfg->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
 
-  my $reCAPTCHA = $cfg->{plugins}{reCAPTCHA};
-  $reCAPTCHA->{site_key} or
-    warn colored("Missing reCAPTCHA site key",$color)."\n";
-  $reCAPTCHA->{secret} or
-    warn colored("Missing reCAPTCHA secret",$color)."\n";
+# Misc
+my $color = 'white on_red';
+my $delimiter = "###################################";
+my $message;
 
-  warn colored("###################################",$color)."\n";
+# Buffer all the warnings
+$message .= ( "Missing public/avatars/ symlink - run '" . q{ln -s ~/avatars public/avatars'} . "'\n" ) unless -e 'public/avatars';
+$message .= ( "Missing public/userpics/ symlink - run '" . q{ln -s ~/userpics public/userpics'} . "'\n" ) unless -e 'public/userpics';
+
+$message .= "Missing mail server host\n" unless $mail_server_host;
+$message .= "Missing mail server user\n" unless $mail_server_user;
+$message .= "Missing mail server password\n" unless $mail_server_password;
+
+$message .= "Missing reCaptcha site key\n" unless $recaptcha_site_key;
+$message .= "Missing reCaptcha secret\n" unless $recaptcha_secret;
+
+$message .= "Missing facebook client_id\n" unless $facebook_client_id;
+$message .= "Missing facebook client_secret\n" unless $facebook_client_secret;
+
+
+# Spit out the warnings
+if ($message) {
+  $message = $delimiter . "\n" . $message . $delimiter;
+  warn "\n".colored($message, 'white on_red')."\n";
 }
 
+# Start dancing
 PearlBee->dance;

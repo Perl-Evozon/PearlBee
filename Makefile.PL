@@ -33,6 +33,7 @@ WriteMakefile(
         'Dancer2::Plugin::REST'      => 0,
         'Dancer2::Plugin::Feed'      => 0,
         'Dancer2::Plugin::reCAPTCHA' => 0,
+        'Captcha::reCAPTCHA::V2'     => 0,
         'Data::GUID'                 => 0,
         'String::Dirify'             => 0,
         'String::Random'             => 0,

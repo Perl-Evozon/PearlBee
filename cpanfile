@@ -13,6 +13,7 @@ requires 'Data::Entropy::Algorithms';
 requires 'Dancer2::Plugin::REST';
 requires 'Dancer2::Plugin::Feed', '< 1.160190'; # Later versions change Atom
 requires 'Dancer2::Plugin::reCAPTCHA';
+requires 'Captcha::reCAPTCHA::V2';
 requires 'Data::GUID';
 requires 'String::Dirify';
 requires 'String::Random';

@@ -5,6 +5,7 @@ use JSON qw//;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Captcha::reCAPTCHA::V2;
+use HTTP::Tiny;
 
 use PearlBee::Password;
 use PearlBee::Helpers::Email qw( send_email_complete );
@@ -407,29 +408,97 @@ Route handler for callbacks originating from social media services
 
 get '/smcallback/:sm_service' => sub {
   my $sm_service = params->{sm_service};
+  my $base_uri = config->{plugins}->{social_media}->{callback_base_uri} || config->{app_url} ||'http://localhost:5000/';
+  my $callback_handler = 'smcallback/'.$sm_service;
+  my $http = HTTP::Tiny->new();
 
   if ($sm_service eq 'facebook') {
+
     my $code = query_parameters->get('code');
     my $facebook_client_id = config->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
     my $facebook_client_secret = config->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
+    my $app_access_token = $facebook_client_id . "|" . $facebook_client_secret;
 
-# https://graph.facebook.com/v2.3/oauth/access_token?client_id=561229140719641&redirect_uri=http://localhost:5000/smcallback/facebook/&client_secret=76a4673d554bccc603e9fdc9416db685&code=AQAME1qW03oJLWy3WIlJIYu1UDuVwFSaX4wPZLyLAbFYobolkBkjUR7lI2THCiOsTUyErciiVNP2F5nddASBfZ21VyP_wwIZJg0oe3dr4uPFE5u9RqPl5iYjbvE4a2dV9hJFJ0RPGQIKtP2aftW_abO--bFiH-zzAjVekeCzbwCe5HyZ_ATCxiQ5KGz41EMDHv2207xB8nP7zc3YhXexBv9GTeJLyBqoPB6sxmDyZooeX4GkKGPkNgzay5gbMPVHWI1COz13JFssXnxofvpwC2QHL-x1wfOw_p7WO2p5V3jPqFvFs4xxvXAD00aE_GqYHiLMq-oFyFfnXyWC3REm3qJI
+    # Got facebook code, exchange it for an access token
+    my $link = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id=' . $facebook_client_id;
+    $link .= ('&redirect_uri=' . uri_encode($base_uri . $callback_handler)  );
+    $link .= ('&client_secret=' . $facebook_client_secret );
+    $link .= ('&code=' . params->{code} );
+
+    my $response = $http->get($link);
+    my $access_token = from_json($response->{content})->{access_token};
+
+    # Verify that token was indeed issued by BPO
+    $link = 'https://graph.facebook.com/debug_token?input_token=';
+    $link .= $access_token;
+    $link .= ("&access_token=".$app_access_token);
+
+    $response = $http->get($link);
+
+    my $data = from_json($response->{content})->{data};
+
+    if ($data->{app_id} ne $facebook_client_id) {
+      return "Bad app id. Stop hacking.";
+    }
+
+    my $user_id_from_first_request = $data->{user_id};
+
+    $link = 'https://graph.facebook.com/me?access_token=';
+    $link .= $access_token;
+    $link .= '&fields=';
+    $link .= 'id,name,email,about,bio,birthday,first_name,last_name,gender,link,picture';
+
+    $response = $http->get($link);
+    my $user_data = from_json($response->{content});
+
+    if ($user_data->{id} ne $user_id_from_first_request) {
+      return "User mismatch. Stop hacking!";
+    }
+
+    # If this is a registration process, save data into DB
+
+    # else, it's a sign-in process. find user based on userId and log him in
+
+    return to_json({
+      service => $sm_service,
+      user_id => $user_id_from_first_request
+    })
+
+  } elsif ($sm_service eq 'twitter') {
+
 
 
     return to_json({
-        code => $code,
-        service => $sm_service
-      })
-  } elsif ($sm_service eq 'twitter') {
-    # body...
+      service => $sm_service
+    })
   } elsif ($sm_service eq 'google') {
-    # body...
+
+
+
+    return to_json({
+      service => $sm_service
+    })
   } elsif ($sm_service eq 'linkedin') {
-    # body...
+
+
+
+    return to_json({
+      service => $sm_service
+    })
   } elsif ($sm_service eq 'github') {
-    # body...
+
+
+
+    return to_json({
+      service => $sm_service
+    })
   } elsif ($sm_service eq 'openid') {
-    # body...
+
+
+
+    return to_json({
+      service => $sm_service
+    })
   } else {
     return "Unsupported social media service.";
   }

@@ -414,6 +414,11 @@ get '/smcallback/:sm_service' => sub {
 
   if ($sm_service eq 'facebook') {
 
+    # Handle authorization cancellation
+    if (query_parameters->get('error') eq 'access_denied') {
+      return "You need to authorize blogs.perl.org in order to register/log in."
+    }
+
     my $code = query_parameters->get('code');
     my $facebook_client_id = config->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
     my $facebook_client_secret = config->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
@@ -455,7 +460,7 @@ get '/smcallback/:sm_service' => sub {
       return "User mismatch. Stop hacking!";
     }
 
-    # If this is a registration process, save data into DB
+    # If this is a registration process, save data into DB and log him in
 
     # else, it's a sign-in process. find user based on userId and log him in
 
@@ -478,14 +483,14 @@ get '/smcallback/:sm_service' => sub {
     return to_json({
       service => $sm_service
     })
-  } elsif ($sm_service eq 'linkedin') {
+  } elsif ($sm_service eq 'github') {
 
 
 
     return to_json({
       service => $sm_service
     })
-  } elsif ($sm_service eq 'github') {
+  } elsif ($sm_service eq 'linkedin') {
 
 
 

@@ -64,6 +64,9 @@ plugins:
           client_id:
           client_secret:
         twitter:
+          consumer_key:
+          consumer_secret:
+          owner_id:
 
 # Avatars
 avatar:

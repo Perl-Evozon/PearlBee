@@ -41,6 +41,7 @@ WriteMakefile(
         'Data::Pageset'              => 0,
         'Text::Markdown'             => 0,
         'Imager'                     => 0,
+        'WWW::OAuth'                 => 0,
 
         'IO::All'                             => 0,
         'MIME::Lite'                          => 0,

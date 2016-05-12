@@ -6,6 +6,8 @@ use Dancer2;
 use Dancer2::Plugin::DBIC;
 use Captcha::reCAPTCHA::V2;
 use HTTP::Tiny;
+use WWW::OAuth;
+use WWW::OAuth::Util 'form_urldecode';
 
 use PearlBee::Password;
 use PearlBee::Helpers::Email qw( send_email_complete );
@@ -368,6 +370,7 @@ get '/smlogin' => sub {
 
 
   if (defined $sm_service) {
+    my $http = HTTP::Tiny->new();
     my $base_uri = config->{plugins}->{social_media}->{callback_base_uri} || config->{app_url} ||'http://localhost:5000/';
     my $callback_handler = 'smcallback/'.$sm_service;
 
@@ -381,12 +384,41 @@ get '/smlogin' => sub {
       redirect $query_string;
 
     } elsif ($sm_service eq 'twitter') {
-      # body...
+      my $twitter_consumer_key = config->{plugins}->{social_media}->{twitter}->{consumer_key} || $ENV{bpo_social_media_twitter_consumer_key};
+      my $twitter_consumer_secret = config->{plugins}->{social_media}->{twitter}->{consumer_secret} || $ENV{bpo_social_media_twitter_consumer_secret};
+
+      # Get a request token and a request secret
+      my $query_string = 'https://api.twitter.com/oauth/request_token';
+      my $cb_url = uri_encode($base_uri . $callback_handler);
+
+      my $oauth = WWW::OAuth->new(
+         client_id => $twitter_consumer_key,
+         client_secret => $twitter_consumer_secret
+       );
+
+      my $res = $oauth->authenticate(Basic => { method => 'POST', url => $query_string }, { oauth_callback => $cb_url })->request_with(HTTP::Tiny->new);
+
+      # Anything but 200 is an error
+      if ($res->{status} != 200) {
+        return "Failed to communicate with twitter for some reason."
+      };
+
+      my %res_data = @{form_urldecode $res->{content}};
+      my ($request_token, $request_secret, $oauth_callback_confirmed) = @res_data{'oauth_token','oauth_token_secret', 'oauth_callback_confirmed'};
+
+      # Verify oauth_callback_confirmed
+      if ($oauth_callback_confirmed ne 'true') {
+        return "Failed to corrrectly communicate with twitter. (oauth_callback_confirmed is false)";
+      }
+
+      # Redirect the user to authorize the app
+      redirect "https://api.twitter.com/oauth/authenticate?oauth_token=".$request_token;
+
     } elsif ($sm_service eq 'google') {
       # body...
-    } elsif ($sm_service eq 'linkedin') {
-      # body...
     } elsif ($sm_service eq 'github') {
+      # body...
+    } elsif ($sm_service eq 'linkedin') {
       # body...
     } elsif ($sm_service eq 'openid') {
       # body...
@@ -471,11 +503,48 @@ get '/smcallback/:sm_service' => sub {
 
   } elsif ($sm_service eq 'twitter') {
 
+    # Handle authorization cancellation
+    if (query_parameters->get('denied')) {
+      return "You need to authorize blogs.perl.org in order to register/log in."
+    }
 
+    my $request_token = query_parameters->get('oauth_token');
+    my $verifier_token = query_parameters->get('oauth_verifier');
+
+    # Should verify that this token is the same with the token from the previous step but ain't gonna do it for now.
+
+    # Exchange the request token for an access token
+
+    my $twitter_consumer_key = config->{plugins}->{social_media}->{twitter}->{consumer_key} || $ENV{bpo_social_media_twitter_consumer_key};
+    my $twitter_consumer_secret = config->{plugins}->{social_media}->{twitter}->{consumer_secret} || $ENV{bpo_social_media_twitter_consumer_secret};
+    my $query_string = 'https://api.twitter.com/oauth/access_token';
+
+    my $oauth = WWW::OAuth->new(
+       client_id => $twitter_consumer_key,
+       client_secret => $twitter_consumer_secret,
+       token => $request_token,
+     );
+
+    my $res = $oauth->authenticate(Basic => { method => 'POST', url => $query_string }, { oauth_verifier => $verifier_token })->request_with(HTTP::Tiny->new);
+
+    # Anything but 200 is an error
+    if ($res->{status} != 200) {
+      return "Failed to communicate with twitter for some reason."
+    };
+
+    my %res_data = @{form_urldecode $res->{content}};
+    my ($oauth_token, $oauth_token_secret, $user_id, $screen_name) = @res_data{'oauth_token','oauth_token_secret', 'user_id', 'screen_name'};
+
+    # If this is a registration process, save data into DB and log him in
+
+    # else, it's a sign-in process. find user based on userId and log him in
 
     return to_json({
-      service => $sm_service
+      service => $sm_service,
+      user_id => $user_id,
+      screen_name => $screen_name
     })
+
   } elsif ($sm_service eq 'google') {
 
 

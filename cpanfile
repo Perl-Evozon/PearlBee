@@ -20,6 +20,7 @@ requires 'String::Random';
 requires 'String::Util';
 requires 'Data::Pageset';
 requires 'Search::Elasticsearch';
+requires 'WWW::OAuth';
 
 requires 'Imager';
 requires 'IO::All';

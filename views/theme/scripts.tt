@@ -14,6 +14,8 @@
     <!-- Google code syntax highlighter -->
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
+    <!-- Social Media Login Methods -->
+    <script type="text/javascript" src="/blog/js/socialMedia.js"></script>
 
 
 

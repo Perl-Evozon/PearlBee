@@ -6,7 +6,7 @@ use warnings;
 use Try::Tiny;
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use Dancer2::Plugin::reCAPTCHA;
+use Captcha::reCAPTCHA::V2;
 
 use PearlBee::Helpers::Util;
 use PearlBee::Helpers::Email;
@@ -115,12 +115,13 @@ Forgot password?
 
 any ['get', 'post'] => '/forgot-password' => sub {
     my $params = params;
+    my $rc     = Captcha::reCAPTCHA::V2->new;
 
     #it was a post request
     if ( $params->{email} ) {
 
-        my $secret = param('g-recaptcha-response');
-        my $result = recaptcha_verify($secret);
+        my $response = param('g-recaptcha-response');
+        my $result   = $rc->verify(config->{plugins}{reCAPTCHA}{secret} || $ENV{bpo_recaptcha_secret}, $response);
         if ( $result->{success} || $ENV{CAPTCHA_BYPASS} ) {
 
             my $user = resultset('Users')->search({ email => $params->{email} })->first;
@@ -176,7 +177,7 @@ any ['get', 'post'] => '/forgot-password' => sub {
                 session error => 'Incorrect captcha';
                 template 'forgot-password', {
                     show_input => 1,
-                    recaptcha => recaptcha_display(),
+                    recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key}),
                 }, {layout => 'admin'};
             }
         }
@@ -186,7 +187,7 @@ any ['get', 'post'] => '/forgot-password' => sub {
     else {
         template 'forgot-password', {
             show_input => 1,
-            recaptcha  => recaptcha_display(),
+            recaptcha  => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key}),
         }, { layout => 'admin' };
     }
 };

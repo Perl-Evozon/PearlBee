@@ -3,7 +3,7 @@ package PearlBee;
 
 use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
-use Dancer2::Plugin::reCAPTCHA;
+use Captcha::reCAPTCHA::V2;
 
 # Other used modules
 use DateTime;
@@ -136,16 +136,11 @@ post '/comments' => sub {
   my $comment_text = $parameters->{comment};
   my $post         = resultset('Post')->find({ slug => $post_slug });
   my $user         = resultset('Users')->find_by_session(session);
-
-  my $username   = $user->username;
-  my ($owner_id) = $post->user_id;
+  my $username     = $user->username;
 
   $parameters->{id}  = $post->id;
   $parameters->{uid} = $user->id;
   
-#  my ($blog_owner) = resultset('BlogOwner')->search({ user_id => $owner_id });
-#  my $blog         = resultset('Blog')->find({ id => $blog_owner->blog_id });
-
   my %result;
 
   # Notify the author that a new comment was submitted
@@ -211,9 +206,11 @@ Register for the site.
 =cut
 
 get '/register' => sub {
-   
+
+  my $rc = Captcha::reCAPTCHA::V2->new;
+
   template 'register', {
-      recaptcha  => recaptcha_display(),
+      recaptcha  => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key})
   };
 
 };
@@ -248,9 +245,10 @@ Sign up to the site (this is also signing in.)
 
 get '/sign-up' => sub {
   my $redirect = param('redirect');
+  my $rc = Captcha::reCAPTCHA::V2->new;
 
   template 'signup', {
-    recaptcha => recaptcha_display(),
+    recaptcha => $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key}),
     redirect  => $redirect
   };
 };
@@ -270,11 +268,12 @@ post '/sign-up' => sub {
   };
   my $err      = "Invalid secret code.";
   my $response = $params->{'g-recaptcha-response'};
-  my $result   = recaptcha_verify($response);
+  my $rc       = Captcha::reCAPTCHA::V2->new;
+  my $result   = $rc->verify(config->{plugins}{reCAPTCHA}{secret} || $ENV{bpo_recaptcha_secret}, $response);
 
   unless ( $params->{'username'} =~ m{ ^ [-_a-zA-Z0-9]+ $ }x ) {
     $template_params->{warning}   = "Username must must consist of a-z, A-Z, 0-9, '-', '_'";
-    $template_params->{recaptcha} = recaptcha_display();
+    $template_params->{recaptcha} = $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key});
 
     template 'signup', $template_params;
   }
@@ -358,7 +357,7 @@ post '/sign-up' => sub {
 
   if ($err) {
     $template_params->{warning}   = $err;
-    $template_params->{recaptcha} = recaptcha_display();
+    $template_params->{recaptcha} = $rc->html(config->{plugins}{reCAPTCHA}{site_key} || $ENV{bpo_recaptcha_site_key});
 
     template 'signup', $template_params;
   } else {

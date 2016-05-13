@@ -52,12 +52,21 @@ plugins:
         format:    'Atom'
         max_posts: 10
       reCAPTCHA:
-        site_key: '6LdQmhITAAAAAP7enD0cWGnmfVkzTTcV1d6r6vkp'
-        secret: '6LdQmhITAAAAANf8ueWfMzWmhWBfaJlQuEMNjc83'
+        site_key:
+        secret:
         options:
           theme: 'light'
           type:  'image'
           size:  'normal'
+      social_media:
+        callback_base_uri: 'http://localhost:5000/'
+        facebook:
+          client_id:
+          client_secret:
+        twitter:
+          consumer_key:
+          consumer_secret:
+          owner_id:
 
 # Avatars
 avatar:

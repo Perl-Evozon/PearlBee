@@ -35,28 +35,34 @@ get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};
   my $post       = resultset('Post')->find({ slug => $slug });
-  my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
-  my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
 
-  session redirect => "/post/$slug";
-
-  my ($next_post, $previous_post, @post_tags, @comments);
-  if ( $post and $post->id ) {
-    $next_post     = $post->next_post;
-    $previous_post = $post->previous_post;
-    @post_tags     = $post->tag_objects;
-    @comments      = map { $_->as_hashref_sanitized }
-                     resultset('Comment')->get_approved_comments_by_post_id($post->id);
+  if ( $post ) {
+    my @tags       = map { $_->as_hashref_sanitized } $post->tag_objects;
+    my @categories = map { $_->as_hashref_sanitized } $post->category_objects;
+ 
+    session redirect => "/post/$slug";
+ 
+    my ($next_post, $previous_post, @post_tags, @comments);
+    if ( $post and $post->id ) {
+      $next_post     = $post->next_post;
+      $previous_post = $post->previous_post;
+      @post_tags     = $post->tag_objects;
+      @comments      = map { $_->as_hashref_sanitized }
+                       resultset('Comment')->get_approved_comments_by_post_id($post->id);
+    }
+ 
+    template 'post', {
+      post          => $post,
+      next_post     => $next_post,
+      previous_post => $previous_post,
+      categories    => \@categories,
+      comments      => \@comments,
+      tags          => \@post_tags,
+    };
   }
-
-  template 'post', {
-    post          => $post,
-    next_post     => $next_post,
-    previous_post => $previous_post,
-    categories    => \@categories,
-    comments      => \@comments,
-    tags          => \@post_tags,
-  };
+  else {
+    template 'post';
+  }
 };
 
 =head2 /posts/category/:slug

@@ -1,7 +1,5 @@
 <link href="/blog/css/register.css" rel="stylesheet">
 
-
-
 <div class="blog">
     <div class="register sign-up">
         <div class="container">
@@ -29,8 +27,10 @@
                                     <a href="/password_recovery">Forgot your password?</a>
                                 </label>
                             </div>
+
                             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
                         </form>
+
                         <div id="label-or">
                             - or -
                         </div>
@@ -47,7 +47,6 @@
                                     <span class="fa fa-twitter"></span> Sign in with Twitter
                                   </a>
                               </div>
-
                           </div>
                           <div class="row">
                             <div class="col-md-5 col-md-offset-1">

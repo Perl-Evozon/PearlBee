@@ -43,6 +43,10 @@ my $google_client_secret = $cfg->{plugins}->{social_media}->{google}->{client_se
 my $github_client_id = $cfg->{plugins}->{social_media}->{github}->{client_id} || $ENV{bpo_social_media_github_client_id};
 my $github_client_secret = $cfg->{plugins}->{social_media}->{github}->{client_secret} || $ENV{bpo_social_media_github_client_secret};
 
+# Needed for login with linkedin
+my $linkedin_client_id = $cfg->{plugins}->{social_media}->{linkedin}->{client_id} || $ENV{bpo_social_media_linkedin_client_id};
+my $linkedin_client_secret = $cfg->{plugins}->{social_media}->{linkedin}->{client_secret} || $ENV{bpo_social_media_linkedin_client_secret};
+
 # Misc
 my $color = 'white on_red';
 my $delimiter = "###################################";
@@ -70,6 +74,9 @@ $message .= "Missing google client_secret\n" unless $google_client_secret;
 
 $message .= "Missing github client_id\n" unless $github_client_id;
 $message .= "Missing github client_secret\n" unless $github_client_secret;
+
+$message .= "Missing linkedin client_id\n" unless $linkedin_client_id;
+$message .= "Missing linkedin client_secret\n" unless $linkedin_client_secret;
 
 # Spit out the warnings
 if ($message) {

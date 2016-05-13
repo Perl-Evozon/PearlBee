@@ -73,6 +73,9 @@ plugins:
         github:
           client_id:
           client_secret:
+        linkedin:
+          client_id:
+          client_secret:
 
 # Avatars
 avatar:

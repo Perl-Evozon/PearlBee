@@ -438,7 +438,17 @@ get '/smlogin' => sub {
       redirect $query_string;
 
     } elsif ($sm_service eq 'linkedin') {
-      # body...
+
+      my $linkedin_client_id = config->{plugins}->{social_media}->{linkedin}->{client_id} || $ENV{bpo_social_media_linkedin_client_id};
+
+      my $query_string = 'https://www.linkedin.com/uas/oauth2/authorization?';
+      $query_string .= '&client_id='.$linkedin_client_id;
+      $query_string .= '&response_type=code';
+      $query_string .= '&state=DCEeFWf45A53sdfKef424';
+      $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
+
+      redirect $query_string;
+
     } elsif ($sm_service eq 'openid') {
       # body...
     } else {
@@ -612,7 +622,7 @@ get '/smcallback/:sm_service' => sub {
       return "You need to authorize blogs.perl.org in order to register/log in."
     }
 
-    # Handle authorization cancellation
+    # Handle uri mismatch
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'redirect_uri_mismatch')) {
       return "Development server should run on port 5000."
     }
@@ -632,7 +642,7 @@ get '/smcallback/:sm_service' => sub {
     });
 
     my %res_data = @{form_urldecode $response->{content}};
-    my $access_token = @res_data{'access_token'};
+    my $access_token = $res_data{'access_token'};
 
     $link = 'https://api.github.com/user?access_token='.$access_token;
     $response = $http->get($link);
@@ -651,10 +661,45 @@ get '/smcallback/:sm_service' => sub {
 
   } elsif ($sm_service eq 'linkedin') {
 
+    # Handle authorization cancellation
+    if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
+      return "You need to authorize blogs.perl.org in order to register/log in."
+    }
 
+    my $code = query_parameters->get('code');
+    my $linkedin_client_id = config->{plugins}->{social_media}->{linkedin}->{client_id} || $ENV{bpo_social_media_linkedin_client_id};
+    my $linkedin_client_secret = config->{plugins}->{social_media}->{linkedin}->{client_secret} || $ENV{bpo_social_media_linkedin_client_secret};
+
+    # Got linkedin code, exchange it for an access token
+    my $link = 'https://www.linkedin.com/uas/oauth2/accessToken';
+
+    my $response = $http->post_form($link, {
+      client_secret => $linkedin_client_secret,
+      client_id => $linkedin_client_id,
+      code => $code,
+      grant_type => 'authorization_code',
+      redirect_uri => uri_encode($base_uri . $callback_handler)
+    });
+
+    my $access_token = from_json($response->{content})->{access_token};
+
+    $link = 'https://api.linkedin.com//v1/people/~?format=json';
+    $response = $http->get($link, {
+      headers => {
+        Authorization => 'Bearer '.$access_token
+      }
+    });
+
+    my $data = from_json($response->{content});
+    my $user_id = $data->{id};
+
+    # If this is a registration process, save data into DB and log him in
+
+    # else, it's a sign-in process. find user based on userId and log him in
 
     return to_json({
-      service => $sm_service
+      service => $sm_service,
+      user_id => $user_id
     })
 
   } elsif ($sm_service eq 'openid') {

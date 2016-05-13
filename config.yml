@@ -70,6 +70,9 @@ plugins:
         google:
           client_id:
           client_secret:
+        github:
+          client_id:
+          client_secret:
 
 # Avatars
 avatar:

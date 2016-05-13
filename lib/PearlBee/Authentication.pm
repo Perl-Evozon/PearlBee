@@ -427,7 +427,16 @@ get '/smlogin' => sub {
       redirect $query_string;
 
     } elsif ($sm_service eq 'github') {
-      # body...
+
+      my $github_client_id = config->{plugins}->{social_media}->{github}->{client_id} || $ENV{bpo_social_media_github_client_id};
+
+      my $query_string = 'https://github.com/login/oauth/authorize?';
+      $query_string .= '&client_id='.$github_client_id;
+      $query_string .= '&response_type=code';
+      $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
+
+      redirect $query_string;
+
     } elsif ($sm_service eq 'linkedin') {
       # body...
     } elsif ($sm_service eq 'openid') {
@@ -583,16 +592,13 @@ get '/smcallback/:sm_service' => sub {
     $link .= ("access_token=".$access_token);
 
     $response = $http->get($link);
-    warn Dumper $response;
 
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-
     # If this is a registration process, save data into DB and log him in
 
     # else, it's a sign-in process. find user based on userId and log him in
-
 
     return to_json({
       service => $sm_service,
@@ -601,10 +607,46 @@ get '/smcallback/:sm_service' => sub {
 
   } elsif ($sm_service eq 'github') {
 
+    # Handle authorization cancellation
+    if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
+      return "You need to authorize blogs.perl.org in order to register/log in."
+    }
 
+    # Handle authorization cancellation
+    if (query_parameters->get('error') && (query_parameters->get('error') eq 'redirect_uri_mismatch')) {
+      return "Development server should run on port 5000."
+    }
+
+    my $code = query_parameters->get('code');
+    my $github_client_id = config->{plugins}->{social_media}->{github}->{client_id} || $ENV{bpo_social_media_github_client_id};
+    my $github_client_secret = config->{plugins}->{social_media}->{github}->{client_secret} || $ENV{bpo_social_media_github_client_secret};
+
+    # Got github code, exchange it for an access token
+    my $link = 'https://github.com/login/oauth/access_token';
+
+    my $response = $http->post_form($link, {
+      client_secret => $github_client_secret,
+      client_id => $github_client_id,
+      code => $code,
+      redirect_uri => uri_encode($base_uri . $callback_handler)
+    });
+
+    my %res_data = @{form_urldecode $response->{content}};
+    my $access_token = @res_data{'access_token'};
+
+    $link = 'https://api.github.com/user?access_token='.$access_token;
+    $response = $http->get($link);
+
+    my $data = from_json($response->{content});
+    my $user_id = $data->{id};
+
+    # If this is a registration process, save data into DB and log him in
+
+    # else, it's a sign-in process. find user based on userId and log him in
 
     return to_json({
-      service => $sm_service
+      service => $sm_service,
+      user_id => $user_id
     })
 
   } elsif ($sm_service eq 'linkedin') {

@@ -34,9 +34,14 @@ my $facebook_client_secret = $cfg->{plugins}->{social_media}->{facebook}->{clien
 my $twitter_consumer_key = $cfg->{plugins}->{social_media}->{twitter}->{consumer_key} || $ENV{bpo_social_media_twitter_consumer_key};
 my $twitter_consumer_secret = $cfg->{plugins}->{social_media}->{twitter}->{consumer_secret} || $ENV{bpo_social_media_twitter_consumer_secret};
 
+
 # Needed for login with google
 my $google_client_id = $cfg->{plugins}->{social_media}->{google}->{client_id} || $ENV{bpo_social_media_google_client_id};
 my $google_client_secret = $cfg->{plugins}->{social_media}->{google}->{client_secret} || $ENV{bpo_social_media_google_client_secret};
+
+# Needed for login with github
+my $github_client_id = $cfg->{plugins}->{social_media}->{github}->{client_id} || $ENV{bpo_social_media_github_client_id};
+my $github_client_secret = $cfg->{plugins}->{social_media}->{github}->{client_secret} || $ENV{bpo_social_media_github_client_secret};
 
 # Misc
 my $color = 'white on_red';
@@ -62,6 +67,9 @@ $message .= "Missing twitter consumer_secret\n" unless $twitter_consumer_secret;
 
 $message .= "Missing google client_id\n" unless $google_client_id;
 $message .= "Missing google client_secret\n" unless $google_client_secret;
+
+$message .= "Missing github client_id\n" unless $github_client_id;
+$message .= "Missing github client_secret\n" unless $github_client_secret;
 
 # Spit out the warnings
 if ($message) {

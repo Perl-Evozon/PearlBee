@@ -14,7 +14,7 @@ use PearlBee::Helpers::Email qw( send_email_complete );
 use PearlBee::Helpers::Util qw( create_password generate_hash );
 
 use URI::Encode qw(uri_encode uri_decode);
-
+use Data::Dumper;
 =head2 /admin route
 
 index
@@ -415,7 +415,17 @@ get '/smlogin' => sub {
       redirect "https://api.twitter.com/oauth/authenticate?oauth_token=".$request_token;
 
     } elsif ($sm_service eq 'google') {
-      # body...
+
+      my $google_client_id = config->{plugins}->{social_media}->{google}->{client_id} || $ENV{bpo_social_media_google_client_id};
+
+      my $query_string = 'https://accounts.google.com/o/oauth2/v2/auth?';
+      $query_string .= 'scope=email%20profile%20openid%20';
+      $query_string .= '&client_id='.$google_client_id;
+      $query_string .= '&response_type=code';
+      $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
+
+      redirect $query_string;
+
     } elsif ($sm_service eq 'github') {
       # body...
     } elsif ($sm_service eq 'linkedin') {
@@ -547,11 +557,48 @@ get '/smcallback/:sm_service' => sub {
 
   } elsif ($sm_service eq 'google') {
 
+    # Handle authorization cancellation
+    if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
+      return "You need to authorize blogs.perl.org in order to register/log in."
+    }
+
+    my $code = query_parameters->get('code');
+    my $google_client_id = config->{plugins}->{social_media}->{google}->{client_id} || $ENV{bpo_social_media_google_client_id};
+    my $google_client_secret = config->{plugins}->{social_media}->{google}->{client_secret} || $ENV{bpo_social_media_google_client_secret};
+
+    # Got google code, exchange it for an access token
+    my $link = 'https://www.googleapis.com/oauth2/v4/token';
+
+    my $response = $http->post_form($link, {
+      client_secret => $google_client_secret,
+      client_id => $google_client_id,
+      code => $code,
+      redirect_uri => uri_encode($base_uri . $callback_handler),
+      grant_type => 'authorization_code'
+    });
+
+    my $access_token = from_json($response->{content})->{access_token};
+
+    $link = 'https://www.googleapis.com/oauth2/v1/userinfo?';
+    $link .= ("access_token=".$access_token);
+
+    $response = $http->get($link);
+    warn Dumper $response;
+
+    my $data = from_json($response->{content});
+    my $user_id = $data->{id};
+
+
+    # If this is a registration process, save data into DB and log him in
+
+    # else, it's a sign-in process. find user based on userId and log him in
 
 
     return to_json({
-      service => $sm_service
+      service => $sm_service,
+      user_id => $user_id
     })
+
   } elsif ($sm_service eq 'github') {
 
 
@@ -559,6 +606,7 @@ get '/smcallback/:sm_service' => sub {
     return to_json({
       service => $sm_service
     })
+
   } elsif ($sm_service eq 'linkedin') {
 
 
@@ -566,6 +614,7 @@ get '/smcallback/:sm_service' => sub {
     return to_json({
       service => $sm_service
     })
+
   } elsif ($sm_service eq 'openid') {
 
 
@@ -573,6 +622,7 @@ get '/smcallback/:sm_service' => sub {
     return to_json({
       service => $sm_service
     })
+
   } else {
     return "Unsupported social media service.";
   }

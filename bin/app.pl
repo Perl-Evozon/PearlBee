@@ -30,6 +30,14 @@ my $recaptcha_secret = $cfg->{plugins}{reCAPTCHA}{secret} || $ENV{bpo_recaptcha_
 my $facebook_client_id = $cfg->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
 my $facebook_client_secret = $cfg->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
 
+# Needed for login with twitter
+my $twitter_consumer_key = $cfg->{plugins}->{social_media}->{twitter}->{consumer_key} || $ENV{bpo_social_media_twitter_consumer_key};
+my $twitter_consumer_secret = $cfg->{plugins}->{social_media}->{twitter}->{consumer_secret} || $ENV{bpo_social_media_twitter_consumer_secret};
+
+# Needed for login with google
+my $google_client_id = $cfg->{plugins}->{social_media}->{google}->{client_id} || $ENV{bpo_social_media_google_client_id};
+my $google_client_secret = $cfg->{plugins}->{social_media}->{google}->{client_secret} || $ENV{bpo_social_media_google_client_secret};
+
 # Misc
 my $color = 'white on_red';
 my $delimiter = "###################################";
@@ -49,6 +57,11 @@ $message .= "Missing reCaptcha secret\n" unless $recaptcha_secret;
 $message .= "Missing facebook client_id\n" unless $facebook_client_id;
 $message .= "Missing facebook client_secret\n" unless $facebook_client_secret;
 
+$message .= "Missing twitter consumer_key\n" unless $twitter_consumer_key;
+$message .= "Missing twitter consumer_secret\n" unless $twitter_consumer_secret;
+
+$message .= "Missing google client_id\n" unless $google_client_id;
+$message .= "Missing google client_secret\n" unless $google_client_secret;
 
 # Spit out the warnings
 if ($message) {

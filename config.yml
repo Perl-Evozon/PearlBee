@@ -67,6 +67,9 @@ plugins:
           consumer_key:
           consumer_secret:
           owner_id:
+        google:
+          client_id:
+          client_secret:
 
 # Avatars
 avatar:

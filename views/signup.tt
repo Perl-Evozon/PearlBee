@@ -29,7 +29,6 @@
                                     <a href="/password_recovery">Forgot your password?</a>
                                 </label>
                             </div>
-
                             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
                         </form>
                         <div id="label-or">
@@ -38,17 +37,45 @@
 
                         <div class="social_register">
                             <div class="row">
-                                <div class="col-md-4 col-md-offset-4">
-
-                                    <div class="fb-login-button" id="fb-main-login-button"  data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false" onlogin="checkLoginState();" scope="public_profile">Horse Schlong</div>
-                                    <div id="status"></div>
-
+                                <div class="col-md-5 col-md-offset-1">
+                                  <a href="/smlogin?socialMediaService=facebook" class="btn btn-block btn-social btn-facebook">
+                                    <span class="fa fa-facebook"></span> Sign in with Facebook
+                                  </a>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="col-md-5">
+                                  <a href="/smlogin?socialMediaService=twitter" class="btn btn-block btn-social btn-twitter">
+                                    <span class="fa fa-twitter"></span> Sign in with Twitter
+                                  </a>
+                              </div>
 
+                          </div>
+                          <div class="row">
+                            <div class="col-md-5 col-md-offset-1">
+                              <a href="/smlogin?socialMediaService=linkedin" class="btn btn-block btn-social btn-linkedin">
+                                <span class="fa fa-linkedin"></span> Sign in with LinkedIn
+                              </a>
+                          </div>
+                          <div class="col-md-5">
+                            <a href="/smlogin?socialMediaService=google" class="btn btn-block btn-social btn-google">
+                              <span class="fa fa-google"></span> Sign in with Google
+                            </a>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-5 col-md-offset-1">
+                          <a href="/smlogin?socialMediaService=openid" class="btn btn-block btn-social btn-openid">
+                            <span class="fa fa-openid"></span> Sign in with OpenID
+                          </a>
+                        </div>
+                        <div class="col-md-5">
+                          <a href="/smlogin?socialMediaService=github" class="btn btn-block btn-social btn-github">
+                            <span class="fa fa-github"></span> Sign in with GitHub
+                          </a>
+                        </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
         </div>
     </div>

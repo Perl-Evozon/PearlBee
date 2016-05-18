@@ -8,7 +8,6 @@ use Captcha::reCAPTCHA::V2;
 use HTTP::Tiny;
 use WWW::OAuth;
 use WWW::OAuth::Util 'form_urldecode';
-use OpenID::Login;
 
 use PearlBee::Password;
 use PearlBee::Helpers::Email qw( send_email_complete );
@@ -452,15 +451,7 @@ get '/smlogin' => sub {
 
     } elsif ($sm_service eq 'openid') {
 
-      if (query_parameters->get('claimed_id') && query_parameters->get('claimed_id') ne '') {
-          my $claimed_id = query_parameters->get('claimed_id');
-          my $o = OpenID::Login->new(claimed_id => $claimed_id, return_to => $base_uri.$callback_handler );
-          my $auth_url = $o->get_auth_url();
-
-          redirect $auth_url;
-      } else {
-        return "Please specify your login id.";
-      }
+      return "Deprecated.";
 
     } else {
       return "Unsupported social media service.";
@@ -711,42 +702,6 @@ get '/smcallback/:sm_service' => sub {
     return to_json({
       service => $sm_service,
       user_id => $user_id
-    })
-
-  } elsif ($sm_service eq 'openid') {
-
-    warn "yo...";
-
-    my $o = OpenID::Login->new(cgi_params => {
-      "openid.claimed_id" => query_parameters->get('openid.claimed_id'),
-      "openid.identity" => query_parameters->get('openid.identity'),
-      "openid.sig" => query_parameters->get('openid.sig'),
-      "openid.signed" => query_parameters->get('openid.signed'),
-      "openid.assoc_handle" => query_parameters->get('openid.assoc_handle'),
-      "openid.op_endpoint" => query_parameters->get('openid.op_endpoint'),
-      "openid.return_to" => query_parameters->get('openid.return_to'),
-      "openid.response_nonce" => query_parameters->get('openid.response_nonce'),
-      "openid.mode" => query_parameters->get('openid.mode'),
-      "openid.ns" => query_parameters->get('openid.ns')
-    }, return_to => $base_uri . $callback_handler);
-
-    warn Dumper $o;
-    warn "yo2";
-
-    my $id = $o->verify_auth();
-
-    warn "ID is". $id;
-    # $id is the verified identity, or false if it wasn't verified (eg by the user handcrafting the url, or disallowing access)
-
-
-
-
-    # If this is a registration process, save data into DB and log him in
-
-    # else, it's a sign-in process. find user based on userId and log him in
-
-    return to_json({
-      service => $sm_service
     })
 
   } else {

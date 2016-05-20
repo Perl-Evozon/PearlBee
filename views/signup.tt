@@ -62,7 +62,13 @@
                       </div>
                       <div class="row">
                         <div class="col-md-5 col-md-offset-1">
-                          <a href="/smlogin?socialMediaService=openid" class="btn btn-block btn-social btn-openid">
+                          <a href="#" class="btn btn-block btn-social btn-openid" rel="popover" data-original-title="Enter your url" data-content='
+                         <form id="mainForm" class="form-horizontal" name="mainForm" method="get" onsubmit="myFunction()" action="">
+                                 <label>URL: <input type="text" class="form-control input-small" name="MEH" /> </label>
+                                 <input type="submit" class="btn btn-default"/>
+                         </form>
+
+                         ' >
                             <span class="fa fa-openid"></span> Sign in with OpenID
                           </a>
                         </div>
@@ -72,6 +78,7 @@
                           </a>
                         </div>
                     </div>
+<!-- /smlogin?socialMediaService=openid -->
                   </div>
                 </div>
               </div>

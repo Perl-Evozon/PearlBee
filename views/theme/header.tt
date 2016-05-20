@@ -14,13 +14,13 @@
                 <img id="only-logo" src="/blog/img/only-logo.png">
             </div>
             <form id="switch-button" action="/theme" method="post">
-              <div class="switch"> 
+              <div class="switch">
                 [% IF session.theme == 'light' %]
                 <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" checked="checked" name="theme">
 
                 [%ELSE %]
-                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox"  name="theme" >  
-                [%END%]  
+                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox"  name="theme" >
+                [%END%]
 
                 <label for="cmn-toggle-4"></label>
               </div>
@@ -37,13 +37,13 @@
 
             <div class="user-logged icon icon-toggle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="user_name">[% session.user.name %]</span> <!-- change name with actual user session -->
-                     <div class="bubble"> 
+                     <div class="bubble">
                           [% IF session.user.avatar_path %]
                             <img class="user-image" src="/avatar/[% session.user.username %]" />
                           [% ELSE %]
                             <img class="user-image defaultAvatar" src="/avatar/[% session.user.username %]" />
                           [% END %]
-                     </div> 
+                     </div>
             </div>
             <div class="dropdown-menu dropdown-login logged_in">
               <div class="links-group header-menu-links write-post">
@@ -75,10 +75,50 @@
                 <input type="text" class="form-control dropdown_input" placeholder="Email or username" aria-describedby="basic-addon1" name="username">
                 <input type="password" class="form-control dropdown_input" placeholder="Password" aria-describedby="basic-addon1" name="password">
               </div>
+
+              <div class="row">
+                  <div class="col-md-1 col-md-offset-2">
+                    <a href="/smlogin?socialMediaService=facebook" class="btn btn-social btn-block btn-xs btn-social-icon btn-facebook">
+                      <span class="fa fa-facebook"></span>
+                    </a>
+                  </div>
+                  <div class="col-md-1">
+                    <a href="/smlogin?socialMediaService=twitter" class="btn btn-social btn-block btn-xs btn-social-icon btn-twitter">
+                      <span class="fa fa-twitter"></span>
+                    </a>
+                  </div>
+                  <div class="col-md-1">
+                    <a href="/smlogin?socialMediaService=linkedin" class="btn btn-social btn-block btn-xs btn-social-icon btn-linkedin">
+                      <span class="fa fa-linkedin"></span>
+                    </a>
+                  </div>
+                  <div class="col-md-1">
+                    <a href="/smlogin?socialMediaService=google" class="btn btn-social btn-block btn-xs btn-social-icon btn-google">
+                      <span class="fa fa-google"></span>
+                    </a>
+                  </div>
+                  <div class="col-md-1">
+                    <a href="/smlogin?socialMediaService=openid" class="btn btn-social btn-block btn-xs btn-social-icon btn-openid">
+                      <span class="fa fa-openid"></span>
+                    </a>
+                  </div>
+                  <div class="col-md-1">
+                    <a href="/smlogin?socialMediaService=github" class="btn btn-social btn-block btn-xs btn-social-icon btn-github">
+                      <span class="fa fa-github"></span>
+                    </a>
+                  </div>
+              </div>
+              <!-- <div class="row"> -->
+
+
+              <!-- </div> -->
+
               <div class="links-group">
                 <a href="/password_recovery" class="login-links pull-right">Forgotten Password?</a>
                 <a href="/register" class="login-links pull-left">Don't have an account? Register</a>
               </div>
+
+
               <div class="links-group buttons-group">
                 <button type="button" onclick="self.close()" class="light-button btn-xs pull-left">Close</button>
                 <button type="submit" class="dark-button btn-xs pull-right" id="submitRegister">Sign In</button>
@@ -89,7 +129,7 @@
       					</div>
       				</div>
             </div>
-              
+
         </div>
       </div>
 </div>

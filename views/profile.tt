@@ -138,12 +138,92 @@
 						</div>
 					</form>
 
+
+					<!-- Connected Accounts -->
+					<h2>Connected Accounts</h2>
+					<div class="row connected-accounts">
+						<div class="col-sm-6 col-sm-offset-1">
+							<h3>Facebook</h3>
+							<p>We will never post to Facebook or message your friends without your permission</p>
+						</div>
+						<div class="col-sm-4">
+							<button class="btn btn-facebook" type="button" data-toggle="collapse" data-target="#FacebookCollapse" aria-expanded="false" aria-controls="FacebookCollapse">
+								<span class="fa fa-facebook">&nbsp; Connect with Facebook</span>
+							</button>
+							<div class="collapse" id="FacebookCollapse">
+								<div class="well">
+									You are now connected with Facebook!
+								</div>
+							</div>
+					</div>
 				</div>
-
+				<div class="row connected-accounts">
+					<div class="col-sm-6 col-sm-offset-1">
+						<h3>Twitter</h3>
+						<p>We will never post to Twitter or message your friends without your permission</p>
+					</div>
+					<div class="col-sm-4">
+						<button class="btn btn-twitter" type="button" data-toggle="collapse" data-target="#TwitterCollapse" aria-expanded="false" aria-controls="TwitterCollapse">
+							<span class="fa fa-twitter">&nbsp; Connect with Twitter</span>
+						</button>
+						<div class="collapse" id="TwitterCollapse">
+							<div class="well">
+								You are now connected with Twitter!
+							</div>
+						</div>
+				</div>
 			</div>
-
+			<div class="row connected-accounts">
+				<div class="col-sm-6 col-sm-offset-1">
+					<h3>LinkedIn</h3>
+					<p>We will never post to LinkedIn or message your friends without your permission</p>
+				</div>
+					<div class="col-sm-4">
+						<button class="btn btn-linkedin" type="button" data-toggle="collapse" data-target="#LinkedInCollapse" aria-expanded="false" aria-controls="LinkedInCollapse">
+							<span class="fa fa-linkedin">&nbsp; Connect with LinkedIn</span>
+						</button>
+						<div class="collapse" id="LinkedInCollapse">
+							<div class="well">
+								You are now connected with LinkedIn!
+							</div>
+						</div>
+				</div>
+			</div>
+			<div class="row connected-accounts">
+				<div class="col-sm-6 col-sm-offset-1">
+					<h3>Google</h3>
+					<p>We will never post to Google or message your friends without your permission</p>
+				</div>
+				<div class="col-sm-4">
+					<button class="btn btn-google" type="button" data-toggle="collapse" data-target="#GoogleCollapse" aria-expanded="false" aria-controls="GoogleCollapse">
+						<span class="fa fa-google">&nbsp; Connect with Google</span>
+					</button>
+					<div class="collapse" id="GoogleCollapse">
+						<div class="well">
+							You are now connected with Google!
+						</div>
+					</div>
+			</div>
 		</div>
-
+		<div class="row connected-accounts">
+			<div class="col-sm-6 col-sm-offset-1">
+				<h3>Github</h3>
+				<p>We will never post to Github or message your friends without your permission</p>
+			</div>
+				<div class="col-sm-4">
+					<button class="btn btn-github" type="button" data-toggle="collapse" data-target="#GithubCollapse" aria-expanded="false" aria-controls="GithubCollapse">
+						<span class="fa fa-github">&nbsp; Connect with Github</span>
+					</button>
+					<div class="collapse" id="GithubCollapse">
+						<div class="well">
+							You are now connected with Github!
+						</div>
+					</div>
+			</div>
+		</div>
 	</div>
 
+	 </div>
+	</div>
+ </div>
 </div>

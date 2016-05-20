@@ -75,9 +75,33 @@ $(document).ready(function() {
 
 })
 
+// function myFunction() {
+//   url = '/smlogin?socialMediaService=openid' + window.location.search;
+//   return url;
+// }
+// // Twitter
+//
+// $('a[rel=popover]').popover({
+// html: 'true',
+// placement: 'bottom'
+// });
 
-// Twitter
+$('.btn-facebook').on('click', function() {
+  $('#FacebookCollapse:visible').length ?  $('.fa-facebook').text(' Connect with Facebook') : $('.fa-facebook').text(' Disconnect Facebook');
+});
 
+$('.btn-twitter').on('click', function() {
+$('#TwitterCollapse:visible').length ?  $('.fa-twitter').text(' Connect with Twitter') : $('.fa-twitter').text(' Disconnect Twitter');
+});
+$('.btn-linkedin').on('click', function() {
+$('#LinkedInCollapse:visible').length ?  $('.fa-linkedin').text(' Connect with LinkedIn') : $('.fa-linkedin').text(' Disconnect LinkedIn');
+});
+$('.btn-google').on('click', function() {
+$('#GoogleCollapse:visible').length ?  $('.fa-google').text(' Connect with Google') : $('.fa-google').text(' Disconnect Google');
+});
+$('.btn-github').on('click', function() {
+$('#GithubCollapse:visible').length ?  $('.fa-github').text(' Connect with Github') : $('.fa-github').text(' Disconnect Github');
+});
 
 // Google
 

@@ -83,4 +83,14 @@
 .credentials .confirmNewPassword.error:focus {
     border-color: red;
 }
+
+.connected-accounts {
+  margin-top:5px;
+}
+span.fa{
+  width: 175px;
+}
+button[data-toggle="collapse"] {
+  margin-top: 50px;
+}
 /*END My profile page*/

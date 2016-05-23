@@ -19,7 +19,7 @@
 -- Table structure for table `category`
 
 --
-GRANT ALL PRIVILEGES ON PearlBee.* TO 'username'@'localhost' IDENTIFIED BY '1';
+GRANT ALL PRIVILEGES ON PearlBee.* TO 'username'@'localhost' IDENTIFIED BY 'password';
 
 DROP DATABASE IF EXISTS PearlBee;
 CREATE DATABASE IF NOT EXISTS PearlBee;

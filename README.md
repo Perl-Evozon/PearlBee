@@ -27,7 +27,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 <li>Digest::Bcrypt</li>
 <li>Digest::MD5</li>
 <li>Digest::SHA1</li>
-<li>Email::Template</li>
+<li>Email::Template(if it fails with Warning: prerequisite HTML::FormatText::WithLinks::AndTables not found; prerequisite MIME::Lite 3.01_04 not found needs Test::Pod::Coverage and --f to install)</li>
 <li>HTML::Strip</li>
 <li>Gravatar::URL</li>
 <li>MIME::Base64</li>
@@ -62,6 +62,8 @@ At the terminal from the root application directory, run this command:
 
 An alternative way of setting up the db is by running this command:
 <pre><blockquote>mysql -u root -p &lt; pearlbee/db_patches/set_up_new_db.sql</blockquote></pre>
+
+Don't forget to edit your config.yml file at line 44 to enter your mysql password!
 
 
 That's it, now from within the root directory run the following command:

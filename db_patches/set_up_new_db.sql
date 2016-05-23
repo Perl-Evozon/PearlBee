@@ -17,7 +17,15 @@
 
 --
 -- Table structure for table `category`
+
 --
+GRANT ALL PRIVILEGES ON PearlBee.* TO 'username'@'localhost' IDENTIFIED BY '1';
+
+DROP DATABASE IF EXISTS PearlBee;
+CREATE DATABASE IF NOT EXISTS PearlBee;
+
+USE PearlBee;
+
 
 DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -158,7 +166,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'','/','PearlBee',1,0);
+INSERT INTO `settings` VALUES ('Europe/Bucharest',1,'','/','PearlBee',1);
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 

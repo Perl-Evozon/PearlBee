@@ -17,7 +17,7 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link gene
 use DateTime;
 use String::Util qw(trim);
 
-get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1'; };
+get '/admin/posts' => sub { redirect session('app_url') . '/admin/posts/page/1';  };
 
 =head
 
@@ -29,6 +29,8 @@ get '/admin/posts/page/:page' => sub {
 
     my $nr_of_rows  = 5; # Number of posts per page
     my $page        = params->{page};
+    warn "The page is: |$page|\n"; 
+
     my @posts       = resultset('Post')->search( {}, { order_by => { -desc => 'created_date' }, rows => $nr_of_rows, page => $page } );
     my $count       = resultset('View::Count::StatusPost')->first;
 
@@ -45,7 +47,7 @@ get '/admin/posts/page/:page' => sub {
     my $pages_per_set   = 7;
     my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
-    template '/admin/posts/list',
+    template 'admin/posts/list',
       {
         posts         => \@posts,
         trash         => $trash,
@@ -90,7 +92,7 @@ get '/admin/posts/:status/page/:page' => sub {
     my $pages_per_set   = 7;
     my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
-    template '/admin/posts/list',
+    template 'admin/posts/list',
       {
         posts         => \@posts,
         trash         => $trash,
@@ -225,7 +227,7 @@ any '/admin/posts/add' => sub {
       redirect session('app_url') . '/admin/posts/edit/' . $post->slug;
     }
     else {
-      template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+      template 'admin/posts/add', { categories => \@categories }, { layout => 'admin' };
     }
 
 };
@@ -278,7 +280,7 @@ get '/admin/posts/edit/:slug' => sub {
       session success => undef;
     }
 
-    template '/admin/posts/edit', $params, { layout => 'admin' };
+    template 'admin/posts/edit', $params, { layout => 'admin' };
 
 };
 

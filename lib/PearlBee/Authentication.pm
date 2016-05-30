@@ -603,7 +603,7 @@ get '/smcallback/:sm_service' => sub {
 
     my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
       $user = resultset('Users')->find($user->{id});
     }
     catch {
@@ -658,7 +658,7 @@ get '/smcallback/:sm_service' => sub {
 
     my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
       $user = resultset('Users')->find($user->{id});
     }
     catch {
@@ -715,7 +715,7 @@ get '/smcallback/:sm_service' => sub {
 
     my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
       $user = resultset('Users')->find($user->{id});
     }
     catch {
@@ -771,7 +771,7 @@ get '/smcallback/:sm_service' => sub {
 
     my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
       $user = resultset('Users')->find($user->{id});
     }
     catch {

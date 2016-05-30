@@ -500,7 +500,7 @@ get '/smcallback/:sm_service' => sub {
   if ($sm_service eq 'facebook') {
 
     # Handle authorization cancellation
-    if (query_parameters->get('error') eq 'access_denied') {
+    if (query_parameters->get('error') && query_parameters->get('error') eq 'access_denied') {
       return "You need to authorize blogs.perl.org in order to register/log in."
     }
 
@@ -550,14 +550,22 @@ get '/smcallback/:sm_service' => sub {
       return "User mismatch. Stop hacking!";
     }
 
-    # If this is a registration process, save data into DB and log him in
+    my $user;
+    try {
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      $user = resultset('Users')->find($user->{id});
+    }
+    catch {
+      warn $_;
+      return to_json({ username => undef });
+    };
 
-    # else, it's a sign-in process. find user based on userId and log him in
+    return to_json({ username => $user->{username} });
 
-    return to_json({
-      service => $sm_service,
-      user_id => $user_id_from_first_request
-    })
+    # return to_json({
+    #   service => $sm_service,
+    #   user_id => $user_id_from_first_request
+    # })
 
   } elsif ($sm_service eq 'twitter') {
 
@@ -593,15 +601,23 @@ get '/smcallback/:sm_service' => sub {
     my %res_data = @{form_urldecode $res->{content}};
     my ($oauth_token, $oauth_token_secret, $user_id, $screen_name) = @res_data{'oauth_token','oauth_token_secret', 'user_id', 'screen_name'};
 
-    # If this is a registration process, save data into DB and log him in
+    my $user;
+    try {
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      $user = resultset('Users')->find($user->{id});
+    }
+    catch {
+      warn $_;
+      return to_json({ username => undef });
+    };
 
-    # else, it's a sign-in process. find user based on userId and log him in
+    return to_json({ username => $user->{username} });
 
-    return to_json({
-      service => $sm_service,
-      user_id => $user_id,
-      screen_name => $screen_name
-    })
+    # return to_json({
+    #   service => $sm_service,
+    #   user_id => $user_id,
+    #   screen_name => $screen_name
+    # })
 
   } elsif ($sm_service eq 'google') {
 
@@ -640,14 +656,22 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    # If this is a registration process, save data into DB and log him in
+    my $user;
+    try {
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      $user = resultset('Users')->find($user->{id});
+    }
+    catch {
+      warn $_;
+      return to_json({ username => undef });
+    };
 
-    # else, it's a sign-in process. find user based on userId and log him in
+    return to_json({ username => $user->{username} });
 
-    return to_json({
-      service => $sm_service,
-      user_id => $user_id
-    })
+    # return to_json({
+    #   service => $sm_service,
+    #   user_id => $user_id
+    # })
 
   } elsif ($sm_service eq 'github') {
 
@@ -689,14 +713,22 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    # If this is a registration process, save data into DB and log him in
+    my $user;
+    try {
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      $user = resultset('Users')->find($user->{id});
+    }
+    catch {
+      warn $_;
+      return to_json({ username => undef });
+    };
 
-    # else, it's a sign-in process. find user based on userId and log him in
+    return to_json({ username => $user->{username} });
 
-    return to_json({
-      service => $sm_service,
-      user_id => $user_id
-    })
+    # return to_json({
+    #   service => $sm_service,
+    #   user_id => $user_id
+    # })
 
   } elsif ($sm_service eq 'linkedin') {
 
@@ -737,14 +769,22 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    # If this is a registration process, save data into DB and log him in
+    my $user;
+    try {
+      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
+      $user = resultset('Users')->find($user->{id});
+    }
+    catch {
+      warn $_;
+      return to_json({ username => undef });
+    };
 
-    # else, it's a sign-in process. find user based on userId and log him in
+    return to_json({ username => $user->{username} });
 
-    return to_json({
-      service => $sm_service,
-      user_id => $user_id
-    })
+    # return to_json({
+    #   service => $sm_service,
+    #   user_id => $user_id
+    # })
 
   } else {
     return "Unsupported social media service.";

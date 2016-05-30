@@ -29,7 +29,7 @@ __PACKAGE__->table("user_oauth");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 service
+=head2 name
 
   data_type: 'varchar'
   is_foreign_key: 1
@@ -48,7 +48,7 @@ __PACKAGE__->table("user_oauth");
 __PACKAGE__->add_columns(
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "service",
+  "name",
   { data_type => "varchar", is_foreign_key => 1, is_nullable => 0, size => 255 },
   "service_id",
   { data_type => "varchar", is_foreign_key => 1, is_nullable => 0, size => 255 },
@@ -60,7 +60,7 @@ __PACKAGE__->add_columns(
 
 =item * L</user_id>
 
-=item * L</service>
+=item * L</name>
 
 =item * L</service_id>
 
@@ -68,7 +68,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("user_id", "service", "service_id");
+__PACKAGE__->set_primary_key("user_id", "name", "service_id");
 
 =head1 RELATIONS
 
@@ -98,7 +98,7 @@ Related object: L<PearlBee::Model::Schema::Result::OAuth>
 __PACKAGE__->belongs_to(
   "oauth",
   "PearlBee::Model::Schema::Result::OAuth",
-  { name => "service" },
+  { name => "name" },
   { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 

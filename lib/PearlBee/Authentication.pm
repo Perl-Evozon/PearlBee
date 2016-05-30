@@ -488,6 +488,8 @@ get '/smcallback/:sm_service' => sub {
   my $base_uri = config->{plugins}->{social_media}->{callback_base_uri} || config->{app_url} ||'http://localhost:5000/';
   my $callback_handler = 'smcallback/'.$sm_service;
   my $http = HTTP::Tiny->new();
+  my $user;
+  my $user_oauth;
 
   # Get the token_value based on the token_key saved on the cookie
   my $token_key = cookie('token_key');
@@ -550,17 +552,30 @@ get '/smcallback/:sm_service' => sub {
       return "User mismatch. Stop hacking!";
     }
 
-    my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id_from_first_request });
-      $user = resultset('Users')->find($user->{id});
+      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id_from_first_request });
     }
     catch {
       warn $_;
-      return to_json({ username => undef });
     };
 
-    return to_json({ username => $user->{username} });
+    if ($user_oauth) {
+      try {
+        $user = resultset('Users')->find($user_oauth->{id});
+      } catch {
+        warn $_;
+      };
+
+      if ($user) {
+        # Found account. Send him to dashboard
+        # TODO
+        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+      } else {
+        return "No blogs.perl.org account associated with this social account.";
+      }
+    } else {
+      return "No blogs.perl.org account associated with this social account.";
+    }
 
     # return to_json({
     #   service => $sm_service,
@@ -601,17 +616,30 @@ get '/smcallback/:sm_service' => sub {
     my %res_data = @{form_urldecode $res->{content}};
     my ($oauth_token, $oauth_token_secret, $user_id, $screen_name) = @res_data{'oauth_token','oauth_token_secret', 'user_id', 'screen_name'};
 
-    my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
-      $user = resultset('Users')->find($user->{id});
+      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
     }
     catch {
       warn $_;
-      return to_json({ username => undef });
     };
 
-    return to_json({ username => $user->{username} });
+    if ($user_oauth) {
+      try {
+        $user = resultset('Users')->find($user_oauth->{id});
+      } catch {
+        warn $_;
+      };
+
+      if ($user) {
+        # Found account. Send him to dashboard
+        # TODO
+        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+      } else {
+        return "No blogs.perl.org account associated with this social account.";
+      }
+    } else {
+      return "No blogs.perl.org account associated with this social account.";
+    }
 
     # return to_json({
     #   service => $sm_service,
@@ -656,17 +684,30 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
-      $user = resultset('Users')->find($user->{id});
+      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
     }
     catch {
       warn $_;
-      return to_json({ username => undef });
     };
 
-    return to_json({ username => $user->{username} });
+    if ($user_oauth) {
+      try {
+        $user = resultset('Users')->find($user_oauth->{id});
+      } catch {
+        warn $_;
+      };
+
+      if ($user) {
+        # Found account. Send him to dashboard
+        # TODO
+        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+      } else {
+        return "No blogs.perl.org account associated with this social account.";
+      }
+    } else {
+      return "No blogs.perl.org account associated with this social account.";
+    }
 
     # return to_json({
     #   service => $sm_service,
@@ -713,17 +754,30 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
-      $user = resultset('Users')->find($user->{id});
+      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
     }
     catch {
       warn $_;
-      return to_json({ username => undef });
     };
 
-    return to_json({ username => $user->{username} });
+    if ($user_oauth) {
+      try {
+        $user = resultset('Users')->find($user_oauth->{id});
+      } catch {
+        warn $_;
+      };
+
+      if ($user) {
+        # Found account. Send him to dashboard
+        # TODO
+        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+      } else {
+        return "No blogs.perl.org account associated with this social account.";
+      }
+    } else {
+      return "No blogs.perl.org account associated with this social account.";
+    }
 
     # return to_json({
     #   service => $sm_service,
@@ -769,17 +823,30 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    my $user;
     try {
-      my $user_oauth = resultset('UserOauth')->find({ service => $sm_service, service_id => $user_id });
-      $user = resultset('Users')->find($user->{id});
+      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
     }
     catch {
       warn $_;
-      return to_json({ username => undef });
     };
 
-    return to_json({ username => $user->{username} });
+    if ($user_oauth) {
+      try {
+        $user = resultset('Users')->find($user_oauth->{id});
+      } catch {
+        warn $_;
+      };
+
+      if ($user) {
+        # Found account. Send him to dashboard
+        # TODO
+        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+      } else {
+        return "No blogs.perl.org account associated with this social account.";
+      }
+    } else {
+      return "No blogs.perl.org account associated with this social account.";
+    }
 
     # return to_json({
     #   service => $sm_service,

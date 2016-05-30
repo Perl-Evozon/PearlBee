@@ -87,20 +87,21 @@ $(document).ready(function() {
 // });
 
 $('.btn-facebook').on('click', function() {
-  $('#FacebookCollapse:visible').length ?  $('.fa-facebook').text(' Connect with Facebook') : $('.fa-facebook').text(' Disconnect Facebook');
+  $('#FacebookCollapse:visible').length ?  $('.fa-facebook').siblings().text(' Connect with Facebook') : $('.fa-facebook').siblings().text(' Disconnect Facebook');
+  console.log($('.fa-facebook').siblings().text());
 });
 
 $('.btn-twitter').on('click', function() {
-$('#TwitterCollapse:visible').length ?  $('.fa-twitter').text(' Connect with Twitter') : $('.fa-twitter').text(' Disconnect Twitter');
+$('#TwitterCollapse:visible').length ?  $('.fa-twitter').siblings().text(' Connect with Twitter') : $('.fa-twitter').siblings().text(' Disconnect Twitter');
 });
 $('.btn-linkedin').on('click', function() {
-$('#LinkedInCollapse:visible').length ?  $('.fa-linkedin').text(' Connect with LinkedIn') : $('.fa-linkedin').text(' Disconnect LinkedIn');
+$('#LinkedInCollapse:visible').length ?  $('.fa-linkedin').siblings().text(' Connect with LinkedIn') : $('.fa-linkedin').siblings().text(' Disconnect LinkedIn');
 });
 $('.btn-google').on('click', function() {
-$('#GoogleCollapse:visible').length ?  $('.fa-google').text(' Connect with Google') : $('.fa-google').text(' Disconnect Google');
+$('#GoogleCollapse:visible').length ?  $('.fa-google').siblings().text(' Connect with Google') : $('.fa-google').siblings().text(' Disconnect Google');
 });
 $('.btn-github').on('click', function() {
-$('#GithubCollapse:visible').length ?  $('.fa-github').text(' Connect with Github') : $('.fa-github').text(' Disconnect Github');
+$('#GithubCollapse:visible').length ?  $('.fa-github').siblings().text(' Connect with Github') : $('.fa-github').siblings().text(' Disconnect Github');
 });
 
 // Google

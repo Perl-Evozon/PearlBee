@@ -368,6 +368,17 @@ Route handler for login with various social media services
 get '/smlogin' => sub {
   my $sm_service = params->{socialMediaService};
 
+  # Generate a state token used in the API handshakes.
+  # Generate a random key, save the key=>value pair in-memory
+  # Set the token_key in a cookie on the client side for later verification
+  my @chars = ("A".."Z", "a".."z");
+  my $token_key;
+  my $token_value;
+  $token_key.= $chars[rand @chars] for 1..10;
+  $token_value.= $chars[rand @chars] for 1..10;
+
+  session $token_key => $token_value;
+  cookie 'token_key' => $token_key;
 
   if (defined $sm_service) {
     my $http = HTTP::Tiny->new();
@@ -379,6 +390,7 @@ get '/smlogin' => sub {
 
       my $query_string = 'https://www.facebook.com/dialog/oauth?';
       $query_string .= 'client_id='.$facebook_client_id;
+      $query_string .= '&state='.$token_value;
       $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
 
       redirect $query_string;
@@ -421,6 +433,7 @@ get '/smlogin' => sub {
       my $query_string = 'https://accounts.google.com/o/oauth2/v2/auth?';
       $query_string .= 'scope=openid%20email%20profile%20';
       $query_string .= '&client_id='.$google_client_id;
+      $query_string .= '&state='.$token_value;
       $query_string .= '&response_type=code';
       $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
 
@@ -432,6 +445,7 @@ get '/smlogin' => sub {
 
       my $query_string = 'https://github.com/login/oauth/authorize?';
       $query_string .= '&client_id='.$github_client_id;
+      $query_string .= '&state='.$token_value;
       $query_string .= '&response_type=code';
       $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
 
@@ -444,7 +458,7 @@ get '/smlogin' => sub {
       my $query_string = 'https://www.linkedin.com/uas/oauth2/authorization?';
       $query_string .= '&client_id='.$linkedin_client_id;
       $query_string .= '&response_type=code';
-      $query_string .= '&state=DCEeFWf45A53sdfKef424';
+      $query_string .= '&state='.$token_value;
       $query_string .= '&redirect_uri='.uri_encode($base_uri . $callback_handler);
 
       redirect $query_string;
@@ -475,6 +489,14 @@ get '/smcallback/:sm_service' => sub {
   my $callback_handler = 'smcallback/'.$sm_service;
   my $http = HTTP::Tiny->new();
 
+  # Get the token_value based on the token_key saved on the cookie
+  my $token_key = cookie('token_key');
+  my $token_value = session($token_key);
+
+  if (!defined $token_value) {
+    return "Cannot continue. Please allow cookies!";
+  };
+
   if ($sm_service eq 'facebook') {
 
     # Handle authorization cancellation
@@ -486,6 +508,11 @@ get '/smcallback/:sm_service' => sub {
     my $facebook_client_id = config->{plugins}->{social_media}->{facebook}->{client_id} || $ENV{bpo_social_media_facebook_client_id};
     my $facebook_client_secret = config->{plugins}->{social_media}->{facebook}->{client_secret} || $ENV{bpo_social_media_facebook_client_secret};
     my $app_access_token = $facebook_client_id . "|" . $facebook_client_secret;
+
+    # Verify state token
+    if (query_parameters->get('state') ne $token_value) {
+      return "Invalid state/nonce token.";
+    }
 
     # Got facebook code, exchange it for an access token
     my $link = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id=' . $facebook_client_id;
@@ -583,6 +610,11 @@ get '/smcallback/:sm_service' => sub {
       return "You need to authorize blogs.perl.org in order to register/log in."
     }
 
+    # Verify state token
+    if (query_parameters->get('state') ne $token_value) {
+      return "Invalid state/nonce token.";
+    }
+
     my $code = query_parameters->get('code');
     my $google_client_id = config->{plugins}->{social_media}->{google}->{client_id} || $ENV{bpo_social_media_google_client_id};
     my $google_client_secret = config->{plugins}->{social_media}->{google}->{client_secret} || $ENV{bpo_social_media_google_client_secret};
@@ -629,6 +661,11 @@ get '/smcallback/:sm_service' => sub {
       return "Development server should run on port 5000."
     }
 
+    # Verify state token
+    if (query_parameters->get('state') ne $token_value) {
+      return "Invalid state/nonce token.";
+    }
+
     my $code = query_parameters->get('code');
     my $github_client_id = config->{plugins}->{social_media}->{github}->{client_id} || $ENV{bpo_social_media_github_client_id};
     my $github_client_secret = config->{plugins}->{social_media}->{github}->{client_secret} || $ENV{bpo_social_media_github_client_secret};
@@ -666,6 +703,11 @@ get '/smcallback/:sm_service' => sub {
     # Handle authorization cancellation
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
       return "You need to authorize blogs.perl.org in order to register/log in."
+    }
+
+    # Verify state token
+    if (query_parameters->get('state') ne $token_value) {
+      return "Invalid state/nonce token.";
     }
 
     my $code = query_parameters->get('code');

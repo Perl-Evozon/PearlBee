@@ -75,42 +75,17 @@ $(document).ready(function() {
 
 })
 
-// function myFunction() {
-//   url = '/smlogin?socialMediaService=openid' + window.location.search;
-//   return url;
-// }
-// // Twitter
-//
-// $('a[rel=popover]').popover({
-// html: 'true',
-// placement: 'bottom'
-// });
-
-$('.btn-facebook').on('click', function() {
-  $('#FacebookCollapse:visible').length ?  $('.fa-facebook').siblings().text(' Connect with Facebook') : $('.fa-facebook').siblings().text(' Disconnect Facebook');
-  console.log($('.fa-facebook').siblings().text());
-});
-
-$('.btn-twitter').on('click', function() {
-$('#TwitterCollapse:visible').length ?  $('.fa-twitter').siblings().text(' Connect with Twitter') : $('.fa-twitter').siblings().text(' Disconnect Twitter');
-});
-$('.btn-linkedin').on('click', function() {
-$('#LinkedInCollapse:visible').length ?  $('.fa-linkedin').siblings().text(' Connect with LinkedIn') : $('.fa-linkedin').siblings().text(' Disconnect LinkedIn');
-});
-$('.btn-google').on('click', function() {
-$('#GoogleCollapse:visible').length ?  $('.fa-google').siblings().text(' Connect with Google') : $('.fa-google').siblings().text(' Disconnect Google');
-});
-$('.btn-github').on('click', function() {
-$('#GithubCollapse:visible').length ?  $('.fa-github').siblings().text(' Connect with Github') : $('.fa-github').siblings().text(' Disconnect Github');
-});
-
-// Google
 
 
-// Github
 
 
-// LinkedIn
+  // Making Social Buttons from login page perform naturally
+  $('.connected-accounts').on('click', function() {
+    var networkName = $(this).find('h3').text(),
+        networkButton = $(this).find('span');
 
-
-// OpenID
+    $(networkButton).text(function(i, text){
+        return text === '  Connect with ' + networkName ?  '  Disconnect ' + networkName : '  Connect with ' + networkName;
+    });
+    $('.collapse').delay(1000).fadeOut(400);
+  });

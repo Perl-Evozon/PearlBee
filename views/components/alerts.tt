@@ -6,7 +6,19 @@
 	        <h4>Error</h4>
 	    	[% error %]
 	    </div>
-	</div>	
+	</div>
+
+[% END %]
+
+[% IF error_header %]
+
+	<div class="block-content collapse in">
+		<div class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<h4>[% error_header %]</h4>
+	    	[% headerless_error %]
+	    </div>
+	</div>
 
 [% END %]
 
@@ -18,7 +30,7 @@
 	        <h4>Warning</h4>
 	    	[% warning %]
 	    </div>
-	</div>	
+	</div>
 
 [% END %]
 
@@ -30,7 +42,7 @@
 	        <h4>Info</h4>
 	    	[% info %]
 	    </div>
-	</div>	
+	</div>
 
 [% END %]
 
@@ -42,6 +54,6 @@
 	        <h4>Success</h4>
 	    	[% success %]
 	    </div>
-	</div>	
+	</div>
 
 [% END %]

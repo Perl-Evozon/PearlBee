@@ -574,7 +574,11 @@ get '/smcallback/:sm_service' => sub {
         return "No blogs.perl.org account associated with this social account.";
       }
     } else {
-      return "No blogs.perl.org account associated with this social account.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        headerless_error => "No blogs.perl.org account associated with this social account."
+      };
+      # return "No blogs.perl.org account associated with this social account.";
     }
 
     # return to_json({

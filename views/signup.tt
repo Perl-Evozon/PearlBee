@@ -24,14 +24,14 @@
 
                             <div class="checkbox ">
                                 <label>
-                                    <a href="/password_recovery">Forgot your password?</a>
+                                    <a href="/password_recovery" style="color:currentColor">Forgot your password?</a>
                                 </label>
                             </div>
 
                             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
                         </form>
 
-                        <div id="label-or">
+                        <div class="margin-top-5">
                             - or -
                         </div>
 

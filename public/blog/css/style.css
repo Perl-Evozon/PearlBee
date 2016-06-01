@@ -58,7 +58,7 @@ a:hover,a:active,a:focus {
 strong{
    font-family: 'Open Sans', sans-serif !important;
    font-weight:600;
-}  
+}
 
 :focus {
    outline:none;
@@ -84,7 +84,7 @@ strong{
   line-height: 80px;
 }
 .container{
-   width:980px;   
+   width:980px;
 }
 .color{
    color:#16cbe6;
@@ -228,10 +228,10 @@ strong{
     -moz-animation-delay: 0.5s;
     -ms-animation-duration: 3s;
     -ms-animation-delay: 0.5s;
-    -o-animation-duration: 3s;    
-    -o-animation-delay: 0.5s;   
+    -o-animation-duration: 3s;
+    -o-animation-delay: 0.5s;
     animation-duration:3s;
-    animation-delay:0.5s; 
+    animation-delay:0.5s;
 }
 .carousel .carousel-caption h2{
     -webkit-animation-duration: 2s;
@@ -240,10 +240,10 @@ strong{
     -moz-animation-delay: 1s;
     -ms-animation-duration: 2s;
     -ms-animation-delay: 1s;
-    -o-animation-duration: 2s;    
+    -o-animation-duration: 2s;
     -o-animation-delay: 1s;
     animation-duration:2s;
-    animation-delay:1s;    
+    animation-delay:1s;
 }
 .carousel .carousel-caption p{
     -webkit-animation-duration: 2s;
@@ -252,10 +252,10 @@ strong{
     -moz-animation-delay: 1s;
     -ms-animation-duration: 2s;
     -ms-animation-delay: 1s;
-    -o-animation-duration: 2s;    
-    -o-animation-delay: 1s;  
+    -o-animation-duration: 2s;
+    -o-animation-delay: 1s;
     animation-duration:2s;
-    animation-delay:1s;    
+    animation-delay:1s;
 }
 .carousel .carousel-control span{
    display:inline-block;
@@ -377,7 +377,17 @@ strong{
    margin: 0 auto;
    line-height: 50px;
 }
-.dropdown-login .input-login .form-control { 
+
+/*Social Networks*/
+.btn-social {
+  margin-top: 5px;
+}
+/*btn-social is also used for other things and has different behaviour, ignore how they're defined in css*/
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.dropdown-login .input-login .form-control {
    border-radius: 10px;
 }
 .dropdown-login .links-group {
@@ -396,7 +406,7 @@ strong{
 .dropdown-login.logged_in .links-group a {
    color: #76737b;
 }
-.links-group .login-links:hover { 
+.links-group .login-links:hover {
    color: #0fa6bc;
 }
 .dropdown-login .links-group.write-post {
@@ -430,7 +440,7 @@ strong{
 }
 .links-group .dark-button {
    width: 40%;
-   height: 37px;    
+   height: 37px;
    border: 0;
    border-radius: 5px;
    background: #333;
@@ -447,7 +457,7 @@ strong{
 }
 .buttons-group .light-button {
    width: 40%;
-   height: 37px;    
+   height: 37px;
    border: 0;
    border-radius: 5px;
    background: #333;
@@ -497,7 +507,7 @@ strong{
 .mattblackmenu a.selected {
    background: transparent;
 }
-.ddsubmenustyle{  
+.ddsubmenustyle{
    border:0px;
    box-shadow:0px 0px 1px #888;
 }
@@ -507,7 +517,7 @@ strong{
    position: absolute;
    left: 0;
    top: 0;
-   list-style-type: none;  
+   list-style-type: none;
 }
 .ddsubmenustyle li a {
    display: block;
@@ -692,7 +702,7 @@ strong{
 .catchy .catchy-inner1{
    margin:3px 0px;
    border-top:1px dashed #bbb;
-   border-bottom:1px dashed #bbb;   
+   border-bottom:1px dashed #bbb;
 }
 .catchy .catchy-inner2{
    padding:25px 0px;
@@ -700,7 +710,7 @@ strong{
    margin:3px 0px;
    background:#333 url('../img/bit-tile-blue.gif') repeat center center;
    border-top:1px solid #999;
-   border-bottom:1px solid #999;   
+   border-bottom:1px solid #999;
 }
 .catchy .catchy-subscribe h3{
    font-size:40px;
@@ -833,7 +843,7 @@ strong{
    background:#16cbe6;
    height:65px;
    border-top-right-radius:6px;
-   border-bottom-right-radius:6px; 
+   border-bottom-right-radius:6px;
    border:1px solid #0fa6bc;
    color:#fff;
    text-align:center;
@@ -1239,7 +1249,7 @@ strong{
    width: 20px;
    height: 20px;
    display: inline-block;
-   background-position-x: inherit; 
+   background-position-x: inherit;
 }
 .blog-start .close-overlay .close-overlay-text {
    vertical-align: super;
@@ -1711,7 +1721,7 @@ footer .fwidget #powered_by {
       margin: 0 auto;
       float: initial;
    }
-      
+
 /* responsive for myprofile*/
    .myprofile.register .container {
       margin: 30px auto;
@@ -1844,7 +1854,7 @@ footer .fwidget #powered_by {
       margin-left: 7em;
    }
 }
-   
+
 @media (min-width: 381px) and (max-width: 480px) and (orientation: portrait){
    .carousel .carousel-caption{
       bottom:5px !important;
@@ -1855,7 +1865,7 @@ footer .fwidget #powered_by {
    .carousel .carousel-caption p{
       display:none;
       font-size:18px !important;
-   } 
+   }
    .carousel .carousel-control span{
       display:inline-block;
       background:#111;
@@ -1864,18 +1874,18 @@ footer .fwidget #powered_by {
       width:50px;
       line-height:45px;
       text-align:center;
-   }     
+   }
    .countdown{
       width:250px !important;
    }
    .countdown_amount {
       font-size:20px !important;
    }
-   
+
    .countdown_section{
       font-size:10px !important;
    }
-   
+
    /* START Home-page-overlay*/
    .blog-start-wrapper {
 /*      margin-top: 6em;*/
@@ -1920,7 +1930,7 @@ footer .fwidget #powered_by {
 }
 
 /*only for iphone 6 plus*/
-@media (min-width: 700px) and (max-width: 736px) and (orientation: landscape) { 
+@media (min-width: 700px) and (max-width: 736px) and (orientation: landscape) {
    .blog-start .close-overlay {
       margin-left: 21em;
    }
@@ -1971,7 +1981,7 @@ footer .fwidget #powered_by {
    }
    .carousel .carousel-caption p{
       font-size:18px !important;
-   } 
+   }
    .carousel .carousel-control span{
       display:inline !important;
       background:transparent;
@@ -1980,7 +1990,7 @@ footer .fwidget #powered_by {
       width:0px;
       line-height:0;
       text-align:right;
-   }  
+   }
    .header .logo{
       text-align:center;
       padding-bottom:10px;
@@ -1992,8 +2002,8 @@ footer .fwidget #powered_by {
       width:60%;
       margin:0px auto;
    }
-   .navis select { 
-        display: inline-block; 
+   .navis select {
+        display: inline-block;
       width:100%;
    }
    .cta h5{
@@ -2006,7 +2016,7 @@ footer .fwidget #powered_by {
    .cta .btn{
       margin-bottom:0px !important;
       max-width:150px;
-   }   
+   }
    .catchy .report-data{
       margin-bottom:15px;
       padding-bottom:15px;
@@ -2016,7 +2026,7 @@ footer .fwidget #powered_by {
        width:350px;
    }
    .countdown_amount {
-       font-size:30px;  
+       font-size:30px;
    }
    .header .navbar .nav > li > a:hover{
       background:#0fa6bc;
@@ -2025,7 +2035,7 @@ footer .fwidget #powered_by {
    .navbar-toggle {
       margin-right:0px !important;
    }
-   
+
    /* START Home-page-overlay*/
    .header .pull-left {
       margin-left: 15px;
@@ -2090,14 +2100,14 @@ footer .fwidget #powered_by {
    }
    .carousel .carousel-caption p{
       font-size:22px;
-   }   
+   }
    .cta .btn{
       margin-bottom:10px;
    }
    .catchy .report{
-      margin:20px 0px 0px 0px; 
+      margin:20px 0px 0px 0px;
    }
-   
+
    /* START Home-page-overlay*/
    .blog-start {
 /*      height: 15%;*/
@@ -2404,7 +2414,7 @@ a:focus {
 /*End Media query*/
 
 .separator {
-  height: 1px;  
+  height: 1px;
   margin: 20px auto;
   background-color: #444;
   }
@@ -2412,7 +2422,7 @@ a:focus {
 /* Listings*/
 .blog {
   position: relative;
-  margin-top: 0px; 
+  margin-top: 0px;
 }
 .blog .content {
    margin-top: 80px;
@@ -2747,7 +2757,7 @@ a:focus {
 .individual-post-category {
       margin-bottom: 50px;
 }
-.individual-post .pager-post li, 
+.individual-post .pager-post li,
 .pages .pager-post li {
    list-style-type: none;
    font-family: 'Montserrat', 'Open Sans', sans-serif;
@@ -3060,13 +3070,13 @@ input[readonly] {
 .alert-error {
     color: #a94442;
     background-color: #f2dede;
-    border-color: #ebccd1; 
+    border-color: #ebccd1;
 }
 .err-404, .err-500 {
     width: 100%;
     position: absolute;
     top:80px;
-     min-height: calc(100% - 80px); 
+     min-height: calc(100% - 80px);
      z-index: 13;
      background-color: #dadada;
 }
@@ -3190,7 +3200,7 @@ input[readonly] {
    top: -45px;
 }
 Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
-*/   
+*/
 #croppie-avatars .cr-image {
    opacity: 1 !important;
 }
@@ -3300,7 +3310,7 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
 .noscriptmsg h1 {
    margin:0;
    font-size: 18px;
-   line-height: 300px 
+   line-height: 300px
 }
 .noscriptmsg h2 {
    font-size: 27px;
@@ -3309,7 +3319,7 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
 
 /* Cookie bar */
 .cookies {
-   background-color:#f1f1f1; 
+   background-color:#f1f1f1;
    display:none;
    position:fixed;
    top:0;
@@ -3374,24 +3384,3 @@ Paul: L-am scos fiindca aranja poza aiurea in modal ope mobile
 .search-page .tabs .loading-posts {
    margin-bottom: 115px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

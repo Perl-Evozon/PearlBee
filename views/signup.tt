@@ -31,7 +31,7 @@
                             <button type="submit" class="submitRegister" id="submitRegister">Log in</button>
                         </form>
 
-                        <div class="margin-top-5">
+                        <div class="margin-top-5" style="font-weight:bold">
                             - or -
                         </div>
 

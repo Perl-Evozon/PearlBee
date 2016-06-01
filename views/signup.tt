@@ -22,7 +22,7 @@
                                 <input type="password" class="form-control" id="passwordSignin" placeholder="Password" name="password" required>
                             </div>
 
-                            <div class="checkbox ">
+                            <div class="form-group">
                                 <label>
                                     <a href="/password_recovery" style="color:currentColor">Forgot your password?</a>
                                 </label>

@@ -548,6 +548,13 @@ get '/smcallback/:sm_service' => sub {
     my $response = $http->get($link);
     my $access_token = from_json($response->{content})->{access_token};
 
+    if (!$access_token || $access_token eq undef) {
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that the service did not return an access token for us to work with."
+      };
+    };
+
     # Verify that token was indeed issued by BPO
     $link = 'https://graph.facebook.com/debug_token?input_token=';
     $link .= $access_token;
@@ -735,6 +742,13 @@ get '/smcallback/:sm_service' => sub {
 
     my $access_token = from_json($response->{content})->{access_token};
 
+    if (!$access_token || $access_token eq undef) {
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that the service did not return an access token for us to work with."
+      };
+    };
+
     $link = 'https://www.googleapis.com/oauth2/v1/userinfo?';
     $link .= ("access_token=".$access_token);
 
@@ -825,6 +839,13 @@ get '/smcallback/:sm_service' => sub {
     my %res_data = @{form_urldecode $response->{content}};
     my $access_token = $res_data{'access_token'};
 
+    if (!$access_token || $access_token eq undef) {
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that the service did not return an access token for us to work with."
+      };
+    };
+
     $link = 'https://api.github.com/user?access_token='.$access_token;
     $response = $http->get($link);
 
@@ -904,6 +925,13 @@ get '/smcallback/:sm_service' => sub {
     });
 
     my $access_token = from_json($response->{content})->{access_token};
+
+    if (!$access_token || $access_token eq undef) {
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that the service did not return an access token for us to work with."
+      };
+    };
 
     $link = 'https://api.linkedin.com//v1/people/~?format=json';
     $response = $http->get($link, {

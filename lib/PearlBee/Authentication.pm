@@ -412,7 +412,10 @@ get '/smlogin' => sub {
 
       # Anything but 200 is an error
       if ($res->{status} != 200) {
-        return "Failed to communicate with twitter for some reason."
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "Failed to communicate with Twitter for some reason."
+        };
       };
 
       my %res_data = @{form_urldecode $res->{content}};
@@ -420,7 +423,10 @@ get '/smlogin' => sub {
 
       # Verify oauth_callback_confirmed
       if ($oauth_callback_confirmed ne 'true') {
-        return "Failed to corrrectly communicate with twitter. (oauth_callback_confirmed is false)";
+        return template 'signup', {
+          error_header => "Oauth callback isn't confirmed",
+          error => "Failed to correctly communicate with Twitter. (oauth_callback_confirmed is false)"
+        };
       }
 
       # Redirect the user to authorize the app
@@ -465,14 +471,21 @@ get '/smlogin' => sub {
 
     } elsif ($sm_service eq 'openid') {
 
-      return "Deprecated.";
+      return template 'signup', {
+        error_header => "Deprecated...",
+        error => "We're sorry, we do not support OpenID any longer. Please sign in with a different account."
+      };
 
     } else {
-      return "Unsupported social media service.";
+      return template 'signup', {
+        error => "The social media service specified to connect with is unsupported by us."
+      };
     }
 
   } else {
-    return "No social media service specified.";
+    return template 'signup', {
+      error => "No social media service specified."
+    };
   }
 
 };
@@ -496,14 +509,21 @@ get '/smcallback/:sm_service' => sub {
   my $token_value = session($token_key);
 
   if (!defined $token_value) {
-    return "Cannot continue. Please allow cookies!";
+    return template 'signup', {
+      error_header => "Gastronomy error",
+      error => "Please enable cookeis in order to continue."
+    };
   };
 
+  # ===============FACEBOOK=============
   if ($sm_service eq 'facebook') {
 
-    # Handle authorization cancellation
+    # Handle authorization cancellation (user clicked on deny...)
     if (query_parameters->get('error') && query_parameters->get('error') eq 'access_denied') {
-      return "You need to authorize blogs.perl.org in order to register/log in."
+      return template 'signup', {
+        error_header => "Whoops",
+        error => "In order to continue, you must authorize the blogs.perl.org application to identify you."
+      };
     }
 
     my $code = query_parameters->get('code');
@@ -513,7 +533,10 @@ get '/smcallback/:sm_service' => sub {
 
     # Verify state token
     if (query_parameters->get('state') ne $token_value) {
-      return "Invalid state/nonce token.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems the service did not return our random token, or returned an invalid one."
+      };
     }
 
     # Got facebook code, exchange it for an access token
@@ -535,7 +558,10 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content})->{data};
 
     if ($data->{app_id} ne $facebook_client_id) {
-      return "Bad app id. Stop hacking.";
+      return template 'signup', {
+        error_header => "Oh you...",
+        error => "We got back a bad application id. Why won't you just stop hacking around?"
+      };
     }
 
     my $user_id_from_first_request = $data->{user_id};
@@ -549,7 +575,10 @@ get '/smcallback/:sm_service' => sub {
     my $user_data = from_json($response->{content});
 
     if ($user_data->{id} ne $user_id_from_first_request) {
-      return "User mismatch. Stop hacking!";
+      return template 'signup', {
+        error_header => "Oh you...",
+        error => "User mismatch. Impersonating someone else isn't really nice, you know?"
+      };
     }
 
     try {
@@ -569,16 +598,20 @@ get '/smcallback/:sm_service' => sub {
       if ($user) {
         # Found account. Send him to dashboard
         # TODO
-        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+        return template 'signup', {
+          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+        };
       } else {
-        return "No blogs.perl.org account associated with this social account.";
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+        };
       }
     } else {
       return template 'signup', {
         error_header => "Hmm...",
-        headerless_error => "No blogs.perl.org account associated with this social account."
+        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
       };
-      # return "No blogs.perl.org account associated with this social account.";
     }
 
     # return to_json({
@@ -586,11 +619,15 @@ get '/smcallback/:sm_service' => sub {
     #   user_id => $user_id_from_first_request
     # })
 
+  # ===============TWITTER=============
   } elsif ($sm_service eq 'twitter') {
 
     # Handle authorization cancellation
     if (query_parameters->get('denied')) {
-      return "You need to authorize blogs.perl.org in order to register/log in."
+      return template 'signup', {
+        error_header => "Whoops",
+        error => "In order to continue, you must authorize the blogs.perl.org application to identify you."
+      };
     }
 
     my $request_token = query_parameters->get('oauth_token');
@@ -614,7 +651,10 @@ get '/smcallback/:sm_service' => sub {
 
     # Anything but 200 is an error
     if ($res->{status} != 200) {
-      return "Failed to communicate with twitter for some reason."
+      return template 'signup', {
+        error_header => "Communication error",
+        error => "Something went wrong while trying to communicate with Twitter."
+      };
     };
 
     my %res_data = @{form_urldecode $res->{content}};
@@ -637,12 +677,20 @@ get '/smcallback/:sm_service' => sub {
       if ($user) {
         # Found account. Send him to dashboard
         # TODO
-        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+        return template 'signup', {
+          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+        };
       } else {
-        return "No blogs.perl.org account associated with this social account.";
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+        };
       }
     } else {
-      return "No blogs.perl.org account associated with this social account.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+      };
     }
 
     # return to_json({
@@ -651,16 +699,23 @@ get '/smcallback/:sm_service' => sub {
     #   screen_name => $screen_name
     # })
 
+  # ===============GOOGLE=============
   } elsif ($sm_service eq 'google') {
 
     # Handle authorization cancellation
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
-      return "You need to authorize blogs.perl.org in order to register/log in."
+      return template 'signup', {
+        error_header => "Whoops",
+        error => "In order to continue, you must authorize the blogs.perl.org application to identify you."
+      };
     }
 
     # Verify state token
     if (query_parameters->get('state') ne $token_value) {
-      return "Invalid state/nonce token.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems the service did not return our random token, or returned an invalid one."
+      };
     }
 
     my $code = query_parameters->get('code');
@@ -705,12 +760,20 @@ get '/smcallback/:sm_service' => sub {
       if ($user) {
         # Found account. Send him to dashboard
         # TODO
-        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+        return template 'signup', {
+          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+        };
       } else {
-        return "No blogs.perl.org account associated with this social account.";
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+        };
       }
     } else {
-      return "No blogs.perl.org account associated with this social account.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+      };
     }
 
     # return to_json({
@@ -718,21 +781,31 @@ get '/smcallback/:sm_service' => sub {
     #   user_id => $user_id
     # })
 
+  # ===============GITHUB=============
   } elsif ($sm_service eq 'github') {
 
     # Handle authorization cancellation
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
-      return "You need to authorize blogs.perl.org in order to register/log in."
+      return template 'signup', {
+        error_header => "Whoops",
+        error => "In order to continue, you must authorize the blogs.perl.org application to identify you."
+      };
     }
 
     # Handle uri mismatch
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'redirect_uri_mismatch')) {
-      return "Development server should run on port 5000."
+      return template 'signup', {
+        error_header => "Bummer",
+        error => "It seems like the redirect URL does not match the one specified in the application details from Github."
+      };
     }
 
     # Verify state token
     if (query_parameters->get('state') ne $token_value) {
-      return "Invalid state/nonce token.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems the service did not return our random token, or returned an invalid one."
+      };
     }
 
     my $code = query_parameters->get('code');
@@ -775,12 +848,20 @@ get '/smcallback/:sm_service' => sub {
       if ($user) {
         # Found account. Send him to dashboard
         # TODO
-        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+        return template 'signup', {
+          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+        };
       } else {
-        return "No blogs.perl.org account associated with this social account.";
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+        };
       }
     } else {
-      return "No blogs.perl.org account associated with this social account.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+      };
     }
 
     # return to_json({
@@ -788,16 +869,23 @@ get '/smcallback/:sm_service' => sub {
     #   user_id => $user_id
     # })
 
+  # ===============LINKEDIN=============
   } elsif ($sm_service eq 'linkedin') {
 
     # Handle authorization cancellation
     if (query_parameters->get('error') && (query_parameters->get('error') eq 'access_denied')) {
-      return "You need to authorize blogs.perl.org in order to register/log in."
+      return template 'signup', {
+        error_header => "Whoops",
+        error => "In order to continue, you must authorize the blogs.perl.org application to identify you."
+      };
     }
 
     # Verify state token
     if (query_parameters->get('state') ne $token_value) {
-      return "Invalid state/nonce token.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems the service did not return our random token, or returned an invalid one."
+      };
     }
 
     my $code = query_parameters->get('code');
@@ -844,12 +932,20 @@ get '/smcallback/:sm_service' => sub {
       if ($user) {
         # Found account. Send him to dashboard
         # TODO
-        return "User found. Should now redirect to dashboard. [Not yet implemented]"
+        return template 'signup', {
+          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+        };
       } else {
-        return "No blogs.perl.org account associated with this social account.";
+        return template 'signup', {
+          error_header => "Hmm...",
+          error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+        };
       }
     } else {
-      return "No blogs.perl.org account associated with this social account.";
+      return template 'signup', {
+        error_header => "Hmm...",
+        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+      };
     }
 
     # return to_json({
@@ -858,7 +954,10 @@ get '/smcallback/:sm_service' => sub {
     # })
 
   } else {
-    return "Unsupported social media service.";
+    return template 'signup', {
+      error_header => "Bummer",
+      error => "Unsupported media service. How did you even manage to get here?"
+    };
   }
 
 };

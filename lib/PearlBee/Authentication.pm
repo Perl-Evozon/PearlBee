@@ -503,6 +503,7 @@ get '/smcallback/:sm_service' => sub {
   my $http = HTTP::Tiny->new();
   my $user;
   my $user_oauth;
+  my $userLoggedIn = session('user') || undef;
 
   # Get the token_value based on the token_key saved on the cookie
   my $token_key = cookie('token_key');
@@ -588,37 +589,52 @@ get '/smcallback/:sm_service' => sub {
       };
     }
 
-    try {
-      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id_from_first_request });
-    }
-    catch {
-      warn $_;
-    };
+    # If user is logged in, it means he's connecting the social media account in the profile page
+    if ($userLoggedIn) {
+      # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-    if ($user_oauth) {
+      # [ TODO ] !!!!!!!!!!!
+
+      # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
+      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      # ...and render the profile settings page
+      return template 'profile';
+
+    } else {
+      # There's no user logged in. It's a login process
+
       try {
-        $user = resultset('Users')->find($user_oauth->{id});
-      } catch {
+        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id_from_first_request });
+      }
+      catch {
         warn $_;
       };
 
-      if ($user) {
-        # Found account. Send him to dashboard
-        # TODO
-        return template 'signup', {
-          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+      if ($user_oauth) {
+        try {
+          $user = resultset('Users')->find($user_oauth->{id});
+        } catch {
+          warn $_;
         };
+
+        if ($user) {
+          # Found account. Send him to dashboard
+          return template 'signup', {
+            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+          };
+
+        } else {
+          return template 'signup', {
+            error_header => "Hmm...",
+            error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+          };
+        }
       } else {
         return template 'signup', {
           error_header => "Hmm...",
           error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
         };
       }
-    } else {
-      return template 'signup', {
-        error_header => "Hmm...",
-        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
-      };
     }
 
     # return to_json({
@@ -667,38 +683,54 @@ get '/smcallback/:sm_service' => sub {
     my %res_data = @{form_urldecode $res->{content}};
     my ($oauth_token, $oauth_token_secret, $user_id, $screen_name) = @res_data{'oauth_token','oauth_token_secret', 'user_id', 'screen_name'};
 
-    try {
-      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
-    }
-    catch {
-      warn $_;
-    };
+    # If user is logged in, it means he's connecting the social media account in the profile page
+    if ($userLoggedIn) {
+      # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-    if ($user_oauth) {
+      # [ TODO ] !!!!!!!!!!!
+
+      # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
+      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      # ...and render the profile settings page
+      return template 'profile';
+
+    } else {
+      # There's no user logged in. It's a login process
+
       try {
-        $user = resultset('Users')->find($user_oauth->{id});
-      } catch {
+        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+      }
+      catch {
         warn $_;
       };
 
-      if ($user) {
-        # Found account. Send him to dashboard
-        # TODO
-        return template 'signup', {
-          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+      if ($user_oauth) {
+        try {
+          $user = resultset('Users')->find($user_oauth->{id});
+        } catch {
+          warn $_;
         };
+
+        if ($user) {
+          # Found account. Send him to dashboard
+          return template 'signup', {
+            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+          };
+
+        } else {
+          return template 'signup', {
+            error_header => "Hmm...",
+            error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+          };
+        }
       } else {
         return template 'signup', {
           error_header => "Hmm...",
           error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
         };
       }
-    } else {
-      return template 'signup', {
-        error_header => "Hmm...",
-        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
-      };
     }
+
 
     # return to_json({
     #   service => $sm_service,
@@ -757,38 +789,54 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    try {
-      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
-    }
-    catch {
-      warn $_;
-    };
+    # If user is logged in, it means he's connecting the social media account in the profile page
+    if ($userLoggedIn) {
+      # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-    if ($user_oauth) {
+      # [ TODO ] !!!!!!!!!!!
+
+      # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
+      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      # ...and render the profile settings page
+      return template 'profile';
+
+    } else {
+      # There's no user logged in. It's a login process
+
       try {
-        $user = resultset('Users')->find($user_oauth->{id});
-      } catch {
+        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+      }
+      catch {
         warn $_;
       };
 
-      if ($user) {
-        # Found account. Send him to dashboard
-        # TODO
-        return template 'signup', {
-          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+      if ($user_oauth) {
+        try {
+          $user = resultset('Users')->find($user_oauth->{id});
+        } catch {
+          warn $_;
         };
+
+        if ($user) {
+          # Found account. Send him to dashboard
+          return template 'signup', {
+            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+          };
+
+        } else {
+          return template 'signup', {
+            error_header => "Hmm...",
+            error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+          };
+        }
       } else {
         return template 'signup', {
           error_header => "Hmm...",
           error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
         };
       }
-    } else {
-      return template 'signup', {
-        error_header => "Hmm...",
-        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
-      };
     }
+
 
     # return to_json({
     #   service => $sm_service,
@@ -852,38 +900,54 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    try {
-      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
-    }
-    catch {
-      warn $_;
-    };
+    # If user is logged in, it means he's connecting the social media account in the profile page
+    if ($userLoggedIn) {
+      # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-    if ($user_oauth) {
+      # [ TODO ] !!!!!!!!!!!
+
+      # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
+      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      # ...and render the profile settings page
+      return template 'profile';
+
+    } else {
+      # There's no user logged in. It's a login process
+
       try {
-        $user = resultset('Users')->find($user_oauth->{id});
-      } catch {
+        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+      }
+      catch {
         warn $_;
       };
 
-      if ($user) {
-        # Found account. Send him to dashboard
-        # TODO
-        return template 'signup', {
-          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+      if ($user_oauth) {
+        try {
+          $user = resultset('Users')->find($user_oauth->{id});
+        } catch {
+          warn $_;
         };
+
+        if ($user) {
+          # Found account. Send him to dashboard
+          return template 'signup', {
+            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+          };
+
+        } else {
+          return template 'signup', {
+            error_header => "Hmm...",
+            error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+          };
+        }
       } else {
         return template 'signup', {
           error_header => "Hmm...",
           error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
         };
       }
-    } else {
-      return template 'signup', {
-        error_header => "Hmm...",
-        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
-      };
     }
+
 
     # return to_json({
     #   service => $sm_service,
@@ -943,38 +1007,54 @@ get '/smcallback/:sm_service' => sub {
     my $data = from_json($response->{content});
     my $user_id = $data->{id};
 
-    try {
-      $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
-    }
-    catch {
-      warn $_;
-    };
+    # If user is logged in, it means he's connecting the social media account in the profile page
+    if ($userLoggedIn) {
+      # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-    if ($user_oauth) {
+      # [ TODO ] !!!!!!!!!!!
+
+      # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
+      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      # ...and render the profile settings page
+      return template 'profile';
+
+    } else {
+      # There's no user logged in. It's a login process
+
       try {
-        $user = resultset('Users')->find($user_oauth->{id});
-      } catch {
+        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+      }
+      catch {
         warn $_;
       };
 
-      if ($user) {
-        # Found account. Send him to dashboard
-        # TODO
-        return template 'signup', {
-          info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+      if ($user_oauth) {
+        try {
+          $user = resultset('Users')->find($user_oauth->{id});
+        } catch {
+          warn $_;
         };
+
+        if ($user) {
+          # Found account. Send him to dashboard
+          return template 'signup', {
+            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
+          };
+
+        } else {
+          return template 'signup', {
+            error_header => "Hmm...",
+            error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
+          };
+        }
       } else {
         return template 'signup', {
           error_header => "Hmm...",
           error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
         };
       }
-    } else {
-      return template 'signup', {
-        error_header => "Hmm...",
-        error => "It seems that your social media account isn't yet connected to an existing blogs.perl.org account."
-      };
     }
+
 
     # return to_json({
     #   service => $sm_service,
@@ -988,6 +1068,65 @@ get '/smcallback/:sm_service' => sub {
     };
   }
 
+};
+
+
+=head2 /smdisconnect
+
+Route handler for disconnecting social media services
+
+=cut
+
+get '/smdisconnect' => sub {
+  my $sm_service = params->{socialMediaService};
+  my $userLoggedIn = session('user') || undef;
+
+  unless ($userLoggedIn) {
+    return template 'profile', {
+      error => "Error. No user logged in!"
+    };
+  };
+
+  # ===============FACEBOOK=============
+  if ($sm_service eq 'facebook') {
+    # Delete the database entry in the database which assigns the facebook account to the current user
+    # [ TODO!!!!!! ]
+
+    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    return template 'profile';
+  # ===============TWITTER=============
+  } elsif ($sm_service eq 'twitter') {
+    # Delete the database entry in the database which assigns the twitter account to the current user
+    # [ TODO!!!!!! ]
+
+    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    return template 'profile';
+  # ===============GOOGLE=============
+  } elsif ($sm_service eq 'google') {
+    # Delete the database entry in the database which assigns the google account to the current user
+    # [ TODO!!!!!! ]
+
+    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    return template 'profile';
+  # ===============GITHUB=============
+  } elsif ($sm_service eq 'github') {
+    # Delete the database entry in the database which assigns the github account to the current user
+    # [ TODO!!!!!! ]
+
+    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    return template 'profile';
+  # ===============LINKEDIN=============
+  } elsif ($sm_service eq 'linkedin') {
+    # Delete the database entry in the database which assigns the linkedin account to the current user
+    # [ TODO!!!!!! ]
+
+    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    return template 'profile';
+  } else {
+    return template 'profile', {
+      error => "Unsupported social media service to disconnect."
+    };
+  }
 };
 
 true;

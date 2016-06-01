@@ -147,9 +147,18 @@
 							<p>We will never post to Facebook or message your friends without your permission</p>
 						</div>
 						<div class="col-sm-4">
-							<button class="btn btn-facebook" type="button" data-toggle="collapse" data-target="#FacebookCollapse" aria-expanded="false" aria-controls="FacebookCollapse">
-								<span class="fa fa-facebook">  Connect with Facebook</span>
-							</button>
+							<h3>Vlad, please repeat this snippet for the rest</h3>
+							[% IF session.mock_user_connected_accounts_facebook %]
+								<h5>When in this state, button should go to /smdisconnect?socialMediaService=facebook</h5>
+								<button class="btn btn-facebook" type="button" data-toggle="collapse" data-target="#FacebookCollapse" aria-expanded="false" aria-controls="FacebookCollapse">
+									<span class="fa fa-facebook">  Disconnect Facebook account</span>
+								</button>
+							[% ELSE %]
+								<h5>When in this state, button should go to /smlogin?socialMediaService=facebook</h5>
+								<button class="btn btn-facebook" type="button" data-toggle="collapse" data-target="#FacebookCollapse" aria-expanded="false" aria-controls="FacebookCollapse">
+									<span class="fa fa-facebook">  Connect Facebook account</span>
+								</button>
+							[% END %]
 							<div class="collapse" id="FacebookCollapse">
 								<div class="well">
 									You are now connected with Facebook!

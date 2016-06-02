@@ -241,62 +241,62 @@ post '/register_success' => sub {
   template 'register_success';
 };
 
-=head2 /oauth/:username/service/:service/service_id/:service_id route
+# =head2 /oauth/:username/service/:service/service_id/:service_id route
 
-Add OpenAuth ID to an existing user
+# Add OpenAuth ID to an existing user
 
-=cut
+# =cut
 
-post '/oauth/:username/service/:service/service_id/:service_id' => sub {
-  my $username   = route_parameters->{'username'};
-  my $service    = route_parameters->{'service'};
-  my $service_id = route_parameters->{'service_id'};
-  my $user       = resultset('Users')->find(
-    \[ 'lower(username) = ?' => $username ] );
-  error "No username specified to attach a service to"
-    unless $username;
-  error "No service name specified to attach a service to"
-    unless $service;
-  error "No service ID specified to attach a service to"
-    unless $service_id;
-  try {
-    my $user_oauth = resultset("Useroauth")->create(
-      user_id    => $user->{id},
-      service    => $service,
-      service_id => $service_id
-    );
-  }
-  catch {
-    error "Could not assign $service ID";
-  };
-};
+# post '/oauth/:username/service/:service/service_id/:service_id' => sub {
+#   my $username   = route_parameters->{'username'};
+#   my $service    = route_parameters->{'service'};
+#   my $service_id = route_parameters->{'service_id'};
+#   my $user       = resultset('Users')->find(
+#     \[ 'lower(username) = ?' => $username ] );
+#   error "No username specified to attach a service to"
+#     unless $username;
+#   error "No service name specified to attach a service to"
+#     unless $service;
+#   error "No service ID specified to attach a service to"
+#     unless $service_id;
+#   try {
+#     my $user_oauth = resultset("Useroauth")->create(
+#       user_id    => $user->{id},
+#       service    => $service,
+#       service_id => $service_id
+#     );
+#   }
+#   catch {
+#     error "Could not assign $service ID";
+#   };
+# };
 
-=head2 /oauth/:service/service_id/:service_id
+# =head2 /oauth/:service/service_id/:service_id
 
-Validate OpenAuth ID for an existing user
+# Validate OpenAuth ID for an existing user
 
-=cut
+# =cut
 
-get '/oauth/:service/service_id/:service_id' => sub {
-  my $service    = route_parameters->{'service'};
-  my $service_id = route_parameters->{'service_id'};
-  error "No service name specified to attach a service to"
-    unless $service;
-  error "No service ID specified to attach a service to"
-    unless $service_id;
+# get '/oauth/:service/service_id/:service_id' => sub {
+#   my $service    = route_parameters->{'service'};
+#   my $service_id = route_parameters->{'service_id'};
+#   error "No service name specified to attach a service to"
+#     unless $service;
+#   error "No service ID specified to attach a service to"
+#     unless $service_id;
 
-  my $user;
-  try {
-    my $user_oauth = resultset('UserOAuth')->
-                  find({ service => $service, service_id => $service_id });
-    $user       = resultset('Users')->find($user->{id});
-  }
-  catch {
-    return to_json({ username => undef });
-  };
+#   my $user;
+#   try {
+#     my $user_oauth = resultset('UserOAuth')->
+#                   find({ service => $service, service_id => $service_id });
+#     $user       = resultset('Users')->find($user->{id});
+#   }
+#   catch {
+#     return to_json({ username => undef });
+#   };
   
-  return to_json({ username => $user->{username} });
-};
+#   return to_json({ username => $user->{username} });
+# };
 
 =head2 /login route
 
@@ -330,7 +330,7 @@ post '/login' => sub {
       
       session user    => $user->as_hashref;
       session user_id => $user->id;
-      
+      setConnectedAccountsOntoSession();
       redirect $redirect || '/';
     }
     else {
@@ -593,10 +593,15 @@ get '/smcallback/:sm_service' => sub {
     if ($userLoggedIn) {
       # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-      # [ TODO ] !!!!!!!!!!!
+      resultset('UserOauth')->update_or_create({
+        name    => "Facebook",
+        user_id => session('user')->{id},
+        service_id => $user_id_from_first_request
+      });
 
       # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
-      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      setConnectedAccountsOntoSession();
+
       # ...and render the profile settings page
       return template 'profile';
 
@@ -604,7 +609,7 @@ get '/smcallback/:sm_service' => sub {
       # There's no user logged in. It's a login process
 
       try {
-        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id_from_first_request });
+        $user_oauth = resultset('UserOauth')->find({ name => 'Facebook', service_id => $user_id_from_first_request });
       }
       catch {
         warn $_;
@@ -612,16 +617,16 @@ get '/smcallback/:sm_service' => sub {
 
       if ($user_oauth) {
         try {
-          $user = resultset('Users')->find($user_oauth->{id});
+          $user = resultset('Users')->find($user_oauth->user_id());
         } catch {
           warn $_;
         };
 
         if ($user) {
           # Found account. Send him to dashboard
-          return template 'signup', {
-            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
-          };
+          session user    => $user->as_hashref;
+          session user_id => $user->id;
+          return redirect '/';
 
         } else {
           return template 'signup', {
@@ -636,11 +641,6 @@ get '/smcallback/:sm_service' => sub {
         };
       }
     }
-
-    # return to_json({
-    #   service => $sm_service,
-    #   user_id => $user_id_from_first_request
-    # })
 
   # ===============TWITTER=============
   } elsif ($sm_service eq 'twitter') {
@@ -687,10 +687,15 @@ get '/smcallback/:sm_service' => sub {
     if ($userLoggedIn) {
       # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-      # [ TODO ] !!!!!!!!!!!
+      resultset('UserOauth')->update_or_create({
+        name    => "Twitter",
+        user_id => session('user')->{id},
+        service_id => $user_id
+      });
 
       # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
-      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      setConnectedAccountsOntoSession();
+
       # ...and render the profile settings page
       return template 'profile';
 
@@ -698,7 +703,7 @@ get '/smcallback/:sm_service' => sub {
       # There's no user logged in. It's a login process
 
       try {
-        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+        $user_oauth = resultset('UserOauth')->find({ name => 'Twitter', service_id => $user_id });
       }
       catch {
         warn $_;
@@ -706,16 +711,16 @@ get '/smcallback/:sm_service' => sub {
 
       if ($user_oauth) {
         try {
-          $user = resultset('Users')->find($user_oauth->{id});
+          $user = resultset('Users')->find($user_oauth->user_id());
         } catch {
           warn $_;
         };
 
         if ($user) {
           # Found account. Send him to dashboard
-          return template 'signup', {
-            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
-          };
+          session user    => $user->as_hashref;
+          session user_id => $user->id;
+          return redirect '/';
 
         } else {
           return template 'signup', {
@@ -730,13 +735,6 @@ get '/smcallback/:sm_service' => sub {
         };
       }
     }
-
-
-    # return to_json({
-    #   service => $sm_service,
-    #   user_id => $user_id,
-    #   screen_name => $screen_name
-    # })
 
   # ===============GOOGLE=============
   } elsif ($sm_service eq 'google') {
@@ -793,10 +791,15 @@ get '/smcallback/:sm_service' => sub {
     if ($userLoggedIn) {
       # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-      # [ TODO ] !!!!!!!!!!!
+      resultset('UserOauth')->update_or_create({
+        name    => "Google",
+        user_id => session('user')->{id},
+        service_id => $user_id
+      });
 
       # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
-      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      setConnectedAccountsOntoSession();
+
       # ...and render the profile settings page
       return template 'profile';
 
@@ -804,7 +807,7 @@ get '/smcallback/:sm_service' => sub {
       # There's no user logged in. It's a login process
 
       try {
-        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+        $user_oauth = resultset('UserOauth')->find({ name => 'Google', service_id => $user_id });
       }
       catch {
         warn $_;
@@ -812,16 +815,16 @@ get '/smcallback/:sm_service' => sub {
 
       if ($user_oauth) {
         try {
-          $user = resultset('Users')->find($user_oauth->{id});
+          $user = resultset('Users')->find($user_oauth->user_id());
         } catch {
           warn $_;
         };
 
         if ($user) {
           # Found account. Send him to dashboard
-          return template 'signup', {
-            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
-          };
+          session user    => $user->as_hashref;
+          session user_id => $user->id;
+          return redirect '/';
 
         } else {
           return template 'signup', {
@@ -836,12 +839,6 @@ get '/smcallback/:sm_service' => sub {
         };
       }
     }
-
-
-    # return to_json({
-    #   service => $sm_service,
-    #   user_id => $user_id
-    # })
 
   # ===============GITHUB=============
   } elsif ($sm_service eq 'github') {
@@ -904,10 +901,15 @@ get '/smcallback/:sm_service' => sub {
     if ($userLoggedIn) {
       # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-      # [ TODO ] !!!!!!!!!!!
+      resultset('UserOauth')->update_or_create({
+        name    => "Github",
+        user_id => session('user')->{id},
+        service_id => $user_id
+      });
 
       # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
-      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      setConnectedAccountsOntoSession();
+
       # ...and render the profile settings page
       return template 'profile';
 
@@ -915,7 +917,7 @@ get '/smcallback/:sm_service' => sub {
       # There's no user logged in. It's a login process
 
       try {
-        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+        $user_oauth = resultset('UserOauth')->find({ name => 'Github', service_id => $user_id });
       }
       catch {
         warn $_;
@@ -923,16 +925,16 @@ get '/smcallback/:sm_service' => sub {
 
       if ($user_oauth) {
         try {
-          $user = resultset('Users')->find($user_oauth->{id});
+          $user = resultset('Users')->find($user_oauth->user_id());
         } catch {
           warn $_;
         };
 
         if ($user) {
           # Found account. Send him to dashboard
-          return template 'signup', {
-            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
-          };
+          session user    => $user->as_hashref;
+          session user_id => $user->id;
+          return redirect '/';
 
         } else {
           return template 'signup', {
@@ -947,12 +949,6 @@ get '/smcallback/:sm_service' => sub {
         };
       }
     }
-
-
-    # return to_json({
-    #   service => $sm_service,
-    #   user_id => $user_id
-    # })
 
   # ===============LINKEDIN=============
   } elsif ($sm_service eq 'linkedin') {
@@ -1011,10 +1007,15 @@ get '/smcallback/:sm_service' => sub {
     if ($userLoggedIn) {
       # User is logged in. We should add a new entry in the DB which connects his blogs.perl.org account to this social media account
 
-      # [ TODO ] !!!!!!!!!!!
+      resultset('UserOauth')->update_or_create({
+        name    => "LinkedIn",
+        user_id => session('user')->{id},
+        service_id => $user_id
+      });
 
       # Afterwards, add this info into the user from the session (or resync the user in the session from the one in the DB), so the changes can appear in the frontend.
-      session(('mock_user_connected_accounts_' . $sm_service) => 1);
+      setConnectedAccountsOntoSession();
+
       # ...and render the profile settings page
       return template 'profile';
 
@@ -1022,7 +1023,7 @@ get '/smcallback/:sm_service' => sub {
       # There's no user logged in. It's a login process
 
       try {
-        $user_oauth = resultset('UserOauth')->find({ name => $sm_service, service_id => $user_id });
+        $user_oauth = resultset('UserOauth')->find({ name => 'LinkedIn', service_id => $user_id });
       }
       catch {
         warn $_;
@@ -1030,16 +1031,16 @@ get '/smcallback/:sm_service' => sub {
 
       if ($user_oauth) {
         try {
-          $user = resultset('Users')->find($user_oauth->{id});
+          $user = resultset('Users')->find($user_oauth->user_id());
         } catch {
           warn $_;
         };
 
         if ($user) {
           # Found account. Send him to dashboard
-          return template 'signup', {
-            info => "User found. Should now redirect to dashboard. [Not yet implemented]"
-          };
+          session user    => $user->as_hashref;
+          session user_id => $user->id;
+          return redirect '/';
 
         } else {
           return template 'signup', {
@@ -1054,12 +1055,6 @@ get '/smcallback/:sm_service' => sub {
         };
       }
     }
-
-
-    # return to_json({
-    #   service => $sm_service,
-    #   user_id => $user_id
-    # })
 
   } else {
     return template 'signup', {
@@ -1090,37 +1085,112 @@ get '/smdisconnect' => sub {
   # ===============FACEBOOK=============
   if ($sm_service eq 'facebook') {
     # Delete the database entry in the database which assigns the facebook account to the current user
-    # [ TODO!!!!!! ]
 
-    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    my $disconnected = 0;
+
+    try {
+      resultset('UserOauth')->find({
+        name    => "Facebook",
+        user_id => session('user')->{id}
+      })->delete();
+    } catch {
+      $disconnected = 1;
+    };
+
+    return template 'profile', {
+      info => 'Already disconnected.'
+    } if $disconnected == 1;
+
+    setConnectedAccountsOntoSession();
+
     return template 'profile';
   # ===============TWITTER=============
   } elsif ($sm_service eq 'twitter') {
     # Delete the database entry in the database which assigns the twitter account to the current user
-    # [ TODO!!!!!! ]
 
-    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    my $disconnected = 0;
+
+    try {
+      resultset('UserOauth')->find({
+        name    => "Twitter",
+        user_id => session('user')->{id}
+      })->delete();
+    } catch {
+      $disconnected = 1;
+    };
+
+    return template 'profile', {
+      info => 'Already disconnected.'
+    } if $disconnected == 1;
+
+    setConnectedAccountsOntoSession();
+
     return template 'profile';
   # ===============GOOGLE=============
   } elsif ($sm_service eq 'google') {
     # Delete the database entry in the database which assigns the google account to the current user
-    # [ TODO!!!!!! ]
 
-    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    my $disconnected = 0;
+
+    try {
+      resultset('UserOauth')->find({
+        name    => "Google",
+        user_id => session('user')->{id}
+      })->delete();
+    } catch {
+      $disconnected = 1;
+    };
+
+    return template 'profile', {
+      info => 'Already disconnected.'
+    } if $disconnected == 1;
+
+    setConnectedAccountsOntoSession();
+
     return template 'profile';
   # ===============GITHUB=============
   } elsif ($sm_service eq 'github') {
     # Delete the database entry in the database which assigns the github account to the current user
-    # [ TODO!!!!!! ]
 
-    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    my $disconnected = 0;
+
+    try {
+      resultset('UserOauth')->find({
+        name    => "Github",
+        user_id => session('user')->{id}
+      })->delete();
+    } catch {
+      $disconnected = 1;
+    };
+
+    return template 'profile', {
+      info => 'Already disconnected.'
+    } if $disconnected == 1;
+
+    setConnectedAccountsOntoSession();
+
     return template 'profile';
   # ===============LINKEDIN=============
   } elsif ($sm_service eq 'linkedin') {
     # Delete the database entry in the database which assigns the linkedin account to the current user
-    # [ TODO!!!!!! ]
 
-    session(('mock_user_connected_accounts_'.$sm_service) => 0);
+    my $disconnected = 0;
+
+    try {
+      resultset('UserOauth')->find({
+        name    => "LinkedIn",
+        user_id => session('user')->{id}
+      })->delete();
+    } catch {
+      $disconnected = 1;
+    };
+
+    return template 'profile', {
+      info => 'Already disconnected.'
+    } if $disconnected == 1;
+
+    setConnectedAccountsOntoSession();
+
     return template 'profile';
   } else {
     return template 'profile', {
@@ -1128,5 +1198,30 @@ get '/smdisconnect' => sub {
     };
   }
 };
+
+sub setConnectedAccountsOntoSession {
+
+  my @connectedAccounts;
+
+  try {
+    my @connected = resultset('UserOauth')->search({
+        user_id => session('user_id')
+      },{
+        columns => "name"
+    });
+
+    foreach my $account (@connected) {
+      push @connectedAccounts, $account->name();
+    };
+
+  } catch {
+    warn $_;
+  };
+
+
+  warn Dumper(@connectedAccounts);
+  session(connectedAccounts => \@connectedAccounts);
+
+}
 
 true;

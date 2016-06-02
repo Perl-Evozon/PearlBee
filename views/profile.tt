@@ -61,6 +61,13 @@
 	<div class="container">
 		[% INCLUDE components/alerts.tt %]
 
+<h1 style="color:red">connected accounts are:
+[% FOR d = session.connectedAccounts %]
+    [% d %]
+[% END %]
+</h1>
+
+
 		<div class="row">
 			<div class="myprofile-head">
 				<div class="col-sm-6">

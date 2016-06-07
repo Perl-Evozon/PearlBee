@@ -6,12 +6,15 @@ use strict;
 use warnings;
 use base qw/DBIx::Class::Core/;
 
+use Dancer2;
+my $user_table = config->{ user_table };
+
 __PACKAGE__->table_class('DBIx::Class::ResultSource::View');
 __PACKAGE__->table('comment');
 __PACKAGE__->result_source_instance->is_virtual(1);
 
 __PACKAGE__->result_source_instance->view_definition(
-    q[
+    qq[
       SELECT
         SUM( C.status = 'pending' ) AS pending,
         SUM( C.status = 'approved') AS approved,
@@ -24,7 +27,7 @@ __PACKAGE__->result_source_instance->view_definition(
           post AS P
           ON
             P.id = C.post_id
-        INNER JOIN user AS U
+        INNER JOIN $user_table AS U
           ON
             P.user_id = U.id
       WHERE

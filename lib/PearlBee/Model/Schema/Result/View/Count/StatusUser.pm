@@ -6,12 +6,15 @@ use strict;
 use warnings;
 use base qw/DBIx::Class::Core/;
 
+use Dancer2;
+my $user_table = config->{ user_table };
+
 __PACKAGE__->table_class('DBIx::Class::ResultSource::View');
-__PACKAGE__->table('user');
+__PACKAGE__->table( $user_table );
 __PACKAGE__->result_source_instance->is_virtual(1);
 
 __PACKAGE__->result_source_instance->view_definition(
-    q[
+    qq[
       SELECT
       	SUM( status = 'deactivated' ) AS deactivated,
       	SUM( status = 'activated') AS activated,
@@ -19,7 +22,7 @@ __PACKAGE__->result_source_instance->view_definition(
         SUM( status = 'pending' ) AS pending,
       	COUNT(*) AS total
       FROM
-      	user
+      	$user_table
     ]
 );
 

@@ -12,14 +12,15 @@ PearlBee::Model::Schema::Result::User - User table.
 
 use strict;
 use warnings;
-
 use base 'DBIx::Class::Core';
+
+use Dancer2;
 
 =head1 TABLE: C<user>
 
 =cut
 
-__PACKAGE__->table("user");
+__PACKAGE__->table( config->{ user_table } );
 
 =head1 ACCESSORS
 

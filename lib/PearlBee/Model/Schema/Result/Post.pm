@@ -212,9 +212,6 @@ __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-__PACKAGE__->load_components(qw/UTF8Columns/);
-__PACKAGE__->utf8_columns(qw/title content/);
-
 =head
 
 Get the number of comments for this post

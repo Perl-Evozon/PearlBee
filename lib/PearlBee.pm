@@ -614,7 +614,9 @@ sub new_captcha_code {
 
   session secret => $code;
   session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
-  push(session('secrets'), $code);
+#  push(session('secrets'), $code);
+  my $secrets = session( 'secrets' );
+  session secrets => [ @{ session( 'secrets' ) }, $code ];
 
   return $code;
 }

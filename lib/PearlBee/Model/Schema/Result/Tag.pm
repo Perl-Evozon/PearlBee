@@ -98,7 +98,4 @@ __PACKAGE__->many_to_many("posts", "post_tags", "post");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 
-__PACKAGE__->load_components(qw/UTF8Columns/);
-__PACKAGE__->utf8_columns(qw/name/);
-
 1;

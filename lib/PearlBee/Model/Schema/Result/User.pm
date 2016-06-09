@@ -1,12 +1,12 @@
 use utf8;
-package PearlBee::Model::Schema::Result::Users;
+package PearlBee::Model::Schema::Result::User;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Users - User table.
+PearlBee::Model::Schema::Result::User - User table.
 
 =cut
 
@@ -16,11 +16,11 @@ use base 'DBIx::Class::Core';
 
 use Dancer2;
 
-=head1 TABLE: C<users>
+=head1 TABLE: C<user>
 
 =cut
 
-__PACKAGE__->table( config->{ users_table } );
+__PACKAGE__->table( config->{ user_table } );
 
 =head1 ACCESSORS
 

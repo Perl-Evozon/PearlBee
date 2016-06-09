@@ -52,6 +52,7 @@ plugins:
           options:
             RaiseError: 1
             PrintError: 1
+            #quote_names: 1
             #mysql_enable_utf8: 1
 
 # Constants

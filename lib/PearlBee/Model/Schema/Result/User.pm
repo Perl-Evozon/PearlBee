@@ -1,12 +1,12 @@
 use utf8;
-package PearlBee::Model::Schema::Result::User;
+package PearlBee::Model::Schema::Result::Users;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::User - User table.
+PearlBee::Model::Schema::Result::Users - User table.
 
 =cut
 
@@ -16,11 +16,11 @@ use base 'DBIx::Class::Core';
 
 use Dancer2;
 
-=head1 TABLE: C<user>
+=head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table( config->{ user_table } );
+__PACKAGE__->table( config->{ users_table } );
 
 =head1 ACCESSORS
 
@@ -99,12 +99,6 @@ __PACKAGE__->table( config->{ user_table } );
   extra: {list => ["deactivated","activated","suspended","pending"]}
   is_nullable: 0
 
-=head2 salt
-
-  data_type: 'char'
-  is_nullable: 0
-  size: 24
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -147,8 +141,6 @@ __PACKAGE__->add_columns(
     extra => { list => ["deactivated", "activated", "suspended", "pending"] },
     is_nullable => 0,
   },
-  "salt",
-  { data_type => "char", is_nullable => 0, size => 24 },
 );
 
 =head1 PRIMARY KEY
@@ -330,6 +322,20 @@ sub allow {
   # welcome the user in an email
 
   $self->update({ status => 'deactivated' });
+}
+
+=head2 validate
+
+Validate a user's password
+
+=cut
+
+sub validate {
+  my ($self, $password) = @_;
+
+  my $hashed = crypt( $password, $self->password );
+
+  return $self->password eq $hashed;
 }
 
 1;

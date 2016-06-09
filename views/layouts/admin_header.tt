@@ -5,7 +5,7 @@
                <div class="col-md-3">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="[% session.app_url %]">[% session.blog_name %]</a></h1>  
+                     <h1><a href="/">[% session.blog_name %]</a></h1>  
                   </div>
                </div>
                
@@ -14,13 +14,13 @@
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
                           <li>
-                              <a href="[% session.app_url %]/admin"> Welcome <b>[% session.user.username %]</b> !</a>
+                              <a href="/admin"> Welcome <b>[% session.user.username %]</b> !</a>
                           </li>
                           <li class="dropdown"> 
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" class="my_account">My Account <b class="caret"></b></a>
                             <ul class="dropdown-menu animated fadeInUp">
-                              <li><a href="[% session.app_url %]/profile">Profile</a></li>
-                              <li><a href="[% session.app_url %]/logout">Logout</a></li>
+                              <li><a href="/profile">Profile</a></li>
+                              <li><a href="/logout">Logout</a></li>
                             </ul> 
                           </li> 
                         </ul> 

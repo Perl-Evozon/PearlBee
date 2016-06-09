@@ -3,11 +3,11 @@
     [% IF page == 1 %]
         <li class="previous disabled" style="visibility:hidden;"><a href="javascript:void(0);">&larr; Newer</a></li>
     [% ELSE %]
-        <li class="previous"><a href="[% session.app_url %][% previous_link %]">&larr; Newer</a></li>
+        <li class="previous"><a href="[% previous_link %]">&larr; Newer</a></li>
     [% END %]
     [% IF page >= total_pages %]
         <li class="next disabled" style="visibility:hidden;"><a href="javascript:void(0);">Older &rarr;</a></li>
     [% ELSE %]
-        <li class="next"><a href="[% session.app_url %][% next_link %]">Older &rarr;</a></li>
+        <li class="next"><a href="[% next_link %]">Older &rarr;</a></li>
     [% END %] 
 </ul>

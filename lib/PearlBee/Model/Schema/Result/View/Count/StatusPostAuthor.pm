@@ -13,9 +13,9 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT
-      	SUM( status = 'published' ) AS published,
-      	SUM( status = 'trash')      AS trash,
-      	SUM( status = 'draft' )     AS draft,
+      	SUM( CASE WHEN status = 'published' THEN 1 ELSE 0 END ) AS published,
+      	SUM( CASE WHEN status = 'trash' THEN 1 ELSE 0 END ) AS trash,
+      	SUM( CASE WHEN status = 'draft' THEN 1 ELSE 0 END ) AS draft,
       	COUNT(*)                    AS total
       FROM
       	post

@@ -58,7 +58,7 @@ get '/admin/users/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/users/list',
+  template 'admin/users/list',
     {
       users         => \@users,
       all           => $all, 
@@ -110,7 +110,7 @@ get '/admin/users/:status/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_users, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/users/list',
+  template 'admin/users/list',
     {
       users         => \@users,
       all           => $all, 
@@ -236,17 +236,16 @@ any '/admin/users/add' => sub {
       my $settings = resultset('Setting')->first;
       $dt->set_time_zone( $settings->timezone );
       
-      my ($password, $pass_hash, $salt) = create_password();
       my $username   = params->{username};
+      my $password   = params->{password};
       my $email      = params->{email};
       my $first_name = params->{first_name};
       my $last_name  = params->{last_name};
       my $role       = params->{role};
 
-      resultset('User')->create({
+      resultset('User')->create_hashed({
         username        => $username,
-        password        => $pass_hash,
-        salt            => $salt,        
+        password        => $password,
         first_name      => $first_name,
         last_name       => $last_name,
         register_date   => join (' ', $dt->ymd, $dt->hms),

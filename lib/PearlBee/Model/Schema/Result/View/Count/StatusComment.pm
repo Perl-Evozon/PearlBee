@@ -13,10 +13,10 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     q[
       SELECT
-      	SUM( status = 'pending' ) AS pending,
-      	SUM( status = 'approved') AS approved,
-      	SUM( status = 'trash' ) AS trash,
-        SUM( status = 'spam' ) AS spam,
+      	SUM( CASE WHEN status = 'pending'  THEN 1 ELSE 0 END ) AS pending,
+      	SUM( CASE WHEN status = 'approved' THEN 1 ELSE 0 END ) AS approved,
+      	SUM( CASE WHEN status = 'trash'    THEN 1 ELSE 0 END ) AS trash,
+        SUM( CASE WHEN status = 'spam'     THEN 1 ELSE 0 END ) AS spam,
       	COUNT(*) AS total
       FROM
       	comment

@@ -44,7 +44,7 @@ get '/author/posts/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/posts/list',
+  template 'admin/posts/list',
     {
       posts         => \@posts,
       trash         => $trash,
@@ -89,7 +89,7 @@ get '/author/posts/:status/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_posts, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/posts/list',
+  template 'admin/posts/list',
     {
       posts         => \@posts,
       trash         => $trash,
@@ -221,7 +221,7 @@ any '/author/posts/add' => sub {
     redirect session('app_url') . '/author/posts/edit/' . $post->slug;
   }
   else {
-    template '/admin/posts/add', { categories => \@categories }, { layout => 'admin' };
+    template 'admin/posts/add', { categories => \@categories }, { layout => 'admin' };
   }
 
 };
@@ -276,7 +276,7 @@ get '/author/posts/edit/:slug' => sub {
     session success => undef;
   }
 
-  template '/admin/posts/edit', $params, { layout => 'admin' };
+  template 'admin/posts/edit', $params, { layout => 'admin' };
 
 };
 

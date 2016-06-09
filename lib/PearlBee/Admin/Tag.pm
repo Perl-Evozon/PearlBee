@@ -15,7 +15,7 @@ get '/admin/tags' => sub {
 
   my @tags = resultset('Tag')->all;
 
-  template '/admin/tags/list', { tags => \@tags }, { layout => 'admin' };
+  template 'admin/tags/list', { tags => \@tags }, { layout => 'admin' };
 
 };
 
@@ -37,7 +37,7 @@ post '/admin/tags/add' => sub {
   if ( $found_slug_or_name ) {
     @tags = resultset('Tag')->all;
 
-    template '/admin/tags/list', { warning => "The tag name or slug already exists", tags => \@tags } , { layout => 'admin' };
+    template 'admin/tags/list', { warning => "The tag name or slug already exists", tags => \@tags } , { layout => 'admin' };
   }
   else {
     eval {
@@ -49,7 +49,7 @@ post '/admin/tags/add' => sub {
 
     @tags = resultset('Tag')->all;
 
-    template '/admin/tags/list', { success => "The cateogry was successfully added.", tags => \@tags }, { layout => 'admin' };
+    template 'admin/tags/list', { success => "The cateogry was successfully added.", tags => \@tags }, { layout => 'admin' };
   }
 
 };
@@ -103,7 +103,7 @@ any '/admin/tags/edit/:id' => sub {
     # Check if the user entered an existing slug
     if ( $found_slug ) {
 
-      template '/admin/tags/list',
+      template 'admin/tags/list',
       {
         tag     => $tag,
         tags   => \@tags,
@@ -115,7 +115,7 @@ any '/admin/tags/edit/:id' => sub {
     # Check if the user entered an existing name
     elsif ( $found_name ) {
 
-      template '/admin/tags/list',
+      template 'admin/tags/list',
       {
         tag     => $tag,
         tags   => \@tags,
@@ -134,7 +134,7 @@ any '/admin/tags/edit/:id' => sub {
 
       @tags = resultset('Tag')->all;
 
-      template '/admin/tags/list',
+      template 'admin/tags/list',
       {
         tag     => $tag,
         tags   => \@tags,
@@ -145,7 +145,7 @@ any '/admin/tags/edit/:id' => sub {
   }
   else {
     # If the form wasn't submited just list the tags
-    template '/admin/tags/list',
+    template 'admin/tags/list',
       {
         tag   => $tag,
         tags  => \@tags

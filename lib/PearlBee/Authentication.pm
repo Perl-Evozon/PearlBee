@@ -19,7 +19,7 @@ get '/admin' => sub {
 
 =head
 
-login metehod
+login method
 
 =cut
 
@@ -35,15 +35,14 @@ post '/login' => sub {
       ]
     })->first;
   
-  my $password_hash = generate_hash($password, $user->salt) if $user;
-  if($user && $user->password eq $password_hash->{hash}) {
+  if ( $user and $user->validate($password) ) {
     
     my $user_obj->{is_admin} = $user->is_admin;
     $user_obj->{role}        = $user->role;
     $user_obj->{id}          = $user->id;
-	$user_obj->{username}    = $user->username;
+    $user_obj->{username}    = $user->username;
 
-    session user => $user_obj;
+    session user    => $user_obj;
     session user_id => $user->id;
 	
     redirect('/dashboard');

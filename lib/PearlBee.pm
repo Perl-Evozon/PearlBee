@@ -22,7 +22,7 @@ use PearlBee::Admin;
 use PearlBee::Author::Post;
 use PearlBee::Author::Comment;
 
-use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
+use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 use PearlBee::Helpers::Captcha;
 
@@ -549,17 +549,17 @@ post '/sign-up' => sub {
             my $settings = resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
 
-            my ($password, $pass_hash, $salt) = create_password();
-
-            resultset('User')->create({
-              username        => $params->{username},
-              password        => $pass_hash,
-              salt            => $salt,
-              email           => $params->{'email'},
+            resultset('User')->create_hashed({
               first_name      => $params->{'first_name'},
               last_name       => $params->{'last_name'},
+              username        => $params->{username},
+              password        => $params->{password},
               register_date   => join (' ', $dt->ymd, $dt->hms),
+              email           => $params->{'email'},
+              company         => $params->{'company'},
+              telephone       => $params->{'telephone'},
               role            => 'author',
+              activation_key  => $params->{'activation_key'},
               status          => 'pending'
             });
 

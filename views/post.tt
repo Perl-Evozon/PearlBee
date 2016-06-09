@@ -22,7 +22,7 @@
 
                             [% FOREACH category in post.post_categories %]
                                 <div class="block_elements">
-                                    <i class="icon-list"></i> <a href="[% session.app_url %]/posts/category/[% category.category.slug %][% settings.static && '.html' %]">[% category.category.name %]</a>
+                                    <i class="icon-list"></i> <a href="/posts/category/[% category.category.slug %][% settings.static && '.html' %]">[% category.category.name %]</a>
                                 </div>
                             [% END %]
 

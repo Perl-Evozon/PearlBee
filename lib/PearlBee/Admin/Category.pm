@@ -21,7 +21,7 @@ list all categories
 get '/admin/categories' => sub {
   my @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
-  template '/admin/categories/list', { categories => \@categories }, { layout => 'admin' };
+  template 'admin/categories/list', { categories => \@categories }, { layout => 'admin' };
 };
 
 =head
@@ -62,7 +62,7 @@ post '/admin/categories/add' => sub {
   @categories = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
   $params->{categories} = \@categories;
 
-  template '/admin/categories/list', $params, { layout => 'admin' };
+  template 'admin/categories/list', $params, { layout => 'admin' };
 
 };
 
@@ -86,7 +86,7 @@ get '/admin/categories/delete/:id' => sub {
     error $@;
     my @categories   = resultset('Category')->search({ name => { '!=' => 'Uncategorized'} });
 
-    template '/admin/categories/list', { categories => \@categories, warning => "Something went wrong." }, { layout => 'admin' };
+    template 'admin/categories/list', { categories => \@categories, warning => "Something went wrong." }, { layout => 'admin' };
   }
   else {
     redirect session('app_url') . "/admin/categories";
@@ -147,7 +147,7 @@ any '/admin/categories/edit/:id' => sub {
   $params->{categories} = \@categories;
   
   # If the form wasn't submited just list the categories
-  template '/admin/categories/list', $params, { layout => 'admin' };
+  template 'admin/categories/list', $params, { layout => 'admin' };
 
 
 };

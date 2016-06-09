@@ -16,10 +16,10 @@ __PACKAGE__->result_source_instance->is_virtual(1);
 __PACKAGE__->result_source_instance->view_definition(
     qq[
       SELECT
-      	SUM( status = 'deactivated' ) AS deactivated,
-      	SUM( status = 'activated') AS activated,
-      	SUM( status = 'suspended' ) AS suspended,
-        SUM( status = 'pending' ) AS pending,
+      	SUM( CASE WHEN status = 'deactivated'  THEN 1 ELSE 0 END ) AS deactivated,
+      	SUM( CASE WHEN status = 'activated'    THEN 1 ELSE 0 END ) AS activated,
+      	SUM( CASE WHEN status = 'suspended' THEN 1 ELSE 0 END ) AS suspended,
+        SUM( CASE WHEN status = 'pending'   THEN 1 ELSE 0 END ) AS pending,
       	COUNT(*) AS total
       FROM
       	$user_table

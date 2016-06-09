@@ -2,9 +2,8 @@ package PearlBee::Dashboard;
 
 use Dancer2;
 use Dancer2::Plugin::DBIC;
-use PearlBee::Password;
 
-=head
+=head2
 
 Check if the user has authorization for this part of the web site
 
@@ -16,7 +15,7 @@ hook 'before' => sub {
   redirect session('app_url') . '/'  if ( !$user );
 };
 
-=head
+=head2
 
 Dashboard index
 
@@ -40,8 +39,7 @@ any '/dashboard' => sub {
 	      my $password_hash = generate_hash($password1);
         $user->update({
           password => $password_hash->{hash},
-          status   => 'activated',
-	        salt 	   => $password_hash->{salt}
+          status   => 'activated'
         });
 
         template 'admin/index', { user => $user }, { layout => 'admin' };
@@ -58,7 +56,7 @@ any '/dashboard' => sub {
 
 };
 
-=head
+=head2
 
 Edit profile
 
@@ -80,9 +78,9 @@ any '/profile' => sub {
   if ( $first_name && $last_name && $email ) {
 
     $user->update({
-        first_name   => $first_name,
-        last_name   => $last_name,
-        email     => $email
+        first_name => $first_name,
+        last_name  => $last_name,
+        email      => $email
       });
 
     template 'admin/profile', { user => $user, success => 'Your data was updated succesfully!' }, { layout => 'admin' };
@@ -90,8 +88,7 @@ any '/profile' => sub {
   }
   elsif ( $old_password && $new_password && $new_password2 ) {
 
-    my $password_hash = generate_hash($old_password, $user->salt);
-    if ( $password_hash->{hash} ne $user->password ) {
+    if ( !$user->validate($old_password) ) {
 
       template 'admin/profile', { user => $user, warning => 'Incorrect old password!' }, { layout => 'admin' };
 
@@ -102,8 +99,7 @@ any '/profile' => sub {
 
     }
     else {
-      $password_hash = generate_hash($new_password);
-      $user->update({ password => $password_hash->{hash}, salt => $password_hash->{salt} });
+      $user->update_hashed({ password => $new_password });
 
       template 'admin/profile', { user => $user, success => 'The password was changed succesfully!' }, { layout => 'admin' };
     }

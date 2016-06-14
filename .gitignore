@@ -1,8 +1,33 @@
-*.DS_Store
-.build
-tags
+# Please do not remove these entries.
+# If you need to alter these files for any reason, please see Jeff first.
+#
+db_patches/*
+config.yml
+
+# Directories that should be set up during the install process
+# (and captcha/ should no longer be used, as we now use reCAPTCHA.)
+#
+logs/
+public/avatars
+public/avatars/*
+public/covers/*
+public/captcha/*
+public/userpics
+public/userpics/*
+sessions/
+
+# Temporary files created during the build process
+#
 Makefile
 blib
+MYMETA.json
+MYMETA.yml
+
+# Miscellaneous files that shouldn't be added.
+#
+.build
+*.DS_Store
+tags
 cover_db
 pm_to_blib
 Makefile.old
@@ -13,13 +38,4 @@ MYMETA.yml
 /.tidyall.d
 /perltidy.LOG
 perlblog-*
-logs
-public/avatars
-public/avatars/*
-public/covers/*
-public/captcha/*
-public/userpics
-public/userpics/*
-config.yml
 local/
-sessions/

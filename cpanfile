@@ -23,6 +23,8 @@ requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
 requires 'GD';
+requires 'Plack', '1.0000';
+requires 'Template', '2.26';
 
 # speed up Dancer2
 requires 'Scope::Guard';

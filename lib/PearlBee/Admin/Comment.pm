@@ -40,7 +40,7 @@ get '/admin/comments/page/:page' => sub {
   my $pages_per_set   = 7;
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,
@@ -87,7 +87,7 @@ get '/admin/comments/:status/page/:page' => sub {
   my $pagination      = generate_pagination_numbering($total_comments, $posts_per_page, $current_page, $pages_per_set);
 
 
-  template '/admin/comments/list',
+  template 'admin/comments/list',
       {
         comments      => \@comments,
         all           => $all,

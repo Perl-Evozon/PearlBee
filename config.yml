@@ -41,7 +41,7 @@ plugins:
           dsn: dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
           user: root
-          pass: mysqlpassword
+          pass: 1 #mysqlpassword
           options:
             RaiseError: 1
             PrintError: 1

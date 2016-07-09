@@ -12,7 +12,7 @@ requires 'Data::Pageset';
 requires 'Moose';
 requires 'LWP::UserAgent';
 requires 'LWP::Simple';
-requires 'Authen::Captcha, '1.024';
+requires 'Authen::Captcha', '1.024';
 requires 'Email::Template';
 requires 'XML::Simple';
 requires 'Digest';

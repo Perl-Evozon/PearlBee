@@ -12,7 +12,7 @@ requires 'Data::Pageset';
 requires 'Moose';
 requires 'LWP::UserAgent';
 requires 'LWP::Simple';
-requires 'Authen::Captcha';
+requires 'Authen::Captcha, '1.024';
 requires 'Email::Template';
 requires 'XML::Simple';
 requires 'Digest';
@@ -22,7 +22,7 @@ requires 'MIME::Base64';
 requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
-requires 'GD';
+requires 'GD', '2.56';
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';
 

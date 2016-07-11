@@ -1,4 +1,5 @@
 requires 'DBIx::Class';
+requiers 'apt-get install libgdbm-dev';
 requires 'GD', '2.56';
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';

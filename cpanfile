@@ -1,5 +1,5 @@
 requires 'DBIx::Class';
-requires 'libgd2-xpm-dev';
+requires 'GD', '2.56';
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'Dancer2::Plugin::REST';
@@ -23,7 +23,7 @@ requires 'MIME::Base64';
 requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
-requires 'GD', '2.56';
+
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';
 

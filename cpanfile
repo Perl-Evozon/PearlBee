@@ -1,5 +1,5 @@
 requires 'DBIx::Class';
-requires 'yum install libgd2-xpm-dev';
+requires 'libgd2-xpm-dev';
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'Dancer2::Plugin::REST';

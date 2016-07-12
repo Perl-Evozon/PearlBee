@@ -1,5 +1,5 @@
 requires 'DBIx::Class';
-requiers 'ext-gd';
+requiers '*-dev';
 
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';

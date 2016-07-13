@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::PostTag;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::PostTag - Post tag table.
+PearlBee::Model::Schema::Result::PostTag
 
 =cut
 
@@ -72,7 +72,7 @@ __PACKAGE__->belongs_to(
   "post",
   "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 tag
@@ -87,12 +87,12 @@ __PACKAGE__->belongs_to(
   "tag",
   "PearlBee::Model::Schema::Result::Tag",
   { id => "tag_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:X6jXKbLzGuv5nx7NvsFNwA
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-07-13 02:54:26
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OXSRTLWmIbc/r1Ptlg0NhA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

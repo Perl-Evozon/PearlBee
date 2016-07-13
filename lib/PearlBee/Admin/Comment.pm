@@ -134,7 +134,7 @@ get '/admin/comments/trash/:id' => sub {
   my $comment    = resultset('Comment')->find( $comment_id );
   my $user       = session('user');
 
-  eval { $comment->trash($user); };
+  $comment->trash($user);
 
   redirect request()->{headers}->{referer};
 };

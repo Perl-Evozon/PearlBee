@@ -265,6 +265,9 @@ __PACKAGE__->has_many(
 
 # Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-07-13 03:29:13
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xUVhzOHyOAeNhIJJH/GKPw
+
+use PearlBee::Password qw( generate_hash );
+
 =head
 
 Check if the user has administration authority
@@ -364,9 +367,28 @@ Validate a user's password
 sub validate {
   my ($self, $password) = @_;
 
-  my $hashed = crypt( $password, $self->password );
+  my $hashed = generate_hash( $password, $self->salt );
 
-  return $self->password eq $hashed;
+  return $hashed->{ hash } eq $self->password;
+}
+
+=head2 update_hashed
+
+Used to change the password by calling PearlBee::Password.
+
+=cut
+
+sub update_hashed {
+    my ( $self, $params ) = @_;
+
+    my $password = generate_hash( $params->{ password } );
+
+    $self->password( $password->{ hash } );
+    $self->salt( $password->{ salt } );
+
+    $self->update;
+
+    return $self;
 }
 
 1;

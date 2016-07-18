@@ -1,8 +1,9 @@
 requires 'DBIx::Class';
-requiers "Dancer2::Plugin::reCAPTCHA", '0.3';
+
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'Dancer2::Plugin::REST';
+requiers "Dancer2::Plugin::reCAPTCHA", '0.3';
 requires 'DateTime';
 requires 'DateTime::TimeZone';
 requires 'Data::GUID';

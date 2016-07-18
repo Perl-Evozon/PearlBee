@@ -1,6 +1,6 @@
 requires 'DBIx::Class';
 
-requires 'GD', '2.56';
+
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'Dancer2::Plugin::REST';
@@ -14,7 +14,7 @@ requires 'Data::Pageset';
 requires 'Moose';
 requires 'LWP::UserAgent';
 requires 'LWP::Simple';
-requires 'Authen::Captcha', '1.024';
+#requires 'Authen::Captcha', '1.024';
 requires 'Email::Template';
 requires 'XML::Simple';
 requires 'Digest';

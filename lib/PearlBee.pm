@@ -522,9 +522,9 @@ get '/posts/tag/:slug/page/:page' => sub {
 
 get '/sign-up' => sub {
 
-  new_captcha_code();
+  #new_captcha_code();
 
-  template 'signup', {};
+  template 'signup', {recaptcha => recaptcha_display()};
 };
 
 post '/sign-up' => sub {
@@ -539,7 +539,10 @@ post '/sign-up' => sub {
     last_name       => $params->{'last_name'},
   };
 
-  if ( check_captcha_code($params->{'secret'}) ) {
+  my $response = param('g-recaptcha-response');
+  my $result = recaptcha_verify($response);
+
+  if (  $result->{success}  ) {
     # The user entered the correct secrete code
     eval {
 

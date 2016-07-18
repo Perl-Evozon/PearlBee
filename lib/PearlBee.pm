@@ -198,7 +198,11 @@ post '/comment/add' => sub {
     warning     => 'The secret code is incorrect'
   };
 
-  if ( check_captcha_code($secret) ) {
+  my $response = param('g-recaptcha-response');
+  my $result = recaptcha_verify($response);
+
+
+  if ( $result->{success} ) {
     # The user entered the correct secret code
     eval {
 

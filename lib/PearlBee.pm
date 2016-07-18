@@ -24,7 +24,7 @@ use PearlBee::Author::Comment;
 
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
-use PearlBee::Helpers::Captcha;
+#use PearlBee::Helpers::Captcha;
 use Dancer2::Plugin::reCAPTCHA;
 
 our $VERSION = '0.1';
@@ -134,7 +134,7 @@ get '/post/:slug' => sub {
   my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  new_captcha_code();
+  
 
   # Grab the approved comments for this post and the corresponding reply comments
   my @comments;
@@ -158,6 +158,7 @@ get '/post/:slug' => sub {
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
+      recaptcha => recaptcha_display()
     };
 };
 

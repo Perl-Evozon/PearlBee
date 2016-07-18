@@ -263,9 +263,12 @@ post '/comment/add' => sub {
   }
   $template_params->{comments} = \@comments;
 
-  new_captcha_code();
+ 
 
-  template 'post', $template_params;
+  template 'post',{
+    $template_params,
+    recaptcha => recaptcha_display(),
+  }; 
 
 };
 

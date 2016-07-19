@@ -38,7 +38,7 @@ Prepare the blog path
 my $env_url = $ENV{MYAPP_DB_DSN};
 my $env_user = $ENV{MYAPP_DB_USERNAME};
 my $env_password = $ENV{MYAPP_DB_PASSWORD};
-my $schema = My::Schema->connect("$env_url;user=$env_user;password=$env_password");
+my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );

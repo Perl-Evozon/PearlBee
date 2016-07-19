@@ -42,9 +42,9 @@ plugins:
           schema_class: PearlBee::Model::Schema
           user: vpxzgqnzheckgi #root
           pass: xLJ33GKAhzrdrHo8RJ8aHH89rg   #1 #mysqlpassword
-          options:
-            RaiseError: 1
-            PrintError: 1
+          #options:
+            #RaiseError: 1
+            #PrintError: 1
             #mysql_enable_utf8: 1
         reCAPTCHA:
              site_key: "6LdSFiUTAAAAAOzaEeOD2UduJlrxBw8NjWdz4E_O"

@@ -38,7 +38,7 @@ engines:
 plugins:
       DBIC:
         default:
-          dsn: "dbi:Pg:dbname=d1io429cjd73g3; host=ec2-54-243-126-40.compute-1.amazonaws.com; port=5432" #dbi:mysql:PearlBee
+          dsn: 'dbi:Pg:dbname=d1io429cjd73g3; host=ec2-54-243-126-40.compute-1.amazonaws.com; port=5432' #dbi:mysql:PearlBee
           schema_class: PearlBee::Model::Schema
           user: vpxzgqnzheckgi #root
           pass: xLJ33GKAhzrdrHo8RJ8aHH89rg   #1 #mysqlpassword

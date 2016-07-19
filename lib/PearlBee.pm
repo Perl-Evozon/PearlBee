@@ -94,12 +94,12 @@ get '/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $page        = route_parameters->{'page'};
-  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -132,20 +132,20 @@ View post method
 get '/post/:slug' => sub {
 
   my $slug       = route_parameters->{'slug'};
-  my $post       = resultset('Post')->find({ slug => $slug });
-  my $settings   = resultset('Setting')->first;
-  my @tags       = resultset('View::PublishedTags')->all();
-  my @categories = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my $post       = PearlBee::Model::Schema->resultset('Post')->find({ slug => $slug });
+  my $settings   = PearlBee::Model::Schema->resultset('Setting')->first;
+  my @tags       = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent     = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular    = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   
 
   # Grab the approved comments for this post and the corresponding reply comments
   my @comments;
-  @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
+  @comments = PearlBee::Model::Schema->resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
   foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+    my @comment_replies = PearlBee::Model::Schema->resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
     foreach my $reply (@comment_replies) {
       my $el;
       map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
@@ -179,11 +179,11 @@ post '/comment/add' => sub {
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
   my $secret      = $parameters->{'secret'};
-  my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
-  my $post        = resultset('Post')->find( $post_id );
-  my @categories  = resultset('Category')->all();
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @comments    = PearlBee::Model::Schema->resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
+  my $post        = PearlBee::Model::Schema->resultset('Post')->find( $post_id );
+  my @categories  = PearlBee::Model::Schema->resultset('Category')->all();
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
 
   $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
@@ -213,7 +213,7 @@ post '/comment/add' => sub {
 
       # If the person who leaves the comment is either the author or the admin the comment is automaticaly approved
 
-      my $comment = resultset('Comment')->can_create( $parameters, $user );
+      my $comment = PearlBee::Model::Schema->resultset('Comment')->can_create( $parameters, $user );
 
       # Notify the author that a new comment was submited
       my $author = $post->user;
@@ -239,7 +239,7 @@ post '/comment/add' => sub {
     error $@ if ( $@ );
 
     # Grab the approved comments for this post
-    @comments = resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
+    @comments = PearlBee::Model::Schema->resultset('Comment')->search({ post_id => $post->id, status => 'approved', reply_to => undef }) if ( $post );
 
     delete $template_params->{warning};
     delete $template_params->{in_reply_to};
@@ -258,7 +258,7 @@ post '/comment/add' => sub {
   }
 
   foreach my $comment (@comments) {
-    my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
+    my @comment_replies = PearlBee::Model::Schema->resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
     foreach my $reply (@comment_replies) {
       my $el;
       map { $el->{$_} = $reply->$_ } ('avatar', 'fullname', 'comment_date', 'content');
@@ -287,12 +287,12 @@ get '/posts/category/:slug' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -327,13 +327,13 @@ get '/posts/category/:slug/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $page        = route_parameters->{'page'};
-  my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my $slug        = PearlBee::Model::Schema->route_parameters->{'slug'};
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'category.slug' => $slug, 'status' => 'published' }, { join => { 'post_categories' => 'category' } })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -371,12 +371,12 @@ get '/posts/user/:username' => sub {
   unless ($user) {
     # we did not identify the user
   }
-  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -411,17 +411,17 @@ get '/posts/user/:username/page/:page' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user        = resultset('User')->find({username => $username});
+  my $user        = PearlBee::Model::Schema->resultset('User')->find({username => $username});
   unless ($user) {
     # we did not identify the user
   }
   my $page        = route_parameters->{'page'};
-  my @posts       = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
-  my $nr_of_posts = resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' }, { order_by => { -desc => "created_date" }, rows => $nr_of_rows, page => $page });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'user_id' => $user->id, 'status' => 'published' })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -455,12 +455,12 @@ get '/posts/tag/:slug' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $slug        = route_parameters->{'slug'};
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -495,13 +495,13 @@ get '/posts/tag/:slug/page/:page' => sub {
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $page        = route_parameters->{'page'};
   my $slug        = route_parameters->{'slug'};
-  my $tag         = resultset('Tag')->find({ slug => $slug });
-  my @posts       = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my $tag         = PearlBee::Model::Schema->resultset('Tag')->find({ slug => $slug });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' }, order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ 'tag.slug' => $slug, 'status' => 'published' }, { join => { 'post_tags' => 'tag' } })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);
@@ -551,11 +551,11 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
+      my $u = PearlBee::Model::Schema->resultset('User')->search( { email => $params->{'email'} } )->first;
       if ($u) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
+        $u = PearlBee::Model::Schema->resultset('User')->search( { username => $params->{'username'} } )->first;
         if ($u) {
           $err = "The provided username is already in use.";
         } else {
@@ -565,12 +565,12 @@ post '/sign-up' => sub {
 
             # Set the proper timezone
             my $dt       = DateTime->now;
-            my $settings = resultset('Setting')->first;
+            my $settings = PearlBee::Model::Schema->resultset('Setting')->first;
             $dt->set_time_zone( $settings->timezone );
 
             my ($password, $pass_hash, $salt) = create_password();
 
-            resultset('User')->create({
+            PearlBee::Model::Schema->resultset('User')->create({
               username        => $params->{username},
               password        => $pass_hash,
               salt            => $salt,
@@ -583,7 +583,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = PearlBee::Model::Schema->resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {

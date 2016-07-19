@@ -38,14 +38,14 @@ Prepare the blog path
 my $env_url = $ENV{MYAPP_DB_DSN};
 my $env_user = $ENV{MYAPP_DB_USERNAME};
 my $env_password = $ENV{MYAPP_DB_PASSWORD};
-#my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
+my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
     my $app_url = session('app_url');
   warn " the app url is :|$app_url|\n";
-  session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
-  session multiuser => resultset('Setting')->first->multiuser;
+  session blog_name => $schema->resultset('Setting')->first->blog_name unless ( session('blog_name') );
+  session multiuser => $schema->resultset('Setting')->first->multiuser;
   if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }
 };
 

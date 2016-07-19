@@ -14,7 +14,7 @@ requires 'Data::Pageset';
 requires 'Moose';
 requires 'LWP::UserAgent';
 requires 'LWP::Simple';
-
+requires "DBD::Pg" => "3.5.3";
 requires 'Email::Template';
 requires 'XML::Simple';
 requires 'Digest';

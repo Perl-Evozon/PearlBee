@@ -36,8 +36,8 @@ engines:
       session_dir: "/tmp/pearlbee"
 
 plugins:
-      #DBIC:
-        #default:
+      DBIC:
+        default:
           #dsn: 'dbi:Pg:dbname=d1io429cjd73g3; host=ec2-54-243-126-40.compute-1.amazonaws.com; port=5432' #dbi:mysql:PearlBee
           #schema_class: PearlBee::Model::Schema
           #user: vpxzgqnzheckgi #root

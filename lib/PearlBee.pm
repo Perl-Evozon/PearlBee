@@ -44,8 +44,8 @@ hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
     my $app_url = session('app_url');
   warn " the app url is :|$app_url|\n";
-  session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
-  session multiuser => resultset('Setting')->first->multiuser;
+  session blog_name => PearlBee::Model::Schema->resultset('Setting')->first->blog_name unless ( session('blog_name') );
+  session multiuser => PearlBee::Model::Schema->resultset('Setting')->first->multiuser;
   if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }
 };
 
@@ -57,12 +57,12 @@ Home page
 
 get '/' => sub {
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
-  my @posts       = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
-  my $nr_of_posts = resultset('Post')->search({ status => 'published' })->count;
-  my @tags        = resultset('View::PublishedTags')->all();
-  my @categories  = resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
-  my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
-  my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
+  my @posts       = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => $nr_of_rows });
+  my $nr_of_posts = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' })->count;
+  my @tags        = PearlBee::Model::Schema->resultset('View::PublishedTags')->all();
+  my @categories  = PearlBee::Model::Schema->resultset('View::PublishedCategories')->search({ name => { '!=' => 'Uncategorized'} });
+  my @recent      = PearlBee::Model::Schema->resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
+  my @popular     = PearlBee::Model::Schema->resultset('View::PopularPosts')->search({}, { rows => 3 });
 
   # extract demo posts info
   my @mapped_posts = map_posts(@posts);

@@ -8,18 +8,18 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href='http:/fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link href='http:/fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
+<link href='/http:/fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link href='/http:/fonts.googleapis.com/css?family=Open+Sans:400italic,400,600italic,600' rel='stylesheet' type='text/css'>
 
 <!-- Styles -->
 <!-- Bootstrap CSS -->
-<link href="/[% session.app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
+<link href="[% session.app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
 <!-- Animate css -->
-<link href="/[% session.app_url %]/blog/css/animate.min.css" rel="stylesheet">
+<link href="[% session.app_url %]/blog/css/animate.min.css" rel="stylesheet">
 <!-- Font awesome CSS -->
-<link href="/[% session.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">
+<link href="[% session.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">
 <!-- Custom CSS -->
-<link href="/[% session.app_url %]/blog/css/style.css" rel="stylesheet">
+<link href="[% session.app_url %]/blog/css/style.css" rel="stylesheet">
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="#">

@@ -547,7 +547,7 @@ post '/sign-up' => sub {
   my $response = param('g-recaptcha-response');
   my $result = recaptcha_verify($response);
 
-  if (  $result->{success}  ) {
+  if (  $result eq 'success'}  ) {
     # The user entered the correct secrete code
     eval {
 

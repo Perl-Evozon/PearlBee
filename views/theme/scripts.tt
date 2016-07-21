@@ -15,6 +15,9 @@
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
 
+
+
+
 <!-- Page specific javascript -->
     [% IF  global.template_name == 'profile' %]
         <script src="/js/croppie.js"></script>

@@ -1,4 +1,32 @@
 [% SET global.template_name = 'profile' %]
+[% connectedAccounts = session.connectedAccounts %]
+
+[% facebook = 0 %]
+[% twitter = 0 %]
+[% google = 0 %]
+[% github = 0 %]
+[% linkedin = 0 %]
+
+[% FOREACH d = connectedAccounts %]
+	[% IF d == 'Facebook' %]
+		[% facebook =  1 %]
+	[% END %]
+	[% IF d == 'Twitter' %]
+		[% twitter =  1 %]
+	[% END %]
+	[% IF d == 'Google' %]
+		[% google =  1 %]
+	[% END %]
+	[% IF d == 'Github' %]
+		[% github =  1 %]
+	[% END %]
+	[% IF d == 'LinkedIn' %]
+		[% linkedin =  1 %]
+	[% END %]
+[% END %]
+
+
+
 <link href="/blog/css/profile.css" rel="stylesheet">
 <link href="/blog/css/register.css" rel="stylesheet">
 
@@ -57,10 +85,8 @@
 </div>
 
 <div class="myprofile register sign-up">
-
 	<div class="container">
 		[% INCLUDE components/alerts.tt %]
-
 		<div class="row">
 			<div class="myprofile-head">
 				<div class="col-sm-6">
@@ -138,12 +164,97 @@
 						</div>
 					</form>
 
+
+					<!-- Connected Accounts -->
+					<h2>Connected Accounts</h2>
+					<div class="row connected-accounts">
+						<div class="col-sm-6 col-sm-offset-1">
+							<h3>Facebook</h3>
+							<p>We will never post to Facebook or message your friends without your permission</p>
+						</div>
+						<div class="col-sm-4">
+							[% IF facebook == 1 %]
+								<button class="btn btn-facebook" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smdisconnect?socialMediaService=facebook'">
+									<span class="fa fa-facebook">  Disconnect Facebook</span>
+								</button>
+							[% ELSE %]
+								<button class="btn btn-facebook" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smlogin?socialMediaService=facebook'">
+									<span class="fa fa-facebook">  Connect Facebook</span>
+								</button>
+							[% END %]
+					</div>
 				</div>
-
+				<div class="row connected-accounts">
+					<div class="col-sm-6 col-sm-offset-1">
+						<h3>Twitter</h3>
+						<p>We will never post to Twitter or message your friends without your permission</p>
+					</div>
+					<div class="col-sm-4">
+						[% IF twitter == 1 %]
+							<button class="btn btn-twitter" type="button" data-toggle="collapse" aria-expanded="false" onclick="window.location.href='/smdisconnect?socialMediaService=twitter'">
+								<span class="fa fa-twitter">  Disconnect Twitter</span>
+							</button>
+							[% ELSE %]
+								<button class="btn btn-twitter" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smlogin?socialMediaService=twitter'">
+									<span class="fa fa-twitter">  Connect Twitter</span>
+								</button>
+							[% END %]
+				</div>
 			</div>
-
+			<div class="row connected-accounts">
+				<div class="col-sm-6 col-sm-offset-1">
+					<h3>LinkedIn</h3>
+					<p>We will never post to LinkedIn or message your friends without your permission</p>
+				</div>
+					<div class="col-sm-4">
+					[% IF linkedin == 1 %]
+						<button class="btn btn-linkedin" type="button" data-toggle="collapse" aria-expanded="false" onclick="window.location.href='/smdisconnect?socialMediaService=linkedin'">
+							<span class="fa fa-linkedin">  Disconnect LinkedIn</span>
+						</button>
+				[% ELSE %]
+					<button class="btn btn-linkedin" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smlogin?socialMediaService=linkedin'">
+						<span class="fa fa-linkedin">  Connect LinkedIn</span>
+					</button>
+				[% END %]
+				</div>
+			</div>
+			<div class="row connected-accounts">
+				<div class="col-sm-6 col-sm-offset-1">
+					<h3>Google</h3>
+					<p>We will never post to Google or message your friends without your permission</p>
+				</div>
+				<div class="col-sm-4">
+				 [% IF google == 1 %]
+					<button class="btn btn-google" type="button" data-toggle="collapse" aria-expanded="false" onclick="window.location.href='/smdisconnect?socialMediaService=google'">
+						<span class="fa fa-google">  Disconnect Google</span>
+					</button>
+					[% ELSE %]
+						<button class="btn btn-google" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smlogin?socialMediaService=google'">
+							<span class="fa fa-google">  Connect Google</span>
+						</button>
+					[% END %]
+			</div>
 		</div>
-
+		<div class="row connected-accounts">
+			<div class="col-sm-6 col-sm-offset-1">
+				<h3>Github</h3>
+				<p>We will never post to Github or message your friends without your permission</p>
+			</div>
+				<div class="col-sm-4">
+				[% IF github == 1 %]
+					<button class="btn btn-github" type="button" data-toggle="collapse"aria-expanded="false" onclick="window.location.href='/smdisconnect?socialMediaService=github'">
+						<span class="fa fa-github">  Disconnect Github</span>
+					</button>
+					[% ELSE %]
+						<button class="btn btn-github" type="button" data-toggle="collapse"  aria-expanded="false" onclick="window.location.href='/smlogin?socialMediaService=github'">
+							<span class="fa fa-github">  Connect Github</span>
+						</button>
+					[% END %]
+			</div>
+		</div>
 	</div>
 
+	 </div>
+	</div>
+ </div>
 </div>

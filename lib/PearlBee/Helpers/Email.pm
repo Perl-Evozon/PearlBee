@@ -77,7 +77,7 @@ sub send_email_complete {
         host     => config->{mail_server}->{host},
         port     => config->{mail_server}->{port},
         username => config->{mail_server}->{user},
-        password => config->{mail_server}->{password},
+        password => config->{mail_server}->{password} || $ENV{bpo_mail_server_password}
     });
 
     my $template = join( '',

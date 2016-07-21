@@ -13,12 +13,14 @@ requires 'Data::Entropy::Algorithms';
 requires 'Dancer2::Plugin::REST';
 requires 'Dancer2::Plugin::Feed', '< 1.160190'; # Later versions change Atom
 requires 'Dancer2::Plugin::reCAPTCHA';
+requires 'Captcha::reCAPTCHA::V2';
 requires 'Data::GUID';
 requires 'String::Dirify';
 requires 'String::Random';
 requires 'String::Util';
 requires 'Data::Pageset';
 requires 'Search::Elasticsearch';
+requires 'WWW::OAuth';
 
 requires 'Imager';
 requires 'IO::All';

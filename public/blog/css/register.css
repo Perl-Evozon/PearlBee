@@ -58,9 +58,6 @@
     height: 14px;
     width: 14px;
 }
-.register .social_register{
-    margin-top: 35px;
-}
 .register .separator {
     width: 50%;
 }
@@ -141,4 +138,15 @@
 .sign-up .pass_recov {
     margin-top: 15em;
 }
+
+
+/*Social Networks*/
+.btn-social {
+  margin-top: 5px;
+}
+/*btn-social is also used for other things and has different behaviour, ignore how they're defined in css*/
+.margin-top-5 {
+  margin-top: 5px;
+}
+
 /*END Sing in form*/

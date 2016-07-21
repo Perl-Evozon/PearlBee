@@ -2,12 +2,12 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="[% session.app_url %]/blog/js/bootstrap.min.js"></script>
+    <script src="/blog/js/bootstrap.min.js"></script>
     <!-- Respond JS for IE8 -->
-    <script src="[% session.app_url %]/blog/js/respond.min.js"></script>
+    <script src="/blog/js/respond.min.js"></script>
     <!-- HTML5 Support for IE -->
-    <script src="[% session.app_url %]/blog/js/html5shiv.js"></script>
+    <script src="/blog/js/html5shiv.js"></script>
     <!-- App JS -->
-    <script src="[% session.app_url %]/blog/js/app.js"></script>
+    <script src="/blog/js/app.js"></script>
     <!-- Google code syntax highlighter -->
 	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>

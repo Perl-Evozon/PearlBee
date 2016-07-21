@@ -13,11 +13,11 @@
 
 <!-- Styles -->
 <!-- Bootstrap CSS -->
-<link href="[% session.app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
+<link href="/[% session.app_url %]/blog/css/bootstrap.min.css" rel="stylesheet">
 <!-- Animate css -->
-<link href="[% session.app_url %]/blog/css/animate.min.css" rel="stylesheet">
+<link href="/[% session.app_url %]/blog/css/animate.min.css" rel="stylesheet">
 <!-- Font awesome CSS -->
-<link href="[% session.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">
+<link href="/[% session.app_url %]/blog/css/font-awesome.min.css" rel="stylesheet">
 <!-- Custom CSS -->
 
 <!-- Favicon -->

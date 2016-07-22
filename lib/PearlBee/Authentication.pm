@@ -9,6 +9,7 @@ use PearlBee::Password;
 index
 
 =cut
+my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
 
 get '/admin' => sub {
   my $user = session('user');
@@ -27,7 +28,7 @@ post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
   
-  my $user = resultset("User")->search({
+  my $user = $schema->resultset("User")->search({
       username => $username,
       -or => [
       	status => 'activated',

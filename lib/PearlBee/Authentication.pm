@@ -27,6 +27,8 @@ login metehod
 post '/login' => sub {
   my $password = params->{password};
   my $username = params->{username};
+  warn "the pass is |$password|";
+  warn "the user is |$username|";
   
   my $user = resultset("User")->search({
       username => $username,

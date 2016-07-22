@@ -1,5 +1,5 @@
 requires 'DBIx::Class';
-
+requires 'DBIx::Class::Schema::Loader';
 
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';

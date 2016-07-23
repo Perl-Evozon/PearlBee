@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::Post;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Post - Post table.
+PearlBee::Model::Schema::Result::Post
 
 =cut
 
@@ -28,6 +28,7 @@ __PACKAGE__->table("post");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'post_id_seq'
 
 =head2 title
 
@@ -44,6 +45,7 @@ __PACKAGE__->table("post");
 =head2 description
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 255
 
@@ -61,16 +63,16 @@ __PACKAGE__->table("post");
 =head2 created_date
 
   data_type: 'timestamp'
-  datetime_undef_if_invalid: 1
   default_value: current_timestamp
   is_nullable: 0
+  original: {default_value => \"now()"}
 
 =head2 status
 
   data_type: 'enum'
   default_value: 'draft'
-  extra: {list => ["published","trash","draft"]}
-  is_nullable: 1
+  extra: {custom_type_name => "post_status",list => ["published","trash","draft"]}
+  is_nullable: 0
 
 =head2 user_id
 
@@ -82,30 +84,43 @@ __PACKAGE__->table("post");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "post_id_seq",
+  },
   "title",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "slug",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "description",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 255,
+  },
   "cover",
   { data_type => "varchar", is_nullable => 0, size => 300 },
   "content",
   { data_type => "text", is_nullable => 0 },
   "created_date",
   {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
+    data_type     => "timestamp",
     default_value => \"current_timestamp",
-    is_nullable => 0,
+    is_nullable   => 0,
+    original      => { default_value => \"now()" },
   },
   "status",
   {
     data_type => "enum",
     default_value => "draft",
-    extra => { list => ["published", "trash", "draft"] },
-    is_nullable => 1,
+    extra => {
+      custom_type_name => "post_status",
+      list => ["published", "trash", "draft"],
+    },
+    is_nullable => 0,
   },
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
@@ -174,15 +189,15 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::MyUser>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::MyUser",
   { id => "user_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 categories
@@ -206,89 +221,9 @@ Composing rels: L</post_tags> -> tag
 __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5V6erZKi9jLOYo38x62HWg
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2pOlfq0lyy6LcSMeyRgvIw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-__PACKAGE__->load_components(qw/UTF8Columns/);
-__PACKAGE__->utf8_columns(qw/title content/);
-
-=head
-
-Get the number of comments for this post
-
-=cut
-
-sub nr_of_comments {
-  my ($self) = @_;
-
-  my @post_comments = $self->comments;
-  my @comments = grep { $_->status eq 'approved' } @post_comments;
-
-  return scalar @comments;
-}
-
-=head
-
-Get all tags as a string sepparated by a comma
-
-=cut
-
-sub get_string_tags {
-  my ($self) = @_;
-
-  my @tag_names;
-  my @post_tags = $self->post_tags;
-  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
-
-  my $joined_tags = join(', ', @tag_names);
-
-  return $joined_tags;
-}
-
-=head 
-
-Status updates
-
-=cut
-
-sub publish {
-  my ($self, $user) = @_;
-
-  $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
-}
-
-sub draft {
-  my ($self, $user) = @_;
-
-  $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
-}
-
-
-sub trash {
-  my ($self, $user) = @_;
-
-  $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
-}
-
-=haed
-
-Check if the user has enough authorization for modifying
-
-=cut
-
-sub is_authorized {
-  my ($self, $user) = @_;
-
-  my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('User')->find( $user->{id} );
-  my $authorized = 0;
-  $authorized    = 1 if ( $user->is_admin );
-  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
-
-  return $authorized;
-}
-
 1;

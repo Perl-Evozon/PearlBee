@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::Category;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Category - Category table.
+PearlBee::Model::Schema::Result::Category
 
 =cut
 
@@ -28,6 +28,7 @@ __PACKAGE__->table("category");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'category_id_seq'
 
 =head2 name
 
@@ -51,7 +52,12 @@ __PACKAGE__->table("category");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "category_id_seq",
+  },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "slug",
@@ -74,7 +80,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 UNIQUE CONSTRAINTS
 
-=head2 C<name>
+=head2 C<category_name_key>
 
 =over 4
 
@@ -84,7 +90,7 @@ __PACKAGE__->set_primary_key("id");
 
 =cut
 
-__PACKAGE__->add_unique_constraint("name", ["name"]);
+__PACKAGE__->add_unique_constraint("category_name_key", ["name"]);
 
 =head1 RELATIONS
 
@@ -107,15 +113,15 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::User>
+Related object: L<PearlBee::Model::Schema::Result::MyUser>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::User",
+  "PearlBee::Model::Schema::Result::MyUser",
   { id => "user_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 posts
@@ -129,38 +135,9 @@ Composing rels: L</post_categories> -> post
 __PACKAGE__->many_to_many("posts", "post_categories", "post");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YAIOlaZq+2QRt62utRmEoA
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8ifjVAmvPtfFa7iZKqKODA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-
-=head
-
-Safely cascade delete a category
-
-=cut
-
-sub safe_cascade_delete {
-  my $self = shift;
-
-  my $schema = $self->result_source->schema;
-  
-  foreach ( $self->post_categories ) {
-      my $post = $_->post;
-      my @post_categories = $post->post_categories;
-
-      if ( scalar ( @post_categories ) == 1 ) {
-        $schema->resultset('PostCategory')->create({
-            post_id => $post->id,
-            category_id => '1'
-          });
-      }
-
-      $_->delete();
-    }
-
-    $self->delete();
-}
-
 1;

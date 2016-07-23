@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::PostCategory;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::PostCategory - Post category table.
+PearlBee::Model::Schema::Result::PostCategory
 
 =cut
 
@@ -72,7 +72,7 @@ __PACKAGE__->belongs_to(
   "category",
   "PearlBee::Model::Schema::Result::Category",
   { id => "category_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 post
@@ -87,12 +87,12 @@ __PACKAGE__->belongs_to(
   "post",
   "PearlBee::Model::Schema::Result::Post",
   { id => "post_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GlRzlmZ9MHtXA6TCm+l1qg
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xrfimMabKD7byAJzkmfofg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

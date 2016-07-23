@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:Pg:dbname=d1io429cjd73g3;host=ec2-54-243-126-40.compute-1.amazonaws.com;port=5432 
+        dsn: dbi:Pg:dbname=de5t3ddc4cgosu;host=ec2-54-243-201-58.compute-1.amazonaws.com;port=5432 
         schema_class: PearlBee::Model::Schema
-        user: vpxzgqnzheckgi 
-        password: xLJ33GKAhzrdrHo8RJ8aHH89rg  
+        user: ujhhlyjhgpvbpq 
+        password: lkrNzRKk4qF9Po73cAzMj0vc-d  
         options:
           RaiseError: 1
           PrintError: 1

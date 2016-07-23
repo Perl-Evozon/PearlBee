@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::Setting;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Setting - Settings table.
+PearlBee::Model::Schema::Result::Setting
 
 =cut
 
@@ -31,9 +31,16 @@ __PACKAGE__->table("settings");
 
 =head2 social_media
 
-  data_type: 'tinyint'
+  data_type: 'integer'
   default_value: 1
   is_nullable: 0
+
+=head2 blog_path
+
+  data_type: 'varchar'
+  default_value: '/'
+  is_nullable: 0
+  size: 255
 
 =head2 theme_folder
 
@@ -49,14 +56,16 @@ __PACKAGE__->table("settings");
 
 =head2 multiuser
 
-  data_type: 'tinyint'
+  data_type: 'integer'
   default_value: 0
   is_nullable: 0
 
 =head2 id
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
+  sequence: 'settings_id_seq'
 
 =cut
 
@@ -64,15 +73,22 @@ __PACKAGE__->add_columns(
   "timezone",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "social_media",
-  { data_type => "tinyint", default_value => 1, is_nullable => 0 },
+  { data_type => "integer", default_value => 1, is_nullable => 0 },
+  "blog_path",
+  { data_type => "varchar", default_value => "/", is_nullable => 0, size => 255 },
   "theme_folder",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "blog_name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "multiuser",
-  { data_type => "tinyint", default_value => 0, is_nullable => 0 },
+  { data_type => "integer", default_value => 0, is_nullable => 0 },
   "id",
-  { data_type => "integer", is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "settings_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -88,8 +104,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-02 17:05:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pPDcwMO6XscnOSKbOwKgBA
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fapXw33WIpRaNE+swNnIFw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

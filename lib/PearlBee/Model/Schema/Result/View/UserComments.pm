@@ -1,4 +1,4 @@
-ackage PearlBee::Model::Schema::Result::View::UserComments;
+package PearlBee::Model::Schema::Result::View::UserComments;
 
 # This view is used for grabbing comments per user
 

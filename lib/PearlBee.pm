@@ -532,7 +532,7 @@ get '/sign-up' => sub {
   template 'signup', {recaptcha => recaptcha_display()};
 };
 
-post '/sign-up' => sub {
+post '/sign-up/:g-recaptcha-response' => sub {
   my $params = body_parameters;
 
   my $err;

@@ -268,4 +268,80 @@ __PACKAGE__->has_many(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+sub is_admin {
+  my ($self) = shift;
+
+  return 1 if ( $self->role eq 'admin' );
+
+  return 0;
+}
+
+=head
+Check if the user has author authority
+=cut
+
+sub is_author {
+  my ($self) = shift;
+
+  return 1 if ( $self->role eq 'author' );
+
+  return 0;
+}
+
+=head
+Check if the user is active
+=cut
+
+sub is_active {
+  my ($self) = shift;
+
+  return 1 if ( $self->role eq 'activated' );
+
+  return 0;
+}
+
+=head
+Check if the user is deactived
+=cut
+
+sub is_deactive {
+  my ($self) = shift;
+
+  return 1 if ( $self->role eq 'deactivated' );
+
+  return 0;
+}
+
+=head
+Status changes
+=cut
+
+sub deactivate {
+  my $self = shift;
+
+  $self->update({ status => 'deactivated' });
+}
+
+sub activate {
+  my $self = shift;
+
+  $self->update({ status => 'activated' });
+}
+
+sub suspend {
+  my $self = shift;
+
+  $self->update({ status => 'suspended' });
+}
+
+sub allow {
+  my $self = shift;
+  
+  # set a password for the user
+  
+  # welcome the user in an email
+
+  $self->update({ status => 'deactivated' });
+}
+
 1;

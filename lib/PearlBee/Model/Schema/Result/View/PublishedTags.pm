@@ -36,5 +36,3 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 1;
-Contact GitHub API Training Shop Blog About
-

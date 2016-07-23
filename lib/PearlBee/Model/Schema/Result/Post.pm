@@ -224,6 +224,81 @@ __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 # Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2pOlfq0lyy6LcSMeyRgvIw
 
+__PACKAGE__->load_components(qw/UTF8Columns/);
+__PACKAGE__->utf8_columns(qw/title content/);
+
+=head
+Get the number of comments for this post
+=cut
+
+sub nr_of_comments {
+  my ($self) = @_;
+
+  my @post_comments = $self->comments;
+  my @comments = grep { $_->status eq 'approved' } @post_comments;
+
+  return scalar @comments;
+}
+
+=head
+Get all tags as a string sepparated by a comma
+=cut
+
+sub get_string_tags {
+  my ($self) = @_;
+
+  my @tag_names;
+  my @post_tags = $self->post_tags;
+  push( @tag_names, $_->tag->name ) foreach ( @post_tags );
+
+  my $joined_tags = join(', ', @tag_names);
+
+  return $joined_tags;
+}
+
+=head 
+Status updates
+=cut
+
+sub publish {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'published' }) if ( $self->is_authorized( $user ) );
+}
+
+sub draft {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'draft' }) if ( $self->is_authorized( $user ) );
+}
+
+
+sub trash {
+  my ($self, $user) = @_;
+
+  $self->update({ status => 'trash' }) if ( $self->is_authorized( $user ) );
+}
+
+=haed
+Check if the user has enough authorization for modifying
+=cut
+
+sub is_authorized {
+  my ($self, $user) = @_;
+
+  my $schema     = $self->result_source->schema;
+  $user          = $schema->resultset('User')->find( $user->{id} );
+  my $authorized = 0;
+  $authorized    = 1 if ( $user->is_admin );
+  $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
+
+  return $authorized;
+}
+
+
+
+
+
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

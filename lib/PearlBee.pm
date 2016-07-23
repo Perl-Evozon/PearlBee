@@ -544,7 +544,8 @@ post '/sign-up' => sub {
     last_name       => $params->{'last_name'},
   };
 
-  my $response = params->{'recaptcha'};
+  #my $response = params->{'recaptcha'};
+  my $response = param('g-recaptcha-response');
   my $result = recaptcha_verify($response);
   warn "the recaptcha_verify is |$result |";
 

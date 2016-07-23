@@ -529,7 +529,7 @@ get '/sign-up' => sub {
 
   #new_captcha_code();
 
-  template 'signup', {};
+  template 'signup', {recaptcha => recaptcha_display()};
 };
 
 post '/sign-up' => sub {
@@ -544,7 +544,7 @@ post '/sign-up' => sub {
     last_name       => $params->{'last_name'},
   };
 
-  my $response = params->{'recaptcha'};
+  #my $response = params->{'recaptcha'};
   my $result = recaptcha_verify($response);
   warn "the recaptcha_verify is |$result |";
 

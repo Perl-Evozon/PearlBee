@@ -48,9 +48,9 @@
                      <div class="cf">
                         <label class="col-lg-2 control-label">  </label>
                         
-                       <!-- <img src="/captcha/image/[% session.secret %].png" />-->
-                        <input  name="secret" value="[% recaptcha %]"/>
-                        <!--<input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
+                       <img src="[% recaptcha %]"" />
+                        <!--<input  name="secret" value= [% recaptcha %]/>-->
+                        <input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
                      </div>
                     
                     <div class="form-group">

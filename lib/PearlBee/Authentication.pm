@@ -44,7 +44,7 @@ post '/login' => sub {
     my $user_obj->{is_admin} = $user->is_admin;
     $user_obj->{role}        = $user->role;
     $user_obj->{id}          = $user->id;
-	$user_obj->{username}    = $user->username;
+	  $user_obj->{username}    = $user->username;
 
     session user => $user_obj;
     session user_id => $user->id;

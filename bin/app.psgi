@@ -3,7 +3,7 @@
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use lib 'lib';
-#use PearlBee::Model::Schema;
+use PearlBee::Model::Schema;
 
 chdir("$FindBin::Bin/../");
 

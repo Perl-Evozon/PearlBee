@@ -50,7 +50,7 @@
                         [% recaptcha %]
                        <!--<img src="[% recaptcha %]"" />-->
                         <!--<input  name="secret" value= [% recaptcha %]/>-->
-                        <input type="text" name=" g-recaptcha-response" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
+                        <!--<input type="text" name=" g-recaptcha-response" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
                      </div>
                     
                     <div class="form-group">

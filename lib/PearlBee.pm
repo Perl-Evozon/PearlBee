@@ -551,7 +551,7 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
+      my $u = resultset('MyUser')->search( { email => $params->{'email'} } )->first;
       if ($u) {
         $err = "An user with this email address already exists.";
       } else {
@@ -583,7 +583,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = resultset('MyUser')->search( {role => 'admin', status => 'activated' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {

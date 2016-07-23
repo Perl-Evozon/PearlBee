@@ -11,7 +11,7 @@ index
 =cut
 
 
-get '/Admin' => sub {
+get '/admin' => sub {
   my $user = session('user');
 
   redirect('/dashboard') if ( $user );

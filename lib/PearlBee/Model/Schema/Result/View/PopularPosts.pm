@@ -1,4 +1,4 @@
-ackage PearlBee::Model::Schema::Result::View::PopularPosts;
+package PearlBee::Model::Schema::Result::View::PopularPosts;
 
 # This view is used for grabbing popular posts based on the number of comments
 

@@ -555,7 +555,7 @@ post '/sign-up' => sub {
       if ($u) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
+        $u = resultset('MyUser')->search( { username => $params->{'username'} } )->first;
         if ($u) {
           $err = "The provided username is already in use.";
         } else {
@@ -570,7 +570,7 @@ post '/sign-up' => sub {
 
             my ($password, $pass_hash, $salt) = create_password();
 
-            resultset('User')->create({
+            resultset('MyUser')->create({
               username        => $params->{username},
               password        => $pass_hash,
               salt            => $salt,

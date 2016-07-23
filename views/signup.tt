@@ -46,7 +46,7 @@
                     </div>
                     
                      <div class="cf">
-                        <label class="col-lg-2 control-label"> </label>
+                        <label class="col-lg-2 control-label"> recaptcha </label>
                         [% recaptcha %]
                        <!-- <img src="/captcha/image/[% session.secret %].png" />
                         <input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->

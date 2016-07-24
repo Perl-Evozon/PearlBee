@@ -19,7 +19,7 @@ __PACKAGE__->result_source_instance->view_definition(
         SUM( status = 'pending' ) AS pending,
       	COUNT(*) AS total
       FROM
-      	user
+      	my_users
     ]
 );
 

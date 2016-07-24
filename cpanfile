@@ -1,5 +1,6 @@
 requires 'DBIx::Class';
 requires 'DBIx::Class::Schema::Loader';
+requires 'DateTime::Format::Pg'
 
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';

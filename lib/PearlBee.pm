@@ -367,7 +367,7 @@ get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user         = resultset('User')->find({username => $username});
+  my $user         = resultset('MyUser')->find({username => $username});
   unless ($user) {
     # we did not identify the user
   }

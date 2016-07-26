@@ -178,7 +178,7 @@ post '/comment/add' => sub {
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = param('g-recaptcha-response');#$parameters->{'secret'};
+  #my $secret      = param('g-recaptcha-response');#$parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
@@ -201,11 +201,13 @@ post '/comment/add' => sub {
     popular     => \@popular,
     recent      => \@recent,
     warning     => 'The secret code is incorrect'
+    recaptcha => recaptcha_display()
   };
 
   my $response = param('g-recaptcha-response');
   warn "The response is |$response |";
   my $result = recaptcha_verify($response);
+  warn "The response in englidh is |$result->{success} |";
 
 
   if ( $result->{success} ) {

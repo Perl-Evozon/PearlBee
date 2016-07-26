@@ -173,7 +173,7 @@ Add a comment method
 
 =cut
 
-post '/comment/add/' => sub {
+post '/comment/add' => sub {
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};

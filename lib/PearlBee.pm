@@ -201,7 +201,7 @@ post '/comment/add' => sub {
     popular     => \@popular,
     recent      => \@recent,
     warning     => 'The secret code is incorrect'
-    recaptcha => recaptcha_display()
+    
   };
 
   my $response = param('g-recaptcha-response');

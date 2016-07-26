@@ -215,7 +215,7 @@ post '/comment/add' => sub {
 
   my $response = param('g-recaptcha-response');
   warn "The response is |$response |\n";
-  my $result = recaptcha_verify($response);
+  my $result = recaptcha_verify();
   warn "The response in english is:\n ";
   warn Dumper($result->{success});
 

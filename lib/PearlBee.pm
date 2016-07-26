@@ -186,7 +186,7 @@ post '/comment/add' => sub {
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = $result;#$parameters->{'$result'};#$parameters->{'secret'};
+  #my $secret      = $result;#$parameters->{'$result'};#$parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();

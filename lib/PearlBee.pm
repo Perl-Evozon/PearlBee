@@ -26,6 +26,7 @@ use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_passwo
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 #use PearlBee::Helpers::Captcha;
 use Dancer2::Plugin::reCAPTCHA;
+use Data::Dumper;
 
 our $VERSION = '0.1';
 
@@ -43,7 +44,8 @@ my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
     my $app_url = session('app_url');
-  warn " the app url is :|$app_url|\n";
+  warn  "the app url is : ";
+  warn Dumper($app_url);
   session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
   session multiuser => resultset('Setting')->first->multiuser;
   if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }

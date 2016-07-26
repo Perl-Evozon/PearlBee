@@ -26,6 +26,7 @@ requires 'MIME::Base64';
 requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
+requires 'Data::Dumper';
 
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';

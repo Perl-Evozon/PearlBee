@@ -178,7 +178,7 @@ Add a comment method
 post '/comment/add' => sub {
 
    my $response = param('g-recaptcha-response');
-  #warn "The response is |$response |";
+  warn "The response is |$response |";
   my $result = recaptcha_verify($response);
   warn "The response in englidh is |$result->{success} |";
 

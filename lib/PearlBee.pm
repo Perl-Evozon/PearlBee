@@ -186,25 +186,25 @@ post '/comment/add' => sub {
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = $result;#$parameters->{'$result'};#$parameters->{'secret'};
+  my $secret      = $parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
-  warn "The secret is";
+  #warn "The secret is";
   #warn Dumper($secret);
   #warn "The params are |$parameters| ";
   #warn Dumper($parameters);
-  #$parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
-  #if ($parameters->{'reply_to'}) {
+  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
+  if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
     if ($comm) {
       $parameters->{'reply_to_content'} = $comm->content;
       $parameters->{'reply_to_user'} = $comm->fullname;
     }
-  #}
+  }
 
   my $template_params = {
     post        => $post,

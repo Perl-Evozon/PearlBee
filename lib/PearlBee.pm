@@ -217,7 +217,7 @@ post '/comment/add' => sub {
   };
 
  
-  my $result = ; #recaptcha_verify($secret);
+  my $result = recaptcha_verify($response); #recaptcha_verify($secret);
   #warn "The secret is";
   #warn Dumper($result );
 

@@ -179,9 +179,9 @@ post '/comment/add' => sub {
 
    my $response = param('g-recaptcha-response');
   warn "The response is |$response |";
-  my ${$result} = recaptcha_verify($response);
+  #my ${$result} = recaptcha_verify($response);
   warn "The response in english is: ";
-  warn $result->{success};
+  warn recaptcha_verify($response);
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
@@ -217,7 +217,7 @@ post '/comment/add' => sub {
   };
 
  
-  #my $result = recaptcha_verify($secret);
+  my $result = recaptcha_verify($secret);
   #warn "The secret is";
   #warn Dumper($result );
 

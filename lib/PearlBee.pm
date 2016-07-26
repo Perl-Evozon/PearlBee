@@ -214,8 +214,8 @@ post '/comment/add' => sub {
 
  
   #my $result = recaptcha_verify($secret);
-  warn "The secret is";
-  warn Dumper($result );
+  #warn "The secret is";
+  #warn Dumper($result );
 
   if ( $result->{success} ) {
     # The user entered the correct secret code

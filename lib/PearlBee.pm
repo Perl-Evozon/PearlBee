@@ -194,14 +194,14 @@ post '/comment/add' => sub {
   my $user        = session('user');
   #warn "The params are |$parameters| ";
   warn Dumper($parameters);
-  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\w+)/);
-  if ($parameters->{'reply_to'}) {
+  #$parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
+  #if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
     if ($comm) {
       $parameters->{'reply_to_content'} = $comm->content;
       $parameters->{'reply_to_user'} = $comm->fullname;
     }
-  }
+  #}
 
   my $template_params = {
     post        => $post,

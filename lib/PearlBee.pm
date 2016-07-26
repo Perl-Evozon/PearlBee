@@ -186,7 +186,7 @@ post '/comment/add' => sub {
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
 
-  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
+  #$parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
     if ($comm) {
@@ -201,7 +201,7 @@ post '/comment/add' => sub {
     popular     => \@popular,
     recent      => \@recent,
     warning     => 'The secret code is incorrect'
-    
+
   };
 
   my $response = param('g-recaptcha-response');

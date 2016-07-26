@@ -27,6 +27,7 @@ requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
 requires 'Data::Dumper';
+requires 'Net-SSLeay-1.74';
 
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';

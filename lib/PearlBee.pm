@@ -185,7 +185,7 @@ post '/comment/add' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
-  warn "The params are |$parameters |";
+
   $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });

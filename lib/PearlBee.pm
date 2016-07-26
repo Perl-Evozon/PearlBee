@@ -179,13 +179,13 @@ post '/comment/add' => sub {
 
    my $response = param('g-recaptcha-response');
   #warn "The response is |$response |";
-  #my $result = recaptcha_verify($response);
-  #warn "The response in englidh is |$result->{success} |";
+  my $result = recaptcha_verify($response);
+  warn "The response in englidh is |$result->{success} |";
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = $parameters->{$response};#$parameters->{'secret'};
+  my $secret      = $parameters->{$result};#$parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
@@ -193,7 +193,7 @@ post '/comment/add' => sub {
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
   #warn "The params are |$parameters| ";
-  warn Dumper($parameters);
+  #warn Dumper($parameters);
   #$parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   #if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });

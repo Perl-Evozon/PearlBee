@@ -217,7 +217,7 @@ post '/comment/add' => sub {
   warn "The response is |$response |\n";
   my $result = recaptcha_verify($response);
   warn "The response in english is:\n ";
-  warn Dumper(recaptcha_verify($response));
+  warn Dumper($result);
 
  
   #my $result = recaptcha_verify($response); #recaptcha_verify($secret);

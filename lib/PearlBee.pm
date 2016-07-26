@@ -192,6 +192,8 @@ post '/comment/add' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
+  warn "The secret is";
+  warn Dumper($secret);
   #warn "The params are |$parameters| ";
   #warn Dumper($parameters);
   #$parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);

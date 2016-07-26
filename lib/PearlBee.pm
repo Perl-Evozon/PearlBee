@@ -178,7 +178,7 @@ Add a comment method
 post '/comment/add' => sub {
 
    my $response = param('g-recaptcha-response');
-  warn "The response is |$response |";
+  #warn "The response is |$response |";
   #my $result = recaptcha_verify($response);
   #warn "The response in englidh is |$result->{success} |";
 
@@ -192,8 +192,8 @@ post '/comment/add' => sub {
   my @recent      = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
-  warn "The params are |$parameters| ";
-  warn Dumper($parameters);
+  #warn "The params are |$parameters| ";
+  #warn Dumper($parameters);
   $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
@@ -214,7 +214,8 @@ post '/comment/add' => sub {
 
  
   my $result = recaptcha_verify($secret);
-  warn Dumper($result );
+  warn "The secret is";
+  warn Dumper($result->{success} );
 
   if ( $result->{success} ) {
     # The user entered the correct secret code

@@ -28,6 +28,7 @@ requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
 requires 'Data::Dumper';
 requires 'Net::SSLeay';
+requires 'IO::Socket::SSL';
 
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';

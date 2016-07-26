@@ -173,7 +173,7 @@ Add a comment method
 
 =cut
 
-post '/comment/add' => sub {
+post '/comment/add/:g-recaptcha-response' => sub {
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
@@ -204,6 +204,7 @@ post '/comment/add' => sub {
   };
 
   my $response = param('g-recaptcha-response');
+  warn "The response is |$response |";
   my $result = recaptcha_verify($response);
 
 

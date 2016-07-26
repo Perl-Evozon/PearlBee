@@ -44,7 +44,7 @@ my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
     my $app_url = session('app_url');
-  warn  "the app url is : ";
+  #warn  "the app url is : ";
 
   session blog_name => resultset('Setting')->first->blog_name unless ( session('blog_name') );
   session multiuser => resultset('Setting')->first->multiuser;
@@ -194,7 +194,7 @@ post '/comment/add' => sub {
   my $user        = session('user');
   #warn "The params are |$parameters| ";
   warn Dumper($parameters);
-  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
+  $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\w+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
     if ($comm) {

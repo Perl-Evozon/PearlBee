@@ -193,7 +193,7 @@ post '/comment/add' => sub {
   my @popular     = resultset('View::PopularPosts')->search({}, { rows => 3 });
   my $user        = session('user');
   #warn "The params are |$parameters| ";
-  warn Dumper($parameters);
+  warn $parameters;
   $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });
@@ -213,7 +213,7 @@ post '/comment/add' => sub {
   };
 
  
-  my $result = recaptcha_verify($secret);
+  #my $result = recaptcha_verify($secret);
   warn "The secret is";
   warn Dumper($result );
 

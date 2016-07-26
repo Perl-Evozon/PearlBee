@@ -180,7 +180,8 @@ post '/comment/add' => sub {
    my $response = param('g-recaptcha-response');
   warn "The response is |$response |";
   my $result = recaptcha_verify($response);
-  warn "The response in englidh is |$result->{success} |";
+  warn "The response in english is: "
+  warn $result->{success};
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};

@@ -37,9 +37,9 @@
             <br />
             <br />
             <div class="cf">
-            [% recaptcha %]
-                <!--<img src="/captcha/image/[% session.secret %].png" />
-                <input type="text" name="secret" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
+            <!--[% recaptcha %]
+                <!--<img src="/captcha/image/[% session.secret %].png" />-->
+                <input type="text" value="[% recaptcha %]" name="secret" class="form-control small" placeholder="g-recaptcha-response" />-->
             </div>
             <br />
             <input type="hidden" value="[% post.id %]" name="id" />

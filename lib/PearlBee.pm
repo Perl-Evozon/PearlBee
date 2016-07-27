@@ -273,8 +273,8 @@ post '/comment/add' => sub {
     # Repopulate the fields with the data
 
     #$template_params->{fields} = $parameters;
-    $template_params->{success} = 'Are you a robot ?'
-    return template 'post'{$template_params};
+    $template_params->{success} = 'Are you a robot ?';
+    #return template 'post'{$template_params};
   }
 
   foreach my $comment (@comments) {
@@ -292,7 +292,7 @@ post '/comment/add' => sub {
 
   template 'post',{
     $template_params
-    #recaptcha => recaptcha_display(),
+    recaptcha => recaptcha_display(),
   }; 
 
 };

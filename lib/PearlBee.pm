@@ -546,12 +546,12 @@ get '/posts/tag/:slug/page/:page' => sub {
 get '/sign-up' => sub {
 
   #new_captcha_code();
-  my $response = param('g-recaptcha-response');
+  
   template 'signup',{recaptcha => recaptcha_display()};
 };
 
 post '/sign-up' => sub {
-  #my $response = param('g-recaptcha-response');
+  my $response = param('g-recaptcha-response');
   my $result = recaptcha_verify($response);
   warn "the recaptcha_verify is |$result |";
   my $params = body_parameters;

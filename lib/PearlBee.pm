@@ -550,7 +550,10 @@ get '/sign-up' => sub {
   template 'signup', {recaptcha => recaptcha_display()};
 };
 
-post '/sign-up/' => sub {
+post '/sign-up' => sub {
+  my $response = param('g-recaptcha-response');
+  my $result = recaptcha_verify($response);
+  warn "the recaptcha_verify is |$result |";
   my $params = body_parameters;
 
   my $err;
@@ -560,12 +563,11 @@ post '/sign-up/' => sub {
     email           => $params->{'email'},
     first_name      => $params->{'first_name'},
     last_name       => $params->{'last_name'},
+    recaptcha => recaptcha_display()
   };
 
   #my $response = params->{'g-recaptcha-response'};
-  my $response = param('g-recaptcha-response');
-  my $result = recaptcha_verify($response);
-  warn "the recaptcha_verify is |$result |";
+  
 
   if (  $result->{success}  ) {
     # The user entered the correct secrete code

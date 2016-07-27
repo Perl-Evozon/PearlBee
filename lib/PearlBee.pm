@@ -273,7 +273,7 @@ post '/comment/add' => sub {
     # Repopulate the fields with the data
 
     #$template_params->{fields} = $parameters;
-    redirect '/comment/add';
+    return template 'post';
   }
 
   foreach my $comment (@comments) {

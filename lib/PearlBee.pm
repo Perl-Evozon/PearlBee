@@ -273,7 +273,8 @@ post '/comment/add' => sub {
     # Repopulate the fields with the data
 
     #$template_params->{fields} = $parameters;
-    return template 'post';
+    $template_params->{success} = 'Are you a robot ?'
+    return template 'post'{$template_params};
   }
 
   foreach my $comment (@comments) {

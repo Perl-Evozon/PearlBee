@@ -645,7 +645,10 @@ post '/sign-up' => sub {
 
     template 'signup', $template_params;
   } else {
-    template 'notify', {success => 'The user was created and it is waiting for admin approval.'};
+    template 'notify', {
+      success => 'The user was created and it is waiting for admin approval.',
+      recaptcha => recaptcha_display(),
+    };
   }
 };
 

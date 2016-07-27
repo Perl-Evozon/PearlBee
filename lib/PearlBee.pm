@@ -219,7 +219,7 @@ post '/comment/add' => sub {
   warn "The response in english is:\n ";
   warn Dumper($result);
   warn $result;
-
+  my $err;
  
   #my $result = recaptcha_verify($response); #recaptcha_verify($secret);
   #warn "The secret is";
@@ -270,17 +270,21 @@ post '/comment/add' => sub {
   }
   else {
     # The secret code inncorrect
-    # Repopulate the fields with the data
-    my $response = param('g-recaptcha-response');
-    my $result = recaptcha_verify($response);
-
-    template 'post',{
-    $template_params,
-    recaptcha => recaptcha_display(),
+    $err = "Invalid secret code.";
+    
   }; 
     #$template_params->{fields} = $parameters;
     #$template_params->{success} = 'Are you a robot ?';
     #return template 'post'{$template_params};
+
+  }
+
+
+  if($err){
+    $template_params->{warning} = $err if $err;
+    my $response = param('g-recaptcha-response');
+    my $result = recaptcha_verify($response);
+    template 'comment_form', $template_params;
 
   }
 

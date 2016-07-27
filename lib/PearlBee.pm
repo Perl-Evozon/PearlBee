@@ -284,7 +284,7 @@ post '/comment/add' => sub {
     $template_params->{warning} = $err if $err;
     my $response = param('g-recaptcha-response');
     my $result = recaptcha_verify($response);
-    template 'comment_form', $template_params;
+    template 'comment_form', {$template_params};
 
   }
 

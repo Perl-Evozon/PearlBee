@@ -650,7 +650,9 @@ post '/sign-up' => sub {
   if ($err) {
     $template_params->{warning} = $err if $err;
 
-    new_captcha_code();
+    #new_captcha_code();
+    my $response = param('g-recaptcha-response');
+    my $result = recaptcha_verify($response);
 
     template 'signup', $template_params;
   } else {

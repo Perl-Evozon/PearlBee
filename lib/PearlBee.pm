@@ -271,12 +271,17 @@ post '/comment/add' => sub {
   else {
     # The secret code inncorrect
     # Repopulate the fields with the data
-     #my $response = param('g-recaptcha-response');
-    ##my $result = recaptcha_verify($response);
+    my $response = param('g-recaptcha-response');
+    my $result = recaptcha_verify($response);
+
+    template 'post',{
+    $template_params,
+    recaptcha => recaptcha_display(),
+  }; 
     #$template_params->{fields} = $parameters;
     #$template_params->{success} = 'Are you a robot ?';
     #return template 'post'{$template_params};
-    redirect '/post/:slug';
+
   }
 
   foreach my $comment (@comments) {

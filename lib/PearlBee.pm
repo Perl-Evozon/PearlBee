@@ -272,7 +272,8 @@ post '/comment/add' => sub {
     # The secret code inncorrect
     # Repopulate the fields with the data
 
-    $template_params->{fields} = $parameters;
+    #$template_params->{fields} = $parameters;
+    redirect '/comment/add';
   }
 
   foreach my $comment (@comments) {

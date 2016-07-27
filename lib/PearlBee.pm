@@ -547,7 +547,7 @@ get '/sign-up' => sub {
 
   #new_captcha_code();
 
-  template 'signup', {recaptcha => recaptcha_display()};
+  template 'signup';
 };
 
 post '/sign-up' => sub {

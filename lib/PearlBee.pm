@@ -547,7 +547,7 @@ get '/sign-up' => sub {
 
   #new_captcha_code();
 
-  template 'signup';
+  template 'signup',{recaptcha => recaptcha_display()};
 };
 
 post '/sign-up' => sub {
@@ -563,7 +563,7 @@ post '/sign-up' => sub {
     email           => $params->{'email'},
     first_name      => $params->{'first_name'},
     last_name       => $params->{'last_name'},
-    recaptcha => recaptcha_display()
+    
   };
 
   #my $response = params->{'g-recaptcha-response'};

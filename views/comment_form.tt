@@ -35,9 +35,12 @@
             <label for="comment">Comment</label>
             <textarea class="form-control" rows="3" name="comment" required>[% fields.in_reply_to ? '' : fields.comment %]</textarea>
             <br />
+
             <br />
             <div class="cf">
+            [% FOREACH  comment IN $template_params->{comments}%]
               [% recaptcha %]
+             [% END %] 
                 <!--<img src="/captcha/image/[% session.secret %].png" />-->
                 <!--<input type="text" value="[% recaptcha %]" name="secret" class="form-control small" placeholder="g-recaptcha-response" />-->
             </div>

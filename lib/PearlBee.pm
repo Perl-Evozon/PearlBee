@@ -291,7 +291,7 @@ post '/comment/add' => sub {
       #$template_params,
       #recaptcha => recaptcha_display(),
       my $post_name = $post->title;
-      wran "|$post_name|";
+      warn "|$post_name|";
 
       redirect "/post/$post_name";
     #};

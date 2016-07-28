@@ -293,7 +293,7 @@ post '/comment/add' => sub {
       my $post_name = $post->title;
       wran |$post_name|;
 
-      redirect "/post/$post";
+      redirect "/post/$post_name";
     #};
   } 
 

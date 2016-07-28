@@ -272,21 +272,13 @@ post '/comment/add' => sub {
     # The secret code inncorrect
     $err = "Invalid secret code.";
     
-  }; 
+  }
     #$template_params->{fields} = $parameters;
     #$template_params->{success} = 'Are you a robot ?';
     #return template 'post'{$template_params};
 
-  }
+  #}
 
-
-  if($err){
-    $template_params->{warning} = $err if $err;
-    my $response = param('g-recaptcha-response');
-    my $result = recaptcha_verify($response);
-    template 'comment_form', {$template_params};
-
-  }
 
   foreach my $comment (@comments) {
     my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});

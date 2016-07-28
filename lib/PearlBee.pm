@@ -290,8 +290,9 @@ post '/comment/add' => sub {
     #template 'comment_form',{ 
       #$template_params,
       #recaptcha => recaptcha_display(),
+      #my $post = post->
 
-      redirect '/post/:slug';
+      redirect '/post/:$post;
     #};
   } 
 

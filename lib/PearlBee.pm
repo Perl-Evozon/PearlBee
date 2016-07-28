@@ -280,6 +280,17 @@ post '/comment/add' => sub {
   #}
 
 
+  if ($err) {
+    $template_params->{warning} = $err if $err;
+
+    #new_captcha_code();
+    my $response = param('g-recaptcha-response');
+    my $result = recaptcha_verify($response);
+
+    template 'comment_form', $template_params;
+  } 
+
+
   foreach my $comment (@comments) {
     my @comment_replies = resultset('Comment')->search({ reply_to => $comment->id, status => 'approved' }, {order_by => { -asc => "comment_date" }});
     foreach my $reply (@comment_replies) {

@@ -290,7 +290,7 @@ post '/comment/add' => sub {
     #template 'comment_form',{ 
       #$template_params,
       #recaptcha => recaptcha_display(),
-      reidrect '/post/:slug';
+      reidrect '/post/:slug'
 
     };
   } 

@@ -292,7 +292,7 @@ post '/comment/add' => sub {
       #recaptcha => recaptcha_display(),
       #my $post = post->
 
-      redirect '/post/$post';
+      redirect "/post/$post";
     #};
   } 
 

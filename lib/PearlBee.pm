@@ -287,7 +287,11 @@ post '/comment/add' => sub {
     my $response = param('g-recaptcha-response');
     my $result = recaptcha_verify($response);
 
-    template 'comment_form', $template_params;
+    template 'comment_form',{ 
+      $template_params,
+      recaptcha => recaptcha_display(),
+
+    };
   } 
 
 

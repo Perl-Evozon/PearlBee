@@ -38,9 +38,9 @@
 
             <br />
             <div class="cf">
-            [% FOREACH  comment IN $template_params->{comments}%]
+            
               [% recaptcha %]
-             [% END %] 
+
                 <!--<img src="/captcha/image/[% session.secret %].png" />-->
                 <!--<input type="text" value="[% recaptcha %]" name="secret" class="form-control small" placeholder="g-recaptcha-response" />-->
             </div>

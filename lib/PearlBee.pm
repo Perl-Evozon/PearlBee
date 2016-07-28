@@ -290,7 +290,7 @@ post '/comment/add' => sub {
     #template 'comment_form',{ 
       #$template_params,
       #recaptcha => recaptcha_display(),
-      my $post_name = $post->title;
+      my $post_name = $post->{title};
       warn "|$post_name|";
 
       redirect "/post/$post_name";

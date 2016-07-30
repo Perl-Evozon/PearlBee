@@ -274,7 +274,8 @@ post '/comment/add' => sub {
       $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
     }
   }elsif( !$result->{success}){
-    return "bender";
+    #return "bender";
+    template 'comment_form'
   }
   else {
     # The secret code inncorrect

@@ -285,7 +285,7 @@ post '/comment/add' => sub {
     warn $post_title;
     warn "the id is| $bend|";
     warn $end;
-    redirect  "/post/:$end";
+    redirect  "/post/$end";
   }
   else {
     # The secret code inncorrect

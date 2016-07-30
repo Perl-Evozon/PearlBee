@@ -277,7 +277,8 @@ post '/comment/add' => sub {
     #return "bender";
     my $response = param('g-recaptcha-response');
     #template 'comment_form', { recaptcha => recaptcha_display() };
-    fallback;
+    #fallback;
+    redirect get '/post/:test';
   }
   else {
     # The secret code inncorrect

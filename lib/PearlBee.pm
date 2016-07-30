@@ -317,7 +317,7 @@ post '/comment/add' => sub {
 
   template 'post',{
     $template_params,
-    #recaptcha => recaptcha_display(),
+    recaptcha => recaptcha_display(),
   }; 
 
 };

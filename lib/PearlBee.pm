@@ -279,7 +279,7 @@ post '/comment/add' => sub {
     #template 'comment_form', { recaptcha => recaptcha_display() };
     #fallback;
     
-    my $post_title = resultset('Post')->search({ title => $post_id  })->first->id;
+    my $post_title =  resultset('Post')->find( $post_id );
     warn $post_title;
     redirect  '/post/:slug';
   }

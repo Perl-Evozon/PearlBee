@@ -273,6 +273,8 @@ post '/comment/add' => sub {
     } else {
       $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
     }
+  }elsif( !$result->{success}){
+    return;
   }
   else {
     # The secret code inncorrect

@@ -280,6 +280,7 @@ post '/comment/add' => sub {
     #fallback;
     
     my $post_title =  resultset('Post')->find( $post_id );
+    my $bend = $post_title->id;
     warn $post_title;
     redirect  '/post/:slug';
   }

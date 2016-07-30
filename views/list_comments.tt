@@ -33,7 +33,7 @@
                 <div class='reply_comment_div' id="reply_comment_[% comment.id %]_div" div_set="[% fields.in_reply_to %]" field_fullname="[% fields.fullname %]" field_email="[% fields.email %]" field_website="[% fields.website %]" field_comment="[% fields.comment %]">
                     [% IF ! settings.static %]
                     [% INCLUDE comment_form.tt %]
-                    [% INCLUDE  recaptcha  %]
+                    <!--[% INCLUDE  recaptcha  %]-->
 
                     [% END %]
 

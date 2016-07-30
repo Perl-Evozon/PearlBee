@@ -34,7 +34,7 @@
         <div class="form-group">
             <label for="comment">Comment</label>
             <textarea class="form-control" rows="3" name="comment" required>[% fields.in_reply_to ? '' : fields.comment %]</textarea>
-            [% recaptcha %]
+            
             <br />
 
             <br />

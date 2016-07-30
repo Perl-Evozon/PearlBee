@@ -286,20 +286,20 @@ post '/comment/add' => sub {
   #}
 
 
-  if ($err) {
+  #if ($err) {
     #$template_params->{warning} = $err if $err;
 
-    #new_captcha_code();
-    my $response = param('g-recaptcha-response');
-    my $result = recaptcha_verify($response);
+    ##new_captcha_code();
+    #my $response = param('g-recaptcha-response');
+    #my $result = recaptcha_verify($response);
 
-  template 'comment_form',{ 
-      $template_params,
-      recaptcha => recaptcha_display(),
+  #template 'comment_form',{ 
+      #$template_params,
+      #recaptcha => recaptcha_display(),
       
      
-    };
-  } 
+    #};
+  #} 
 
 
   foreach my $comment (@comments) {

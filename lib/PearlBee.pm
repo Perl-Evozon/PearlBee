@@ -141,8 +141,8 @@ get '/post/:slug' => sub {
   my @recent     = resultset('Post')->search({ status => 'published' },{ order_by => { -desc => "created_date" }, rows => 3 });
   my @popular    = resultset('View::PopularPosts')->search({}, { rows => 3 });
 
-  my $response = param('g-recaptcha-response');
-  my $result = recaptcha_verify($response);
+  #my $response = param('g-recaptcha-response');
+  #my $result = recaptcha_verify($response);
   
 
   # Grab the approved comments for this post and the corresponding reply comments

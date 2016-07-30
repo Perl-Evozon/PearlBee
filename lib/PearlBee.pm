@@ -290,17 +290,17 @@ post '/comment/add' => sub {
     #$template_params->{warning} = $err if $err;
 
     #new_captcha_code();
-    #my $response = param('g-recaptcha-response');
-    #my $result = recaptcha_verify($response);
+    my $response = param('g-recaptcha-response');
+    my $result = recaptcha_verify($response);
 
-    #template 'comment_form',{ 
-      #$template_params,
-      #recaptcha => recaptcha_display(),
+  template 'comment_form',{ 
+      $template_params,
+      recaptcha => recaptcha_display(),
       my $post_name = $post->{title};
-      warn "|$post_name|";
+      #warn "|$post_name|";
 
-      redirect "/post/$post_name";
-    #};
+     # redirect "/post/$post_name";
+    };
   } 
 
 

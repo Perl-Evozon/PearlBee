@@ -167,7 +167,7 @@ get '/post/:slug' => sub {
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
-      recaptcha => recaptcha_display()
+      recaptcha => recaptcha_display(),
     };
 };
 

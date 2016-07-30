@@ -278,7 +278,7 @@ post '/comment/add' => sub {
     my $response = param('g-recaptcha-response');
     #template 'comment_form', { recaptcha => recaptcha_display() };
     #fallback;
-    redirect get '/post/:test';
+    redirect  '/post/:test';
   }
   else {
     # The secret code inncorrect

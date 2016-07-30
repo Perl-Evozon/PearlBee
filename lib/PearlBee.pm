@@ -275,10 +275,11 @@ post '/comment/add' => sub {
     }
   }elsif( !$result->{success}){
     #return "bender";
-    my $response = param('g-recaptcha-response');
+    #my $response = param('g-recaptcha-response');
     #template 'comment_form', { recaptcha => recaptcha_display() };
     #fallback;
-    redirect  '/post/:test';
+    my $post_title = $post->title;
+    redirect  '/post/:post_title';
   }
   else {
     # The secret code inncorrect

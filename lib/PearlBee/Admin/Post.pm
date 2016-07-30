@@ -58,7 +58,9 @@ get '/admin/posts/page/:page' => sub {
         next_link     => $next_link,
         previous_link => $previous_link,
         action_url    => 'admin/posts/page',
-        pages         => $pagination->pages_in_set
+        pages         => $pagination->pages_in_set,
+        recaptcha => recaptcha_display(),
+
       },
       { layout => 'admin' };
 

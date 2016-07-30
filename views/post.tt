@@ -49,6 +49,7 @@
                     <!-- Comment posting -->
                     [% IF ! settings.static %]
                     [% INCLUDE comment_form.tt %]
+                    [% recaptcha %]
                     
                     [% END %]
                 

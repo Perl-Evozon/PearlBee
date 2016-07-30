@@ -275,7 +275,7 @@ post '/comment/add' => sub {
     }
   }elsif( !$result->{success}){
     #return "bender";
-    template 'comment_form'
+    template 'comment_form', {recaptcha => recaptcha_display()}
   }
   else {
     # The secret code inncorrect

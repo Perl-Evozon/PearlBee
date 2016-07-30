@@ -282,7 +282,7 @@ post '/comment/add' => sub {
     my $post_title =  resultset('Post')->find( $post_id );
     my $bend = $post_title->id;
     warn $post_title;
-    warn the id is| $bend|;
+    warn "the id is| $bend|";
     redirect  '/post/:slug';
   }
   else {

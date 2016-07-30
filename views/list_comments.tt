@@ -36,7 +36,7 @@
 
                     [% END %]
 
-                    
+                    [% recaptcha %]
                 </div>
                 
                 <!-- The Reply comments for this comment -->

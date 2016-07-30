@@ -278,7 +278,7 @@ post '/comment/add' => sub {
     #my $response = param('g-recaptcha-response');
     #template 'comment_form', { recaptcha => recaptcha_display() };
     #fallback;
-    my $post_title = $post->'title';
+    my $post_title = $post->title;
     warn $post_title;
     redirect  '/post/:post_title';
   }

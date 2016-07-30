@@ -261,6 +261,10 @@ post '/comment/add' => sub {
 
     delete $template_params->{warning};
     delete $template_params->{in_reply_to};
+    warn $post->user_id;
+    warn $user;
+    warn $post->user_id;
+    warn $user->{id};
 
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $template_params->{success} = 'Your comment has been submited. Thank you!';

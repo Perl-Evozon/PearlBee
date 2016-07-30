@@ -39,7 +39,7 @@
             <br />
             <div class="cf">
             
-              [% recaptcha %]
+              [% recaptcha %][% session.secret %]
 
                 <!--<img src="/captcha/image/[% session.secret %].png" />-->
                 <!--<input type="text" value="[% recaptcha %]" name="secret" class="form-control small" placeholder="g-recaptcha-response" />-->

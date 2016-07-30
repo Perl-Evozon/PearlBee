@@ -279,6 +279,7 @@ post '/comment/add' => sub {
     #template 'comment_form', { recaptcha => recaptcha_display() };
     #fallback;
     my $post_title = $post->title;
+    warn $post_title;
     redirect  '/post/:post_title';
   }
   else {

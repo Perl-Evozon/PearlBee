@@ -275,6 +275,7 @@ post '/comment/add' => sub {
     }
   }elsif( !$result->{success}){
     #return "bender";
+    my $response = param('g-recaptcha-response');
     template 'comment_form', { recaptcha => recaptcha_display() };
   }
   else {

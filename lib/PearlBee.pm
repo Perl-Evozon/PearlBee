@@ -209,7 +209,8 @@ post '/comment/add' => sub {
     if ($comm) {
       $parameters->{'reply_to_content'} = $comm->content;
       $parameters->{'reply_to_user'} = $comm->fullname;
-      $parameters->{'recaptcha'} = recaptcha_display();
+      #$parameters->{'recaptcha'} = recaptcha_display();
+      recaptcha => recaptcha_display();
     }
   }
 

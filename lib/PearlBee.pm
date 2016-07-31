@@ -209,7 +209,7 @@ post '/comment/add' => sub {
     categories  => \@categories,
     popular     => \@popular,
     recent      => \@recent,
-    success     => 'The secret code is incorrect',
+    warning     => 'The secret code is incorrect',
     #recaptcha => recaptcha_display()
 
   };

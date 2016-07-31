@@ -273,23 +273,19 @@ post '/comment/add' => sub {
     } else {
       $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
     }
-  }elsif( !$result->{success}){
-    #return "bender";
-    #my $response = param('g-recaptcha-response');
-    #template 'comment_form', { recaptcha => recaptcha_display() };
-    #fallback;
-    
-    my $post_title =  resultset('Post')->find( $post_id );
-    my $bend = $post_title->id;
-    my $end = $post_title->title;
-    warn $post_title;
-    warn "the id is| $bend|";
-    warn $end;
-    redirect  "/post/$end";
   }
-  else {
+
+else {
     # The secret code inncorrect
     $err = "Invalid secret code.";
+     my $post_title =  resultset('Post')->find( $post_id );
+     my $bend = $post_title->id;
+     my $end = $post_title->title;
+     my $post_name = $post->title;
+     warn $post_title;
+     warn "the id is| $bend|";
+     warn $end;
+    redirect  "/post/$post_name";
     
   }
     #$template_params->{fields} = $parameters;

@@ -229,7 +229,7 @@ post '/comment/add' => sub {
   #warn "The secret is";
   #warn Dumper($result );
 
-  if ( $result->{success} ) {
+  if ( $parameters->$result->{success} ) {
     # The user entered the correct secret code
     eval {
 

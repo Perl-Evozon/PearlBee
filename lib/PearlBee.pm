@@ -209,7 +209,7 @@ post '/comment/add' => sub {
     categories  => \@categories,
     popular     => \@popular,
     recent      => \@recent,
-    warning     => 'The secret code is incorrect',
+    success     => 'The secret code is incorrect',
     #recaptcha => recaptcha_display()
 
   };
@@ -280,8 +280,8 @@ else {
     $err = "Invalid secret code.";
      
      my $post_name = $post->title;
-    # $template_params->{success} = 'The secret code inncorrect';
-    return 'The secret code inncorrect';
+    $template_params->{success} = 'The secret code inncorrect';
+    #return 'The secret code inncorrect';
   
 
     redirect  "/post/$post_name";

@@ -179,12 +179,20 @@ Add a comment method
 
 post '/comment/add' => sub {
 
+  my $response = param('g-recaptcha-response');
+  warn "The response is |$response |\n";
+  #my $result = recaptcha_verify($response);
+  warn "The response in english is:\n ";
+  warn Dumper($result);
+  warn $result;
+  my $err;
+
    
 
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $secret      = $parameters->{'secret'};
+  my $result      = $parameters->{recaptcha_verify($response)};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
@@ -215,13 +223,7 @@ post '/comment/add' => sub {
   };
 
 
-  my $response = param('g-recaptcha-response');
-  warn "The response is |$response |\n";
-  my $result = recaptcha_verify($response);
-  warn "The response in english is:\n ";
-  warn Dumper($result);
-  warn $result;
-  my $err;
+  
  
   #my $result = recaptcha_verify($response); #recaptcha_verify($secret);
   #warn "The secret is";

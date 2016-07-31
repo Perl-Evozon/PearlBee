@@ -278,13 +278,11 @@ post '/comment/add' => sub {
 else {
     # The secret code inncorrect
     $err = "Invalid secret code.";
-     my $post_title =  resultset('Post')->find( $post_id );
-     my $bend = $post_title->id;
-     my $end = $post_title->title;
+     
      my $post_name = $post->title;
-     warn $post_title;
-     warn "the id is| $bend|";
-     warn $end;
+     $template_params->{success} = 'The secret code inncorrect';
+  
+
     redirect  "/post/$post_name";
     
   }

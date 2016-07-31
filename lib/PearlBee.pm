@@ -210,7 +210,7 @@ post '/comment/add' => sub {
     popular     => \@popular,
     recent      => \@recent,
     warning     => 'The secret code is incorrect',
-    #recaptcha => recaptcha_display()
+    recaptcha => recaptcha_display()
 
   };
 
@@ -277,14 +277,15 @@ post '/comment/add' => sub {
 
 else {
     # The secret code inncorrect
-    $err = "Invalid secret code.";
+    #$err = "Invalid secret code.";
      
-     my $post_name = $post->title;
-    $template_params->{success} = 'The secret code inncorrect';
+     #my $post_name = $post->title;
+    #$template_params->{success} = 'The secret code inncorrect';
     #return 'The secret code inncorrect';
   
 
-    redirect  "/post/$post_name";
+    #redirect  "/post/$post_name";
+    $template_params->{fields} = $parameters;
     
   }
     #$template_params->{fields} = $parameters;

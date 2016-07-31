@@ -280,7 +280,8 @@ else {
     $err = "Invalid secret code.";
      
      my $post_name = $post->title;
-     $template_params->{success} = 'The secret code inncorrect';
+    # $template_params->{success} = 'The secret code inncorrect';
+    return 'The secret code inncorrect';
   
 
     redirect  "/post/$post_name";

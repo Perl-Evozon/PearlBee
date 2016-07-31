@@ -183,8 +183,8 @@ post '/comment/add' => sub {
   warn "The response is |$response |\n";
   #my $result = recaptcha_verify($response);
   warn "The response in english is:\n ";
-  warn Dumper($result);
-  warn $result;
+  #warn Dumper($result);
+  #warn $result;
   my $err;
 
    

@@ -53,7 +53,7 @@
 									[% comment.content %]
 
 									<br /> 
-										[% recaptcha %]
+										
 									<br />
 
 									[% IF (comment.status == 'pending') %]

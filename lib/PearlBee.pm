@@ -82,7 +82,8 @@ get '/' => sub {
         page          => 1,
         total_pages   => $total_pages,
         previous_link => $previous_link,
-        next_link     => $next_link
+        next_link     => $next_link,
+        recaptcha => recaptcha_display(),
     };
 };
 
@@ -323,7 +324,7 @@ else {
     }
   }
   $template_params->{comments} = \@comments;
-  
+
 
  
 

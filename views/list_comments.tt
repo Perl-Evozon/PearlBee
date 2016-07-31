@@ -7,7 +7,7 @@
             <li class="comment" id="comment_[% comment.id %]">
                 <a class="pull-left" href="#">
                     <img class="avatar" src="[% comment.avatar %]" class="img-responsive" />
-                    [% recaptcha %]
+                    
                 </a>
                 
                 [% IF comment.fullname %]

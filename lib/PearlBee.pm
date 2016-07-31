@@ -323,7 +323,7 @@ else {
     }
   }
   $template_params->{comments} = \@comments;
-  $template_params->{recaptcha} = recaptcha_display();
+  
 
  
 

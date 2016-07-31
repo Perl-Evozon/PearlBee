@@ -181,10 +181,10 @@ post '/comment/add' => sub {
 
   my $response = param('g-recaptcha-response');
   warn "The response is |$response |\n";
-  #my $result = recaptcha_verify($response);
+  my $result = recaptcha_verify($response);
   warn "The response in english is:\n ";
-  #warn Dumper($result);
-  #warn $result;
+  warn Dumper($result);
+  warn $result;
   my $err;
 
    
@@ -192,7 +192,7 @@ post '/comment/add' => sub {
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
-  my $result      = $parameters->{recaptcha_verify($response)};
+  #my $secret      = $parameters->{'secret'};
   my @comments    = resultset('Comment')->search({ post_id => $post_id, status => 'approved', reply_to => undef });
   my $post        = resultset('Post')->find( $post_id );
   my @categories  = resultset('Category')->all();
@@ -229,7 +229,7 @@ post '/comment/add' => sub {
   #warn "The secret is";
   #warn Dumper($result );
 
-  if ( $parameters->$result->{success} ) {
+  if ( $result->{success} ) {
     # The user entered the correct secret code
     eval {
 

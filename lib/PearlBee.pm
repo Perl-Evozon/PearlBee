@@ -180,11 +180,11 @@ Add a comment method
 post '/comment/add' => sub {
 
   my $response = param('g-recaptcha-response');
-  warn "The response is |$response |\n";
+  #warn "The response is |$response |\n";
   my $result = recaptcha_verify($response);
-  warn "The response in english is:\n ";
-  warn Dumper($result);
-  warn $result;
+  #warn "The response in english is:\n ";
+  #warn Dumper($result);
+  #warn $result;
   my $err;
 
    
@@ -201,8 +201,8 @@ post '/comment/add' => sub {
   my $user        = session('user');
   #warn "The secret is";
   #warn Dumper($secret);
-  #warn "The params are |$parameters| ";
-  #warn Dumper($parameters);
+  warn "The params are |$parameters| ";
+  warn Dumper($parameters);
   $parameters->{'reply_to'} = $1 if ($parameters->{'in_reply_to'} =~ /(\d+)/);
   if ($parameters->{'reply_to'}) {
     my $comm = resultset('Comment')->find({ id => $parameters->{'reply_to'} });

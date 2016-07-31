@@ -83,7 +83,7 @@ get '/' => sub {
         total_pages   => $total_pages,
         previous_link => $previous_link,
         next_link     => $next_link,
-        recaptcha => recaptcha_display(),
+        
     };
 };
 

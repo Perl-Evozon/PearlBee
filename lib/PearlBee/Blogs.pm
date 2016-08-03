@@ -8,8 +8,7 @@ Blog routes
 
 use Dancer2 0.163000;
 use Dancer2::Plugin::DBIC;
-use PearlBee::Helpers::Util qw(map_posts generate_hash );
-use PearlBee::Helpers::Notification_Email;
+use PearlBee::Helpers::Util qw(map_posts);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 
 our $VERSION = '0.1';

@@ -278,7 +278,7 @@ post '/comment/add' => sub {
     }
   }
 
-else {
+#else {
     # The secret code inncorrect
     #$err = "Invalid secret code.";
      
@@ -288,9 +288,9 @@ else {
   
 
     #redirect  "/post/$post_name";
-    $template_params->{fields} = $parameters;
+    #$template_params->{fields} = $parameters;
     
-  }
+  #}
     #$template_params->{fields} = $parameters;
     #$template_params->{success} = 'Are you a robot ?';
     #return template 'post'{$template_params};
@@ -328,10 +328,8 @@ else {
 
  
 
-  template 'post',{
-    $template_params,
-    recaptcha => recaptcha_display(),
-  }; 
+  template 'post',$template_params;
+    
 
 };
 

@@ -29,7 +29,7 @@ requires 'Template::Plugin::HTML::Strip';
 requires 'Data::Dumper';
 requires 'Net::SSLeay';
 requires 'IO::Socket::SSL';
-
+requires 'WebService::CaptchasDotNet';
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';
 

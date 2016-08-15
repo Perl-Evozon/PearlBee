@@ -27,6 +27,7 @@ use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 #use PearlBee::Helpers::Captcha;
 use Dancer2::Plugin::reCAPTCHA;
 use Data::Dumper;
+use WebService::CaptchasDotNet;
 
 our $VERSION = '0.1';
 

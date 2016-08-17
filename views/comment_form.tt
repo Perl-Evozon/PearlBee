@@ -39,18 +39,12 @@
 
             <br />
             <div class="cf">
-              <title>Sample Perl CAPTCHA Query</title>
+              <!--<title>Sample Perl CAPTCHA Query</title>
 
-  <h1>Sample Perl CAPTCHA Query</h1>
+  <h1>Sample Perl CAPTCHA Query</h1>-->
   
     <table>
-      <!--<tr>
-        <td>
-         
-          Your message:</td><td><input name="message" size="60" />
-        </td>
-      </tr>
-      <tr>-->
+     
         <td>
           The CAPTCHA password:
         </td>

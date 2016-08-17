@@ -52,7 +52,7 @@ hook 'before' => sub {
   if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }
 };
 
-
+#replacing recaptcha with CaptchasDotNet
 my $captcha = WebService::CaptchasDotNet->new(secret   => 'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H',
                                          username =>   'drd_drd',
                                          alphabet => 'abcdefghkmnopqrstuvwxyz',

@@ -39,11 +39,43 @@
 
             <br />
             <div class="cf">
-            
-              [% recaptcha %]
+              <title>Sample Perl CAPTCHA Query</title>
 
-                <!--<img src="/captcha/image/[% session.secret %].png" />-->
-                <!--<input type="text" value="[% recaptcha %]" name="secret" class="form-control small" placeholder="g-recaptcha-response" />-->
+  <h1>Sample Perl CAPTCHA Query</h1>
+  
+    <table>
+      <!--<tr>
+        <td>
+         
+          Your message:</td><td><input name="message" size="60" />
+        </td>
+      </tr>
+      <tr>-->
+        <td>
+          The CAPTCHA password:
+        </td>
+        <td>
+          <input name="password" size="16" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+         <input type="hidden" name="random" value="[%random%]" />
+
+         
+          <img src="[%url%]">
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+        <td>
+          <!--<input type="submit" value="Submit" />-->
+        </td>
+      </tr>
+    </table>
             </div>
             <br />
             <input type="hidden" value="[% post.id %]" name="id" />

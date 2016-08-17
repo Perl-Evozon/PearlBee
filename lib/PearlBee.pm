@@ -225,7 +225,7 @@ post '/comment/add' => sub {
     popular     => \@popular,
     recent      => \@recent,
     warning     => 'The secret code is incorrect',
-    recaptcha => recaptcha_display()
+    #recaptcha => recaptcha_display()
 
   };
 
@@ -291,8 +291,8 @@ else {
 
   # The secret code inncorrect
   # Repopulate the fields with the data
-    my $random = $o->random;
-    my $url = $o->url($random);
+    my $random = $captcha->random;
+    my $url = $captcha->url($random);
     $template_params->{url} = $url;
     $template_params->{random} = $random
     

@@ -68,19 +68,9 @@
           <img src="[%url%]">
         </td>
       </tr>
-      <tr>
-        <td>
-        </td>
-        <td>
-          <!--<input type="submit" value="Submit" />-->
-        </td>
-      </tr>
+      
     </table>
-            </div>
-            <br />
-            <input type="hidden" value="[% post.id %]" name="id" />
-        </div>
-
+           
         <button type="submit" class="btn btn-info">Submit</button>
         <button type="reset" class="btn btn-default">Reset</button>
     </form>

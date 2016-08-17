@@ -2,9 +2,9 @@ To deploy Pearlbee on heroku follow this steps:
 
 1)Make sure your capnfile has this dependencies :
 
-requires 'DBIx::Class';
-requires 'DBIx::Class::Schema::Loader';
-requires 'DateTime::Format::Pg';
+* requires 'DBIx::Class';
+* requires 'DBIx::Class::Schema::Loader';
+* requires 'DateTime::Format::Pg';
 
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';

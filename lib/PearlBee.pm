@@ -571,15 +571,20 @@ get '/posts/tag/:slug/page/:page' => sub {
 get '/sign-up' => sub {
 
   #new_captcha_code();
+    my $random = $captcha->random;
+    my $url = $captcha->url($random); 
   
-  template 'signup',{recaptcha => recaptcha_display()};
+  template 'signup',{ url => $url,
+                      random => $random,};
+                      
 };
 
 post '/sign-up' => sub {
-  my $response = param('g-recaptcha-response');
-  my $result = recaptcha_verify($response);
-  warn "the recaptcha_verify is |$result |";
+  
+  my $random   = param('random');
+  my $password = param('password');
   my $params = body_parameters;
+  my $ok  =  $captcha->verify($password, $random );
 
   my $err;
 
@@ -588,13 +593,13 @@ post '/sign-up' => sub {
     email           => $params->{'email'},
     first_name      => $params->{'first_name'},
     last_name       => $params->{'last_name'},
-    recaptcha => recaptcha_display(),
+    
   };
 
   #my $response = params->{'g-recaptcha-response'};
   
 
-  if (  $result->{success}  ) {
+  if (  $ok  ) {
     # The user entered the correct secrete code
     eval {
 
@@ -666,9 +671,14 @@ post '/sign-up' => sub {
   if ($err) {
     $template_params->{warning} = $err if $err;
 
-    #new_captcha_code();
-    my $response = param('g-recaptcha-response');
-    my $result = recaptcha_verify($response);
+    my $random = $captcha->random;
+    my $url = $captcha->url($random); 
+    
+     $template_params->{url} = $url;
+      
+    $template_params->{random} = $random; 
+
+    
 
     template 'signup', $template_params;
   } else {

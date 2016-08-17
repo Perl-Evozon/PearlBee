@@ -47,10 +47,27 @@
                     
                      <div class="cf">
                         <label class="col-lg-2 control-label">  </label>
-                        [% recaptcha %]
-                       <!--<img src="[% recaptcha %]"" />-->
-                        <!--<input  name="secret" value= [% recaptcha %]/>-->
-                        <!--<input type="text" name=" g-recaptcha-response" class="form-control small" placeholder="CODE" required maxlength="5 "/>-->
+                       <table>
+     
+                      <td>
+                          The CAPTCHA password:
+                      </td>
+                      <td>
+                        <input name="password" size="16" />
+                     </td>
+                      </tr>
+                      <tr>
+                     <td>
+                     </td>
+                    <td>
+                      <input type="hidden" name="random" value="[%random%]" />
+
+         
+                          <img src="[%url%]">
+                    </td>
+                    </tr>
+      
+                       </table>
                      </div>
                     
                     <div class="form-group">

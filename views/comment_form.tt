@@ -39,9 +39,7 @@
 
             <br />
             <div class="cf">
-              <!--<title>Sample Perl CAPTCHA Query</title>
-
-  <h1>Sample Perl CAPTCHA Query</h1>-->
+              <!--The WebService::CaptchasDotNet form -->
   
     <table>
      

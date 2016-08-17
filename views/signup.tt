@@ -47,6 +47,8 @@
                     
                      <div class="cf">
                         <label class="col-lg-2 control-label">  </label>
+
+                        <!--The WebService::CaptchasDotNet form -->
                        <table>
      
                       <td>

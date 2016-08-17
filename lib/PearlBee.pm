@@ -25,7 +25,7 @@ use PearlBee::Author::Comment;
 use PearlBee::Helpers::Util qw(generate_crypted_filename map_posts create_password);
 use PearlBee::Helpers::Pagination qw(get_total_pages get_previous_next_link);
 #use PearlBee::Helpers::Captcha;
-use Dancer2::Plugin::reCAPTCHA;
+#use Dancer2::Plugin::reCAPTCHA;
 use Data::Dumper;
 use WebService::CaptchasDotNet;
 
@@ -51,6 +51,12 @@ hook 'before' => sub {
   session multiuser => resultset('Setting')->first->multiuser;
   if ( request->dispatch_path =~ /^(.*)\.html$/ ) { forward $1; }
 };
+
+
+my $captcha = WebService::CaptchasDotNet->new(secret   => 'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H',
+                                         username =>   'drd_drd',
+                                         alphabet => 'abcdefghkmnopqrstuvwxyz',
+                                         expire   => 1800); 
 
 =head
 
@@ -160,6 +166,10 @@ get '/post/:slug' => sub {
     }
   }
 
+
+  my $random = $captcha->random;
+  my $url = $captcha->url($random);
+
   template 'post',
     {
       post       => $post,
@@ -169,7 +179,8 @@ get '/post/:slug' => sub {
       comments   => \@comments,
       setting    => $settings,
       tags       => \@tags,
-      recaptcha => recaptcha_display(),
+      url => $url,
+      random => $random,
     };
 };
 
@@ -181,16 +192,10 @@ Add a comment method
 
 post '/comment/add' => sub {
 
-  my $response = param('g-recaptcha-response');
-  #warn "The response is |$response |\n";
-  my $result = recaptcha_verify($response);
-  #warn "The response in english is:\n ";
-  #warn Dumper($result);
-  #warn $result;
-  my $err;
+ 
 
-   
-
+  my $password = param('password'); 
+  my $random   = param('random');
   my $parameters  = body_parameters;
   my $fullname    = $parameters->{'fullname'};
   my $post_id     = $parameters->{'id'};
@@ -227,11 +232,10 @@ post '/comment/add' => sub {
 
   
  
-  #my $result = recaptcha_verify($response); #recaptcha_verify($secret);
-  #warn "The secret is";
-  #warn Dumper($result );
 
-  if ( $result->{success} ) {
+  my $ok =  $captcha->verify($password, $random );
+
+  if ( $ok ) {
     # The user entered the correct secret code
     eval {
 
@@ -274,45 +278,27 @@ post '/comment/add' => sub {
 
     if (($post->user_id && $user && $post->user_id == $user->{id}) or ($user && $user->{is_admin})) {
       $template_params->{success} = 'Your comment has been submited. Thank you!';
+      my $random = $captcha->random;
+      my $url = $captcha->url($random);
+      $template_params->{url} = $url;
+      $template_params->{random} = $random;
     } else {
       $template_params->{success} = 'Your comment has been submited and it will be displayed as soon as the author accepts it. Thank you!';
     }
   }
 
-#else {
-    # The secret code inncorrect
-    #$err = "Invalid secret code.";
-     
-     #my $post_name = $post->title;
-    #$template_params->{success} = 'The secret code inncorrect';
-    #return 'The secret code inncorrect';
-  
+else {
 
-    #redirect  "/post/$post_name";
-    #$template_params->{fields} = $parameters;
+  # The secret code inncorrect
+  # Repopulate the fields with the data
+    my $random = $o->random;
+    my $url = $o->url($random);
+    $template_params->{url} = $url;
+    $template_params->{random} = $random
     
-  #}
-    #$template_params->{fields} = $parameters;
-    #$template_params->{success} = 'Are you a robot ?';
-    #return template 'post'{$template_params};
-
-  #}
+  }
 
 
-  #if ($err) {
-    #$template_params->{warning} = $err if $err;
-
-    ##new_captcha_code();
-    #my $response = param('g-recaptcha-response');
-    #my $result = recaptcha_verify($response);
-
-  #template 'comment_form',{ 
-      #$template_params,
-      #recaptcha => recaptcha_display(),
-      
-     
-    #};
-  #} 
 
 
   foreach my $comment (@comments) {

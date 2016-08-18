@@ -46,13 +46,7 @@ plugins:
           RaiseError: 1
           PrintError: 1
             #mysql_enable_utf8: 1
-    #reCAPTCHA:
-          #site_key: "6LdSFiUTAAAAAOzaEeOD2UduJlrxBw8NjWdz4E_O"
-          #secret: "6LdSFiUTAAAAAGlVJk_ekKb1NgUH5-_oLSaIN5Eb"
-          #options:
-              #theme: "light"
-              #type: "image"
-              #size: "normal"     
+        
 
 # Constants
 captcha_folder :  'public/captcha/'

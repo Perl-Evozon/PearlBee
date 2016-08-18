@@ -23,8 +23,8 @@ To deploy Pearlbee on heroku follow this steps:
 		* GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA public to your_heroku_postgres_user; 
 
 12. Register on http://captchas.net and add the captcha credentials to your config.yml.
-		* ` secret: 'your_secret_pharase'`
-		* `username: 'your_CaptchasDotNet_username'`
+    * ` secret: 'your_secret_pharase'`
+	* `username: 'your_CaptchasDotNet_username'`a
 13. Upadate your config.yml file :
 		1.  app_url: 'your_heroku_url'
         2.  dsn: 	dbi:Pg:dbname=heroku_db_name;host=heroku_host;port=5432

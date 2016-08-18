@@ -14,7 +14,7 @@ To deploy Pearlbee on heroku follow this steps:
 	* dont forget to rename your user table my_users
 
 10. Push your local database to heroku with the command :
-	'PGUSER=your_postgres_username PGPASSWORD=your_postgres_password heroku pg:push your_local_db_name DATABASE_URL your_heroku_db_url' 
+	* `PGUSER=your_postgres_username PGPASSWORD=your_postgres_password heroku pg:push your_local_db_name DATABASE_URL your_heroku_db_url` 
 11. Grant privilegies to your default heroku postgres user:
 	* type in your terminal :
 		* `heroku pg:psql`

@@ -26,10 +26,10 @@ To deploy Pearlbee on heroku follow this steps:
 		* secret: 'your_secret_pharase'
 		* username: 'your_CaptchasDotNet_username'
 13. Upadate your config.yml file :
-		*  app_url: 'your_heroku_url'
-        *  dsn: 	dbi:Pg:dbname=heroku_db_name;host=heroku_host;port=5432
-        *  user: your_heroku_postgres_user
-        *  password: your_heroku_postgres_password 	
+		a. app_url: 'your_heroku_url'
+        b.  dsn: 	dbi:Pg:dbname=heroku_db_name;host=heroku_host;port=5432
+        c.  user: your_heroku_postgres_user
+        d.  password: your_heroku_postgres_password 	
 		
     
 

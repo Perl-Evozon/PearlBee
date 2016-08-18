@@ -53,10 +53,10 @@ hook 'before' => sub {
 };
 
 #replacing recaptcha with CaptchasDotNet
-my $captcha = WebService::CaptchasDotNet->new(secret   => 'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H',
-                                         username =>   'drd_drd',
-                                         alphabet => 'abcdefghkmnopqrstuvwxyz',
-                                         expire   => 1800); 
+my $captcha = WebService::CaptchasDotNet->new(secret   => config->{secret},
+                                         username      => config->{username},
+                                         alphabet      => config->{alphabet},
+                                         expire        => config->{expire}); 
 
 =head
 

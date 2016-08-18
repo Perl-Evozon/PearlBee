@@ -46,13 +46,13 @@ plugins:
           RaiseError: 1
           PrintError: 1
             #mysql_enable_utf8: 1
-    reCAPTCHA:
-          site_key: "6LdSFiUTAAAAAOzaEeOD2UduJlrxBw8NjWdz4E_O"
-          secret: "6LdSFiUTAAAAAGlVJk_ekKb1NgUH5-_oLSaIN5Eb"
-          options:
-              theme: "light"
-              type: "image"
-              size: "normal"     
+    #reCAPTCHA:
+          #site_key: "6LdSFiUTAAAAAOzaEeOD2UduJlrxBw8NjWdz4E_O"
+          #secret: "6LdSFiUTAAAAAGlVJk_ekKb1NgUH5-_oLSaIN5Eb"
+          #options:
+              #theme: "light"
+              #type: "image"
+              #size: "normal"     
 
 # Constants
 captcha_folder :  'public/captcha/'
@@ -62,6 +62,10 @@ images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
 app_url:          'https://arcane-castle-30927.herokuapp.com/'
 email_templates:  'views/emails/'
+secret:           'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H'
+username:         'drd_drd'
+alphabet:         'abcdefghkmnopqrstuvwxyz'
+expire:            1800 
 
 # Specifics
 email_signature:       'The PearlBee Team'

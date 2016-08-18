@@ -1,4 +1,4 @@
-To deploy Pearlbee on heroku follow this steps:
+To deploy Pearlbee on Heroku follow this steps:
 
 1. Clone this repository
 2. `cd Pearlbee`

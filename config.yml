@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:Pg:dbname=de5t3ddc4cgosu;host=ec2-54-243-201-58.compute-1.amazonaws.com;port=5432 
+        dsn: dbi:Pg:dbname=your_heroku_db_name;host=your_heroku_host;port=5432 
         schema_class: PearlBee::Model::Schema
-        user: ujhhlyjhgpvbpq 
-        password: lkrNzRKk4qF9Po73cAzMj0vc-d  
+        user: your_heroku_db_user 
+        password: your_heroku_db_password 
         options:
           RaiseError: 1
           PrintError: 1
@@ -56,8 +56,8 @@ images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
 app_url:          'https://arcane-castle-30927.herokuapp.com/'
 email_templates:  'views/emails/'
-secret:           'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H'
-username:         'drd_drd'
+secret:           'your_CaptchasDotNet_secret_pharase'
+username:         'your_CaptchasDotNet_username'
 alphabet:         'abcdefghkmnopqrstuvwxyz'
 expire:            1800 
 

@@ -1,6 +1,8 @@
 To deploy Pearlbee on Heroku follow this steps:
 
-1. Clone this repository
+1. Clone the branch pb_on_heroku from my repository with the command :
+   * `git clone -b pb_on_heroku --single-branch https://github.com/DragosTrif/PearlBee.git
+`	
 2. `cd Pearlbee`
 3. `git add .`
 4. `git commit -m "deploying to heroku"`

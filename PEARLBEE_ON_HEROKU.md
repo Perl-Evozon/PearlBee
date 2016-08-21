@@ -17,7 +17,8 @@ To deploy Pearlbee on Heroku follow this steps:
    * `heroku addons:add heroku-postgresql`
 
 7. Create a postgres database localy.
-	* dont forget to rename your user table my_users
+	* you can use this code :https://github.com/Perl-Evozon/PearlBee/blob/Postgres/db_patches/setup_pgsql.sql
+	* just dont forget to rename your user table my_users
 
 8. Push your local database to heroku with the command :
 	* `PGUSER=your_postgres_username PGPASSWORD=your_postgres_password heroku pg:push your_local_db_name DATABASE_URL your_heroku_db_url` 
@@ -40,7 +41,7 @@ To deploy Pearlbee on Heroku follow this steps:
     * `git add .`      	
 	* `git commit -m "deploying on heroku"`
 	* `git push heroku pb_on_heroku:master`
-13. Launch your app and login usage this credentials:
+13. Launch your app and then login with this credentials:
 	* `user = admin`
 	* `pass = password`
 

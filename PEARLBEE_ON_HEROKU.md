@@ -3,14 +3,18 @@ To deploy Pearlbee on Heroku follow this steps:
 1. Clone the branch pb_on_heroku from my repository with the command :
    * `git clone -b pb_on_heroku --single-branch https://github.com/DragosTrif/PearlBee.git
 `	
-2. `cd Pearlbee`
-3. In your teminal type: `heroku login`.
-4. Create a heroku remote: `heroku create --stack cedar --buildpack https://github.com/miyagawa/heroku-buildpack-perl.git`
+2. In your teminal type :
+   * `cd Pearlbee`
+3. In your teminal type: 
+   * `heroku login`
+4. Create a heroku remote: 
+   * `heroku create --stack cedar --buildpack https://github.com/miyagawa/heroku-buildpack-perl.git`
 5. Push your app on heroku:
    * `git push heroku pb_on_heroku:master
 ` 
 
-6. add a database addon on Heroku using this command : `heroku addons:add heroku-postgresql`
+6. Add a database addon on Heroku using this command : 
+   * `heroku addons:add heroku-postgresql`
 
 7. Create a postgres database localy.
 	* dont forget to rename your user table my_users
@@ -35,7 +39,12 @@ To deploy Pearlbee on Heroku follow this steps:
 12. Add, commit and push your changes to heroku :
     * `git add .`      	
 	* `git commit -m "deploying on heroku"`
-	* `git push heroku pb_on_heroku:master`	
+	* `git push heroku pb_on_heroku:master`
+And your blog is now running!
+
+<h3>Usage</h3>
+
+<h4>Admin</h4		
     
 
 

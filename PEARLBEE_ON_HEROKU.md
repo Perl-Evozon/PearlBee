@@ -40,11 +40,11 @@ To deploy Pearlbee on Heroku follow this steps:
     * `git add .`      	
 	* `git commit -m "deploying on heroku"`
 	* `git push heroku pb_on_heroku:master`
-And your blog is now running!
+13. Launch your app and login usage this credentials:
+	* `user = admin`
+	* `pass = password`
 
-<h3>Usage</h3>
-
-<h4>Admin</h4		
+	
     
 
 

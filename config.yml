@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:Pg:dbname=your_heroku_db_name;host=your_heroku_host;port=5432 
+        dsn: dbi:Pg:dbname=dcopk9d0qdb41o;host=ec2-54-227-250-80.compute-1.amazonaws.com;port=5432 
         schema_class: PearlBee::Model::Schema
-        user: your_heroku_db_user 
-        password: your_heroku_db_password 
+        user: qoczsblbnwvodb 
+        password: 4R7FEFyJ-EY09lYfYA5H16o0sw 
         options:
           RaiseError: 1
           PrintError: 1

@@ -687,35 +687,35 @@ post '/sign-up' => sub {
   }
 };
 
-sub new_captcha_code {
+#sub new_captcha_code {
 
-  my $code = PearlBee::Helpers::Captcha::generate();
+  #my $code = PearlBee::Helpers::Captcha::generate();
 
-  session secret => $code;
-  session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
-  push(session('secrets'), $code);
+  #session secret => $code;
+  #session secrets => [] unless session('secrets'); # this is a hack because Google Chrome triggers GET 2 times, and it messes up the valid captcha code
+  #push(session('secrets'), $code);
 
-  return $code;
-}
+  #return $code;
+#}
 
-sub check_captcha_code {
-  my $code = shift;
+#sub check_captcha_code {
+  #my $code = shift;
 
-  my $ok = 0;
-  my $sess = session();
+  #my $ok = 0;
+  #my $sess = session();
 
-  if ($sess->{data}->{secrets}) {
-    foreach my $secret (@{$sess->{data}->{secrets}}) {
-      my $result= $PearlBee::Helpers::Captcha::captcha->check_code($code, $secret);
-      if ( $result == 1 ) {
-        $ok = 1;
-        session secrets => [];
-        last;
-      }
-    }
-  }
+  #if ($sess->{data}->{secrets}) {
+    #foreach my $secret (@{$sess->{data}->{secrets}}) {
+      #my $result= $PearlBee::Helpers::Captcha::captcha->check_code($code, $secret);
+      #if ( $result == 1 ) {
+        #$ok = 1;
+        #session secrets => [];
+        #last;
+      #}
+    #}
+  #}
 
-  return $ok;
-}
+  #return $ok;
+#}
 
 1;

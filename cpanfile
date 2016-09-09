@@ -32,6 +32,7 @@ requires 'IO::Socket::SSL';
 requires 'WebService::CaptchasDotNet';
 requires 'Plack', '1.0000';
 requires 'Template', '2.26';
+requires 'DBD::SQLite', ' 1.50';
 
 # speed up Dancer2
 requires 'Scope::Guard';

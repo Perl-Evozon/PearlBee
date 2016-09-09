@@ -28,7 +28,6 @@ __PACKAGE__->table("tag");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'tag_id_seq'
 
 =head2 name
 
@@ -48,12 +47,7 @@ __PACKAGE__->table("tag");
 
 __PACKAGE__->add_columns(
   "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "tag_id_seq",
-  },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "name",
   {
     data_type => "varchar",
@@ -110,8 +104,8 @@ Composing rels: L</post_tags> -> post
 __PACKAGE__->many_to_many("posts", "post_tags", "post");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:j/OXmi/fEsUc8z19S6nzeA
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-09-09 16:21:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SOlsZVbH3JNve/WqUNBY4g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

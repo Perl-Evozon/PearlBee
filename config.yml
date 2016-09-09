@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:Pg:dbname=dcopk9d0qdb41o;host=ec2-54-227-250-80.compute-1.amazonaws.com;port=5432 
+        dsn: dbi:SQLite:dbname=database.sqlite #dbi:SQLite:dbname=$ENV{DATA_BASE_DSN} 
         schema_class: PearlBee::Model::Schema
-        user: qoczsblbnwvodb 
-        password: 4R7FEFyJ-EY09lYfYA5H16o0sw 
+        #user: qoczsblbnwvodb 
+        #password: 4R7FEFyJ-EY09lYfYA5H16o0sw 
         options:
           RaiseError: 1
           PrintError: 1
@@ -54,10 +54,10 @@ covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
-app_url:          'your_heroku_app_url'
+app_url:          'http://localhost:8080/'
 email_templates:  'views/emails/'
-secret:           'your_CaptchasDotNet_secret_pharase'
-username:         'your_CaptchasDotNet_username'
+secret:           'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H'
+username:         'drd_drd'
 alphabet:         'abcdefghkmnopqrstuvwxyz'
 expire:            1800 
 

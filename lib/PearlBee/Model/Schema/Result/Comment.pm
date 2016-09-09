@@ -28,7 +28,6 @@ __PACKAGE__->table("comment");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'comment_id_seq'
 
 =head2 content
 
@@ -68,13 +67,11 @@ __PACKAGE__->table("comment");
   data_type: 'timestamp'
   default_value: current_timestamp
   is_nullable: 0
-  original: {default_value => \"now()"}
 
 =head2 status
 
-  data_type: 'enum'
+  data_type: 'text'
   default_value: 'pending'
-  extra: {custom_type_name => "comment_status",list => ["approved","spam","pending","trash"]}
   is_nullable: 1
 
 =head2 post_id
@@ -86,24 +83,21 @@ __PACKAGE__->table("comment");
 =head2 uid
 
   data_type: 'integer'
+  default_value: null
   is_foreign_key: 1
   is_nullable: 1
 
 =head2 reply_to
 
   data_type: 'integer'
+  default_value: null
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "comment_id_seq",
-  },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "content",
   { data_type => "text", is_nullable => 1 },
   "fullname",
@@ -139,24 +133,20 @@ __PACKAGE__->add_columns(
     data_type     => "timestamp",
     default_value => \"current_timestamp",
     is_nullable   => 0,
-    original      => { default_value => \"now()" },
   },
   "status",
-  {
-    data_type => "enum",
-    default_value => "pending",
-    extra => {
-      custom_type_name => "comment_status",
-      list => ["approved", "spam", "pending", "trash"],
-    },
-    is_nullable => 1,
-  },
+  { data_type => "text", default_value => "pending", is_nullable => 1 },
   "post_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "uid",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "integer",
+    default_value  => \"null",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "reply_to",
-  { data_type => "integer", is_nullable => 1 },
+  { data_type => "integer", default_value => \"null", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -192,13 +182,13 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::MyUser>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "uid",
-  "PearlBee::Model::Schema::Result::MyUser",
+  "PearlBee::Model::Schema::Result::User",
   { id => "uid" },
   {
     is_deferrable => 0,
@@ -209,11 +199,12 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EE8WSrnQZ1oDbDFFNeMCZw
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-09-09 16:21:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1sqjFqOO+4E9DEBvEk578Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
 __PACKAGE__->load_components(qw/UTF8Columns/);
 __PACKAGE__->utf8_columns(qw/content/);
 
@@ -249,11 +240,12 @@ sub is_authorized {
   my ($self, $user) = @_;
 
   my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('MyUser')->find( $user->{id} );
+  $user          = $schema->resultset('User')->find( $user->{id} );
   my $authorized = 0;
   $authorized    = 1 if ( $user->is_admin );
   $authorized    = 1 if ( !$user->is_admin && $self->post->user_id == $user->id );
 
   return $authorized;
 }
+
 1;

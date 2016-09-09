@@ -28,7 +28,6 @@ __PACKAGE__->table("category");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'category_id_seq'
 
 =head2 name
 
@@ -52,12 +51,7 @@ __PACKAGE__->table("category");
 
 __PACKAGE__->add_columns(
   "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "category_id_seq",
-  },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "slug",
@@ -80,7 +74,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 UNIQUE CONSTRAINTS
 
-=head2 C<category_name_key>
+=head2 C<name_unique>
 
 =over 4
 
@@ -90,7 +84,7 @@ __PACKAGE__->set_primary_key("id");
 
 =cut
 
-__PACKAGE__->add_unique_constraint("category_name_key", ["name"]);
+__PACKAGE__->add_unique_constraint("name_unique", ["name"]);
 
 =head1 RELATIONS
 
@@ -113,13 +107,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::MyUser>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::MyUser",
+  "PearlBee::Model::Schema::Result::User",
   { id => "user_id" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
@@ -135,15 +129,11 @@ Composing rels: L</post_categories> -> post
 __PACKAGE__->many_to_many("posts", "post_categories", "post");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8ifjVAmvPtfFa7iZKqKODA
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-09-09 16:21:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Fui7t8tFKQaVePjkDbNIsw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
-=head
-Safely cascade delete a category
-=cut
-
 sub safe_cascade_delete {
   my $self = shift;
 

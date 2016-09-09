@@ -30,7 +30,7 @@ post '/login' => sub {
   warn "the pass is |$password|";
   warn "the user is |$username|";
   
-  my $user = resultset("MyUser")->search({
+  my $user = resultset("User")->search({
       username => $username,
       -or => [
       	status => 'activated',

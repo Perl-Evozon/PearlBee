@@ -36,11 +36,12 @@ our $VERSION = '0.1';
 Prepare the blog path
 
 =cut
+#set dsn = $ENV{DATA_BASE_DSN};
 
-my $env_url = $ENV{MYAPP_DB_DSN};
-my $env_user = $ENV{MYAPP_DB_USERNAME};
-my $env_password = $ENV{MYAPP_DB_PASSWORD};
-my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
+#my $env_url = $ENV{MYAPP_DB_DSN};
+#my $env_user = $ENV{MYAPP_DB_USERNAME};
+#my $env_password = $ENV{MYAPP_DB_PASSWORD};
+#my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );
@@ -410,7 +411,7 @@ get '/posts/user/:username' => sub {
 
   my $nr_of_rows  = config->{posts_on_page} || 5; # Number of posts per page
   my $username    = route_parameters->{'username'};
-  my $user         = resultset('MyUser')->find({username => $username});
+  my $user         = resultset('User')->find({username => $username});
   unless ($user) {
     # we did not identify the user
   }
@@ -603,11 +604,11 @@ post '/sign-up' => sub {
     # The user entered the correct secrete code
     eval {
 
-      my $u = resultset('MyUser')->search( { email => $params->{'email'} } )->first;
+      my $u = resultset('User')->search( { email => $params->{'email'} } )->first;
       if ($u) {
         $err = "An user with this email address already exists.";
       } else {
-        $u = resultset('MyUser')->search( { username => $params->{'username'} } )->first;
+        $u = resultset('User')->search( { username => $params->{'username'} } )->first;
         if ($u) {
           $err = "The provided username is already in use.";
         } else {
@@ -622,7 +623,7 @@ post '/sign-up' => sub {
 
             my ($password, $pass_hash, $salt) = create_password();
 
-            resultset('MyUser')->create({
+            resultset('User')->create({
               username        => $params->{username},
               password        => $pass_hash,
               salt            => $salt,
@@ -635,7 +636,7 @@ post '/sign-up' => sub {
             });
 
             # Notify the author that a new comment was submited
-            my $first_admin = resultset('MyUser')->search( {role => 'admin', status => 'activated' } )->first;
+            my $first_admin = resultset('User')->search( {role => 'admin', status => 'activated' } )->first;
 
             Email::Template->send( config->{email_templates} . 'new_user.tt',
             {

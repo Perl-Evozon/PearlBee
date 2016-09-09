@@ -28,7 +28,6 @@ __PACKAGE__->table("post");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'post_id_seq'
 
 =head2 title
 
@@ -65,14 +64,12 @@ __PACKAGE__->table("post");
   data_type: 'timestamp'
   default_value: current_timestamp
   is_nullable: 0
-  original: {default_value => \"now()"}
 
 =head2 status
 
-  data_type: 'enum'
+  data_type: 'text'
   default_value: 'draft'
-  extra: {custom_type_name => "post_status",list => ["published","trash","draft"]}
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 user_id
 
@@ -84,12 +81,7 @@ __PACKAGE__->table("post");
 
 __PACKAGE__->add_columns(
   "id",
-  {
-    data_type         => "integer",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-    sequence          => "post_id_seq",
-  },
+  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
   "title",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "slug",
@@ -110,18 +102,9 @@ __PACKAGE__->add_columns(
     data_type     => "timestamp",
     default_value => \"current_timestamp",
     is_nullable   => 0,
-    original      => { default_value => \"now()" },
   },
   "status",
-  {
-    data_type => "enum",
-    default_value => "draft",
-    extra => {
-      custom_type_name => "post_status",
-      list => ["published", "trash", "draft"],
-    },
-    is_nullable => 0,
-  },
+  { data_type => "text", default_value => "draft", is_nullable => 1 },
   "user_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
@@ -189,13 +172,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<PearlBee::Model::Schema::Result::MyUser>
+Related object: L<PearlBee::Model::Schema::Result::User>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "user",
-  "PearlBee::Model::Schema::Result::MyUser",
+  "PearlBee::Model::Schema::Result::User",
   { id => "user_id" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
@@ -221,9 +204,11 @@ Composing rels: L</post_tags> -> tag
 __PACKAGE__->many_to_many("tags", "post_tags", "tag");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-07-23 09:11:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2pOlfq0lyy6LcSMeyRgvIw
+# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-09-09 16:21:43
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ik9zhzmJvvgKxubopNAZog
 
+
+# You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->load_components(qw/UTF8Columns/);
 __PACKAGE__->utf8_columns(qw/title content/);
 
@@ -287,7 +272,7 @@ sub is_authorized {
   my ($self, $user) = @_;
 
   my $schema     = $self->result_source->schema;
-  $user          = $schema->resultset('MyUser')->find( $user->{id} );
+  $user          = $schema->resultset('User')->find( $user->{id} );
   my $authorized = 0;
   $authorized    = 1 if ( $user->is_admin );
   $authorized    = 1 if ( !$user->is_admin && $self->user_id == $user->id );
@@ -295,10 +280,4 @@ sub is_authorized {
   return $authorized;
 }
 
-
-
-
-
-
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;

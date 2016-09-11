@@ -6,6 +6,8 @@ RUN curl -L http://cpanmin.us | perl - App::cpanminus
 
 
 RUN cpanm Carton Starman
+
+
 RUN cachebuster=b953b35 git clone -b pb_on_docker --single-branch https://github.com/DragosTrif/PearlBee.git
 
 RUN cd PearlBee && carton install  && carton install --deployment 

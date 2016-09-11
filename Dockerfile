@@ -7,6 +7,10 @@ RUN curl -L http://cpanmin.us | perl - App::cpanminus
 
 RUN cpanm Carton Starman
 RUN cachebuster=b953b35 git clone -b pb_on_docker --single-branch https://github.com/DragosTrif/PearlBee.git
+RUN echo 'mysql-server mysql-server/root_password password root' | debconf-set-selections && \
+echo 'mysql-server mysql-server/root_password_again password root' | debconf-set-selections
+RUN apt-get install -qqy mysql-server
+CMD mysql -u root -p < pearlbee/db_patches/create_tables.sql
 
 RUN cd PearlBee && carton install  && carton install --deployment 
 EXPOSE 8080

@@ -40,8 +40,8 @@ plugins:
       default:
         dsn: dbi:mysql:PearlBee #dbi:SQLite:dbname=$ENV{DATA_BASE_DSN} 
         schema_class: PearlBee::Model::Schema
-        user: root 
-        password: 1 
+        user: root
+        password: pearlbee 
         options:
           RaiseError: 1
           PrintError: 1

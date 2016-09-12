@@ -38,7 +38,7 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee #dbi:SQLite:dbname=$ENV{DATA_BASE_DSN} 
+        dsn: dbi:mysql:PearlBee_mysql #dbi:SQLite:dbname=$ENV{DATA_BASE_DSN} 
         schema_class: PearlBee::Model::Schema
         user: root
         password: pearlbee 

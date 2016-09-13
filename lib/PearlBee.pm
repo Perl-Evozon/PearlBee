@@ -38,8 +38,9 @@ Prepare the blog path
 =cut
 my $host = "host=".$ENV{-h};
 my $port = "port=".$ENV{-P};
+my $user =  $ENV{-u};
  config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
- config->{plugins}->{DBIC}->{default}->{user} = $ENV{-h};
+ config->{plugins}->{DBIC}->{default}->{user} = $user ;
  #config->{plugins}->{DBIC}->{default}->{password} = $ENV{--password};
 
 #my $env_url = $ENV{MYAPP_DB_DSN};

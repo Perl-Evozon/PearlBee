@@ -38,7 +38,7 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee_mysql
+        dsn: dbi:mysql:PearlBee
         schema_class: PearlBee::Model::Schema
         user: root
         password: pearlbee 

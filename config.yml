@@ -38,7 +38,7 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee;host=locahlhost;port=3306
+        dsn: dbi:mysql:PearlBee;host=localhost;port=3306
         schema_class: PearlBee::Model::Schema
         user: root
         password: pearlbee 

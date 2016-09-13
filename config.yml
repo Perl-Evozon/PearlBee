@@ -38,7 +38,7 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee;host=$ENV{$MYSQL_PORT_3306_TCP_ADDR};port=$ENV{$MYSQL_PORT_3306_TCP_PORT}
+        dsn: dbi:mysql:PearlBee;host=db_host;port=db_port
         schema_class: PearlBee::Model::Schema
         user: root
         password: pearlbee 
@@ -59,7 +59,9 @@ email_templates:  'views/emails/'
 secret:           'g4VE1IEwYCGjCM7M14Mwy8GOILJUuGJH4wt9DP5H'
 username:         'drd_drd'
 alphabet:         'abcdefghkmnopqrstuvwxyz'
-expire:            1800 
+expire:            1800
+db_host:
+db_port: 
 
 # Specifics
 email_signature:       'The PearlBee Team'

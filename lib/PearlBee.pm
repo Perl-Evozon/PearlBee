@@ -36,7 +36,8 @@ our $VERSION = '0.1';
 Prepare the blog path
 
 =cut
-#set dsn = $ENV{DATA_BASE_DSN};
+set db_port = $ENV{DB_PORT};
+set db_host = $ENV{DB_HOST}
 
 #my $env_url = $ENV{MYAPP_DB_DSN};
 #my $env_user = $ENV{MYAPP_DB_USERNAME};

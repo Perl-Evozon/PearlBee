@@ -155,7 +155,7 @@ CREATE TABLE `settings` (
   `theme_folder` varchar(255) NOT NULL,
   `blog_name` varchar(255) NOT NULL,
   `multiuser` tinyint(1) NOT NULL DEFAULT '0',
-  `id` int(2) NOT NULL,
+  `id` int(2) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Settings table.';
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -36,7 +36,8 @@ our $VERSION = '0.1';
 Prepare the blog path
 
 =cut
-#my $host = "host=".$ENV{MY_HOOST};
+#my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR}
+#my $host = "host=".;
 #my $port = "port=".$ENV{MY_PORT};
 #my $user =  $ENV{MY_USER};
 #config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;

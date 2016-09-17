@@ -36,19 +36,13 @@ our $VERSION = '0.1';
 Prepare the blog path
 
 =cut
-my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR};
-warn $host_adress;
-my $host = "host=".$host_adress;
-my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
-#my $user =  $ENV{MY_USER};
-config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
-#config->{plugins}->{DBIC}->{default}->{user} = $user ;
- #config->{plugins}->{DBIC}->{default}->{password} = $ENV{--password};
+#using the ENV vars created  --link option of the Docker cli to conect to the database.
+#my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR};
+#warn $host_adress;
+#my $host = "host=".$host_adress;
+#my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
 
-#my $env_url = $ENV{MYAPP_DB_DSN};
-#my $env_user = $ENV{MYAPP_DB_USERNAME};
-#my $env_password = $ENV{MYAPP_DB_PASSWORD};
-#my $schema = PearlBee::Model::Schema->connect("$env_url;user=$env_user;password=$env_password");
+#config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );

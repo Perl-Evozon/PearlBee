@@ -42,7 +42,7 @@ my $host_adress =  mysql;
 warn $host_adress;
 my $host = "host=".$host_adress;
 #my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
-my $port = 3306;
+my $port = "port=".3306;
 
 config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
 

@@ -79,7 +79,7 @@ Related object: L<PearlBee::Model::Schema::Result::User>
 
 __PACKAGE__->belongs_to(
   "uid",
-  "PearlBee::Model::Schema::Result::MyUser",
+  "PearlBee::Model::Schema::Result::User",
   { id => "uid" },
   {
     is_deferrable => 1,

@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee #;host=mysql;port=3306
+        dsn: dbi:mysql:PearlBee;host=mysql;port=3306
         schema_class: PearlBee::Model::Schema
         user: root
-        password: 1 
+        password: secret 
         options:
           RaiseError: 1
           PrintError: 1

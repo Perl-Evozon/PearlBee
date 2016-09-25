@@ -38,11 +38,11 @@ Prepare the blog path
 =cut
 #using the ENV vars created  --link option of the Docker cli to conect to the database.
 #my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR};
-my $host_adress =  "mysql";
-warn $host_adress;
-my $host = "host=".$host_adress;
+#my $host_adress =  "mysql";
+#warn $host_adress;
+#my $host = "host=".$host_adress;
 #my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
-my $port = "port=".3306;
+#my $port = "port=".3306;
 
 config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
 

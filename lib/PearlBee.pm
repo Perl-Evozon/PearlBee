@@ -44,7 +44,7 @@ Prepare the blog path
 #my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
 #my $port = "port=".3306;
 
-config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
+#config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );

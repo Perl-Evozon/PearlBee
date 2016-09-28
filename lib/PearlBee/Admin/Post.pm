@@ -211,6 +211,7 @@ any '/admin/posts/add' => sub {
               created_date => $dtf->format_datetime($dt),
           };
           $post = resultset('Post')->can_create($params);
+          warn "the post is: |$post|";
   
           # Insert the categories selected with the new post
           resultset('PostCategory')->connect_categories( params->{category}, $post->id );

@@ -34,7 +34,7 @@ sub can_create {
     # Filter the input data (avoid js injection)
 	map { $_ = $hs->parse( $_ ); $hs->eof; } ($fullname, $text, $email, $website);
 
-	$user 	 = $schema->resultset('MyUser')->find( $user->{id} );
+	$user 	 = $schema->resultset('User')->find( $user->{id} );
 	my $post = $schema->resultset('Post')->find( $post_id );
 
 	my $status = 'pending';

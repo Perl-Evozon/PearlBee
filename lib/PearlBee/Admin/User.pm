@@ -30,9 +30,9 @@ get '/admin/users/page/:page' => sub {
   my $page        = params->{page} || 1;
   my @users;
   if (session('multiuser')) {
-    @users = resultset('MyUser')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+    @users = resultset('User')->search({}, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   } else {
-    @users = resultset('MyUser')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+    @users = resultset('User')->search({ status => { '!=' => 'pending' } }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   }
   
   
@@ -42,7 +42,7 @@ get '/admin/users/page/:page' => sub {
   
   if (! session('multiuser')) {
     # do not count 'pending' users
-    my $count_pending = resultset('MyUser')->search({ status => 'pending' })->count;
+    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
     $all -= $count_pending;
   }
   
@@ -87,7 +87,7 @@ get '/admin/users/:status/page/:page' => sub {
   my $nr_of_rows  = 5; # Number of posts per page
   my $page        = params->{page} || 1;
   my $status      = params->{status};
-  my @users       = resultset('MyUser')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
+  my @users       = resultset('User')->search({ status => $status }, { order_by => { -desc => "register_date" }, rows => $nr_of_rows, page => $page });
   my $count       = resultset('View::Count::StatusUser')->first;
   
   my ($all, $activated, $deactivated, $suspended, $pending) = $count->get_all_status_counts;
@@ -95,7 +95,7 @@ get '/admin/users/:status/page/:page' => sub {
   
   if (! session('multiuser')) {
     # do not count 'pending' users
-    my $count_pending = resultset('MyUser')->search({ status => 'pending' })->count;
+    my $count_pending = resultset('User')->search({ status => 'pending' })->count;
     $all -= $count_pending;
   }
 
@@ -138,7 +138,7 @@ Activate user
 any '/admin/users/activate/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('MyUser')->find( $user_id );
+  my $user   = resultset('User')->find( $user_id );
 
   eval { $user->activate(); };
 
@@ -170,7 +170,7 @@ Suspend user
 any '/admin/users/suspend/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('MyUser')->find( $user_id );
+  my $user   = resultset('User')->find( $user_id );
 
   eval { $user->suspend(); };
 
@@ -186,7 +186,7 @@ Allow pending user
 any '/admin/users/allow/:id' => sub {
 
   my $user_id = params->{id};
-  my $user   = resultset('MyUser')->find( $user_id );
+  my $user   = resultset('User')->find( $user_id );
   
   if ($user) {
     eval {
@@ -243,7 +243,7 @@ any '/admin/users/add' => sub {
       my $last_name  = params->{last_name};
       my $role       = params->{role};
 
-      resultset('MyUser')->create({
+      resultset('User')->create({
         username        => $username,
         password        => $pass_hash,
         salt            => $salt,        

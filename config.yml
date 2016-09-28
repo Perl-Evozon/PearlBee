@@ -38,10 +38,10 @@ engines:
 plugins:
     DBIC:
       default:
-        dsn: dbi:mysql:PearlBee;host=mysql;port=3306
+        dsn: dbi:mysql:PearlBee #;host=mysql;port=3306
         schema_class: PearlBee::Model::Schema
         user: root
-        password: secret 
+        password: 1 #secret 
         options:
           RaiseError: 1
           PrintError: 1
@@ -65,6 +65,6 @@ db_port:
 
 # Specifics
 email_signature:       'The PearlBee Team'
-default_email_sender:  'no-reply@pearlbee.com'
+default_email_sender:  'drd.trif@gmail.com'
 welcome_email_subject: 'Welcome to PearlBee!'
 posts_on_page:         5

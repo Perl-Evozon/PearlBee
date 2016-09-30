@@ -37,17 +37,17 @@ Prepare the blog path
 
 =cut
 #using the ENV vars created  --link option of the Docker cli to conect to the database.
-#my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR};
-my $host_adress =  "mysql";
-warn "The compose-onection string is |$host_adress|";
+my $host_adress =  $ENV{HELLOCOMPOSE_MYSQL_1_PORT_3306_TCP_ADDR};
+#my $host_adress =  "mysql";
+warn "The env for ip is |$host_adress|";
 #warn $host_adress;
-#my $host = "host=".$host_adress;
-#my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
+my $host = "host=".$host_adress;
+my $port = "port=". $ENV{MYSQL_PORT_3306_TCP_PORT};
 #my $port = "port=".3306;
-my $dsn = config->{plugins}->{DBIC}->{default}->{dsn};
-warn "The value in config is |$dsn|";
+#my $dsn = config->{plugins}->{DBIC}->{default}->{dsn};
+#warn "The value in config is |$dsn|";
 
-#config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
+config->{plugins}->{DBIC}->{default}->{dsn} = "dbi:mysql:PearlBee".";".$host.";".$port;
 
 hook 'before' => sub {
   session app_url   => config->{app_url} unless ( session('app_url') );

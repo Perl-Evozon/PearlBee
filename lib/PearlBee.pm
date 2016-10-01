@@ -85,7 +85,7 @@ get '/' => sub {
 
   my $total_pages                 = get_total_pages($nr_of_posts, $nr_of_rows);
   my ($previous_link, $next_link) = get_previous_next_link(1, $total_pages);
-  warn "The compose-onection string is |$host_adress|";
+  #warn "The compose-onection string is |$host_adress|";
 
     template 'index',
       {

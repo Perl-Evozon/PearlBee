@@ -37,7 +37,7 @@ Prepare the blog path
 
 =cut
 #using the ENV vars created  --link option of the Docker cli to conect to the database.
-my $host_adress =  $ENV{MYSQL_1_PORT_3306_TCP_ADDR};
+my $host_adress =  $ENV{MYSQL_PORT_3306_TCP_ADDR};
 #my $host_adress =  "mysql";
 warn "The env for ip is |$host_adress|";
 #warn $host_adress;

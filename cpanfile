@@ -45,4 +45,4 @@ requires 'Math::Random::ISAAC::XS';
 requires 'MooseX::Types::JSON';
 requires 'MooseX::Types::LoadableClass';
 requires 'MooseX::Types::Path::Class';
-requiers 'DateTime::Format::MySQL';
+requires 'DateTime::Format::MySQL';

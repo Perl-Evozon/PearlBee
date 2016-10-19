@@ -54,7 +54,7 @@ covers_folder:    'public/uploads/covers/'
 import_folder:    'public/uploads/import/'
 images_folder:    'public/uploads/images/'
 images_path:      '/uploads/images' 
-app_url:          'http://172.22.0.1'
+app_url:          'http://localhost'
  #app_url:
        #- pearlbee
        #- pearlbee2

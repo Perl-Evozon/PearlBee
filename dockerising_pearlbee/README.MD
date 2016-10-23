@@ -19,9 +19,9 @@ By following this steps you will create a stack of three containers:
     * copy paste this code https://github.com/DragosTrif/PearlBee/blob/dockerising_pearbee/dockerising_pearlbee/db_patches/create_tables.sql
     * type exit to leave the container.     
 6. Fire up browser and and go to the url `localhost` .
-    * login with these credentials : 
-    `user:        admin
-     password: password`
+    * login with this credentials : 
+    - `user:        admin`
+    - `password: password`
 7. Scale up Pearlbee.
 	* in your second terminal go to your dockerising_pearbee folder.
 	* type `docker-compose scale pearlbee=2` this will start a second instance of your pearlbee service.

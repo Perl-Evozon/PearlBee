@@ -1,1 +1,0 @@
-bin/app.psgi

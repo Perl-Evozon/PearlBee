@@ -1,6 +1,0 @@
-# configuration file for static version of the web site
-
-# this will hide all "dynamic" pages
-# and produce links with the .html extension in all other pages
-
-static: 1

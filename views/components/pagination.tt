@@ -1,9 +1,0 @@
-<li [% ( previous_link == '#' ) ? 'class="disabled"' : '' %]><a href="[% previous_link %]">&laquo;</a></li>
-
-[% FOREACH page_number in pages %]
-
-  <li [% ( page_number == page ) ? 'class="active"' : '' %] ><a href="[% session.app_url %]/[% action_url %]/[% page_number %]">[% page_number %]</a></li>
-                   
-[% END %]
-
-<li [% ( next_link == '#' ) ? 'class="disabled"' : '' %]><a href="[% next_link %]">&raquo;</a></li>

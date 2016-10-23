@@ -1,5 +1,0 @@
-[% USE HTML.Strip 'strip' %]
-
-[% FILTER strip %]
-	[% post.content.substr(0, 500) %] ...
-[% END %]

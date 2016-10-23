@@ -1,5 +1,0 @@
-<div class="blog">
-   <div class="container">
-      [% INCLUDE components/alerts.tt %]
-   </div>
-</div>

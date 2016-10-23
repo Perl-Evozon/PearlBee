@@ -1,5 +1,0 @@
-[% IF post.cover %]
-    <div class="bthumb">
-      <a href="https://arcane-castle-30927.herokuapp.com/"><img src="/uploads/covers/[% post.cover %]" alt="" class="img-responsive" /></a>
-    </div>
-[% END %]

@@ -26,7 +26,7 @@ By following this steps you will create a stack of three containers:
       *    `user:        admin `
       *    `password: password `
 7. Scale up Pearlbee.
-	* in your second terminal go to your dockerising_pearbee folder.
+	* in your second terminal go to your `dockerising_pearbee` folder.
 	* type `docker-compose scale pearlbee=2` this will start a second instance of your pearlbee service.
 8. Check if the ip of the second pearlbee instance is added to your NGINX load-balncer:
 	* type `docker ps`

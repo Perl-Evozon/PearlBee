@@ -25,13 +25,13 @@ By following this steps you will create a stack of three containers:
 7. Scale up Pearlbee.
 	* in your second terminal go to your dockerising_pearbee folder.
 	* type `docker-compose scale pearlbee=2` this will start a second instance of your pearlbee service.
-8. Check if the ip of the second pearlbee instance is added to your NGINX loadbalcer:
+8. Check if the ip of the second pearlbee instance is added to your NGINX load-balncer:
 	* type `docker ps`
 	* open your NGINX container with `docker exec -it nginx_container_id    sh`
 	* inside the container type 'nslookup pearlbee' you should see smothing like this:
-	 `Name:      pearlbee
-	  Address 1: 172.23.0.4 dockerisingpearlbee_pearlbee_1.dockerisingpearlbee_default
-      Address 2: 172.23.0.5 dockerisingpearlbee_pearlbee_3.dockerisingpearlbee_default`
+	 * `Name:      pearlbee
+	 * Address 1: 172.23.0.4 dockerisingpearlbee_pearlbee_1.dockerisingpearlbee_default
+     * Address 2: 172.23.0.5 dockerisingpearlbee_pearlbee_3.dockerisingpearlbee_default`
 9. Restart your your compostion:
  	* hit `ctrl+c' to stop it
  	* 'docker-compose up' to restart it.

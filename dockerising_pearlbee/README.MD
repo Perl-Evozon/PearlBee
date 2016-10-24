@@ -18,7 +18,7 @@ By following this steps you will create a stack of three containers:
     * inspect the mysql container and copy the ip using:
       *  `docker inspect your_mysql_container_id` 
     * open the mysql container with:
-      * `mysql -h mysql_container_ip -P 3306 -u root -p` (the password is secret)
+      * `mysql -h mysql_container_ip -P 3306 -u root -p` (the password is `secret`)
     * copy paste this code https://github.com/DragosTrif/PearlBee/blob/dockerising_pearbee/dockerising_pearlbee/db_patches/create_tables.sql
     * type exit to leave the container.     
 6. Fire up browser and and go to the url `localhost` .

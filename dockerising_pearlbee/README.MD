@@ -20,7 +20,7 @@ By following this steps you will create a stack of three containers:
     * type exit to leave the container.     
 6. Fire up browser and and go to the url `localhost` .
     * login with this credentials : 
-     ``` * user:        admin 
+      * ``` user:        admin 
          * password: password ```
 7. Scale up Pearlbee.
 	* in your second terminal go to your dockerising_pearbee folder.

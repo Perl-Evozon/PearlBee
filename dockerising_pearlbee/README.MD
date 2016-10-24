@@ -35,7 +35,7 @@ By following this steps you will create a stack of three containers:
 	 * `Name:      pearlbee`
 	 * `Address 1: 172.23.0.4 dockerisingpearlbee_pearlbee_1.dockerisingpearlbee_default`
      * `Address 2: 172.23.0.5 dockerisingpearlbee_pearlbee_3.dockerisingpearlbee_default`
-9. Restart your your compostion:
+9. Restart your compostion:
  	* hit `ctrl+c' to stop it
  	* `docker-compose up` to restart it.
  	* Enjoy PearlBee      

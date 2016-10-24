@@ -1,7 +1,7 @@
 <h1>Dockerising Pearlbee</h1>
 By following this steps you will create a stack of three containers:
 - the first for  Pearlbee ( a Dancer2 web app )
-- the second for mysql ( this will hold the database)
+- the second for mysql ( this will hold the database )
 - and a third for Nginx ( to act as a load-balancer )
 
 

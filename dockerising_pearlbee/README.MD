@@ -9,13 +9,16 @@ By following this steps you will create a stack of three containers:
    * `git clone -b dockerising_pearbee --single-branch https://github.com/DragosTrif/PearlBee.git`
 2. `cd  dockerising_pearbee`
 3. Create docker containers and images:
-   `docker-compose up -d`
+   * `docker-compose up -d`
 4. Fire up your containers with :
-   `docker-compose up`
+   * `docker-compose up`
 5. Checking out the containers and creating the database for Pearlbee:
-    * open a new terminal and type `docker ps`
-    * inspect the mysql container with `docker inspect your_mysql_container_id` and copy the ip
-    * open the mysql container with `mysql -h mysql_container_ip -P 3306 -u root -p` (the password is secret)
+    * open a new terminal and type: 
+      * `docker ps`
+    * inspect the mysql container and copy the ip using:
+      *  `docker inspect your_mysql_container_id` 
+    * open the mysql container with:
+      * `mysql -h mysql_container_ip -P 3306 -u root -p` (the password is secret)
     * copy paste this code https://github.com/DragosTrif/PearlBee/blob/dockerising_pearbee/dockerising_pearlbee/db_patches/create_tables.sql
     * type exit to leave the container.     
 6. Fire up browser and and go to the url `localhost` .

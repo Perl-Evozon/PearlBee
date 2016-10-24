@@ -6,7 +6,7 @@ By following this steps you will create a stack of three containers:
 
 
 1. Clone this repository with this command :
-   `git clone -b dockerising_pearbee --single-branch https://github.com/DragosTrif/PearlBee.git`
+   * `git clone -b dockerising_pearbee --single-branch https://github.com/DragosTrif/PearlBee.git`
 2. `cd  dockerising_pearbee`
 3. Create docker containers and images:
    `docker-compose up -d`

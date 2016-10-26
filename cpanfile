@@ -1,4 +1,6 @@
 requires 'DBIx::Class';
+
+requires 'GD', '2.56';
 requires 'Dancer2' => 0.163000;
 requires 'Dancer2::Plugin::DBIC';
 requires 'Dancer2::Plugin::REST';
@@ -12,7 +14,7 @@ requires 'Data::Pageset';
 requires 'Moose';
 requires 'LWP::UserAgent';
 requires 'LWP::Simple';
-requires 'Authen::Captcha';
+requires 'Authen::Captcha', '1.024';
 requires 'Email::Template';
 requires 'XML::Simple';
 requires 'Digest';
@@ -22,7 +24,9 @@ requires 'MIME::Base64';
 requires 'Gravatar::URL';
 requires 'HTML::Strip';
 requires 'Template::Plugin::HTML::Strip';
-requires 'GD';
+
+requires 'Plack', '1.0000';
+requires 'Template', '2.26';
 
 # speed up Dancer2
 requires 'Scope::Guard';

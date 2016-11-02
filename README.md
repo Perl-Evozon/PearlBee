@@ -6,7 +6,6 @@ An open source blogging platform written in Perl. [pearlbee.org](http://pearlbee
 ### Setup
 You can try it for yourself! All you need is a Unix-based system and a few dependencies installed.
 
-<<<<<<< HEAD
 - Authen::Captcha ( needs GD, which neeeds libgd2-xpm-dev package : 'yum install libgd2-xpm-dev', 'yum install gd-devel', 'yum install gd')
 - XML::Simple ( needs libxml : 'yum install libxml2', 'yum install libxml2-devel')
 - Crypt::RandPasswd

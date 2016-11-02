@@ -45,7 +45,7 @@ You can try it for yourself! All you need is a Unix-based system and a few depen
 
 #### Installing / Updating perl modules
 
-`./build.sh`
+- `./build.sh`
 =======
 or, if cpanm is available (App::cpanminus on CPAN) run cpanm --installdeps . in the folder where PearlBee was checked out and the Makefile.PL is.
 

@@ -6,8 +6,8 @@ By following this steps you will create a stack of three containers:
 
 
 1. Clone this repository with this command :
-   * `git clone -b dockerising_pearbee --single-branch https://github.com/DragosTrif/PearlBee.git`
-2. `cd  dockerising_pearlbee`
+   * `git clone -b docker_compose_and_pb --single-branch https://github.com/DragosTrif/PearlBee.git`
+2. `cd  PearlBee/dockerising_pearlbee`
 3. Create docker containers and images:
    * `docker-compose up -d`
 4. Fire up your containers with :
@@ -19,7 +19,7 @@ By following this steps you will create a stack of three containers:
       *  `docker inspect your_mysql_container_id` 
     * open the mysql container with:
       * `mysql -h mysql_container_ip -P 3306 -u root -p` (the password is `secret`)
-    * copy paste this code https://github.com/DragosTrif/PearlBee/blob/dockerising_pearbee/dockerising_pearlbee/db_patches/create_tables.sql
+    * copy paste this code https://github.com/DragosTrif/PearlBee/blob/docker_compose_and_pb/dockerising_pearlbee/db_patches/create_tables.sql
     * type `exit` to leave the container.     
 6. Fire up browser and and go to the url `localhost` .
     * login with this credentials : 
@@ -34,9 +34,10 @@ By following this steps you will create a stack of three containers:
 	* inside the container type `nslookup pearlbee`. You should see smothing like this:
 	 * `Name:      pearlbee`
 	 * `Address 1: 172.23.0.4 dockerisingpearlbee_pearlbee_1.dockerisingpearlbee_default`
-     * `Address 2: 172.23.0.5 dockerisingpearlbee_pearlbee_3.dockerisingpearlbee_default`
+   * `Address 2: 172.23.0.5 dockerisingpearlbee_pearlbee_3.dockerisingpearlbee_default`
 9. Restart your compostion:
  	* hit `ctrl+c` to stop it
+  * `docker-compose up -d` to add the new instance of pearlbee.
  	* `docker-compose up` to restart it.
  	* Enjoy PearlBee      
 

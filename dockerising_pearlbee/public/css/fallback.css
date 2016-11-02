@@ -1,0 +1,32 @@
+.ri-grid{
+	width: 100%;
+	margin:0;
+	padding:0;
+	background:#fd0000;
+}
+
+.ri-grid ul{
+	width: 100%;
+	margin:0;
+	padding:0;
+}
+
+.ri-grid ul li{
+	width: 10%;
+	height: 98px;
+	margin:0;
+	padding:0;
+}
+
+.ri-grid ul li a{
+	width: 100%;
+	height: 98px;
+	margin:0;
+	padding:0;
+}
+
+.ri-grid ul li a img{
+	width: 100%;
+	margin:0;
+	padding:0;
+}

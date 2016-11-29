@@ -89,5 +89,6 @@ password: asdf
 
 ### PearlBee in the news
 [Is PearlBee Perl's next great blogging platform?](http://perltricks.com/article/69/2014/2/17/Is-PearlBee-Perl-s-next-great-blogging-platform-) - PerlTricks
+[blogs.perl.org](http://blogsperlorg.pearlbee.org/)[ is being rewrittein](http://news.perlfoundation.org/2016/11/public-beta-of-blogsperlorg-re.html) using Pearlbee
 
 Thank you for using PearlBee!

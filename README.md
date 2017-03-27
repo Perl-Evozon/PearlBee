@@ -1,5 +1,5 @@
 ## PearlBee
-An open source blogging platform written in Perl. [pearlbee.org](http://pearlbee.org/)
+An open source blogging platform written in Perl - by Evozon, a [Perl company](https://www.evozon.com/software-development-services/software-development/perl-development).
 ### Version
 1.0
 

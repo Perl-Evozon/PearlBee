@@ -6,21 +6,20 @@ package PearlBee::Model::Schema::Result::User;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::User - User table.
+PearlBee::Model::Schema::Result::User
 
 =cut
 
 use strict;
 use warnings;
+
 use base 'DBIx::Class::Core';
 
-use Dancer2;
-
-=head1 TABLE: C<user>
+=head1 TABLE: C<users>
 
 =cut
 
-__PACKAGE__->table( config->{ user_table } );
+__PACKAGE__->table("users");
 
 =head1 ACCESSORS
 
@@ -29,6 +28,7 @@ __PACKAGE__->table( config->{ user_table } );
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'users_id_seq'
 
 =head2 first_name
 
@@ -57,9 +57,9 @@ __PACKAGE__->table( config->{ user_table } );
 =head2 register_date
 
   data_type: 'timestamp'
-  datetime_undef_if_invalid: 1
   default_value: current_timestamp
   is_nullable: 0
+  original: {default_value => \"now()"}
 
 =head2 email
 
@@ -70,12 +70,14 @@ __PACKAGE__->table( config->{ user_table } );
 =head2 company
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 255
 
 =head2 telephone
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 12
 
@@ -83,12 +85,13 @@ __PACKAGE__->table( config->{ user_table } );
 
   data_type: 'enum'
   default_value: 'author'
-  extra: {list => ["author","admin"]}
+  extra: {custom_type_name => "user_roles",list => ["author","admin"]}
   is_nullable: 0
 
 =head2 activation_key
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 100
 
@@ -96,14 +99,25 @@ __PACKAGE__->table( config->{ user_table } );
 
   data_type: 'enum'
   default_value: 'deactivated'
-  extra: {list => ["deactivated","activated","suspended","pending"]}
+  extra: {custom_type_name => "user_status",list => ["deactivated","activated","suspended","pending"]}
   is_nullable: 0
+
+=head2 salt
+
+  data_type: 'char'
+  is_nullable: 0
+  size: 30
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "users_id_seq",
+  },
   "first_name",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "last_name",
@@ -114,33 +128,53 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "register_date",
   {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
+    data_type     => "timestamp",
     default_value => \"current_timestamp",
-    is_nullable => 0,
+    is_nullable   => 0,
+    original      => { default_value => \"now()" },
   },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 255 },
   "company",
-  { data_type => "varchar", is_nullable => 1, size => 255 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 255,
+  },
   "telephone",
-  { data_type => "varchar", is_nullable => 1, size => 12 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 12,
+  },
   "role",
   {
     data_type => "enum",
     default_value => "author",
-    extra => { list => ["author", "admin"] },
+    extra => { custom_type_name => "user_roles", list => ["author", "admin"] },
     is_nullable => 0,
   },
   "activation_key",
-  { data_type => "varchar", is_nullable => 1, size => 100 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 100,
+  },
   "status",
   {
     data_type => "enum",
     default_value => "deactivated",
-    extra => { list => ["deactivated", "activated", "suspended", "pending"] },
+    extra => {
+      custom_type_name => "user_status",
+      list => ["deactivated", "activated", "suspended", "pending"],
+    },
     is_nullable => 0,
   },
+  "salt",
+  { data_type => "char", is_nullable => 0, size => 30 },
 );
 
 =head1 PRIMARY KEY
@@ -157,7 +191,7 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 UNIQUE CONSTRAINTS
 
-=head2 C<email>
+=head2 C<users_email_key>
 
 =over 4
 
@@ -167,9 +201,9 @@ __PACKAGE__->set_primary_key("id");
 
 =cut
 
-__PACKAGE__->add_unique_constraint("email", ["email"]);
+__PACKAGE__->add_unique_constraint("users_email_key", ["email"]);
 
-=head2 C<username>
+=head2 C<users_username_key>
 
 =over 4
 
@@ -179,7 +213,7 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 
 =cut
 
-__PACKAGE__->add_unique_constraint("username", ["username"]);
+__PACKAGE__->add_unique_constraint("users_username_key", ["username"]);
 
 =head1 RELATIONS
 
@@ -229,11 +263,11 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-03-12 11:32:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K9HSB67oau0IzWdJILumFg
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-07-13 03:29:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xUVhzOHyOAeNhIJJH/GKPw
 
+use PearlBee::Password qw( generate_hash );
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 =head
 
 Check if the user has administration authority
@@ -333,9 +367,28 @@ Validate a user's password
 sub validate {
   my ($self, $password) = @_;
 
-  my $hashed = crypt( $password, $self->password );
+  my $hashed = generate_hash( $password, $self->salt );
 
-  return $self->password eq $hashed;
+  return $hashed->{ hash } eq $self->password;
+}
+
+=head2 update_hashed
+
+Used to change the password by calling PearlBee::Password.
+
+=cut
+
+sub update_hashed {
+    my ( $self, $params ) = @_;
+
+    my $password = generate_hash( $params->{ password } );
+
+    $self->password( $password->{ hash } );
+    $self->salt( $password->{ salt } );
+
+    $self->update;
+
+    return $self;
 }
 
 1;

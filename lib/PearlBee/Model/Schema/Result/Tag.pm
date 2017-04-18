@@ -6,7 +6,7 @@ package PearlBee::Model::Schema::Result::Tag;
 
 =head1 NAME
 
-PearlBee::Model::Schema::Result::Tag - Tag table.
+PearlBee::Model::Schema::Result::Tag
 
 =cut
 
@@ -28,16 +28,19 @@ __PACKAGE__->table("tag");
   data_type: 'integer'
   is_auto_increment: 1
   is_nullable: 0
+  sequence: 'tag_id_seq'
 
 =head2 name
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 100
 
 =head2 slug
 
   data_type: 'varchar'
+  default_value: null
   is_nullable: 1
   size: 100
 
@@ -45,11 +48,26 @@ __PACKAGE__->table("tag");
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "tag_id_seq",
+  },
   "name",
-  { data_type => "varchar", is_nullable => 1, size => 100 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 100,
+  },
   "slug",
-  { data_type => "varchar", is_nullable => 1, size => 100 },
+  {
+    data_type => "varchar",
+    default_value => \"null",
+    is_nullable => 1,
+    size => 100,
+  },
 );
 
 =head1 PRIMARY KEY
@@ -92,8 +110,8 @@ Composing rels: L</post_tags> -> post
 __PACKAGE__->many_to_many("posts", "post_tags", "post");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-02-23 16:54:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sIW8AAfcXBM0dgcuJrb7iw
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-07-13 02:55:16
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:v9I9/X8M2Ww6IDb5pO93rg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
